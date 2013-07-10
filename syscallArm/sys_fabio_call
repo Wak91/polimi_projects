@@ -1,0 +1,8 @@
+#include <linux/linkage.h>
+#include <linux/printk.h>
+asmlinkage long sys_fabio_call(int i)
+{
+ printk("<0> Attenzione , mia call chiamata");
+return i+2;
+
+}
