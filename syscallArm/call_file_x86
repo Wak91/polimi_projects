@@ -29,36 +29,36 @@ asmlinkage long sys_fabio_call(int i)
 }
 
 static void close_files(struct files_struct * files)
- 352{
- 353        int i, j;
- 354        struct fdtable *fdt;
- 355
- 356        j = 0;
- 357
- 358        /*
- 359         * It is safe to dereference the fd table without RCU or
- 360         * ->file_lock because this is the last reference to the
- 361         * files structure.  But use RCU to shut RCU-lockdep up.
- 362         */
- 363        rcu_read_lock();
- 364        fdt = files_fdtable(files);
- 365        rcu_read_unlock();
- 366        for (;;) {
- 367                unsigned long set;
- 368                i = j * BITS_PER_LONG;
- 369                if (i >= fdt->max_fds)
- 370                        break;
- 371                set = fdt->open_fds[j++];
- 372                while (set) {
- 373                        if (set & 1) {
- 374                                struct file * file = xchg(&fdt->fd[i], NULL);
- 375                                if (file) {
- 376                                        filp_close(file, files);
- 377                                        cond_resched();
- 378                                }
- 379                        }
- 380                        i++;
- 381                        set >>= 1;
- 382                }
- 383        }
- 384}
+ {
+         int i, j;
+         struct fdtable *fdt;
+
+        j = 0;
+ 
+       /*
+         * It is safe to dereference the fd table without RCU or
+        * ->file_lock because this is the last reference to the
+        * files structure.  But use RCU to shut RCU-lockdep up.
+          */
+        rcu_read_lock();
+        fdt = files_fdtable(files);
+        rcu_read_unlock();
+        for (;;) {
+                unsigned long set;
+                i = j * BITS_PER_LONG;
+                if (i >= fdt->max_fds)
+                        break;
+               set = fdt->open_fds[j++];
+               while (set) {
+                        if (set & 1) {
+                                 struct file * file = xchg(&fdt->fd[i], NULL);
+                                 if (file) {
+                                     filp_close(file, files);
+                                        cond_resched();
+                               }
+                        }
+                      i++;
+                      set >>= 1;
+                }
+        }
+}
