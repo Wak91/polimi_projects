@@ -348,10 +348,9 @@ fact OgniPrenotazioneHaUnUtente{
 }
 
 //Se viaggio è condiviso non può essere in prenotazione e viceversa
-fact NoViaggioInPrenotazioneECondivisione{
-	all v :Viaggio | all p:Prenotazione | all c:Condivisione |
-		v in p.p_viaggio implies v not in c.c_viaggio and
-		v in  c.c_viaggio implies v  not in  p.p_viaggio
+ fact UtenteNoCondivisioneEPrenotazione{
+	all u:UtenteRegistrato |no  v:Viaggio |
+	v in u.ur_condivisioni.c_viaggio and v in u.ur_prenotazioni.p_viaggio
 }
 
 //-------------------------------------------------------------------------------------------------------------------------
@@ -472,13 +471,6 @@ assert VerificaCondivisione{
 all u:UtenteRegistrato | all u2:Utente | all c1,c2:Condivisione |
 c1 in u.ur_condivisioni and AggiuntaAmicoCondivisioneGift[u,u2,c1,c2] implies
 u2 not in c1.c_utenti and u2 in c2.c_utenti  and c2 in u.ur_condivisioni
-}
-
-pred RegistrazioneUtente(unr: UtenteNonRegistrato )
-{
- unr in UtenteNonRegistrato 
- 
-
 }
 
 //--- Check dei requisiti funzionali ---
