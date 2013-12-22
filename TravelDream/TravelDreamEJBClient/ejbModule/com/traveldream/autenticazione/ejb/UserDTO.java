@@ -1,4 +1,6 @@
-package com.traveldream.autenticazione.ejb.dto;
+package com.traveldream.autenticazione.ejb;
+
+import java.sql.Date;
 
 import javax.validation.constraints.Pattern;
 
@@ -21,6 +23,17 @@ public class UserDTO {
 	@NotEmpty
     private String password;
 	
+	@NotEmpty
+	private Date data;
+	
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
 
 	public String getUsername() {
 		return username;

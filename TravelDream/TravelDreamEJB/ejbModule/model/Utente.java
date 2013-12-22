@@ -1,7 +1,12 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.traveldream.autenticazione.ejb.UserDTO;
+
+import java.sql.Date;
 import java.util.List;
 
 
@@ -20,7 +25,7 @@ public class Utente implements Serializable {
 	private String cognome;
 
 	@Column(name="`Data di nascita`")
-	private String data_di_nascita;
+	private Date data_di_nascita;
 
 	private String email;
 
@@ -33,6 +38,15 @@ public class Utente implements Serializable {
 	private List<Gruppo> gruppos;
 
 	public Utente() {
+		super();
+	}
+	
+	public Utente(UserDTO user) {
+		this.username = user.getUsername();
+		this.cognome = user.getLastName();
+		this.nome = user.getFirstName();
+		this.email = user.getEmail();
+		this.data_di_nascita = user.getData();
 	}
 
 	public String getUsername() {
@@ -51,11 +65,11 @@ public class Utente implements Serializable {
 		this.cognome = cognome;
 	}
 
-	public String getData_di_nascita() {
+	public Date getData_di_nascita() {
 		return this.data_di_nascita;
 	}
 
-	public void setData_di_nascita(String data_di_nascita) {
+	public void setData_di_nascita(Date data_di_nascita) {
 		this.data_di_nascita = data_di_nascita;
 	}
 
