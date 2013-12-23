@@ -13,9 +13,6 @@ import javax.persistence.*;
 public class UtenteGruppo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
-
 	private String gruppo;
 
 	//bi-directional many-to-one association to Utente
@@ -24,14 +21,6 @@ public class UtenteGruppo implements Serializable {
 	private Utente utente;
 
 	public UtenteGruppo() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getGruppo() {

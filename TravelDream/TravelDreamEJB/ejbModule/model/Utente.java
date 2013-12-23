@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import com.traveldream.autenticazione.ejb.*;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -36,16 +35,7 @@ public class Utente implements Serializable {
 	private List<UtenteGruppo> utenteGruppos;
 
 	public Utente() {
-		super();
 	}
-	
-	 public Utente(UserDTO user) {
-         this.username = user.getUsername();
-         this.cognome = user.getLastName();
-         this.nome = user.getFirstName();
-         this.email = user.getEmail();
-         this.data_di_nascita = user.getData();
- }
 
 	public String getUsername() {
 		return this.username;
