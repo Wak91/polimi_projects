@@ -9,7 +9,7 @@ import javax.faces.bean.RequestScoped;
 
 
 
-
+//Porcaccia
 @ManagedBean(name="registrationBean")
 @RequestScoped
 public class RegistrationBean {
