@@ -16,7 +16,8 @@ public class UserManagerBean implements UserMgr {
 	
 
 	@Override
-	public void saveUser(UserDTO user) {
+	public void saveUser(UserDTO userdto) {
+		Utente  user = new Utente(userdto);
 		
 	}
 	

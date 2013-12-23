@@ -9,12 +9,12 @@ USE `traveldream` ;
 -- Table `traveldream`.`Utente`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Utente` (
-  `Username` VARCHAR(16) NOT NULL,
+  `Username` VARCHAR(255) NOT NULL,
   `Password` VARCHAR(128) NOT NULL,
-  `Nome` VARCHAR(20) NOT NULL,
-  `Cognome` VARCHAR(20) NOT NULL,
-  `Data di nascita` VARCHAR(45) NOT NULL,
-  `Email` VARCHAR(45) NOT NULL,
+  `Nome` VARCHAR(255) NOT NULL,
+  `Cognome` VARCHAR(255) NOT NULL,
+  `Data di nascita` DATE NOT NULL,
+  `Email` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`Username`))
 ENGINE = InnoDB;
 
@@ -24,11 +24,11 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Volo` (
   `ID` INT NOT NULL,
-  `Luogo partenza` VARCHAR(45) NOT NULL,
-  `Luogo arrivo` VARCHAR(45) NOT NULL,
+  `Luogo partenza` VARCHAR(255) NOT NULL,
+  `Luogo arrivo` VARCHAR(255) NOT NULL,
   `Data` DATETIME NOT NULL,
   `Costo` INT NOT NULL,
-  `Compagnia` VARCHAR(45) NOT NULL,
+  `Compagnia` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
@@ -38,8 +38,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Hotel` (
   `ID` INT NOT NULL,
-  `Nome` VARCHAR(45) NOT NULL,
-  `Luogo` VARCHAR(45) NOT NULL,
+  `Nome` VARCHAR(255) NOT NULL,
+  `Luogo` VARCHAR(255) NOT NULL,
   `Data inizio` DATE NOT NULL,
   `Data fine` DATE NOT NULL,
   `Costo giornaliero` INT NOT NULL,
@@ -77,10 +77,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Escursione` (
   `ID` INT NOT NULL,
-  `Nome` VARCHAR(45) NOT NULL,
+  `Nome` VARCHAR(255) NOT NULL,
   `Data` DATE NOT NULL,
   `Costo` INT NOT NULL,
-  `Luogo` VARCHAR(45) NOT NULL,
+  `Luogo` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
@@ -90,8 +90,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Pacchetto` (
   `ID` INT NOT NULL AUTO_INCREMENT,
-  `Nome` VARCHAR(40) NOT NULL,
-  `Destinazione` VARCHAR(50) NOT NULL,
+  `Nome` VARCHAR(255) NOT NULL,
+  `Destinazione` VARCHAR(255) NOT NULL,
   `Data inizio` DATE NULL,
   `Data fine` DATE NULL,
   PRIMARY KEY (`ID`))
@@ -103,11 +103,11 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Gift List` (
   `Viaggio` INT NOT NULL,
-  `Utente` VARCHAR(16) NOT NULL,
+  `Utente` VARCHAR(255) NOT NULL,
   `VoloAPag` TINYINT(1) NOT NULL,
   `VoloRPag` TINYINT(1) NOT NULL,
   `HotelPag` TINYINT(1) NOT NULL,
-  `IDGiftList` VARCHAR(45) NULL,
+  `IDGiftList` VARCHAR(255) NULL,
   INDEX `Viaggio_idx` (`Viaggio` ASC),
   INDEX `Utente_idx` (`Utente` ASC),
   PRIMARY KEY (`Viaggio`, `Utente`),
@@ -130,8 +130,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `traveldream`.`Invito` (
   `ID` INT NOT NULL,
   `Status` TINYINT(1) NOT NULL,
-  `Amico` VARCHAR(45) NOT NULL,
-  `Utente` VARCHAR(16) NOT NULL,
+  `Amico` VARCHAR(255) NOT NULL,
+  `Utente` VARCHAR(255) NOT NULL,
   `Viaggio` INT NOT NULL,
   PRIMARY KEY (`ID`),
   INDEX `Utente_idx` (`Utente` ASC),
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `traveldream`.`Prenotazione` (
   `ID` INT NOT NULL,
   `Numero persone` INT NOT NULL,
   `Costo` INT NOT NULL,
-  `Utente` VARCHAR(16) NOT NULL,
+  `Utente` VARCHAR(255) NOT NULL,
   `Viaggio` INT NOT NULL,
   PRIMARY KEY (`ID`),
   INDEX `Utente_idx` (`Utente` ASC),
@@ -179,7 +179,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Amico` (
   `ID` INT NOT NULL,
-  `Amico` VARCHAR(45) NOT NULL,
+  `Amico` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
@@ -277,7 +277,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`AmicoGiftList` (
   `Gift List_Viaggio` INT NOT NULL,
-  `Gift List_Utente` VARCHAR(16) NOT NULL,
+  `Gift List_Utente` VARCHAR(255) NOT NULL,
   `Amico_ID` INT NOT NULL,
   PRIMARY KEY (`Gift List_Viaggio`, `Gift List_Utente`, `Amico_ID`),
   INDEX `fk_Gift List_has_Amico_Amico1_idx` (`Amico_ID` ASC),
@@ -300,7 +300,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`EscursioneGiftList` (
   `Gift List_Viaggio` INT NOT NULL,
-  `Gift List_Utente` VARCHAR(16) NOT NULL,
+  `Gift List_Utente` VARCHAR(255) NOT NULL,
   `Escursione_ID` INT NOT NULL,
   `EscursionePag` TINYINT(1) NOT NULL,
   PRIMARY KEY (`Gift List_Viaggio`, `Gift List_Utente`, `Escursione_ID`),
@@ -320,31 +320,17 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `traveldream`.`Gruppo`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `traveldream`.`Gruppo` (
-  `NomeGruppo` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`NomeGruppo`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `traveldream`.`UtenteGruppo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`UtenteGruppo` (
-  `Utente_Username` VARCHAR(16) NOT NULL,
-  `Gruppo_NomeGruppo` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`Utente_Username`, `Gruppo_NomeGruppo`),
-  INDEX `fk_Utente_has_Gruppo_Gruppo1_idx` (`Gruppo_NomeGruppo` ASC),
-  INDEX `fk_Utente_has_Gruppo_Utente1_idx` (`Utente_Username` ASC),
-  CONSTRAINT `fk_Utente_has_Gruppo_Utente1`
-    FOREIGN KEY (`Utente_Username`)
+  `Username` VARCHAR(255) NOT NULL,
+  `Gruppo` VARCHAR(255) NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
+  INDEX `UtenteGruppo_idx` (`Username` ASC),
+  PRIMARY KEY (`ID`),
+  CONSTRAINT `UtenteGruppo`
+    FOREIGN KEY (`Username`)
     REFERENCES `traveldream`.`Utente` (`Username`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Utente_has_Gruppo_Gruppo1`
-    FOREIGN KEY (`Gruppo_NomeGruppo`)
-    REFERENCES `traveldream`.`Gruppo` (`NomeGruppo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

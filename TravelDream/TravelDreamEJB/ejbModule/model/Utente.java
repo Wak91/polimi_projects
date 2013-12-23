@@ -1,12 +1,9 @@
 package model;
 
 import java.io.Serializable;
-
+import com.traveldream.autenticazione.ejb.*;
 import javax.persistence.*;
-
-import com.traveldream.autenticazione.ejb.UserDTO;
-
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 
@@ -24,6 +21,7 @@ public class Utente implements Serializable {
 
 	private String cognome;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name="`Data di nascita`")
 	private Date data_di_nascita;
 
@@ -33,21 +31,21 @@ public class Utente implements Serializable {
 
 	private String password;
 
-	//bi-directional many-to-many association to Gruppo
-	@ManyToMany(mappedBy="utentes")
-	private List<Gruppo> gruppos;
+	//bi-directional many-to-one association to UtenteGruppo
+	@OneToMany(mappedBy="utente")
+	private List<UtenteGruppo> utenteGruppos;
 
 	public Utente() {
 		super();
 	}
 	
-	public Utente(UserDTO user) {
-		this.username = user.getUsername();
-		this.cognome = user.getLastName();
-		this.nome = user.getFirstName();
-		this.email = user.getEmail();
-		this.data_di_nascita = user.getData();
-	}
+	 public Utente(UserDTO user) {
+         this.username = user.getUsername();
+         this.cognome = user.getLastName();
+         this.nome = user.getFirstName();
+         this.email = user.getEmail();
+         this.data_di_nascita = user.getData();
+ }
 
 	public String getUsername() {
 		return this.username;
@@ -97,12 +95,26 @@ public class Utente implements Serializable {
 		this.password = password;
 	}
 
-	public List<Gruppo> getGruppos() {
-		return this.gruppos;
+	public List<UtenteGruppo> getUtenteGruppos() {
+		return this.utenteGruppos;
 	}
 
-	public void setGruppos(List<Gruppo> gruppos) {
-		this.gruppos = gruppos;
+	public void setUtenteGruppos(List<UtenteGruppo> utenteGruppos) {
+		this.utenteGruppos = utenteGruppos;
+	}
+
+	public UtenteGruppo addUtenteGruppo(UtenteGruppo utenteGruppo) {
+		getUtenteGruppos().add(utenteGruppo);
+		utenteGruppo.setUtente(this);
+
+		return utenteGruppo;
+	}
+
+	public UtenteGruppo removeUtenteGruppo(UtenteGruppo utenteGruppo) {
+		getUtenteGruppos().remove(utenteGruppo);
+		utenteGruppo.setUtente(null);
+
+		return utenteGruppo;
 	}
 
 }
