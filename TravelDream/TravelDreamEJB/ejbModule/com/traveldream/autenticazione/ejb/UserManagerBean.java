@@ -1,6 +1,9 @@
 package com.traveldream.autenticazione.ejb;
 
+import java.util.ArrayList;
+
 import model.*;
+
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
 import javax.persistence.EntityManager;
@@ -18,6 +21,7 @@ public class UserManagerBean implements UserMgr {
 	@Override
 	public void saveUser(UserDTO userdto) {
 		Utente  user = new Utente(userdto);
+	
 		
 	}
 	
