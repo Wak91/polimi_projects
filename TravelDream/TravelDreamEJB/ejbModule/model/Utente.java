@@ -1,8 +1,12 @@
 package model;
 
 import java.io.Serializable;
+import org.apache.commons.codec.digest.DigestUtils;
 import com.traveldream.autenticazione.ejb.*;
+
 import javax.persistence.*;
+
+
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +47,7 @@ public class Utente implements Serializable {
           this.username = user.getUsername();
           this.cognome = user.getLastName();
           this.nome = user.getFirstName();
+          this.password = DigestUtils.sha512Hex(user.getPassword() );
           this.email = user.getEmail();
           this.data_di_nascita = user.getData();
   }
