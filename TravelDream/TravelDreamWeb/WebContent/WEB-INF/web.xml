@@ -39,4 +39,7 @@
 			<role-name>UTENTE</role-name>
 		</auth-constraint>
 	</security-constraint>
+	<welcome-file-list>
+		<welcome-file>utente/userhome.xhtml</welcome-file>
+	</welcome-file-list>
 </web-app>
