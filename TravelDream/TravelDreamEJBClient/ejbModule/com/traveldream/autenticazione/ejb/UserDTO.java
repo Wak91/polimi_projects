@@ -24,6 +24,7 @@ public class UserDTO {
 	@NotEmpty
     private String password;
 	
+	//necessario per data
 	@NotNull
 	private Date data;
 	
