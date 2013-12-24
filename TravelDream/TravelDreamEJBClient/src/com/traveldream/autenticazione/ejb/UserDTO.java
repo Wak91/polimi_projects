@@ -1,7 +1,8 @@
 package com.traveldream.autenticazione.ejb;
 
-import java.sql.Date;
+import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -23,7 +24,7 @@ public class UserDTO {
 	@NotEmpty
     private String password;
 	
-	@NotEmpty
+	@NotNull
 	private Date data;
 	
 
