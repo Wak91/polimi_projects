@@ -4,5 +4,8 @@
 		<jta-data-source>jdbc/TravelDreamResource</jta-data-source>
 		<class>model.Utente</class>
 		<class>model.UtenteGruppo</class>
+		<class>model.Escursione</class>
+		<class>model.Hotel</class>
+		<class>model.Volo</class>
 	</persistence-unit>
 </persistence>

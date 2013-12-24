@@ -6,9 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.ejb.EJB;
 import javax.faces.bean.RequestScoped;
 
-
-
-
 @ManagedBean(name="registrationBean")
 @RequestScoped
 public class RegistrationBean {
@@ -31,7 +28,6 @@ public class RegistrationBean {
 	}
 	
 	public String register(){
-		System.out.println("creo user");
 		userMgr.saveUser(user);
 		return "utente/userhome?faces-redirect=true";
 	}
