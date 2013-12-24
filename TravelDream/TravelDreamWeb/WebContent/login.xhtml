@@ -21,8 +21,9 @@
 				<p:commandButton id="submit" value="Login" ajax="false" />
 			</h:panelGrid>
 		</h:form>
+		<h:form rendered="#{param['user']}">
 			<h:link value="Register" outcome="register" />
-
+       </h:form>
 	</p:panel>
 </h:body>
 </html>

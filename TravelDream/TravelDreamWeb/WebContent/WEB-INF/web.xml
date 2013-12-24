@@ -50,6 +50,6 @@
 		</auth-constraint>
 	</security-constraint>
 	<welcome-file-list>
-		<welcome-file>utente/userhome.xhtml</welcome-file>
+		<welcome-file>homepage.xhtml</welcome-file>
 	</welcome-file-list>
 </web-app>
