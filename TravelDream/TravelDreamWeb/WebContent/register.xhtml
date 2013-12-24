@@ -15,7 +15,7 @@
 				
 				<h:outputLabel for="username">Username:</h:outputLabel>
 				<p:inputText id="username" value="#{registrationBean.user.username}" />
-				<p:message for="email" />
+				<p:message for="username" />
 				
 				<h:outputLabel for="password">Password:</h:outputLabel>
 				<p:password id="password" value="#{registrationBean.user.password}"
@@ -24,7 +24,7 @@
 				
 				<h:outputLabel for="pwd2">Conferma Password:</h:outputLabel>
 				<p:password id="pwd2" label="Confirm Password" value="#{registrationBean.user.password}"/>
-				<p:message for="password" />
+				<p></p>
 				
 				<h:outputLabel for="email">Email:</h:outputLabel>
 				<p:inputText id="email" value="#{registrationBean.user.email}" />
@@ -39,9 +39,7 @@
 				<p:message for="lastName" />
 				
 				<h:outputLabel for="date">Data di nascita:</h:outputLabel>
-				<p:calendar value="#{registrationBean.user.data}" id="popupButtonCal" showOn="button" />
-
-				
+				<p:calendar id="date" value="#{registrationBean.user.data}" navigator="true" display="inline"/>  
 
 				
 			</h:panelGrid>

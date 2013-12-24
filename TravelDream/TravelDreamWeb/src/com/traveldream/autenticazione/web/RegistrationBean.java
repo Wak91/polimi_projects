@@ -9,7 +9,6 @@ import javax.faces.bean.RequestScoped;
 
 
 
-//Porcaccia
 @ManagedBean(name="registrationBean")
 @RequestScoped
 public class RegistrationBean {
@@ -31,9 +30,10 @@ public class RegistrationBean {
 		return user;
 	}
 	
-	public String register(UserDTO user){
+	public String register(){
+		System.out.println("creo user");
 		userMgr.saveUser(user);
-		return "userhome";
+		return "userhome?faces-redirect=true";
 	}
 	
 	

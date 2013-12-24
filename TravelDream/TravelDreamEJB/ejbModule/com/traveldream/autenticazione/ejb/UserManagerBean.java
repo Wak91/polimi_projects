@@ -22,6 +22,8 @@ public class UserManagerBean implements UserMgr {
 	 */
 	@Override
 	public void saveUser(UserDTO userdto) {
+		System.out.println("salvo utente");
+
 		Utente  user = new Utente(userdto);	//aggiungo alla tabella Utente una tupla utilizzanto il DTO
 		
 		UtenteGruppo usergroup = new UtenteGruppo();	//aggiungo una tupla a UtenteGruppo settando manualmente i parametri
