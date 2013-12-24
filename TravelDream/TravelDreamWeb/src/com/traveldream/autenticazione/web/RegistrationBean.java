@@ -33,7 +33,7 @@ public class RegistrationBean {
 	public String register(){
 		System.out.println("creo user");
 		userMgr.saveUser(user);
-		return "userhome?faces-redirect=true";
+		return "utente/userhome?faces-redirect=true";
 	}
 	
 	

@@ -5,12 +5,16 @@ GlassFish Application Server 3.1 Java EE Application 6.0//EN"
 "http://glassfish.org/dtds/glassfish-application_6_0-1.dtd">
 <glassfish-application>
 	<security-role-mapping>
-		<role-name>USER</role-name>
-		<group-name>USER</group-name>
+		<role-name>UTENTE</role-name>
+		<group-name>UTENTE</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
-		<role-name>ADMIN</role-name>
-		<group-name>ADMIN</group-name>
+		<role-name>AMMINISTRATORE</role-name>
+		<group-name>AMMISTRATORE</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>IMPIEGATO</role-name>
+		<group-name>IMPIEGATO</group-name>
 	</security-role-mapping>
 	<realm>TravelDreamRealm</realm>
 </glassfish-application>
