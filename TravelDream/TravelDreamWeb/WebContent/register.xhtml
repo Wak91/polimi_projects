@@ -14,7 +14,7 @@
 			<h:panelGrid columns="3" id="regGrid">
 				
 				<h:outputLabel for="username">Username:</h:outputLabel>
-				<p:inputText id="username" value="#{registrationBean.user.username}" />
+				<p:inputText id="username" value="#{registrationBean.user.username}" validator="#{registrationBean.validateUsername}" />
 				<p:message for="username" />
 				
 				<h:outputLabel for="password">Password:</h:outputLabel>

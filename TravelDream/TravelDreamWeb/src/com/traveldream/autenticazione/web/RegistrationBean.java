@@ -2,9 +2,13 @@ package com.traveldream.autenticazione.web;
 
 import com.traveldream.autenticazione.ejb.*;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.ejb.EJB;
 import javax.faces.bean.RequestScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 @ManagedBean(name="registrationBean")
 @RequestScoped
@@ -42,6 +46,12 @@ public class RegistrationBean {
 	public String getUserLastName()
 	{
 		return userMgr.getUserDTO().getLastName();
+	}
+	
+	public void validateUsername(FacesContext context,UIComponent component,Object value) throws ValidatorException{
+		if (userMgr.existUsername((String)value)){
+			throw new ValidatorException(new FacesMessage("Username already used.Choose another one."));
+		}
 	}
 	
 	public String register(){

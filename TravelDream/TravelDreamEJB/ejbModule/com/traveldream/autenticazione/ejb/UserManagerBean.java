@@ -18,7 +18,7 @@ public class UserManagerBean implements UserMgr {
 	private EJBContext context;
 	
 	/**
-	 * creo un utente e gli associo il gruppo USER
+	 * creo un utente e gli associo il gruppo UTENTE
 	 */
 	@Override
 	public void saveUser(UserDTO userdto) {
@@ -39,7 +39,7 @@ public class UserManagerBean implements UserMgr {
 
 	@Override
 	public void update(UserDTO user) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -78,6 +78,17 @@ public class UserManagerBean implements UserMgr {
 	public String getPrincipalUsername()
 	{
 		return context.getCallerPrincipal().getName(); // ritorna la chiave specificata nel reame ( USERNAME )
+	}
+
+
+
+	@Override
+	public boolean existUsername(String username) {
+		if (em.find(Utente.class,username)!=null){
+			return true;
+		}
+			
+		return false;
 	}
 
 }
