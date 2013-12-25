@@ -8,7 +8,6 @@ import javax.persistence.PersistenceContext;
 
 import model.Hotel;
 
-
 import com.traveldream.autenticazione.ejb.UserDTO;
 
 /**

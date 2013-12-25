@@ -23,7 +23,7 @@ ENGINE = InnoDB;
 -- Table `traveldream`.`Volo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Volo` (
-  `ID` INT NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `Luogo partenza` VARCHAR(255) NOT NULL,
   `Luogo arrivo` VARCHAR(255) NOT NULL,
   `Data` DATETIME NOT NULL,
@@ -37,7 +37,7 @@ ENGINE = InnoDB;
 -- Table `traveldream`.`Hotel`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Hotel` (
-  `ID` INT NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `Nome` VARCHAR(255) NOT NULL,
   `Luogo` VARCHAR(255) NOT NULL,
   `Data inizio` DATE NOT NULL,
@@ -51,7 +51,7 @@ ENGINE = InnoDB;
 -- Table `traveldream`.`Viaggio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Viaggio` (
-  `ID` INT NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `Data inizio` DATE NOT NULL,
   `Data fine` DATE NOT NULL,
   `Hotel` INT NOT NULL,
@@ -76,7 +76,7 @@ ENGINE = InnoDB;
 -- Table `traveldream`.`Escursione`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Escursione` (
-  `ID` INT NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `Nome` VARCHAR(255) NOT NULL,
   `Data` DATE NOT NULL,
   `Costo` INT NOT NULL,
@@ -128,7 +128,7 @@ ENGINE = InnoDB;
 -- Table `traveldream`.`Invito`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Invito` (
-  `ID` INT NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `Status` TINYINT(1) NOT NULL,
   `Amico` VARCHAR(255) NOT NULL,
   `Utente` VARCHAR(255) NOT NULL,
@@ -153,7 +153,7 @@ ENGINE = InnoDB;
 -- Table `traveldream`.`Prenotazione`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Prenotazione` (
-  `ID` INT NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `Numero persone` INT NOT NULL,
   `Costo` INT NOT NULL,
   `Utente` VARCHAR(255) NOT NULL,
@@ -178,7 +178,7 @@ ENGINE = InnoDB;
 -- Table `traveldream`.`Amico`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `traveldream`.`Amico` (
-  `ID` INT NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `Amico` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
