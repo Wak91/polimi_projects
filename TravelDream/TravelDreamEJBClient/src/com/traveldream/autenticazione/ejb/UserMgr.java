@@ -10,4 +10,6 @@ public interface UserMgr {
 	public void unregister();
 	
 	public UserDTO getUserDTO();
+
+	public boolean existUsername(String value);
 }

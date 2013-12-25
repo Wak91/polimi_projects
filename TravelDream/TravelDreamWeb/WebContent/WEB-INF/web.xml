@@ -9,47 +9,47 @@
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>/faces/*</url-pattern>
-	<url-pattern>*.xhtml</url-pattern>
-	<url-pattern>*.jsf</url-pattern>
+    <url-pattern>*.xhtml</url-pattern>
+    <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
   <login-config>
-		<auth-method>FORM</auth-method>
-		<form-login-config>
-			<form-login-page>/login.xhtml</form-login-page>
-			<form-error-page>/loginError.xhtml</form-error-page>
-		</form-login-config>
-	</login-config>
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Admins Pages</web-resource-name>
-			<description />
-			<url-pattern>/admin/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>AMMINISTRATORE</role-name>
-		</auth-constraint>
-	</security-constraint>
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Impiegato Pages</web-resource-name>
-			<description />
-			<url-pattern>/impiegato/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>IMPIEGATO</role-name>
-		</auth-constraint>
-	</security-constraint>
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Users Pages</web-resource-name>
-			<description />
-			<url-pattern>/utente/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>UTENTE</role-name>
-		</auth-constraint>
-	</security-constraint>
-	<welcome-file-list>
-		<welcome-file>homepage.xhtml</welcome-file>
-	</welcome-file-list>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/login.xhtml</form-login-page>
+      <form-error-page>/loginError.xhtml</form-error-page>
+    </form-login-config>
+  </login-config>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Admins Pages</web-resource-name>
+      <description></description>
+      <url-pattern>/admin/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>AMMINISTRATORE</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Impiegato Pages</web-resource-name>
+      <description></description>
+      <url-pattern>/impiegato/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>IMPIEGATO</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Users Pages</web-resource-name>
+      <description></description>
+      <url-pattern>/utente/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>UTENTE</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <welcome-file-list>
+    <welcome-file>homepage.xhtml</welcome-file>
+  </welcome-file-list>
 </web-app>

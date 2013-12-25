@@ -1,8 +1,15 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.Date;
+
+import com.traveldream.gestionecomponente.ejb.*;
+
 
 
 /**
@@ -10,6 +17,7 @@ import java.util.Date;
  * 
  */
 @Entity
+@Table(name="Hotel")
 @NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h")
 public class Hotel implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -36,8 +44,19 @@ public class Hotel implements Serializable {
 	private String nome;
 
 	public Hotel() {
+		super();
 	}
 
+	public Hotel(HotelDTO hoteldto)
+	{
+		 this.nome = hoteldto.getNome();
+         this.luogo = hoteldto.getLuogo();
+         this.costo_giornaliero = hoteldto.getCosto_giornaliero();
+         this.data_inizio = hoteldto.getData_inizio();
+         this.data_fine = hoteldto.getData_fine();
+         //meglio fare un autoincrement per gli hotel no?
+         // ma un immagine agli hotel no?
+	}
 	public int getId() {
 		return this.id;
 	}
