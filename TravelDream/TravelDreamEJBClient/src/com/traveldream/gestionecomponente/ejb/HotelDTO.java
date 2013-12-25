@@ -23,6 +23,17 @@ public class HotelDTO {
 	
 	@NotNull
     private Date data_fine;
+	
+	@NotEmpty
+	private String PathtoImage;
+
+	public String getPathtoImage() {
+		return PathtoImage;
+	}
+
+	public void setPathtoImage(String pathtoImage) {
+		PathtoImage = pathtoImage;
+	}
 
 	public String getNome() {
 		return nome;
