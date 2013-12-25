@@ -51,8 +51,33 @@ public class UserManagerBean implements UserMgr {
 
 	@Override
 	public UserDTO getUserDTO() {
-		// TODO Auto-generated method stub
-		return null;
+		UserDTO userDTO = convertToDTO(getPrincipalUser());
+		return userDTO;
+	}
+	
+	private UserDTO convertToDTO(Utente user) {
+		UserDTO udto = new UserDTO();
+		udto.setUsername(user.getUsername());
+		udto.setFirstName(user.getNome());
+		udto.setLastName(user.getCognome());
+		udto.setEmail(user.getEmail());
+		return udto;
+	}
+
+	//---Per la ricerca---
+	
+    public Utente getPrincipalUser()
+    {
+    	return find(getPrincipalUsername());
+    }
+
+	private Utente find(String pusername) {
+		return em.find(Utente.class, pusername);
+	}
+
+	public String getPrincipalUsername()
+	{
+		return context.getCallerPrincipal().getName(); // ritorna la chiave specificata nel reame ( USERNAME )
 	}
 
 }

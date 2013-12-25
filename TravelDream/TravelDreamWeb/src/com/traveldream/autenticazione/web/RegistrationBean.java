@@ -27,6 +27,23 @@ public class RegistrationBean {
 		return user;
 	}
 	
+	//queste get possono andare bene qua o dobbiamo organizzare strettamente i bean come da boundary diagram???
+	
+	public String getUserName()
+	{
+		return userMgr.getUserDTO().getUsername();
+	}
+	
+	public String getUserFirstName()
+	{
+		return userMgr.getUserDTO().getFirstName();
+	}
+	
+	public String getUserLastName()
+	{
+		return userMgr.getUserDTO().getLastName();
+	}
+	
 	public String register(){
 		userMgr.saveUser(user);
 		return "utente/userhome?faces-redirect=true";
