@@ -7,7 +7,10 @@ import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+/*
+ * Questo è il bean che gestisce
+ * gli utenti 
+ * */
 @Stateless
 public class UserManagerBean implements UserMgr {
 	
@@ -22,7 +25,6 @@ public class UserManagerBean implements UserMgr {
 	 */
 	@Override
 	public void saveUser(UserDTO userdto) {
-		System.out.println("salvo utente");
 
 		Utente  user = new Utente(userdto);	//aggiungo alla tabella Utente una tupla utilizzanto il DTO
 		
@@ -71,18 +73,16 @@ public class UserManagerBean implements UserMgr {
     	return find(getPrincipalUsername());
     }
 
-	private Utente find(String pusername) {
-		return em.find(Utente.class, pusername);
-	}
 
 	public String getPrincipalUsername()
 	{
 		return context.getCallerPrincipal().getName(); // ritorna la chiave specificata nel reame ( USERNAME )
 	}
+	
+	private Utente find(String pusername) {
+		return em.find(Utente.class, pusername);
+	}
 
-
-
-	@Override
 	public boolean existUsername(String username) {
 		if (em.find(Utente.class,username)!=null){
 			return true;
