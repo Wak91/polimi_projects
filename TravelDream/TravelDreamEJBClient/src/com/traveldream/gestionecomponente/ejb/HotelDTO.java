@@ -1,7 +1,7 @@
 package com.traveldream.gestionecomponente.ejb;
 
 import java.util.Date;
-
+//commento
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
