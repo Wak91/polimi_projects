@@ -7,6 +7,7 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+
 public class HotelDTO {
 
 	@NotEmpty 
@@ -25,7 +26,7 @@ public class HotelDTO {
     private Date data_fine;
 	
 	@NotEmpty
-	private String PathtoImage;
+	private String PathtoImage; 
 	
 	@NotNull
 	private Integer Stelle;

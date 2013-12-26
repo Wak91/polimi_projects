@@ -26,13 +26,11 @@ public class UserBean {
 	public UserBean() {
 		user = new UserDTO();
 	}
-
+    
 	public UserDTO getUser() {
 		return user;
 	}
-	
-	//queste get possono andare bene qua o dobbiamo organizzare strettamente i bean come da boundary diagram???
-	
+		
 	public String getUserName()
 	{
 		return userMgr.getUserDTO().getUsername();

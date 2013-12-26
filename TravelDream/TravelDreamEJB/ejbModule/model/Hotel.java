@@ -14,6 +14,7 @@ import java.util.Date;
  * 
  */
 @Entity
+@Table(name="Hotel")
 @NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h")
 public class Hotel implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -57,7 +58,7 @@ public class Hotel implements Serializable {
          this.costo_giornaliero = hoteldto.getCosto_giornaliero();
          this.data_inizio = hoteldto.getData_inizio();
          this.data_fine = hoteldto.getData_fine();
-         this.immagine = hoteldto.getPathtoImage();
+         this.immagine = ""; // da sistemare
          this.stelle = hoteldto.getStelle();
 	}
 

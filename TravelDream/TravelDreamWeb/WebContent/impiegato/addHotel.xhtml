@@ -20,6 +20,11 @@
 				<p:inputText id="luogo" value="#{ComponentBean.hotel.luogo}" />
 				<p:message for="luogo" />
 				
+				<h:outputLabel for="stars"> Stars:</h:outputLabel>  
+                <p:rating id="stars" value="#{ComponentBean.hotel.stelle}" stars="5" cancel="false" />  
+                <p:dialog widgetVar="dlg" showEffect="fade" hideEffect="fade"/>  
+             
+                   
 				<h:outputLabel for="costogg">Costo giornaliero per persona:</h:outputLabel>
 				<p:inputText id="costogg" value="#{ComponentBean.hotel.costo_giornaliero}" />
 				<p:message for="costogg" />
@@ -29,17 +34,16 @@
                 <p:message for="datei" />
              
                 <h:outputLabel for="datef">Data fine validità:</h:outputLabel>
-				<p:calendar id="datef" value="#{ComponentBean.hotel.data_fine}" navigator="true" display="inline"/>  
+				<p:calendar id="datef" value="#{ComponentBean.hotel.data_fine}" navigator="true" display="inline" />  
                 <p:message for="datef" />
-                <br></br>
-                <br></br>
-				
-					
-			</h:panelGrid>
-			<p:commandButton value="Crea Hotel" update="regGrid"
+                 
+                
+                
+                <p:commandButton value="Crea Hotel" update="regGrid"
 				action="#{ComponentBean.createHotel()}" />
-
+        </h:panelGrid>
 		</p:panel>
+		
 	</h:form>
 	</ui:define>
 

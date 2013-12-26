@@ -6,7 +6,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import model.Escursione;
 import model.Hotel;
+import model.Volo;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
 
@@ -32,6 +34,20 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		em.persist(hotel);	
 	}
 	
+	@Override
+	public void saveVolo(VoloDTO volodto) {
+		Volo volo = new Volo(volodto);
+		em.persist(volo);
+		
+	}
+	
+	@Override
+	public void saveEscursione(EscursioneDTO escursionedto) {
+		Escursione escursione= new Escursione(escursionedto);
+		em.persist(escursione);
+		
+	}
+	
 
 	public void update(UserDTO user) {
 		
@@ -52,4 +68,9 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	private HotelDTO convertToDTO(Hotel hotel) {
 		return null;
 	}
+
+	
+
+
+	
 }

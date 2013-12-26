@@ -5,5 +5,7 @@
 		<class>model.Utente</class>
 		<class>model.UtenteGruppo</class>
 		<class>model.Hotel</class>
+		<class>model.Volo</class>
+		<class>model.Escursione</class>
 	</persistence-unit>
 </persistence>
