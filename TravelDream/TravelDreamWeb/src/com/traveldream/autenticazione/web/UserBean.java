@@ -10,9 +10,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
-@ManagedBean(name="registrationBean")
+@ManagedBean(name="userBean")
 @RequestScoped
-public class RegistrationBean {
+public class UserBean {
 
 	private UserDTO user;
 	
@@ -23,7 +23,7 @@ public class RegistrationBean {
 		this.user = user;
 	}
 	
-	public RegistrationBean() {
+	public UserBean() {
 		user = new UserDTO();
 	}
 

@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `traveldream`.`Volo` (
   `Data` DATETIME NOT NULL,
   `Costo` INT NOT NULL,
   `Compagnia` VARCHAR(255) NOT NULL,
+  `Immagine` VARCHAR(255) NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
@@ -43,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `traveldream`.`Hotel` (
   `Data inizio` DATE NOT NULL,
   `Data fine` DATE NOT NULL,
   `Costo giornaliero` INT NOT NULL,
+  `Immagine` VARCHAR(255) NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
@@ -81,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `traveldream`.`Escursione` (
   `Data` DATE NOT NULL,
   `Costo` INT NOT NULL,
   `Luogo` VARCHAR(255) NOT NULL,
+  `Immagine` VARCHAR(255) NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
@@ -94,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `traveldream`.`Pacchetto` (
   `Destinazione` VARCHAR(255) NOT NULL,
   `Data inizio` DATE NULL,
   `Data fine` DATE NULL,
+  `Immagine` VARCHAR(255) NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 

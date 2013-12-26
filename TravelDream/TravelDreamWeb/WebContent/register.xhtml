@@ -14,37 +14,37 @@
 			<h:panelGrid columns="3" id="regGrid">
 				
 				<h:outputLabel for="username">Username:</h:outputLabel>
-				<p:inputText id="username" value="#{registrationBean.user.username}" validator="#{registrationBean.validateUsername}" />
+				<p:inputText id="username" value="#{userBean.user.username}" validator="#{userBean.validateUsername}" />
 				<p:message for="username" />
 				
 				<h:outputLabel for="password">Password:</h:outputLabel>
-				<p:password id="password" value="#{registrationBean.user.password}"
+				<p:password id="password" value="#{userBean.user.password}"
 					feedback="true" match="pwd2" label="Password"/>
 				<p:message for="password" />
 				
 				<h:outputLabel for="pwd2">Conferma Password:</h:outputLabel>
-				<p:password id="pwd2" label="Confirm Password" value="#{registrationBean.user.password}"/>
+				<p:password id="pwd2" label="Confirm Password" value="#{userBean.user.password}"/>
 				<p></p>
 				
 				<h:outputLabel for="email">Email:</h:outputLabel>
-				<p:inputText id="email" value="#{registrationBean.user.email}" />
+				<p:inputText id="email" value="#{userBean.user.email}" />
 				<p:message for="email" />
 
 				<h:outputLabel for="firstName">Nome:</h:outputLabel>
-				<p:inputText id="firstName" value="#{registrationBean.user.firstName}" />
+				<p:inputText id="firstName" value="#{userBean.user.firstName}" />
 				<p:message for="firstName" />
 
 				<h:outputLabel for="lastName">Cognome:</h:outputLabel>
-				<p:inputText id="lastName" value="#{registrationBean.user.lastName}" />
+				<p:inputText id="lastName" value="#{userBean.user.lastName}" />
 				<p:message for="lastName" />
 				
 				<h:outputLabel for="date">Data di nascita:</h:outputLabel>
-				<p:calendar id="date" value="#{registrationBean.user.data}" navigator="true" display="inline"/>  
+				<p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
 
 				
 			</h:panelGrid>
 			<p:commandButton value="Register" update="regGrid"
-				action="#{registrationBean.register()}" />
+				action="#{userBean.register()}" />
 
 		</p:panel>
 	</h:form>
