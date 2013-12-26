@@ -4,20 +4,16 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import com.traveldream.gestionecomponente.ejb.HotelDTO;
 
 import java.util.Date;
 
-import com.traveldream.gestionecomponente.ejb.*;
-
-
-
+//tocommit
 /**
- * The persistent class for the Hotel database table.
+ * The persistent class for the Hotel database table!
  * 
  */
 @Entity
-@Table(name="Hotel")
 @NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h")
 public class Hotel implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -37,6 +33,9 @@ public class Hotel implements Serializable {
 	@Column(name="`Data inizio`")
 	private Date data_inizio;
 
+	@Column(name="Immagine")
+	private String immagine;
+
 	@Column(name="Luogo")
 	private String luogo;
 
@@ -54,9 +53,9 @@ public class Hotel implements Serializable {
          this.costo_giornaliero = hoteldto.getCosto_giornaliero();
          this.data_inizio = hoteldto.getData_inizio();
          this.data_fine = hoteldto.getData_fine();
-         //meglio fare un autoincrement per gli hotel no?
-         // ma un immagine agli hotel no?
+         this.immagine = hoteldto.getPathtoImage();
 	}
+
 	public int getId() {
 		return this.id;
 	}
@@ -87,6 +86,14 @@ public class Hotel implements Serializable {
 
 	public void setData_inizio(Date data_inizio) {
 		this.data_inizio = data_inizio;
+	}
+
+	public String getImmagine() {
+		return this.immagine;
+	}
+
+	public void setImmagine(String immagine) {
+		this.immagine = immagine;
 	}
 
 	public String getLuogo() {
