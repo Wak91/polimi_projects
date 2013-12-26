@@ -26,6 +26,17 @@ public class HotelDTO {
 	
 	@NotEmpty
 	private String PathtoImage;
+	
+	@NotNull
+	private Integer Stelle;
+
+	public Integer getStelle() {
+		return Stelle;
+	}
+
+	public void setStelle(Integer stelle) {
+		Stelle = stelle;
+	}
 
 	public String getPathtoImage() {
 		return PathtoImage;

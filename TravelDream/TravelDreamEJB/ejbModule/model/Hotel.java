@@ -8,9 +8,9 @@ import com.traveldream.gestionecomponente.ejb.HotelDTO;
 
 import java.util.Date;
 
-//tocommit
+
 /**
- * The persistent class for the Hotel database table!
+ * The persistent class for the Hotel database table.
  * 
  */
 @Entity
@@ -42,6 +42,10 @@ public class Hotel implements Serializable {
 	@Column(name="Nome")
 	private String nome;
 
+	@Column(name="Stelle")
+	private int stelle;
+
+
 	public Hotel() {
 		super();
 	}
@@ -54,6 +58,7 @@ public class Hotel implements Serializable {
          this.data_inizio = hoteldto.getData_inizio();
          this.data_fine = hoteldto.getData_fine();
          this.immagine = hoteldto.getPathtoImage();
+         this.stelle = hoteldto.getStelle();
 	}
 
 	public int getId() {
@@ -110,6 +115,14 @@ public class Hotel implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public int getStelle() {
+		return this.stelle;
+	}
+
+	public void setStelle(int stelle) {
+		this.stelle = stelle;
 	}
 
 }
