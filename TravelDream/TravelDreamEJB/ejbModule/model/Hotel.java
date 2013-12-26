@@ -15,8 +15,10 @@ import java.util.Date;
  */
 @Entity
 @Table(name="Hotel")
-@NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h")
-public class Hotel implements Serializable {
+@NamedQueries({
+	@NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h")
+
+})public class Hotel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

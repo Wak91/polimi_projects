@@ -1,5 +1,7 @@
 package com.traveldream.gestionecomponente.ejb;
 
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
@@ -9,8 +11,6 @@ import javax.persistence.PersistenceContext;
 import model.Escursione;
 import model.Hotel;
 import model.Volo;
-
-import com.traveldream.autenticazione.ejb.UserDTO;
 
 /**
  * Session Bean implementation class ComponentManagerBean
@@ -48,25 +48,15 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		
 	}
 	
-
-	public void update(UserDTO user) {
-		
-
+	public void update() {
 	}
 
 	public void remove() {
-		// TODO Auto-generated method stub
-
 	}
-
-	
-	public HotelDTO getHotelDTO() {
-		return null;
-		
-	}
-	
-	private HotelDTO convertToDTO(Hotel hotel) {
-		return null;
+    
+	//sfrutto la named query per ritornare tutti gli hotel dal DB
+	public ArrayList<Hotel> getAllHotel()
+	{return null;
 	}
 
 	

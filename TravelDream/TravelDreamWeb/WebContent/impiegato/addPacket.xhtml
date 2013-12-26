@@ -2,12 +2,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:p="http://primefaces.org/ui"
+       > 
 
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
-	    FORM CREAZIONE PACCHETTO 
+	    <h:form>
+		<p:panel header="Creazione pacchetto">
+			<h:panelGrid columns="3" id="regGrid">
+				
+				<h:outputLabel for="nome">Nome Pacchetto:</h:outputLabel>
+				<p:inputText id="nome" value="#{PacketBean}" />
+				<p:message for="nome" />
+				
+				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
+				<p:inputText id="luogo" value="#{PacketBean}" />
+				<p:message for="luogo" />
+				
+				<h:outputLabel for="datei">Data inizio validità:</h:outputLabel>
+				<p:calendar id="datei" value="#{PacketBean}" navigator="true" display="inline"/>  
+                <p:message for="datei" />
+             
+                <h:outputLabel for="datef">Data fine validità:</h:outputLabel>
+				<p:calendar id="datef" value="#{PacketBean}" navigator="true" display="inline" />  
+                <p:message for="datef" />
+                 
+                 
+                
+                
+                <p:commandButton value="Crea Pacchetto" update="regGrid"
+				action="#{Packet}" />
+        </h:panelGrid>
+		</p:panel>
+		
+	</h:form> 
 	</ui:define>
 
 </ui:composition>
