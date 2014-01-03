@@ -8,13 +8,21 @@
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
-	    Che tipo di componenti vuoi modificare?
-	    <h:link outcome = "toHotel.xhtml" value="cerca e modifica hotel"/>
-	   <br></br>
-	   <h:link outcome = "toVolo.xhtml" value="cerca e modifica voli"/>
-	   <br></br>
-	   <h:link outcome = "toEscursione.xhtml"  value="cerca e modifica escursioni"/>
-	   <br></br>
+	    
+         <p:tabView id="tabView" dynamic="true" cache="true">  
+      
+            <p:tab id="tba1" title="Cerca e modifica Hotel">  
+               <ui:include src="toHotel.xhtml" />  
+            </p:tab>  
+             <p:tab id="tba2" title="Cerca e modifica Volo">  
+               <ui:include src="toVolo.xhtml" />  
+            </p:tab> 
+             <p:tab id="tba3" title="Cerca e modifica Escursione">  
+               <ui:include src="toEscursione.xhtml" />  
+            </p:tab> 
+         
+        </p:tabView>  
+         
 	</ui:define>
 
 </ui:composition>
