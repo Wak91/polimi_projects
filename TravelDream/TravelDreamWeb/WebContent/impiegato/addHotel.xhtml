@@ -29,13 +29,17 @@
 				<p:inputText id="costogg" value="#{ComponentBean.hotel.costo_giornaliero}" />
 				<p:message for="costogg" />
 				
-				<h:outputLabel for="datei">Data inizio validità:</h:outputLabel>
-				<p:calendar id="datei" value="#{ComponentBean.hotel.data_inizio}" navigator="true" display="inline"/>  
-                <p:message for="datei" />
-             
-                <h:outputLabel for="datef">Data fine validità:</h:outputLabel>
-				<p:calendar id="datef" value="#{ComponentBean.hotel.data_fine}" navigator="true" display="inline" />  
-                <p:message for="datef" />
+
+                <h:outputLabel for="datei">Data Inizio</h:outputLabel>
+				<p:calendar id="datei" binding="#{datei}" required="true" value="#{ComponentBean.hotel.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline"/>
+				<p></p>
+				
+				<h:outputLabel for="datef">Data Fine</h:outputLabel>
+				<p:calendar id="datef" value="#{ComponentBean.hotel.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline"
+								validator="#{ComponentBean.validate_Date}" >
+								<f:attribute name="datei" value="#{datei}" />
+				</p:calendar>
+				<p:message for="datef" />
                  
                 
                 
