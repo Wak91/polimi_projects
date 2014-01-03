@@ -14,7 +14,9 @@
 
 <div id="header">
     <ui:insert name="header">
-
+		<h:form>
+			<p:commandButton action="#{userBean.logout}" value="Logout" />
+		</h:form>
     </ui:insert>
 </div>
 

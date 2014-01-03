@@ -1,5 +1,6 @@
 package com.traveldream.autenticazione.web;
 
+import com.sun.mail.util.LogOutputStream;
 import com.traveldream.autenticazione.ejb.*;
 
 import javax.faces.application.FacesMessage;
@@ -62,6 +63,10 @@ public class UserBean {
 		return "admin/adminhome?faces-redirect=true";
 	}
 	
+	public String logout() {
+	    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+	    return "/homepage?faces-redirect=true";
+	  }
 	
 	
 }

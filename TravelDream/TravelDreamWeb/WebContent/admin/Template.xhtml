@@ -17,6 +17,9 @@
     	<h:link outcome = "adminhome.xhtml" value="Account"/> 
     	<h:link outcome = "adminlist.xhtml" value="Lista"/>
         <h:link outcome = "addImpiegato.xhtml" value="Aggiunta"/>
+        <h:form>
+			<p:commandButton action="#{userBean.logout}" value="Logout" />
+		</h:form>
     </ui:insert>
 </div>
 
