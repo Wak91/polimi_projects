@@ -1,6 +1,8 @@
 package com.traveldream.gestionecomponente.web;
 
 
+import java.util.ArrayList;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.ejb.EJB;
@@ -18,10 +20,15 @@ import com.traveldream.gestionecomponente.ejb.VoloDTO;
 @RequestScoped
 public class ComponentBean {
 
+	@EJB
+	private ComponentManagerBeanLocal CMB;
+	
     private HotelDTO hotel;
     private VoloDTO  volo;
     private EscursioneDTO escursione;
 	
+    private ArrayList<HotelDTO> listaHotel;
+    
 	public EscursioneDTO getEscursione() {
 		return escursione;
 	}
@@ -30,13 +37,13 @@ public class ComponentBean {
 		this.escursione = escursione;
 	}
 
-	@EJB
-	private ComponentManagerBeanLocal CMB;
+	
 
 	public ComponentBean() {
 		hotel = new HotelDTO();
 		volo  = new VoloDTO();
 		escursione = new EscursioneDTO();
+		//listaHotel = CMB.getAllHotel(); //viene presa dal db la lista degli hotel presenti
 	}
 
 	public VoloDTO getVolo() {

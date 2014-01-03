@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 
-
 <ui:composition
 	xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://java.sun.com/jsf/html"
@@ -10,14 +9,24 @@
 	template="Template.xhtml">
 
 	<ui:define name="content">
-	<h1>Pick your job:</h1>
-	<h:link outcome = "addHotel.xhtml" value="aggiungi hotel"/>
-	   <br></br>
-	   <h:link outcome = "addVolo.xhtml" value="aggiungi volo"/>
-	   <br></br>
-	   <h:link outcome = "addEscursione.xhtml"  value="aggiungi escursione"/>
-	   <br></br>
-	   <h:link outcome = "addPacket.xhtml"  value="crea un nuovo pacchetto"/>    
+	    
+        <p:tabView id="tabView" dynamic="true" cache="true">  
+      
+            <p:tab id="tba1" title="Aggiungi Hotel">  
+               <ui:include src="addHotel.xhtml" />  
+            </p:tab>  
+             <p:tab id="tba2" title="Aggiungi Volo">  
+               <ui:include src="addVolo.xhtml" />  
+            </p:tab> 
+             <p:tab id="tba3" title="Aggiungi Escursione">  
+               <ui:include src="addEscursione.xhtml" />  
+            </p:tab> 
+             <p:tab id="tba4" title="Aggiungi Pacchetto">  
+               <ui:include src="addPacket.xhtml" />  
+            </p:tab> 
+      
+        </p:tabView>  
+        
 	</ui:define>
 
 </ui:composition>

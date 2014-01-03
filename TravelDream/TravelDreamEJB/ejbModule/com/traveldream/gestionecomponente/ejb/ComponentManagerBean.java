@@ -55,8 +55,30 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	}
     
 	//sfrutto la named query per ritornare tutti gli hotel dal DB
-	public ArrayList<Hotel> getAllHotel()
-	{return null;
+	//convertendoli in DTO per il managed bean
+	public ArrayList<HotelDTO> getAllHotel()
+	{
+		ArrayList <Hotel> myList;
+		ArrayList <HotelDTO> myDTOlist = new ArrayList <HotelDTO> ();
+		myList = (ArrayList<Hotel>) em.createNamedQuery("cercoHotel", Hotel.class).getResultList();
+		for (Hotel h : myList)
+		    {
+			 myDTOlist.add(this.HotelToDTO(h));
+		    }
+		return myDTOlist;
+	}
+
+	private HotelDTO HotelToDTO(Hotel h) {
+		HotelDTO hdto = new HotelDTO();
+		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
+		hdto.setData_fine(h.getData_fine());
+		hdto.setData_inizio(h.getData_inizio());
+		hdto.setLuogo(h.getLuogo());
+		hdto.setNome(h.getNome());
+		hdto.setStelle(h.getStelle());
+		hdto.setPathtoImage("");
+		return hdto;
+ 
 	}
 
 	

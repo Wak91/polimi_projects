@@ -2,12 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:p="http://primefaces.org/ui"> 
 
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
-	    MODIFICA E RICERCA COMPONENTI 
+	    Che tipo di componenti vuoi modificare?
+	    <h:link outcome = "toHotel.xhtml" value="cerca e modifica hotel"/>
+	   <br></br>
+	   <h:link outcome = "toVolo.xhtml" value="cerca e modifica voli"/>
+	   <br></br>
+	   <h:link outcome = "toEscursione.xhtml"  value="cerca e modifica escursioni"/>
+	   <br></br>
 	</ui:define>
 
 </ui:composition>

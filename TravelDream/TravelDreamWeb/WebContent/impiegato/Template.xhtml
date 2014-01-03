@@ -14,17 +14,18 @@
 
 <div id="header">
     <ui:insert name="header">
-    	<h:link outcome = "imphome.xhtml" value="Account"/> 
-    	<h:link outcome = "impcompo.xhtml" value=" Componenti"/>
-        <h:link outcome = "impack.xhtml" value="Pacchetti"/> 
-        <h:link outcome = "impadd.xhtml" value="Add"/>
+     <p:tabMenu>  
+     <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Componenti" url="impcompo.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Add" url="impadd.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>   
     </ui:insert>
 </div>
 
 
 <div id="content">
   <ui:insert name="content">
-    	Qua la pagina vera e propria 
     	<!--  include your content file or uncomment the include below and create content.xhtml in this directory -->
 	  	<!-- <div> -->
     	<!-- <ui:include src="content.xhtml"/> -->  
@@ -34,7 +35,7 @@
 
 <div id="footer">
   <ui:insert name="footer">
-    	<div>Questo e il footer per l'impiegato</div>
+    	<div>TravelDream All right reserved</div>
   </ui:insert>
 </div>
 

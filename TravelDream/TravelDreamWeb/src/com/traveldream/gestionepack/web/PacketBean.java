@@ -17,4 +17,8 @@ import com.traveldream.gestionecomponente.ejb.VoloDTO;
 @RequestScoped
 public class PacketBean {
 
+	//nel costruttore vado a fare una query per prelevare gli hotel, i voli e le escursioni.
+	// e me li salvo in array list posizionati qui, la lista degli hote la piazzo in un component
+	// Drag & drop per creare da li la lista di hotel presenti in quel pacchetto. 
+	// http://www.primefaces.org/showcase/ui/dndTable.jsf
 }
