@@ -1,13 +1,14 @@
 package com.traveldream.gestionecomponente.web;
 
 
-import java.util.ArrayList;
+import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.ejb.EJB;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
@@ -37,8 +38,6 @@ public class ComponentBean {
 		this.escursione = escursione;
 	}
 
-	
-
 	public ComponentBean() {
 		hotel = new HotelDTO();
 		volo  = new VoloDTO();
@@ -62,10 +61,13 @@ public class ComponentBean {
 		return hotel;
 	}
 	
-	public void validateDate(FacesContext context,UIComponent component,Object value) throws ValidatorException
-	{
-		if (this.getHotel().getData_inizio().compareTo(this.getHotel().getData_fine())>=1) 
-			throw new ValidatorException(new FacesMessage("La data di inizio deve precedere quella di fine"));
+	public void validate_Date(FacesContext context,UIComponent component,Object value) throws ValidatorException{
+		UIInput datainizio = (UIInput)component.getAttributes().get("datei");
+		Date dataInizio = (Date)datainizio.getValue();
+		Date dataFine = (Date)value;
+		if (dataFine.before(dataInizio)){
+                throw new ValidatorException(new FacesMessage("La data di fine validita' deve essere successiva a quella di inizio"));
+        }
 	}
 	
 	//---Creazione componenti---
