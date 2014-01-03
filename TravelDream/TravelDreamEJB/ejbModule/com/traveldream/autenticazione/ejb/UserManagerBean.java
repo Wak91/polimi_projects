@@ -91,4 +91,21 @@ public class UserManagerBean implements UserMgr {
 		return false;
 	}
 
+
+
+	@Override
+	public void saveImpiegato(UserDTO userdto) {
+		// TODO Auto-generated method stub
+		
+		Utente  user = new Utente(userdto);	//aggiungo alla tabella Utente una tupla utilizzanto il DTO
+		
+		UtenteGruppo usergroup = new UtenteGruppo();	//aggiungo una tupla a UtenteGruppo settando manualmente i parametri
+		usergroup.setGruppo(Group._IMPIEGATO);	
+		usergroup.setUtente(user);
+	
+		em.persist(user);
+		em.persist(usergroup);
+		
+	}
+
 }

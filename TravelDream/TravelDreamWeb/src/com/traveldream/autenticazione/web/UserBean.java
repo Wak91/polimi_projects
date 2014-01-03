@@ -57,6 +57,10 @@ public class UserBean {
 		return "utente/userhome?faces-redirect=true";
 	}
 	
+	public String addImpiegato(){
+		userMgr.saveImpiegato(user);
+		return "admin/adminhome?faces-redirect=true";
+	}
 	
 	
 	

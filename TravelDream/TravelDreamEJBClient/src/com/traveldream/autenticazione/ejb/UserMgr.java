@@ -5,6 +5,8 @@ public interface UserMgr {
 	
 	public void saveUser(UserDTO user);
 	
+	public void saveImpiegato(UserDTO user);
+	
 	public void update(UserDTO user);
 	
 	public void unregister();
