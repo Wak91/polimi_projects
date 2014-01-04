@@ -16,10 +16,12 @@ import java.util.Date;
 @Entity
 @Table(name="Hotel")
 @NamedQueries({
-	@NamedQuery(name="cercoHOTEL", query="SELECT h FROM Hotel h")
+	@NamedQuery(name=Hotel.FIND_ALL, query="SELECT h FROM Hotel h")
 
 })public class Hotel implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public static final String FIND_ALL = "Hotel.findAll";
 
 	@Id
 	@Column(name="ID")

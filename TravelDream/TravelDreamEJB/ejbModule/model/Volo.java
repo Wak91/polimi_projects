@@ -16,10 +16,12 @@ import java.util.Date;
 //Entity per volo
 @Entity
 @Table(name="Volo")
-@NamedQuery(name="Volo.findAll", query="SELECT v FROM Volo v")
+@NamedQuery(name=Volo.FIND_ALL, query="SELECT v FROM Volo v")
 public class Volo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static final String FIND_ALL = "Volo.findAll";
+	
 	@Id
 	@Column(name="ID")
 	private int id;

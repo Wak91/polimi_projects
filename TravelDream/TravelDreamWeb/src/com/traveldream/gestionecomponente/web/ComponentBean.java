@@ -62,7 +62,7 @@ public class ComponentBean {
 	}
 	
 	public void validate_Date(FacesContext context,UIComponent component,Object value) throws ValidatorException{
-		UIInput datainizio = (UIInput)component.getAttributes().get("datei");
+		UIInput datainizio = (UIInput)component.getAttributes().get("dates");
 		Date dataInizio = (Date)datainizio.getValue();
 		Date dataFine = (Date)value;
 		if (dataFine.before(dataInizio)){

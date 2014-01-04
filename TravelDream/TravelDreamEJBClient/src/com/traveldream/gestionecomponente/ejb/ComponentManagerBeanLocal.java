@@ -1,6 +1,7 @@
 package com.traveldream.gestionecomponente.ejb;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Local;
 
@@ -11,4 +12,6 @@ public interface ComponentManagerBeanLocal {
     public void saveVolo(VoloDTO volodto);
     public void saveEscursione(EscursioneDTO escursionedto);
     public ArrayList<HotelDTO> getAllHotel();
+	public List<VoloDTO> getAllVolo();
+	public List<EscursioneDTO> getAllEscursione();
 }

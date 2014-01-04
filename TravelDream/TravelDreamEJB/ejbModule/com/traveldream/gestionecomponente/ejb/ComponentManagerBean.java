@@ -1,6 +1,7 @@
 package com.traveldream.gestionecomponente.ejb;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
@@ -58,9 +59,9 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	//convertendoli in DTO per il managed bean
 	public ArrayList<HotelDTO> getAllHotel()
 	{
-		ArrayList <Hotel> myList;
+		List <Hotel> myList;
 		ArrayList <HotelDTO> myDTOlist = new ArrayList <HotelDTO> ();
-		myList = (ArrayList<Hotel>) em.createNamedQuery("cercoHotel", Hotel.class).getResultList();
+		myList = em.createNamedQuery(Hotel.FIND_ALL, Hotel.class).getResultList();
 		for (Hotel h : myList)
 		    {
 			 myDTOlist.add(this.HotelToDTO(h));
@@ -80,8 +81,52 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		return hdto;
  
 	}
-
 	
+	public ArrayList<VoloDTO> getAllVolo()
+	{
+		List <Volo> myList;
+		ArrayList <VoloDTO> myDTOlist = new ArrayList <VoloDTO> ();
+		myList = em.createNamedQuery(Volo.FIND_ALL, Volo.class).getResultList();
+		for (Volo v : myList)
+		    {
+			 myDTOlist.add(this.VoloToDTO(v));
+		    }
+		return myDTOlist;
+	}
+
+	private VoloDTO VoloToDTO(Volo v) {
+		VoloDTO vdto = new VoloDTO();
+		vdto.setCompagnia(v.getCompagnia());
+		vdto.setCosto(v.getCosto());
+		vdto.setData(v.getData());
+		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
+		vdto.setLuogo_partenza(v.getLuogo_partenza());
+		vdto.setImmagine("");
+		return vdto;
+	}
+	
+	public ArrayList<EscursioneDTO> getAllEscursione()
+	{
+		List <Escursione> myList;
+		ArrayList <EscursioneDTO> myDTOlist = new ArrayList <EscursioneDTO> ();
+		myList = em.createNamedQuery(Escursione.FIND_ALL, Escursione.class).getResultList();
+		for (Escursione e : myList)
+		    {
+			 myDTOlist.add(this.EscursioneToDTO(e));
+		    }
+		return myDTOlist;
+	}
+
+	private EscursioneDTO EscursioneToDTO(Escursione e) {
+		EscursioneDTO edto = new EscursioneDTO();
+		edto.setCosto(e.getCosto());
+		edto.setData(e.getData());
+		edto.setLuogo(e.getLuogo());
+		edto.setNome(e.getNome());
+		edto.setImmagine("");
+		return edto;
+	}
+
 
 
 	

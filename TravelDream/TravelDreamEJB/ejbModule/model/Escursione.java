@@ -16,10 +16,11 @@ import java.util.Date;
 //Entity per escursione
 @Entity
 @Table(name = "Escursione")
-@NamedQuery(name="Escursione.findAll", query="SELECT e FROM Escursione e")
+@NamedQuery(name=Escursione.FIND_ALL, query="SELECT e FROM Escursione e")
 public class Escursione implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	public static final String FIND_ALL = "Escursione.findAll";
+	
 	@Id
 	@Column(name="ID")
 	private int id;
