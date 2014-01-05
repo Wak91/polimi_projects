@@ -18,14 +18,19 @@ public class HotelDataModel extends ListDataModel <HotelDTO> implements Selectab
 
 	@Override
 	public HotelDTO getRowData(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<HotelDTO> hdto = (List<HotelDTO>) getWrappedData();  
+        for(HotelDTO h : hdto) {  
+            if(h.getNome().equals(arg0))  
+                return h;  
+        }  
+          
+        return null;
 	}
 
 	@Override
 	public Object getRowKey(HotelDTO arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		return arg0.getNome();
 	}
 	
 }

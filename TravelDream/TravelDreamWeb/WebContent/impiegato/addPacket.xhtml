@@ -5,7 +5,8 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
        xmlns:p="http://primefaces.org/ui"
-       > 
+       >
+       #{tableBean.initBean()}  
 	   <h:form>  
         <p:panel header="add pack">
 			<h:panelGrid columns="3" id="regGrid">
@@ -29,10 +30,9 @@
 		  </h:panelGrid>
 		  <br/>		
 				INSERIMENTO HOTEL   
-				#{tableBean.initBean()}   
+				 
 				<p:dataTable id="multiHotels" var="hotel" value="#{tableBean.hotelModels}" paginator="true" rows="5"  
                  selection="#{tableBean.selectedHotel}">  
-                
                 <p:column selectionMode="multiple" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%">  
@@ -114,7 +114,7 @@
               </p:dataTable> 
                  
                 <p:commandButton value="Crea Pacchetto" update="regGrid"
-				action="#{PacketBean}" />
+				action="#{tableBean}" />
         
 		</p:panel>
      

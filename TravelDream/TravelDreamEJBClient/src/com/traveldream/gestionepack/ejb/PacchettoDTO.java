@@ -3,6 +3,7 @@ import  com.traveldream.gestionecomponente.ejb.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -26,13 +27,13 @@ public class PacchettoDTO {
 	private String PathtoImage; 
 	
 	@NotNull
-	private ArrayList <HotelDTO> lista_hotel;
+	private List <HotelDTO> lista_hotel;
 	
 	@NotNull 
-	private ArrayList <VoloDTO> lista_voli;
+	private List <VoloDTO> lista_voli;
 	
 	@NotNull
-	private ArrayList <EscursioneDTO> lista_escursioni;
+	private List <EscursioneDTO> lista_escursioni;
 
 	public String getNome() {
 		return nome;
@@ -74,27 +75,27 @@ public class PacchettoDTO {
 		PathtoImage = pathtoImage;
 	}
 
-	public ArrayList<HotelDTO> getLista_hotel() {
+	public List<HotelDTO> getLista_hotel() {
 		return lista_hotel;
 	}
 
-	public void setLista_hotel(ArrayList<HotelDTO> lista_hotel) {
+	public void setLista_hotel(List<HotelDTO> lista_hotel) {
 		this.lista_hotel = lista_hotel;
 	}
 
-	public ArrayList<VoloDTO> getLista_voli() {
+	public List<VoloDTO> getLista_voli() {
 		return lista_voli;
 	}
 
-	public void setLista_voli(ArrayList<VoloDTO> lista_voli) {
+	public void setLista_voli(List<VoloDTO> lista_voli) {
 		this.lista_voli = lista_voli;
 	}
 
-	public ArrayList<EscursioneDTO> getLista_escursioni() {
+	public List<EscursioneDTO> getLista_escursioni() {
 		return lista_escursioni;
 	}
 
-	public void setLista_escursioni(ArrayList<EscursioneDTO> lista_escursioni) {
+	public void setLista_escursioni(List<EscursioneDTO> lista_escursioni) {
 		this.lista_escursioni = lista_escursioni;
 	}
 	

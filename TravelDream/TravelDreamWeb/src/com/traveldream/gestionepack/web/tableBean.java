@@ -2,12 +2,11 @@ package com.traveldream.gestionepack.web;
 import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-
+import javax.faces.bean.SessionScoped;
 import com.traveldream.gestionecomponente.ejb.*;
 
 @ManagedBean(name="tableBean") 
-@RequestScoped 
+@SessionScoped
 public class tableBean {
 
 	@EJB
@@ -20,6 +19,25 @@ public class tableBean {
     private HotelDataModel hotelModels;
     private VoloDataModel  voloModels;
     private EscDataModel escModels;
+	
+    //---INIZIALIZZAZIONE BEAN---
+    
+    public tableBean()
+	{
+	selectedHotel  = new ArrayList <HotelDTO>(); // questo per tenere traccia di quelli selezionati
+	// MAI METTERE CMB QUA DENTRO, NON E' ANCORA STATO CREATO E QUINDI QUALSIASI COSA
+	// FAI TI SBATTE UN SIMPATICO NULL POINTER IN FACCIA 
+	}
+	
+	public void initBean()
+	{
+		 setHotelModels(new HotelDataModel(CMB.getAllHotel()));	
+		 setVoloModels(new VoloDataModel(CMB.getAllVolo()));
+		 setEscModels(new EscDataModel(CMB.getAllEscursione()));
+	}
+	//---------------------------
+	
+	//---FUNZIONI PER I VOLI-----------------------------------------
 	
 	public ArrayList<VoloDTO> getSelectedVolo() {
 		return selectedVolo;
@@ -36,20 +54,9 @@ public class tableBean {
 	public void setVoloModels(VoloDataModel voloModels) {
 		this.voloModels = voloModels;
 	}
-
-	public tableBean()
-	{
-	selectedHotel  = new ArrayList <HotelDTO>(); // questo per tenere traccia di quelli selezionati
-	// MAI METTERE CMB QUA DENTRO, NON E' ANCORA STATO CREATO E QUINDI QUALSIASI COSA
-	// FAI TI SBATTE UN SIMPATICO NULL POINTER IN FACCIA 
-	}
+	//---------------------------------------------------------------
 	
-	public void initBean()
-	{
-		 setHotelModels(new HotelDataModel(CMB.getAllHotel()));	
-		 setVoloModels(new VoloDataModel(CMB.getAllVolo()));
-		 setEscModels(new EscDataModel(CMB.getAllEscursione()));
-	}
+	//---FUNZIONI PER HOTEL-----------------------------------------
 	
 	public ArrayList<HotelDTO> getSelectedHotel() {
 		return selectedHotel;
@@ -66,7 +73,10 @@ public class tableBean {
 	public void setHotelModels(HotelDataModel hotelModels) {
 		this.hotelModels = hotelModels;
 	}
-
+	//---------------------------------------------------------------
+	
+	//---FUNZIONI PER ESCURSIONI-----------------------------------------
+	
 	public ArrayList <EscursioneDTO> getSelectedEsc() {
 		return selectedEsc;
 	}
@@ -82,6 +92,11 @@ public class tableBean {
 	public void setEscModels(EscDataModel escModels) {
 		this.escModels = escModels;
 	}
+	//---------------------------------------------------------------
 	
+	public void PrelevaSelezionatiECrea()
+	{
+		
+	}
 
 }
