@@ -61,7 +61,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	{
 		List <Hotel> myList;
 		ArrayList <HotelDTO> myDTOlist = new ArrayList <HotelDTO> ();
-		myList = em.createNamedQuery(Hotel.FIND_ALL, Hotel.class).getResultList();
+		myList = em.createNamedQuery("Hotel.findAll", Hotel.class).getResultList();
 		for (Hotel h : myList)
 		    {
 			 myDTOlist.add(this.HotelToDTO(h));
@@ -86,7 +86,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	{
 		List <Volo> myList;
 		ArrayList <VoloDTO> myDTOlist = new ArrayList <VoloDTO> ();
-		myList = em.createNamedQuery(Volo.FIND_ALL, Volo.class).getResultList();
+		myList = em.createNamedQuery("Volo.findAll", Volo.class).getResultList();
 		for (Volo v : myList)
 		    {
 			 myDTOlist.add(this.VoloToDTO(v));
@@ -109,7 +109,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	{
 		List <Escursione> myList;
 		ArrayList <EscursioneDTO> myDTOlist = new ArrayList <EscursioneDTO> ();
-		myList = em.createNamedQuery(Escursione.FIND_ALL, Escursione.class).getResultList();
+		myList = em.createNamedQuery("Escursione.findAll", Escursione.class).getResultList();
 		for (Escursione e : myList)
 		    {
 			 myDTOlist.add(this.EscursioneToDTO(e));

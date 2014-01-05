@@ -12,19 +12,19 @@
 			<h:panelGrid columns="3" id="regGrid">
 				
 				<h:outputLabel for="nome">Nome:</h:outputLabel>
-				<p:inputText id="nome" value="#{PacketBean.packet.nome}" />
+				<p:inputText id="nome" value="#{tableBean.packet.nome}" />
 				<p:message for="nome" />
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
-				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" />
+				<p:inputText id="luogo" value="#{tableBean.packet.destinazione}" />
 				<p:message for="luogo" />
 				
                 <h:outputLabel for="datei">Data Inizio validità</h:outputLabel>
-				<p:calendar id="datei" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+				<p:calendar id="datei" required="true" value="#{tableBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
 				</p:calendar>
 				<br></br>
 				<h:outputLabel for="datef">Data Fine validità</h:outputLabel>
-				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+				<p:calendar id="datef" value="#{tableBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
 				</p:calendar>
 				<br/>
 		  </h:panelGrid>
@@ -119,7 +119,7 @@
               </p:dataTable> 
                  
                 <p:commandButton value="Crea Pacchetto" update="regGrid"
-				action="#{tableBean}" />
+				action="#{tableBean.PrelevaSelezionatiECrea}" />
         
 		</p:panel>
      

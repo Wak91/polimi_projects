@@ -1,22 +1,37 @@
 package com.traveldream.gestionepack.web;
 import java.util.ArrayList;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
 import com.traveldream.gestionecomponente.ejb.*;
+import com.traveldream.gestionepack.ejb.PacchettoDTO;
+import com.traveldream.gestionepack.ejb.PackManagerBeanLocal;
 
 @ManagedBean(name="tableBean") 
 @SessionScoped
 public class tableBean {
 
 	@EJB
+	private PackManagerBeanLocal PMB;
 	private ComponentManagerBeanLocal CMB;
 	
 	private ArrayList <HotelDTO> selectedHotel;
 	private ArrayList <VoloDTO>  selectedVolo;
 	private ArrayList <EscursioneDTO> selectedEsc;
+	
+	private PacchettoDTO packet;
     
-    private HotelDataModel hotelModels;
+    public PacchettoDTO getPacket() {
+		return packet;
+	}
+
+	public void setPacket(PacchettoDTO packet) {
+		this.packet = packet;
+	}
+
+	private HotelDataModel hotelModels;
     private VoloDataModel  voloModels;
     private EscDataModel escModels;
 	
@@ -24,6 +39,7 @@ public class tableBean {
     
     public tableBean()
 	{
+
 	selectedHotel  = new ArrayList <HotelDTO>(); // questo per tenere traccia di quelli selezionati
 	// MAI METTERE CMB QUA DENTRO, NON E' ANCORA STATO CREATO E QUINDI QUALSIASI COSA
 	// FAI TI SBATTE UN SIMPATICO NULL POINTER IN FACCIA 
@@ -31,6 +47,7 @@ public class tableBean {
 	
 	public void initBean()
 	{
+	    packet = new PacchettoDTO();
 		 setHotelModels(new HotelDataModel(CMB.getAllHotel()));	
 		 setVoloModels(new VoloDataModel(CMB.getAllVolo()));
 		 setEscModels(new EscDataModel(CMB.getAllEscursione()));
@@ -94,9 +111,14 @@ public class tableBean {
 	}
 	//---------------------------------------------------------------
 	
-	public void PrelevaSelezionatiECrea()
+	public String PrelevaSelezionatiECrea()
 	{
+		packet.setLista_escursioni(selectedEsc);
+		packet.setLista_hotel(selectedHotel);
+		packet.setLista_voli(selectedVolo);
 		
+		PMB.createPacket(packet);
+		return "addPacket.xhtml?faces-redirect=true";
 	}
 
 }
