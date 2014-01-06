@@ -6,12 +6,31 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"> 
-
+ #{ComponentBean.initBean()}
 	    <h:form>
 		<p:panel header="Escursione creation">
-			<h:panelGrid columns="3" id="regGrid">
-				
-        </h:panelGrid>
+		<p:dataTable id="multiEscursioni" var="esc" value="#{ComponentBean.escModels}" paginator="true" rows="5"  
+                 selection="#{ComponentBean.selectedEscursione}">  
+                
+                <p:column selectionMode="single" style="width:2%" />  
+  
+                <p:column headerText="nome" style="width:25%" sortBy="nome" filterBy="#{esc.nome}" >  
+                 #{esc.nome}
+                </p:column>  
+  
+                <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{esc.data}">  
+                #{esc.data}  
+                </p:column>  
+  
+                <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{esc.costo}">  
+                #{esc.costo}  
+                </p:column>  
+  
+                <p:column headerText="luogo" style="width:24%" sortBy="luogo" filterBy="#{esc.luogo}">  
+                #{esc.luogo}  
+                </p:column>  
+                
+              </p:dataTable>
 		</p:panel>
 		
 	</h:form>
