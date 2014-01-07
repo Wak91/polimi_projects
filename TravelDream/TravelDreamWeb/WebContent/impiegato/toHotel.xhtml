@@ -10,7 +10,7 @@
         
 	    <h:form>
 		<p:dataTable id="multiHotels" var="hotel" value="#{ComponentBean.hotelModels}" paginator="true" rows="5"  
-                     filterdValue="#{ComponentBean.filteredHotels}">  
+                     filteredValue="#{ComponentBean.filteredHotels}">  
                 
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
                   <h:outputText value="#{hotel.nome}" />  

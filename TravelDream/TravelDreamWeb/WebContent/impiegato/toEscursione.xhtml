@@ -10,7 +10,7 @@
 	    <h:form>
 		<p:panel header="Escursione creation">
 		<p:dataTable id="multiEscursioni" var="esc" value="#{ComponentBean.escModels}" paginator="true" rows="5"  
-                  filterdValue="#{ComponentBean.filteredEscursioni}">  
+                  filteredValue="#{ComponentBean.filteredEscursioni}">  
                 
                 <p:column headerText="nome" style="width:25%" sortBy="nome" filterBy="#{esc.nome}" >  
                  #{esc.nome}

@@ -35,7 +35,7 @@ public class Escursione implements Serializable {
 	private String nome;
 
 	//bi-directional many-to-many association to Pacchetto
-	@ManyToMany(mappedBy="escursiones")
+	@ManyToMany(mappedBy="escursiones",cascade = CascadeType.PERSIST)
 	private List<Pacchetto> pacchettos;
 
     public Escursione() {
@@ -52,6 +52,10 @@ public class Escursione implements Serializable {
     
   }
 
+  	public void addPacchetto(Pacchetto pacchetto){
+  		pacchettos.add(pacchetto);
+  	}
+  
 	public int getId() {
 		return this.id;
 	}

@@ -24,7 +24,8 @@ import java.util.List;
 @NamedQuery(name="Pacchetto.findAll", query="SELECT p FROM Pacchetto p")
 public class Pacchetto implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
 
@@ -43,7 +44,7 @@ public class Pacchetto implements Serializable {
 	private String nome;
 
 	//bi-directional many-to-many association to Escursione
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(
 		name="EscursionePacchetto"
 		, joinColumns={
@@ -56,7 +57,7 @@ public class Pacchetto implements Serializable {
 	private List<Escursione> escursiones;
 
 	//bi-directional many-to-many association to Hotel
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(
 		name="HotelPacchetto"
 		, joinColumns={
@@ -69,47 +70,26 @@ public class Pacchetto implements Serializable {
 	private List<Hotel> hotels;
 
 	//bi-directional many-to-many association to Volo
-	@ManyToMany(mappedBy="pacchettos")
+	@ManyToMany(mappedBy="pacchettos",cascade = CascadeType.PERSIST)
 	private List<Volo> volos;
 
 	public Pacchetto() {
-		super();
+		hotels = new ArrayList<Hotel>();
+		volos = new ArrayList<Volo>();
+		escursiones = new ArrayList<Escursione>();
+	}
+
+	
+	public void addHotel(Hotel hotel){
+		hotels.add(hotel);
 	}
 	
-	public Pacchetto(PacchettoDTO packet){
-		this.data_inizio=packet.getData_inizio();
-		this.data_fine=packet.getData_fine();
-		this.destinazione=packet.getDestinazione();
-		this.immagine=packet.getPathtoImage();
-		this.nome=packet.getNome();
-		this.volos=EntityVoloFromVoloDTO(packet.getLista_voli()); //utilizzo il metodo EntityVoloFromVoloDTO per convertire una lista di DTO in una lista di Entity
-		this.escursiones=EntityEscursioneFromEscursioneDTO(packet.getLista_escursioni());
-		this.hotels=EntityHotelFromHotelDTO(packet.getLista_hotel());
-		
-	}
-//----------------------------------Metodi per trasformare arraylist di DTO in List di Entity------------------------------------------
-	private List<Volo> EntityVoloFromVoloDTO(List<VoloDTO> voli) {
-		ArrayList<Volo> voliEntity=new ArrayList<Volo>();
-		for (VoloDTO volo : voli) {
-			voliEntity.add(new Volo(volo));
-		}
-		return voliEntity;
+	public void addEscursione(Escursione esc){
+		escursiones.add(esc);
 	}
 	
-	private List<Hotel> EntityHotelFromHotelDTO(List<HotelDTO> hotels) {
-		ArrayList<Hotel> hotelsEntity=new ArrayList<Hotel>();
-		for (HotelDTO hotel : hotels) {
-			hotelsEntity.add(new Hotel(hotel));
-		}
-		return hotelsEntity;
-	}
-	
-	private List<Escursione> EntityEscursioneFromEscursioneDTO(List<EscursioneDTO> escursioni){
-		ArrayList<Escursione> escEntity=new ArrayList<Escursione>();
-		for(EscursioneDTO escursioneDTO : escursioni){
-			escEntity.add(new Escursione(escursioneDTO));
-		}	
-		return escEntity;
+	public void addVolo(Volo volo){
+		volos.add(volo);
 	}
 	
 	public int getId() {

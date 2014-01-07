@@ -39,7 +39,7 @@ public class Volo implements Serializable {
 	private String luogo_partenza;
 
 	//bi-directional many-to-many association to Pacchetto
-	@ManyToMany
+	@ManyToMany( cascade = CascadeType.PERSIST)
 	@JoinTable(
 		name="VoloPacchetto"
 		, joinColumns={
@@ -64,6 +64,11 @@ public class Volo implements Serializable {
      this.luogo_partenza = volodto.getLuogo_partenza();
      this.immagine = ""; // da sistemare 
   }
+  
+  public void addPacchetto(Pacchetto pacchetto){
+		pacchettos.add(pacchetto);
+	}
+  
 	public int getId() {
 		return this.id;
 	}
