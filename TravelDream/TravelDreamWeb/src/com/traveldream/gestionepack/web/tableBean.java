@@ -19,6 +19,9 @@ public class tableBean {
 	private ComponentManagerBeanLocal CMB;
 	
 	private ArrayList <HotelDTO> selectedHotel;
+	private ArrayList<HotelDTO> filteredHotels;
+	
+
 	private ArrayList <VoloDTO>  selectedVolo;
 	private ArrayList <EscursioneDTO> selectedEsc;
 	
@@ -82,6 +85,14 @@ public class tableBean {
 
 	public void setSelectedHotel(ArrayList<HotelDTO> selectedHotel) {
 		this.selectedHotel = selectedHotel;
+	}
+	
+	public ArrayList<HotelDTO> getFilteredHotels() {
+		return filteredHotels;
+	}
+
+	public void setFilteredHotels(ArrayList<HotelDTO> filteredHotels) {
+		this.filteredHotels = filteredHotels;
 	}
 
 	public HotelDataModel getHotelModels() {

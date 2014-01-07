@@ -32,7 +32,7 @@
 				INSERIMENTO HOTEL   
 				 
 				<p:dataTable id="multiHotels" var="hotel" value="#{tableBean.hotelModels}" paginator="true" rows="5"  
-                 selection="#{tableBean.selectedHotel}">  
+                 selection="#{tableBean.selectedHotel}" filteredValue="#{tableBean.filteredHotels}">  
                 <p:column selectionMode="multiple" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}"> >  
@@ -51,14 +51,14 @@
                 #{hotel.costo_giornaliero}  
                 </p:column>  
                 
-                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}">  
+                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_inizio}">
     				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
                   
                 </p:column>  
                 
-                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}">  
+                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_fine}">
     				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
