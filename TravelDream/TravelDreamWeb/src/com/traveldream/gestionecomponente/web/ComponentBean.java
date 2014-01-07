@@ -153,10 +153,4 @@ public class ComponentBean {
 		this.voloModels = voloModels;
 	}
 	
-	public String modificaHotel()
-	{
-		return "";
-		
-	}
-	
 }

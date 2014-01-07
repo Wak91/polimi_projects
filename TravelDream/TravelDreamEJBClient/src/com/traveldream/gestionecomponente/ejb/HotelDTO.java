@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class HotelDTO {
 
+	private int id;
+	
 	@NotEmpty 
 	private String nome;
 
@@ -84,6 +86,14 @@ public class HotelDTO {
 
 	public void setData_fine(Date data_fine) {
 		this.data_fine = data_fine;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

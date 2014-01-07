@@ -78,6 +78,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		hdto.setNome(h.getNome());
 		hdto.setStelle(h.getStelle());
 		hdto.setPathtoImage("");
+		hdto.setId(h.getId());
 		return hdto;
  
 	}

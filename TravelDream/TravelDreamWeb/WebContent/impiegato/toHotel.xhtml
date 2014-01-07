@@ -42,11 +42,11 @@
                  <h:outputText value="#{hotel.data_fine}">
     				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
+				</p:column>  
+				<p:column headerText="modify" style="width:24%" >  
+				<h:link outcome = "impadd?h_id=#{hotel.id}"  value="Analizza"/>
                 </p:column>  
               </p:dataTable> 
-              
-               <p:commandButton value="Analizza" update="regGrid"
-				action="#{ComponentBean.modificaHotel}" />
 	</h:panelGrid>	
 	</h:form>
 
