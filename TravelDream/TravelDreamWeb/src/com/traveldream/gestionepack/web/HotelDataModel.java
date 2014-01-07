@@ -29,7 +29,7 @@ public class HotelDataModel extends ListDataModel <HotelDTO> implements Selectab
 	}
 
 	@Override
-	public Object getRowKey(HotelDTO arg0) {
+	public String getRowKey(HotelDTO arg0) {
 		return arg0.getNome();
 	}
 	

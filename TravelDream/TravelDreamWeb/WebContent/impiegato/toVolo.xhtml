@@ -6,12 +6,34 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"> 
-
+ #{ComponentBean.initBean()}
 	    <h:form>
 		<p:panel header="Volo creation">
-			<h:panelGrid columns="3" id="regGrid">
-				
-        </h:panelGrid>
+			<p:dataTable id="Voloselection" var="volo" value="#{ComponentBean.voloModels}" paginator="true" rows="5"  
+                 selection="#{ComponentBean.selectedVolo}">  
+                <p:column selectionMode="single" style="width:2%" />  
+  
+                <p:column headerText="compagnia" style="width:25%" sortBy="compagnia" filterBy="#{volo.compagnia}">  
+                 #{volo.compagnia}
+                </p:column>  
+  
+                <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
+                #{volo.data}  
+                </p:column>  
+  
+                <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{volo.costo}">  
+                #{volo.costo}  
+                </p:column>  
+  
+                <p:column headerText="partenza" style="width:24%" sortBy="luogo_partenza" filterBy="#{volo.luogo_partenza}">  
+                #{volo.luogo_partenza}  
+                </p:column>  
+                
+                 <p:column headerText="arrivo" style="width:24%" sortBy="luogo_arrivo" filterBy="#{volo.luogo_arrivo}">  
+                #{volo.luogo_arrivo}  
+                </p:column> 
+              </p:dataTable> 
+		
 		</p:panel>
 		
 	</h:form>

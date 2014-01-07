@@ -35,14 +35,6 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		Pacchetto pacchetto = new Pacchetto(packet);
 		em.persist(pacchetto);
 		
-	}
-	
-	//public void savePacchetto(PacchettoDTO packdto) {
-	//	Pacchetto pack = new Pacchetto(packdto);
-	//	em.persist(pack);
-		
-	//}
-	
-	
+	}	
 
 }

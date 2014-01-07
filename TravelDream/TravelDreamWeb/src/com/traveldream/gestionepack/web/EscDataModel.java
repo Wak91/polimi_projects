@@ -7,6 +7,7 @@ import javax.faces.model.ListDataModel;
 import org.primefaces.model.SelectableDataModel;  
 
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
+import com.traveldream.gestionecomponente.ejb.HotelDTO;
 
 public class EscDataModel extends ListDataModel <EscursioneDTO> implements SelectableDataModel <EscursioneDTO> {
 
@@ -15,14 +16,18 @@ public class EscDataModel extends ListDataModel <EscursioneDTO> implements Selec
 	
 	@Override
 	public EscursioneDTO getRowData(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		List<EscursioneDTO> edto = (List<EscursioneDTO>) getWrappedData();  
+        for(EscursioneDTO e : edto) {  
+            if(e.getNome().equals(arg0))  
+                return e;  
+        }  
+          
+        return null;
 	}
 
 	@Override
-	public Object getRowKey(EscursioneDTO arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getRowKey(EscursioneDTO arg0) {
+		return arg0.getNome();
 	}
 
 }

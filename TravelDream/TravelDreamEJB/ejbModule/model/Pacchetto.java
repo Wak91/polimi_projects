@@ -20,6 +20,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="Pacchetto")
 @NamedQuery(name="Pacchetto.findAll", query="SELECT p FROM Pacchetto p")
 public class Pacchetto implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -42,7 +43,7 @@ public class Pacchetto implements Serializable {
 	private String nome;
 
 	//bi-directional many-to-many association to Escursione
-	@ManyToMany(cascade=CascadeType.PERSIST)
+	@ManyToMany
 	@JoinTable(
 		name="EscursionePacchetto"
 		, joinColumns={
@@ -55,7 +56,7 @@ public class Pacchetto implements Serializable {
 	private List<Escursione> escursiones;
 
 	//bi-directional many-to-many association to Hotel
-	@ManyToMany(cascade=CascadeType.PERSIST)
+	@ManyToMany
 	@JoinTable(
 		name="HotelPacchetto"
 		, joinColumns={
@@ -68,7 +69,7 @@ public class Pacchetto implements Serializable {
 	private List<Hotel> hotels;
 
 	//bi-directional many-to-many association to Volo
-	@ManyToMany(mappedBy="pacchettos", cascade=CascadeType.PERSIST)
+	@ManyToMany(mappedBy="pacchettos")
 	private List<Volo> volos;
 
 	public Pacchetto() {

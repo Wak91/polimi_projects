@@ -44,14 +44,14 @@ public class tableBean {
     public tableBean()
 	{
 
-	selectedHotel  = new ArrayList <HotelDTO>(); // questo per tenere traccia di quelli selezionati
+	selectedHotels  = new ArrayList <HotelDTO>(); // questo per tenere traccia di quelli selezionati
 	// MAI METTERE CMB QUA DENTRO, NON E' ANCORA STATO CREATO E QUINDI QUALSIASI COSA
 	// FAI TI SBATTE UN SIMPATICO NULL POINTER IN FACCIA 
 	}
 	
 	public void initBean()
 	{
-	    packet = new PacchettoDTO();
+	     packet = new PacchettoDTO();
 		 setHotelModels(new HotelDataModel(CMB.getAllHotel()));	
 		 setVoloModels(new VoloDataModel(CMB.getAllVolo()));
 		 setEscModels(new EscDataModel(CMB.getAllEscursione()));
@@ -79,12 +79,12 @@ public class tableBean {
 	
 	//---FUNZIONI PER HOTEL-----------------------------------------
 	
-	public ArrayList<HotelDTO> getSelectedHotel() {
-		return selectedHotel;
+	public ArrayList<HotelDTO> getSelectedHotels() {
+		return selectedHotels;
 	}
 
-	public void setSelectedHotel(ArrayList<HotelDTO> selectedHotel) {
-		this.selectedHotel = selectedHotel;
+	public void setSelectedHotels(ArrayList<HotelDTO> selectedHotels) {
+		this.selectedHotels = selectedHotels;
 	}
 	
 	public ArrayList<HotelDTO> getFilteredHotels() {
@@ -126,7 +126,7 @@ public class tableBean {
 	public String PrelevaSelezionatiECrea()
 	{
 		packet.setLista_escursioni(selectedEsc);
-		packet.setLista_hotel(selectedHotel);
+		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
 		
 		PMB.createPacket(packet);
