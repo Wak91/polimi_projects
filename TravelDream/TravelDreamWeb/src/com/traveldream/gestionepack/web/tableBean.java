@@ -18,7 +18,7 @@ public class tableBean {
 	@EJB
 	private ComponentManagerBeanLocal CMB;
 	
-	private ArrayList <HotelDTO> selectedHotel;
+	private ArrayList <HotelDTO> selectedHotels;
 	private ArrayList<HotelDTO> filteredHotels;
 	
 

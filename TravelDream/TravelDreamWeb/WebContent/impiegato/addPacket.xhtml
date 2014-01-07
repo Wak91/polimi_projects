@@ -32,7 +32,7 @@
 				INSERIMENTO HOTEL   
 				 
 				<p:dataTable id="multiHotels" var="hotel" value="#{tableBean.hotelModels}" paginator="true" rows="5"  
-                 selection="#{tableBean.selectedHotel}" filteredValue="#{tableBean.filteredHotels}">  
+                 selection="#{tableBean.selectedHotels}" filteredValue="#{tableBean.filteredHotels}">  
                 <p:column selectionMode="multiple" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}"> >  
