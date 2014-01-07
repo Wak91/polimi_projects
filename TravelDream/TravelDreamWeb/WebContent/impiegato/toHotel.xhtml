@@ -9,12 +9,9 @@
       #{ComponentBean.initBean()} 
         
 	    <h:form>
-	    <h:panelGrid id="regGrid">
-
 		<p:dataTable id="multiHotels" var="hotel" value="#{ComponentBean.hotelModels}" paginator="true" rows="5"  
-                 selection="#{ComponentBean.selectedHotel}">  
-                <p:column selectionMode="single" style="width:2%" />  
-  
+                     filterdValue="#{ComponentBean.filteredHotels}">  
+                
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
                   <h:outputText value="#{hotel.nome}" />  
                 </p:column>  
@@ -43,11 +40,10 @@
     				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 				</p:column>  
-				<p:column headerText="modify" style="width:24%" >  
-				<h:link outcome = "impadd?h_id=#{hotel.id}"  value="Analizza"/>
+				<p:column headerText="Modifica" style="width:24%" >  
+				<h:link outcome = "impadd?hid=#{hotel.id}"  value="Analizza"/>
                 </p:column>  
               </p:dataTable> 
-	</h:panelGrid>	
 	</h:form>
 
 </ui:composition>

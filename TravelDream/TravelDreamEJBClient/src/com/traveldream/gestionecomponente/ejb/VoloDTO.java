@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class VoloDTO {
 
+	private int id;
+	
 	@NotEmpty
 	private String compagnia;
 
@@ -71,6 +73,14 @@ public class VoloDTO {
 
 	public void setLuogo_partenza(String luogo_partenza) {
 		this.luogo_partenza = luogo_partenza;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

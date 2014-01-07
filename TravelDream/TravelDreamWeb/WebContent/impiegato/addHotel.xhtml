@@ -27,15 +27,16 @@
 				
 
                 <h:outputLabel for="datei">Data Inizio</h:outputLabel>
-				<p:calendar id="datei" binding="#{dates}" required="true" value="#{ComponentBean.hotel.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
-                </p:calendar>
-                
+				<p:calendar id="datei" binding="#{dates}" required="true" value="#{ComponentBean.hotel.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
+				<p:message for="datef"/>
+				
+
 				<h:outputLabel for="datef">Data Fine</h:outputLabel>
 				<p:calendar id="datef" required="true" value="#{ComponentBean.hotel.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline"
 								validator="#{ComponentBean.validate_Date}" >
 				<f:attribute name="dates" value="#{dates}" />
 				</p:calendar>
-				<br></br>
+				<p:message for="datef"/>
 				
                  
                 <p:commandButton value="Crea Hotel" update="regGrid"

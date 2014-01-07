@@ -5,11 +5,9 @@ import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
-import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -34,23 +32,18 @@ public class ComponentBean {
     private HotelDTO hotel;
     private VoloDTO  volo;
     private EscursioneDTO escursione;
-	
-    private HotelDTO selectedHotel; 
-    private VoloDTO selectedVolo;
-    private EscursioneDTO selectedEscursione;
     
-    private HotelDataModel hotelModels;
+    private ArrayList<HotelDTO> filteredHotels;
+    private ArrayList<VoloDTO> filteredVoli;
+    private ArrayList<EscursioneDTO> filteredEscursioni;
+    
+
+	private HotelDataModel hotelModels;
     private EscDataModel escModels;
     private VoloDataModel voloModels;
     
     
-	public EscursioneDTO getEscursione() {
-		return escursione;
-	}
 
-	public void setEscursione(EscursioneDTO escursione) {
-		this.escursione = escursione;
-	}
 
 	public ComponentBean() {
 		hotel = new HotelDTO();
@@ -64,21 +57,8 @@ public class ComponentBean {
 		setVoloModels(new VoloDataModel(CMB.getAllVolo()));
 		setEscModels(new EscDataModel(CMB.getAllEscursione()));
 	}
-	public VoloDTO getVolo() {
-		return volo;
-	}
 
-	public void setVolo(VoloDTO volo) {
-		this.volo = volo;
-	}
 
-	public void setHotel(HotelDTO hoteldto) {
-		this.hotel = hoteldto;
-	}
-
-	public HotelDTO getHotel() {
-		return hotel;
-	}
 	
 	public void validate_Date(FacesContext context,UIComponent component,Object value) throws ValidatorException{
 		UIInput datainizio = (UIInput)component.getAttributes().get("dates");
@@ -89,7 +69,7 @@ public class ComponentBean {
         }
 	}
 	
-	//---Creazione componenti---
+//-------------------------CREAZIONE COMPONENTI------------------------------
 	public String createHotel(){
 		CMB.saveHotel(hotel);
 		return "impadd.xhtml?faces-redirect=true";
@@ -105,12 +85,15 @@ public class ComponentBean {
 		return "impadd.xhtml?faces-redirect=true";
 	}
 	
-	public HotelDTO getSelectedHotel() {
-		return selectedHotel;
+//--------------------------GETTER_SETTER_HOTELS--------------------------------------
+	
+
+	public void setHotel(HotelDTO hoteldto) {
+		this.hotel = hoteldto;
 	}
 
-	public void setSelectedHotel(HotelDTO selectedHotel) {
-		this.selectedHotel = selectedHotel;
+	public HotelDTO getHotel() {
+		return hotel;
 	}
 
 	public HotelDataModel getHotelModels() {
@@ -120,22 +103,42 @@ public class ComponentBean {
 	public void setHotelModels(HotelDataModel hotelModels) {
 		this.hotelModels = hotelModels;
 	}
-
-	public VoloDTO getSelectedVolo() {
-		return selectedVolo;
+	
+    public ArrayList<HotelDTO> getFilteredHotels() {
+		return filteredHotels;
 	}
 
-	public void setSelectedVolo(VoloDTO selectedVolo) {
-		this.selectedVolo = selectedVolo;
+	public void setFilteredHotels(ArrayList<HotelDTO> filteredHotels) {
+		this.filteredHotels = filteredHotels;
+	}
+//------------------------GETTER_SETTER_VOLO------------------------------------
+	
+	public VoloDTO getVolo() {
+		return volo;
 	}
 
-	public EscursioneDTO getSelectedEscursione() {
-		return selectedEscursione;
+	public void setVolo(VoloDTO volo) {
+		this.volo = volo;
+	}
+	
+	public VoloDataModel getVoloModels() {
+		return voloModels;
 	}
 
-	public void setSelectedEscursione(EscursioneDTO selectedEscursione) {
-		this.selectedEscursione = selectedEscursione;
+	public void setVoloModels(VoloDataModel voloModels) {
+		this.voloModels = voloModels;
 	}
+	
+	public ArrayList<VoloDTO> getFilteredVoli() {
+		return filteredVoli;
+	}
+
+	public void setFilteredVoli(ArrayList<VoloDTO> filteredVoli) {
+		this.filteredVoli = filteredVoli;
+	}
+	
+//-------------------------GETTER_SETTER_ESCURSIONE--------------------------------
+
 
 	public EscDataModel getEscModels() {
 		return escModels;
@@ -145,12 +148,20 @@ public class ComponentBean {
 		this.escModels = escModels;
 	}
 
-	public VoloDataModel getVoloModels() {
-		return voloModels;
+	public EscursioneDTO getEscursione() {
+		return escursione;
 	}
 
-	public void setVoloModels(VoloDataModel voloModels) {
-		this.voloModels = voloModels;
+	public void setEscursione(EscursioneDTO escursione) {
+		this.escursione = escursione;
+	}
+	
+	public ArrayList<EscursioneDTO> getFilteredEscursioni() {
+		return filteredEscursioni;
+	}
+
+	public void setFilteredEscursioni(ArrayList<EscursioneDTO> filteredEscursioni) {
+		this.filteredEscursioni = filteredEscursioni;
 	}
 	
 }

@@ -10,10 +10,8 @@
 	    <h:form>
 		<p:panel header="Escursione creation">
 		<p:dataTable id="multiEscursioni" var="esc" value="#{ComponentBean.escModels}" paginator="true" rows="5"  
-                 selection="#{ComponentBean.selectedEscursione}">  
+                  filterdValue="#{ComponentBean.filteredEscursioni}">  
                 
-                <p:column selectionMode="single" style="width:2%" />  
-  
                 <p:column headerText="nome" style="width:25%" sortBy="nome" filterBy="#{esc.nome}" >  
                  #{esc.nome}
                 </p:column>  
@@ -30,6 +28,9 @@
                 #{esc.luogo}  
                 </p:column>  
                 
+                <p:column headerText="Modifica" style="width:24%" >  
+				<h:link outcome = "impadd?eid=#{esc.id}"  value="Analizza"/>
+                </p:column>  
               </p:dataTable>
 		</p:panel>
 		

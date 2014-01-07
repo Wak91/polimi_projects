@@ -35,7 +35,7 @@
                  selection="#{tableBean.selectedHotels}" filteredValue="#{tableBean.filteredHotels}">  
                 <p:column selectionMode="multiple" style="width:2%" />  
   
-                <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}"> >  
+                <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
                  #{hotel.nome}
                 </p:column>  
   
@@ -53,7 +53,7 @@
                 
                  <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_inizio}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				
 				</h:outputText>
                   
                 </p:column>  

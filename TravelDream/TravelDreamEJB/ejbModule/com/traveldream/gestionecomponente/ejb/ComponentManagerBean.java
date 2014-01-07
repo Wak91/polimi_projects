@@ -103,6 +103,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
 		vdto.setLuogo_partenza(v.getLuogo_partenza());
 		vdto.setImmagine("");
+		vdto.setId(v.getId());
 		return vdto;
 	}
 	
@@ -125,6 +126,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		edto.setLuogo(e.getLuogo());
 		edto.setNome(e.getNome());
 		edto.setImmagine("");
+		edto.setId(e.getId());
 		return edto;
 	}
 
