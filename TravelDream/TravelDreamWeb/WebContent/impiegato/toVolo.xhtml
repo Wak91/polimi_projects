@@ -10,7 +10,7 @@
 	    <h:form>
 		<p:panel header="Volo creation">
 			<p:dataTable id="Voloselection" var="volo" value="#{ComponentBean.voloModels}" paginator="true" rows="5"  
-                 selection="#{ComponentBean.selectedVolo}">  
+                 selection="#{ComponentBean.selectedVolo}" filterdValue="#{ComponentBean.filteredEscursioni}">  
                 <p:column selectionMode="single" style="width:2%" />  
   
                 <p:column headerText="compagnia" style="width:25%" sortBy="compagnia" filterBy="#{volo.compagnia}">  

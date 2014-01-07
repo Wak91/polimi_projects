@@ -5,10 +5,8 @@ import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.ejb.EJB;
-import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -38,18 +36,17 @@ public class ComponentBean {
     private VoloDTO selectedVolo;
     private EscursioneDTO selectedEscursione;
     
-    private HotelDataModel hotelModels;
+    private ArrayList<HotelDTO> filteredHotels;
+    private ArrayList<VoloDTO> filteredVoli;
+    private ArrayList<EscursioneDTO> filteredEscursioni;
+    
+
+	private HotelDataModel hotelModels;
     private EscDataModel escModels;
     private VoloDataModel voloModels;
     
     
-	public EscursioneDTO getEscursione() {
-		return escursione;
-	}
 
-	public void setEscursione(EscursioneDTO escursione) {
-		this.escursione = escursione;
-	}
 
 	public ComponentBean() {
 		hotel = new HotelDTO();
@@ -63,21 +60,8 @@ public class ComponentBean {
 		setVoloModels(new VoloDataModel(CMB.getAllVolo()));
 		setEscModels(new EscDataModel(CMB.getAllEscursione()));
 	}
-	public VoloDTO getVolo() {
-		return volo;
-	}
 
-	public void setVolo(VoloDTO volo) {
-		this.volo = volo;
-	}
 
-	public void setHotel(HotelDTO hoteldto) {
-		this.hotel = hoteldto;
-	}
-
-	public HotelDTO getHotel() {
-		return hotel;
-	}
 	
 	public void validate_Date(FacesContext context,UIComponent component,Object value) throws ValidatorException{
 		UIInput datainizio = (UIInput)component.getAttributes().get("dates");
@@ -88,7 +72,7 @@ public class ComponentBean {
         }
 	}
 	
-	//---Creazione componenti---
+//-------------------------CREAZIONE COMPONENTI------------------------------
 	public String createHotel(){
 		CMB.saveHotel(hotel);
 		return "impadd.xhtml?faces-redirect=true";
@@ -102,6 +86,17 @@ public class ComponentBean {
 	public String createEscursione(){
 		CMB.saveEscursione(escursione);
 		return "impadd.xhtml?faces-redirect=true";
+	}
+	
+//--------------------------GETTER_SETTER_HOTELS--------------------------------------
+	
+
+	public void setHotel(HotelDTO hoteldto) {
+		this.hotel = hoteldto;
+	}
+
+	public HotelDTO getHotel() {
+		return hotel;
 	}
 	
 	public HotelDTO getSelectedHotel() {
@@ -119,7 +114,16 @@ public class ComponentBean {
 	public void setHotelModels(HotelDataModel hotelModels) {
 		this.hotelModels = hotelModels;
 	}
+	
+    public ArrayList<HotelDTO> getFilteredHotels() {
+		return filteredHotels;
+	}
 
+	public void setFilteredHotels(ArrayList<HotelDTO> filteredHotels) {
+		this.filteredHotels = filteredHotels;
+	}
+//------------------------GETTER_SETTER_VOLO------------------------------------
+	
 	public VoloDTO getSelectedVolo() {
 		return selectedVolo;
 	}
@@ -127,6 +131,32 @@ public class ComponentBean {
 	public void setSelectedVolo(VoloDTO selectedVolo) {
 		this.selectedVolo = selectedVolo;
 	}
+	
+	public VoloDTO getVolo() {
+		return volo;
+	}
+
+	public void setVolo(VoloDTO volo) {
+		this.volo = volo;
+	}
+	
+	public VoloDataModel getVoloModels() {
+		return voloModels;
+	}
+
+	public void setVoloModels(VoloDataModel voloModels) {
+		this.voloModels = voloModels;
+	}
+	
+	public ArrayList<VoloDTO> getFilteredVoli() {
+		return filteredVoli;
+	}
+
+	public void setFilteredVoli(ArrayList<VoloDTO> filteredVoli) {
+		this.filteredVoli = filteredVoli;
+	}
+	
+//-------------------------GETTER_SETTER_ESCURSIONE--------------------------------
 
 	public EscursioneDTO getSelectedEscursione() {
 		return selectedEscursione;
@@ -144,13 +174,22 @@ public class ComponentBean {
 		this.escModels = escModels;
 	}
 
-	public VoloDataModel getVoloModels() {
-		return voloModels;
+	public EscursioneDTO getEscursione() {
+		return escursione;
 	}
 
-	public void setVoloModels(VoloDataModel voloModels) {
-		this.voloModels = voloModels;
+	public void setEscursione(EscursioneDTO escursione) {
+		this.escursione = escursione;
 	}
+	
+	public ArrayList<EscursioneDTO> getFilteredEscursioni() {
+		return filteredEscursioni;
+	}
+
+	public void setFilteredEscursioni(ArrayList<EscursioneDTO> filteredEscursioni) {
+		this.filteredEscursioni = filteredEscursioni;
+	}
+	
 	
 	public String modificaHotel()
 	{

@@ -8,8 +8,10 @@
       xmlns:p="http://primefaces.org/ui"> 
         #{ComponentBean.initBean()}
 	    <h:form>
+	    <h:panelGrid id="regGrid">
+	    
 		<p:dataTable id="multiHotels" var="hotel" value="#{ComponentBean.hotelModels}" paginator="true" rows="5"  
-                 selection="#{ComponentBean.selectedHotel}">  
+                 selection="#{ComponentBean.selectedHotel}"  filteredValue="#{ComponentBean.filteredHotels}">  
                 <p:column selectionMode="single" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}"> >  
@@ -44,7 +46,7 @@
               
                <p:commandButton value="Analizza" update="regGrid"
 				action="#{ComponentBean.modificaHotel}" />
-		
+	</h:panelGrid>	
 	</h:form>
 
 </ui:composition>

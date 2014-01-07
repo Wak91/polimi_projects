@@ -10,7 +10,7 @@
 	    <h:form>
 		<p:panel header="Escursione creation">
 		<p:dataTable id="multiEscursioni" var="esc" value="#{ComponentBean.escModels}" paginator="true" rows="5"  
-                 selection="#{ComponentBean.selectedEscursione}">  
+                 selection="#{ComponentBean.selectedEscursione}" filterdValue="#{ComponentBean.filteredVoli}">  
                 
                 <p:column selectionMode="single" style="width:2%" />  
   
