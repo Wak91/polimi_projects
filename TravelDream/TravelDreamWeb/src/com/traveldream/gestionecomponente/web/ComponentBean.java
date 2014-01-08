@@ -13,6 +13,8 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
+import org.primefaces.context.RequestContext;
+
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
@@ -29,7 +31,7 @@ public class ComponentBean {
 	@EJB
 	private ComponentManagerBeanLocal CMB;
 	
-    private HotelDTO hotel;
+    private HotelDTO hotel; 
     private VoloDTO  volo;
     private EscursioneDTO escursione;
     
@@ -111,6 +113,18 @@ public class ComponentBean {
 	public void setFilteredHotels(ArrayList<HotelDTO> filteredHotels) {
 		this.filteredHotels = filteredHotels;
 	}
+	
+	public void getHotelById(int id)
+	{   
+		this.hotel = CMB.getHotelById(id);
+	
+	}
+	
+	public void modifyHotel()
+	{ CMB.modificaHotel(hotel);}
+	
+	public void deleteHotel()
+	{ CMB.eliminaHotel(hotel);}
 //------------------------GETTER_SETTER_VOLO------------------------------------
 	
 	public VoloDTO getVolo() {
@@ -136,6 +150,18 @@ public class ComponentBean {
 	public void setFilteredVoli(ArrayList<VoloDTO> filteredVoli) {
 		this.filteredVoli = filteredVoli;
 	}
+	
+	public void getVoloById(int id)
+	{   
+		this.volo = CMB.getVoloById(id);
+	
+	}
+	
+	public void modificaVolo()
+	{ CMB.modificaVolo(volo);}
+	
+	public void eliminaVolo()
+	{ CMB.eliminaVolo(volo);}
 	
 //-------------------------GETTER_SETTER_ESCURSIONE--------------------------------
 
@@ -163,5 +189,25 @@ public class ComponentBean {
 	public void setFilteredEscursioni(ArrayList<EscursioneDTO> filteredEscursioni) {
 		this.filteredEscursioni = filteredEscursioni;
 	}
+	
+	public void getEscursioneById(int id)
+	{   
+		this.escursione = CMB.getEscursioneById(id);
+	
+	}
+	
+	public void modificaEscursione()
+	{ CMB.modificaEscursione(escursione);}
+	
+	public void eliminaEscursione()
+	{ CMB.eliminaEscursione(escursione);}
+
+	
+	 public void showMessage() {  
+	        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Elemento correttamente modificato", null);  
+	          
+	        RequestContext.getCurrentInstance().showMessageInDialog(message);  
+	    }  
+
 	
 }

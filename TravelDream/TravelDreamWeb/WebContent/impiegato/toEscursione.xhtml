@@ -8,9 +8,8 @@
       xmlns:p="http://primefaces.org/ui"> 
  #{ComponentBean.initBean()}
 	    <h:form>
-		<p:panel header="Escursione creation">
 		<p:dataTable id="multiEscursioni" var="esc" value="#{ComponentBean.escModels}" paginator="true" rows="5"  
-                  filterdValue="#{ComponentBean.filteredEscursioni}">  
+                  filteredValue="#{ComponentBean.filteredEscursioni}">  
                 
                 <p:column headerText="nome" style="width:25%" sortBy="nome" filterBy="#{esc.nome}" >  
                  #{esc.nome}
@@ -28,11 +27,11 @@
                 #{esc.luogo}  
                 </p:column>  
                 
-                <p:column headerText="Modifica" style="width:24%" >  
-				<h:link outcome = "impadd?eid=#{esc.id}"  value="Analizza"/>
-                </p:column>  
+                 <p:column headerText="Modifica" style="width:24%" >  
+                <h:link outcome ="modifyEscursione?id=#{esc.id}"  value="Modifica"/>
+				</p:column> 
+             
               </p:dataTable>
-		</p:panel>
 		
 	</h:form>
 

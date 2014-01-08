@@ -14,4 +14,17 @@ public interface ComponentManagerBeanLocal {
     public ArrayList<HotelDTO> getAllHotel();
 	public List<VoloDTO> getAllVolo();
 	public List<EscursioneDTO> getAllEscursione();
+	
+	public HotelDTO getHotelById(int id);
+	public void modificaHotel(HotelDTO h);
+	public void eliminaHotel(HotelDTO h);
+	
+	public VoloDTO getVoloById(int id);
+	public void modificaVolo(VoloDTO v);
+	public void eliminaVolo(VoloDTO v);
+
+	public EscursioneDTO getEscursioneById(int id);
+	public void modificaEscursione(EscursioneDTO v);
+	public void eliminaEscursione(EscursioneDTO v);
+	
 }

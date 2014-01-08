@@ -8,9 +8,8 @@
       xmlns:p="http://primefaces.org/ui"> 
  #{ComponentBean.initBean()}
 	    <h:form>
-		<p:panel header="Volo creation">
 			<p:dataTable id="Voloselection" var="volo" value="#{ComponentBean.voloModels}" paginator="true" rows="5"  
-                filterdValue="#{ComponentBean.filteredEscursioni}">  
+                filteredValue="#{ComponentBean.filteredEscursioni}">  
               
   
                 <p:column headerText="compagnia" style="width:25%" sortBy="compagnia" filterBy="#{volo.compagnia}">  
@@ -34,11 +33,10 @@
                 </p:column> 
                 
                 <p:column headerText="Modifica" style="width:24%" >  
-				<h:link outcome = "impadd?vid=#{volo.id}"  value="Analizza"/>
-                </p:column>  
+                <h:link outcome = "modifyVolo?id=#{volo.id}"  value="Modifica"/>
+				</p:column> 
+				
               </p:dataTable> 
-		
-		</p:panel>
 		
 	</h:form>
 

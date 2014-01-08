@@ -68,7 +68,36 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		    }
 		return myDTOlist;
 	}
+	
+	public HotelDTO getHotelById(int id)
+	{
+		Hotel result;
+		result = em.createNamedQuery("Hotel.findbyId", Hotel.class).setParameter("d", id).getSingleResult();
+		return HotelToDTO(result);
+	}
 
+	public void modificaHotel(HotelDTO h)
+	{
+		Hotel result;
+		result = em.createNamedQuery("Hotel.findbyId", Hotel.class).setParameter("d", h.getId()).getSingleResult();
+		result.setNome(h.getNome());
+		result.setCosto_giornaliero(h.getCosto_giornaliero());
+		result.setData_inizio(h.getData_inizio());
+		result.setData_fine(h.getData_fine());
+		result.setLuogo(h.getLuogo());
+		result.setStelle(h.getStelle());
+		result.setImmagine(h.getPathtoImage());
+		result.setId(h.getId());
+		em.merge(result);
+	}
+	
+	public void eliminaHotel(HotelDTO h)
+	{
+		
+		em.remove(em.createNamedQuery("Hotel.findbyId", Hotel.class).setParameter("d", h.getId()).getSingleResult());
+		
+	}
+	
 	private HotelDTO HotelToDTO(Hotel h) {
 		HotelDTO hdto = new HotelDTO();
 		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
@@ -95,6 +124,14 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		return myDTOlist;
 	}
 
+
+	public VoloDTO getVoloById(int id)
+	{
+		Volo result;
+		result = em.createNamedQuery("Volo.findbyId", Volo.class).setParameter("d", id).getSingleResult();
+		return VoloToDTO(result);
+	}
+	
 	private VoloDTO VoloToDTO(Volo v) {
 		VoloDTO vdto = new VoloDTO();
 		vdto.setCompagnia(v.getCompagnia());
@@ -106,6 +143,29 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		vdto.setId(v.getId());
 		return vdto;
 	}
+	
+
+	public void modificaVolo(VoloDTO v)
+	{
+		Volo result;
+		result = em.createNamedQuery("Volo.findbyId", Volo.class).setParameter("d", v.getId()).getSingleResult();
+		result.setCompagnia(v.getCompagnia());
+		result.setCosto(v.getCosto());
+		result.setData(v.getData());
+		result.setId(v.getId());
+		result.setImmagine(v.getImmagine());
+		result.setLuogo_arrivo(v.getLuogo_arrivo());
+		result.setLuogo_partenza(v.getLuogo_partenza());
+		em.merge(result);
+	}
+	
+	public void eliminaVolo(VoloDTO v)
+	{
+		
+		em.remove(em.createNamedQuery("Volo.findbyId", Volo.class).setParameter("d", v.getId()).getSingleResult());
+		
+	}
+	
 	
 	public ArrayList<EscursioneDTO> getAllEscursione()
 	{
@@ -129,7 +189,32 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		edto.setId(e.getId());
 		return edto;
 	}
-
+	
+	public void modificaEscursione(EscursioneDTO e)
+	{
+		Escursione result;
+		result = em.createNamedQuery("Escursione.findbyId", Escursione.class).setParameter("d", e.getId()).getSingleResult();
+		result.setCosto(e.getCosto());
+		result.setData(e.getData());
+		result.setId(e.getId());
+		result.setImmagine(e.getImmagine());
+		result.setLuogo(e.getLuogo());
+		result.setNome(e.getNome());
+		em.merge(result);
+	}
+	
+	public void eliminaEscursione(EscursioneDTO e)
+	{
+		
+		em.remove(em.createNamedQuery("Escursione.findbyId", Escursione.class).setParameter("d", e.getId()).getSingleResult());
+		
+	}
+	public EscursioneDTO getEscursioneById(int id)
+	{
+		Escursione result;
+		result = em.createNamedQuery("Escursione.findbyId", Escursione.class).setParameter("d", id).getSingleResult();
+		return EscursioneToDTO(result);
+	}
 
 
 	

@@ -16,7 +16,12 @@ import java.util.List;
  */
 @Entity
 @Table(name="Hotel")
-@NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h")
+@NamedQueries ( 
+		       {
+		    	@NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h"),
+                @NamedQuery(name="Hotel.findbyId", query="SELECT h FROM Hotel h WHERE h.id = :d")
+		        }
+		      )
 public class Hotel implements Serializable {
 	private static final long serialVersionUID = 1L;
 

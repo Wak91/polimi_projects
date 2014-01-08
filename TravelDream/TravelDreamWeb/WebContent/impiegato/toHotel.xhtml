@@ -8,10 +8,10 @@
       xmlns:p="http://primefaces.org/ui"> 
       #{ComponentBean.initBean()} 
         
-	    <h:form>
+	    <h:form id="myform">
 		<p:dataTable id="multiHotels" var="hotel" value="#{ComponentBean.hotelModels}" paginator="true" rows="5"  
-                     filterdValue="#{ComponentBean.filteredHotels}">  
-                
+                     filteredValue="#{ComponentBean.filteredHotels}" selectionMode="single">  
+                        
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
                   <h:outputText value="#{hotel.nome}" />  
                 </p:column>  
@@ -40,10 +40,15 @@
     				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 				</p:column>  
-				<p:column headerText="Modifica" style="width:24%" >  
-				<h:link outcome = "impadd?hid=#{hotel.id}"  value="Analizza"/>
-                </p:column>  
-              </p:dataTable> 
+                
+                <p:column headerText="Modifica" style="width:24%" >  
+                <h:link outcome = "modifyHotel?id=#{hotel.id}"  value="Modifica"/>
+				</p:column> 
+              
+              </p:dataTable>
+              
+              
+                      
 	</h:form>
 
 </ui:composition>
