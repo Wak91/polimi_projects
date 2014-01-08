@@ -123,14 +123,14 @@ public class tableBean {
 	}
 	//---------------------------------------------------------------
 	
-	public String PrelevaSelezionatiECrea()
+	public void PrelevaSelezionatiECrea()
 	{
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
 		
 		PMB.createPacket(packet);
-		return "addPacket.xhtml?faces-redirect=true";
+		
 	}
 
 }

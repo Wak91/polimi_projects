@@ -100,6 +100,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	
 	private HotelDTO HotelToDTO(Hotel h) {
 		HotelDTO hdto = new HotelDTO();
+		hdto.setId(h.getId());
 		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
 		hdto.setData_fine(h.getData_fine());
 		hdto.setData_inizio(h.getData_inizio());
@@ -134,6 +135,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	
 	private VoloDTO VoloToDTO(Volo v) {
 		VoloDTO vdto = new VoloDTO();
+		vdto.setId(v.getId());
 		vdto.setCompagnia(v.getCompagnia());
 		vdto.setCosto(v.getCosto());
 		vdto.setData(v.getData());
@@ -181,6 +183,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 
 	private EscursioneDTO EscursioneToDTO(Escursione e) {
 		EscursioneDTO edto = new EscursioneDTO();
+		edto.setId(e.getId());
 		edto.setCosto(e.getCosto());
 		edto.setData(e.getData());
 		edto.setLuogo(e.getLuogo());

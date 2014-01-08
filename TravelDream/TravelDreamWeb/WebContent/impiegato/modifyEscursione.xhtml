@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="Template.xhtml">
+       
+       <ui:define name="content">
+       #{ComponentBean.getEscursioneById(param['id'])}
+	    <h:form>
+		<p:panel header="Volo modification">
+			
+			<h:panelGrid columns="2" id="regGrid">
+			
+				<h:outputLabel for="nome">Nome escursione:</h:outputLabel>
+				<p:inputText id="nome" value="#{ComponentBean.escursione.nome}" />
+				
+				<h:outputLabel for="luogo">Luogo:</h:outputLabel>
+				<p:inputText id="luogo" value="#{ComponentBean.escursione.luogo}" />
+				
+				<h:outputLabel for="costo">Costo per persona:</h:outputLabel>
+				<p:inputText id="costo" value="#{ComponentBean.escursione.costo}" />
+				
+                <h:outputLabel for="datei">Data partenza</h:outputLabel>
+				<p:calendar id="datei" required="true" value="#{ComponentBean.escursione.data}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
+				
+				
+				</h:panelGrid>
+				 
+                <p:commandButton value="Modifica Escursione" update="regGrid"
+				action="#{ComponentBean.modificaEscursione()}" icon="ui-icon-script"/>
+				
+				 <p:commandButton value="Elimina Escursione" update="regGrid"
+				action="#{ComponentBean.eliminaEscursione()}" icon="ui-icon-script"/>
+				<br></br>
+				<h:link outcome = "impcompo.xhtml" value="Go back" />
+     
+		</p:panel>
+	   
+	</h:form>
+</ui:define>
+</ui:composition>

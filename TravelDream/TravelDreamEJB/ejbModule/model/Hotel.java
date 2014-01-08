@@ -48,7 +48,7 @@ public class Hotel implements Serializable {
 	private int stelle;
 
 	//bi-directional many-to-many association to Pacchetto
-	@ManyToMany(mappedBy="hotels")
+	@ManyToMany(mappedBy="hotels",cascade = CascadeType.PERSIST)
 	private List<Pacchetto> pacchettos;
 
 	  public Hotel() {
@@ -66,6 +66,9 @@ public class Hotel implements Serializable {
 	         this.stelle = hoteldto.getStelle();
 	  }
 
+	public void addPacchetto(Pacchetto pacchetto){
+		pacchettos.add(pacchetto);
+	}
 
 	public int getId() {
 		return this.id;
