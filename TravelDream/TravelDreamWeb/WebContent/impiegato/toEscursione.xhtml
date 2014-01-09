@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  
+      
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+ #{ComponentBean.initBean()}
+	    <h:form>
+		<p:dataTable id="multiEscursioni" var="esc" value="#{ComponentBean.escModels}" paginator="true" rows="5"  
+                  filteredValue="#{ComponentBean.filteredEscursioni}">  
+                
+                <p:column headerText="nome" style="width:25%" sortBy="nome" filterBy="#{esc.nome}" >  
+                 #{esc.nome}
+                </p:column>  
+  
+                <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{esc.data}">  
+                #{esc.data}  
+                </p:column>  
+  
+                <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{esc.costo}">  
+                #{esc.costo}  
+                </p:column>  
+  
+                <p:column headerText="luogo" style="width:24%" sortBy="luogo" filterBy="#{esc.luogo}">  
+                #{esc.luogo}  
+                </p:column>  
+                
+                 <p:column headerText="Modifica" style="width:24%" >  
+                <h:link outcome ="modifyEscursione?id=#{esc.id}"  value="Modifica"/>
+				</p:column> 
+             
+              </p:dataTable>
+		
+	</h:form>
+
+</ui:composition>

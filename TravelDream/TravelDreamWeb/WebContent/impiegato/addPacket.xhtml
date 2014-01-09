@@ -1,45 +1,129 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition 
+     xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
        xmlns:p="http://primefaces.org/ui"
-       > 
-
-<ui:composition template="Template.xhtml">
-
-	<ui:define name="content">
-	    <h:form>
-		<p:panel header="Creazione pacchetto">
+       >
+       #{PacketBean.initBean()}  
+	   <h:form>  
+        <p:panel header="add pack">
 			<h:panelGrid columns="3" id="regGrid">
 				
-				<h:outputLabel for="nome">Nome Pacchetto:</h:outputLabel>
-				<p:inputText id="nome" value="#{PacketBean}" />
+				<h:outputLabel for="nome">Nome:</h:outputLabel>
+				<p:inputText id="nome" value="#{PacketBean.packet.nome}" />
 				<p:message for="nome" />
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
-				<p:inputText id="luogo" value="#{PacketBean}" />
+				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" />
 				<p:message for="luogo" />
 				
-				<h:outputLabel for="datei">Data inizio validità:</h:outputLabel>
-				<p:calendar id="datei" value="#{PacketBean}" navigator="true" display="inline"/>  
-                <p:message for="datei" />
-             
-                <h:outputLabel for="datef">Data fine validità:</h:outputLabel>
-				<p:calendar id="datef" value="#{PacketBean}" navigator="true" display="inline" />  
-                <p:message for="datef" />
-                 
-                 
+                <h:outputLabel for="datei">Data Inizio validità</h:outputLabel>
+				<p:calendar id="datei" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+				</p:calendar>
+				<br></br>
+				<h:outputLabel for="datef">Data Fine validità</h:outputLabel>
+				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+				</p:calendar>
+				<br/>
+		  </h:panelGrid>
+		  <br/>		
+				INSERIMENTO HOTEL   
+				 
+				<p:dataTable id="multiHotels" var="hotel" value="#{PacketBean.hotelModels}" paginator="true" rows="5"  
+                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}">  
+                <p:column selectionMode="multiple" style="width:2%" />  
+  
+                <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
+                 #{hotel.nome}
+                </p:column>  
+  
+                <p:column headerText="Luogo" style="width:25%" sortBy="luogo" filterBy="#{hotel.luogo}">  
+                #{hotel.luogo}  
+                </p:column>  
+  
+                <p:column headerText="Stelle" style="width:24%" sortBy="stelle" filterBy="#{hotel.stelle}">  
+                #{hotel.stelle}  
+                </p:column>  
+  
+                <p:column headerText="Prezzo a persona" style="width:24%" sortBy="costo_giornaliero" filterBy="#{hotel.costo_giornaliero}" >  
+                #{hotel.costo_giornaliero}  
+                </p:column>  
                 
+                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}" filterMatchMode="contains">  
+                 <h:outputText value="#{hotel.data_inizio}">
+    				
+				</h:outputText>
+                  
+                </p:column>  
                 
-                <p:commandButton value="Crea Pacchetto" update="regGrid"
-				action="#{Packet}" />
-        </h:panelGrid>
-		</p:panel>
+                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}" filterMatchMode="contains">  
+                 <h:outputText value="#{hotel.data_fine}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+                </p:column>  
+              </p:dataTable> 
 		
-	</h:form> 
-	</ui:define>
-
+		        INSERIMENTO VOLI   
+		
+				<p:dataTable id="multiVoli" var="volo" value="#{PacketBean.voloModels}" paginator="true" rows="5"  
+                 selection="#{PacketBean.selectedVolo}">  
+                
+                <p:column selectionMode="multiple" style="width:2%" />  
+  
+                <p:column headerText="compagnia" style="width:25%" sortBy="compagnia" filterBy="#{volo.compagnia}">  
+                 #{volo.compagnia}
+                </p:column>  
+  
+                <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
+                #{volo.data}  
+                </p:column>  
+  
+                <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{volo.costo}">  
+                #{volo.costo}  
+                </p:column>  
+  
+                <p:column headerText="partenza" style="width:24%" sortBy="luogo_partenza" filterBy="#{volo.luogo_partenza}">  
+                #{volo.luogo_partenza}  
+                </p:column>  
+                
+                 <p:column headerText="arrivo" style="width:24%" sortBy="luogo_arrivo" filterBy="#{volo.luogo_arrivo}">  
+                #{volo.luogo_arrivo}  
+                </p:column>  
+              </p:dataTable> 
+              
+              INSERIMENTO ESCURSIONI   
+			  	
+				<p:dataTable id="multiEscursioni" var="esc" value="#{PacketBean.escModels}" paginator="true" rows="5"  
+                 selection="#{PacketBean.selectedEsc}">  
+                
+                <p:column selectionMode="multiple" style="width:2%" />  
+  
+                <p:column headerText="nome" style="width:25%" sortBy="nome" filterBy="#{esc.nome}" >  
+                 #{esc.nome}
+                </p:column>  
+  
+                <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{esc.data}">  
+                #{esc.data}  
+                </p:column>  
+  
+                <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{esc.costo}">  
+                #{esc.costo}  
+                </p:column>  
+  
+                <p:column headerText="luogo" style="width:24%" sortBy="luogo" filterBy="#{esc.luogo}">  
+                #{esc.luogo}  
+                </p:column>  
+                
+              </p:dataTable> 
+                 
+                <p:commandButton value="Crea Pacchetto"
+				action="#{PacketBean.PrelevaSelezionatiECrea}" />
+        
+		</p:panel>
+     
+    
+      
+       </h:form>  
 </ui:composition>
-
-</html>

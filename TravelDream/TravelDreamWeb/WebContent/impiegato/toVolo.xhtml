@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  
+      
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+ #{ComponentBean.initBean()}
+	    <h:form>
+			<p:dataTable id="Voloselection" var="volo" value="#{ComponentBean.voloModels}" paginator="true" rows="5"  
+                filteredValue="#{ComponentBean.filteredEscursioni}">  
+              
+  
+                <p:column headerText="compagnia" style="width:25%" sortBy="compagnia" filterBy="#{volo.compagnia}">  
+                 #{volo.compagnia}
+                </p:column>  
+  
+                <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
+                #{volo.data}  
+                </p:column>  
+  
+                <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{volo.costo}">  
+                #{volo.costo}  
+                </p:column>  
+  
+                <p:column headerText="partenza" style="width:24%" sortBy="luogo_partenza" filterBy="#{volo.luogo_partenza}">  
+                #{volo.luogo_partenza}  
+                </p:column>  
+                
+                 <p:column headerText="arrivo" style="width:24%" sortBy="luogo_arrivo" filterBy="#{volo.luogo_arrivo}">  
+                #{volo.luogo_arrivo}  
+                </p:column> 
+                
+                <p:column headerText="Modifica" style="width:24%" >  
+                <h:link outcome = "modifyVolo?id=#{volo.id}"  value="Modifica"/>
+				</p:column> 
+				
+              </p:dataTable> 
+		
+	</h:form>
+
+</ui:composition>
