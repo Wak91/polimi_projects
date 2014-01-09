@@ -23,16 +23,11 @@ public class UserBean {
 		user = new UserDTO();
 	}
 	
-	public void initBean()
-	{
-		setImpModels(new ImpDataModel(userMgr.getAllImp()));	
-	}
+	public void 
     
 	//---------------------SETTER&GETTER USER-------------------------------------
 	
-	private void setImpModels(ImpDataModel impModels) {
-		this.impModels = impModels;
-	}
+	
 
 	public void setUser(UserDTO user) {
 		this.user = user;
