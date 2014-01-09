@@ -19,14 +19,25 @@ public class UserBean {
 	@EJB
 	private UserMgr userMgr;
 
+	public UserBean() {
+		user = new UserDTO();
+	}
+	
+	public void initBean()
+	{
+		setImpModels(new ImpDataModel(userMgr.getAllImp()));	
+	}
+    
+	//---------------------SETTER&GETTER USER-------------------------------------
+	
+	private void setImpModels(ImpDataModel impModels) {
+		this.impModels = impModels;
+	}
+
 	public void setUser(UserDTO user) {
 		this.user = user;
 	}
 	
-	public UserBean() {
-		user = new UserDTO();
-	}
-    
 	public UserDTO getUser() {
 		return user;
 	}
@@ -45,6 +56,8 @@ public class UserBean {
 	{
 		return userMgr.getUserDTO().getLastName();
 	}
+	
+	//------------------------------------------------------------------------------
 	
 	public void validateUsername(FacesContext context,UIComponent component,Object value) throws ValidatorException{
 		if (userMgr.existUsername((String)value)){
