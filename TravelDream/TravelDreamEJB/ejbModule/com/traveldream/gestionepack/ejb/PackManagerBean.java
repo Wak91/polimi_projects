@@ -2,17 +2,14 @@ package com.traveldream.gestionepack.ejb;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-
-
-
-
 
 import model.Escursione;
 import model.Hotel;
@@ -20,6 +17,7 @@ import model.Pacchetto;
 //import model.Pacchetto;
 import model.Volo;
 
+import com.traveldream.gestionecomponente.ejb.ComponentManagerBean;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
@@ -35,7 +33,6 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	
 	@Resource
 	private EJBContext context;
-
 
 
 	@Override
@@ -73,5 +70,31 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		}
 		
 	}	
+	
+	public ArrayList <PacchettoDTO> getAllPack()
+	{
+		List <Pacchetto> mylist;
+		ArrayList <PacchettoDTO> pdto = new ArrayList <PacchettoDTO> ();
+		
+		mylist = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
+		for(Pacchetto p : mylist)
+		   {
+			pdto.add(PacchettoToDTO(p));
+		   }
+		return pdto;
+		
+	}
+	
+	//converto solo la parte relativa ai dati che non dipendono da foreign key
+	private PacchettoDTO PacchettoToDTO(Pacchetto p)
+	{
+		PacchettoDTO pdto = new PacchettoDTO();
+		pdto.setData_fine(p.getData_fine());
+		pdto.setData_inizio(p.getData_inizio());
+		pdto.setDestinazione(p.getDestinazione());
+		pdto.setNome(p.getNome());
+		pdto.setPathtoImage(p.getImmagine());
+		return pdto;
+	}
 
 }

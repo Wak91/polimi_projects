@@ -6,33 +6,33 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
        xmlns:p="http://primefaces.org/ui"
        >
-       #{tableBean.initBean()}  
+       #{PacketBean.initBean()}  
 	   <h:form>  
         <p:panel header="add pack">
 			<h:panelGrid columns="3" id="regGrid">
 				
 				<h:outputLabel for="nome">Nome:</h:outputLabel>
-				<p:inputText id="nome" value="#{tableBean.packet.nome}" />
+				<p:inputText id="nome" value="#{PacketBean.packet.nome}" />
 				<p:message for="nome" />
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
-				<p:inputText id="luogo" value="#{tableBean.packet.destinazione}" />
+				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" />
 				<p:message for="luogo" />
 				
                 <h:outputLabel for="datei">Data Inizio validità</h:outputLabel>
-				<p:calendar id="datei" required="true" value="#{tableBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+				<p:calendar id="datei" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
 				</p:calendar>
 				<br></br>
 				<h:outputLabel for="datef">Data Fine validità</h:outputLabel>
-				<p:calendar id="datef" value="#{tableBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
 				</p:calendar>
 				<br/>
 		  </h:panelGrid>
 		  <br/>		
 				INSERIMENTO HOTEL   
 				 
-				<p:dataTable id="multiHotels" var="hotel" value="#{tableBean.hotelModels}" paginator="true" rows="5"  
-                 selection="#{tableBean.selectedHotels}" filteredValue="#{tableBean.filteredHotels}">  
+				<p:dataTable id="multiHotels" var="hotel" value="#{PacketBean.hotelModels}" paginator="true" rows="5"  
+                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}">  
                 <p:column selectionMode="multiple" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
@@ -67,8 +67,8 @@
 		
 		        INSERIMENTO VOLI   
 		
-				<p:dataTable id="multiVoli" var="volo" value="#{tableBean.voloModels}" paginator="true" rows="5"  
-                 selection="#{tableBean.selectedVolo}">  
+				<p:dataTable id="multiVoli" var="volo" value="#{PacketBean.voloModels}" paginator="true" rows="5"  
+                 selection="#{PacketBean.selectedVolo}">  
                 
                 <p:column selectionMode="multiple" style="width:2%" />  
   
@@ -95,8 +95,8 @@
               
               INSERIMENTO ESCURSIONI   
 			  	
-				<p:dataTable id="multiEscursioni" var="esc" value="#{tableBean.escModels}" paginator="true" rows="5"  
-                 selection="#{tableBean.selectedEsc}">  
+				<p:dataTable id="multiEscursioni" var="esc" value="#{PacketBean.escModels}" paginator="true" rows="5"  
+                 selection="#{PacketBean.selectedEsc}">  
                 
                 <p:column selectionMode="multiple" style="width:2%" />  
   
@@ -119,7 +119,7 @@
               </p:dataTable> 
                  
                 <p:commandButton value="Crea Pacchetto"
-				action="#{tableBean.PrelevaSelezionatiECrea}" />
+				action="#{PacketBean.PrelevaSelezionatiECrea}" />
         
 		</p:panel>
      

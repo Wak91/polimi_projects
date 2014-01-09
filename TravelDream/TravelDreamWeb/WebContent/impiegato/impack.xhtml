@@ -2,12 +2,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
 
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
-	    MODIFICA E RICERCA PACCHETTI
+	    #{PacketBean.initBean()}
+      <p:dataGrid var="pack" value="#{PacketBean.packlist}" columns="3"  
+        rows="12" paginator="true"  
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">  
+  
+        <p:panel  style="text-align:center">  
+            <h:panelGrid columns="1" style="width:100%">  
+                <!--<p:graphicImage value="/images/cars/#{car.manufacturer}.jpg"/>   -->  
+  
+                <h:outputText value="#{pack.nome}" />  
+                <h:outputText value="#{pack.destinazione}" />  
+                
+                <h:outputText value="#{pack.data_inizio}" > 
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>
+                <h:outputText value="#{pack.data_fine}" >
+                <f:convertDateTime pattern="dd/MM/yyyy" /> 
+                </h:outputText>
+  
+                <h:link outcome = "modifyPacket"  value="Modifica"/>
+           </h:panelGrid>  
+        </p:panel>  
+  
+    </p:dataGrid>  
+
 	</ui:define>
 
 </ui:composition>
