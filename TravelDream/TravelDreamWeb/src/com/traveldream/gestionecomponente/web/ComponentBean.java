@@ -123,8 +123,10 @@ public class ComponentBean {
 	public void modifyHotel()
 	{ CMB.modificaHotel(hotel);}
 	
-	public void deleteHotel()
-	{ CMB.eliminaHotel(hotel);}
+	public String deleteHotel(int id)
+	{ CMB.eliminaHotel(id);
+	return "toHotel.xhtml?faces-redirect=true";
+	}
 //------------------------GETTER_SETTER_VOLO------------------------------------
 	
 	public VoloDTO getVolo() {
@@ -160,8 +162,10 @@ public class ComponentBean {
 	public void modificaVolo()
 	{ CMB.modificaVolo(volo);}
 	
-	public void eliminaVolo()
-	{ CMB.eliminaVolo(volo);}
+	public String eliminaVolo(int id)
+	{ CMB.eliminaVolo(id);
+	  return "toVolo.xhtml?faces-redirect=true";
+	}
 	
 //-------------------------GETTER_SETTER_ESCURSIONE--------------------------------
 
@@ -199,15 +203,11 @@ public class ComponentBean {
 	public void modificaEscursione()
 	{ CMB.modificaEscursione(escursione);}
 	
-	public void eliminaEscursione()
-	{ CMB.eliminaEscursione(escursione);}
-
-	
-	 public void showMessage() {  
-	        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Elemento correttamente modificato", null);  
-	          
-	        RequestContext.getCurrentInstance().showMessageInDialog(message);  
-	    }  
+	public String eliminaEscursione(int id)
+	{ 
+      CMB.eliminaEscursione(id);
+	  return "toEscursione.xhtml?faces-redirect=true";
+	}
 
 	
 }

@@ -91,10 +91,10 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		em.merge(result);
 	}
 	
-	public void eliminaHotel(HotelDTO h)
+	public void eliminaHotel(int hid)
 	{
 		
-		em.remove(em.createNamedQuery("Hotel.findbyId", Hotel.class).setParameter("d", h.getId()).getSingleResult());
+		em.remove(em.createNamedQuery("Hotel.findbyId", Hotel.class).setParameter("d", hid).getSingleResult());
 		
 	}
 	
@@ -161,10 +161,10 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		em.merge(result);
 	}
 	
-	public void eliminaVolo(VoloDTO v)
+	public void eliminaVolo(int id)
 	{
 		
-		em.remove(em.createNamedQuery("Volo.findbyId", Volo.class).setParameter("d", v.getId()).getSingleResult());
+		em.remove(em.createNamedQuery("Volo.findbyId", Volo.class).setParameter("d", id).getSingleResult());
 		
 	}
 	
@@ -206,10 +206,10 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		em.merge(result);
 	}
 	
-	public void eliminaEscursione(EscursioneDTO e)
+	public void eliminaEscursione(int id)
 	{
 		
-		em.remove(em.createNamedQuery("Escursione.findbyId", Escursione.class).setParameter("d", e.getId()).getSingleResult());
+		em.remove(em.createNamedQuery("Escursione.findbyId", Escursione.class).setParameter("d",id).getSingleResult());
 		
 	}
 	public EscursioneDTO getEscursioneById(int id)

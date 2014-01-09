@@ -1,14 +1,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<ui:composition  
+<html
       
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"> 
-      #{ComponentBean.initBean()} 
-        
+      <ui:composition template="Template.xhtml">
+      <ui:define name="content">
+         #{ComponentBean.initBean()} 
 	    <h:form id="myform">
+	 <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Add" url="impadd.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>       
+	<p:tabMenu activeIndex="0">  
+    <p:menuitem value="Cerca e modifica Hotel" url="toHotel.xhtml" icon="ui-icon-star"/>  
+    <p:menuitem value="Cerca e modifica Volo" url="toVolo.xhtml" icon="ui-icon-search" />  
+    <p:menuitem value="Cerca e modifica Escursione" url="toEscursione.xhtml" icon="ui-icon-document"/>  
+    </p:tabMenu>  
 		<p:dataTable id="multiHotels" var="hotel" value="#{ComponentBean.hotelModels}" paginator="true" rows="5"  
                      filteredValue="#{ComponentBean.filteredHotels}" selectionMode="single">  
                         
@@ -45,10 +57,15 @@
                 <h:link outcome = "modifyHotel?id=#{hotel.id}"  value="Modifica"/>
 				</p:column> 
               
+               <p:column headerText="Elimina" style="width:24%" >  
+                <p:commandLink action= "#{ComponentBean.deleteHotel(hotel.id)}" value="Elimina" />
+				</p:column> 
+              
               </p:dataTable>
               
               
                       
 	</h:form>
-
+	</ui:define>
 </ui:composition>
+</html>

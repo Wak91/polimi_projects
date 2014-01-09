@@ -17,14 +17,14 @@ public interface ComponentManagerBeanLocal {
 	
 	public HotelDTO getHotelById(int id);
 	public void modificaHotel(HotelDTO h);
-	public void eliminaHotel(HotelDTO h);
+	public void eliminaHotel(int id);
 	
 	public VoloDTO getVoloById(int id);
 	public void modificaVolo(VoloDTO v);
-	public void eliminaVolo(VoloDTO v);
+	public void eliminaVolo(int id);
 
 	public EscursioneDTO getEscursioneById(int id);
 	public void modificaEscursione(EscursioneDTO v);
-	public void eliminaEscursione(EscursioneDTO v);
+	public void eliminaEscursione(int id);
 	
 }

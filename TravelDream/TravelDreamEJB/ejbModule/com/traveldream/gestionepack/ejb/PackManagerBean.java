@@ -85,6 +85,12 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		
 	}
 	
+	public PacchettoDTO getPacchettoByID(int id)
+	{
+		return PacchettoToDTO(em.find(Pacchetto.class, id));
+		
+	}
+	
 	//converto solo la parte relativa ai dati che non dipendono da foreign key
 	private PacchettoDTO PacchettoToDTO(Pacchetto p)
 	{
@@ -94,6 +100,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		pdto.setDestinazione(p.getDestinazione());
 		pdto.setNome(p.getNome());
 		pdto.setPathtoImage(p.getImmagine());
+				
 		return pdto;
 	}
 

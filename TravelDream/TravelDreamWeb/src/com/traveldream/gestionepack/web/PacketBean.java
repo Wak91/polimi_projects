@@ -143,4 +143,9 @@ public class PacketBean {
 		this.packlist = packlist;
 	}
 
+	public void getPacchettoById(int id)
+	{
+		
+		
+	}
 }
