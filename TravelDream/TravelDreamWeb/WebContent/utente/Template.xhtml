@@ -14,12 +14,14 @@
 
 <div id="header">
     <ui:insert name="header">
-		<h:form>
-			<p:commandButton action="#{userBean.logout}" value="Logout" />
-		</h:form>
+     <p:tabMenu>  
+     <p:menuitem value="Pacchetti" url="userhome.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Dati Personali" url="personaldata.xhtml" icon="ui-icon-person" />  
+     <p:menuitem value="I Miei Viaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Gift List" url="invitogift.xhtml" icon="ui-icon-search"/>  
+     </p:tabMenu>   
     </ui:insert>
 </div>
-
 
 <div id="content">
   <ui:insert name="content">
