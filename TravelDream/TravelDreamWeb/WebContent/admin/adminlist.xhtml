@@ -1,54 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<ui:composition  
-      
-      xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"> 
-      #{UserBean.initBean()} 
+      
+      	<ui:composition template="Template.xhtml">
+      
+			<ui:define name="content">
+			
+      #{userBean.initBean()} 
         
 	    <h:form id="myform">
-		<p:dataTable id="multiHotels" var="hotel" value="#{UserBean.hotelModels}" paginator="true" rows="5"  
-                     filteredValue="#{UserBean.filteredHotels}" selectionMode="single">  
+		<p:dataTable id="AllImpiegati" var="utente" value="#{userBean.userModels}" paginator="true" rows="10"  >
+                     filteredValue="#{UserBean.filteredUsers}" selectionMode="single">  
                         
-                <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
-                  <h:outputText value="#{hotel.nome}" />  
+                <p:column headerText="Username" style="width:25%" sortBy="username" filterBy="#{utente.username}">  
+                  <h:outputText value="#{utente.username}" />  
                 </p:column>  
   
-                <p:column headerText="Luogo" style="width:25%" sortBy="luogo" filterBy="#{hotel.luogo}">  
-                <h:outputText value="#{hotel.luogo}" />  
+                <p:column headerText="Nome" style="width:25%" sortBy="firstName" filterBy="#{utente.firstName}">  
+                <h:outputText value="#{utente.firstName}" />  
                 </p:column>  
   
-                <p:column headerText="Stelle" style="width:24%" sortBy="stelle" filterBy="#{hotel.stelle}">  
-                <h:outputText value="#{hotel.stelle}" />    
+                <p:column headerText="Cognome" style="width:24%" sortBy="lastName" filterBy="#{utente.lastName}">  
+                <h:outputText value="#{utente.lastName}" />    
                 </p:column>  
+                
+                <p:column headerText="Mail" style="width:24%" sortBy="email" filterBy="#{utente.email}">  
+                <h:outputText value="#{utente.email}" />    
+                </p:column> 
   
-                <p:column headerText="Prezzo a persona" style="width:24%" sortBy="costo_giornaliero" filterBy="#{hotel.costo_giornaliero}" >  
-                <h:outputText value="#{hotel.costo_giornaliero}" />    
-                </p:column>  
-                
-                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}">  
-                 <h:outputText value="#{hotel.data_inizio}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
-				</h:outputText>
-                  
-                </p:column>  
-                
-                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}">  
-                 <h:outputText value="#{hotel.data_fine}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
-				</h:outputText>
-				</p:column>  
-                
-                <p:column headerText="Modifica" style="width:24%" >  
-                <h:link outcome = "modifyimpiegato?id=#{hotel.id}"  value="Modifica"/>
-				</p:column> 
-              
               </p:dataTable>
               
               
                       
 	</h:form>
-
+</ui:define>
 </ui:composition>
+</html>

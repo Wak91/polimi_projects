@@ -1,5 +1,8 @@
 package com.traveldream.autenticazione.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public interface UserMgr {
 	
@@ -14,4 +17,6 @@ public interface UserMgr {
 	public UserDTO getUserDTO();
 
 	public boolean existUsername(String value);
+
+	public ArrayList<UserDTO> getAllUser();
 }

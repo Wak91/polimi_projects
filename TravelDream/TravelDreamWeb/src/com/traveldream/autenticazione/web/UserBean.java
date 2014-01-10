@@ -1,5 +1,7 @@
 package com.traveldream.autenticazione.web;
 
+import java.util.ArrayList;
+
 import com.traveldream.autenticazione.ejb.*;
 
 import javax.faces.application.FacesMessage;
@@ -15,6 +17,8 @@ import javax.faces.validator.ValidatorException;
 public class UserBean {
 
 	private UserDTO user;
+	private UserDataModel userModels;
+	private ArrayList<UserDTO> filteredUsers;
 	
 	@EJB
 	private UserMgr userMgr;
@@ -23,11 +27,30 @@ public class UserBean {
 		user = new UserDTO();
 	}
 	
-	public void 
-    
+	public void initBean()
+	{
+		setUserModels(new UserDataModel(userMgr.getAllUser()));	
+	}
+
 	//---------------------SETTER&GETTER USER-------------------------------------
 	
 	
+
+	private void setUserModels(UserDataModel userModels) {
+		this.userModels = userModels;		
+	}
+	
+	public UserDataModel getUserModels() {
+		return userModels;
+	}
+	
+	public ArrayList<UserDTO> getFilteredUsers() {
+		return filteredUsers;
+	}
+
+	public void setFilteredUsers(ArrayList<UserDTO> filteredUsers) {
+		this.filteredUsers = filteredUsers;
+	}
 
 	public void setUser(UserDTO user) {
 		this.user = user;

@@ -1,5 +1,8 @@
 package com.traveldream.autenticazione.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.*;
 
 import javax.annotation.Resource;
@@ -7,6 +10,9 @@ import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import com.sun.tools.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 /*
  * Questo è il bean che gestisce
  * gli utenti 
@@ -107,5 +113,24 @@ public class UserManagerBean implements UserMgr {
 		em.persist(usergroup);
 		
 	}
+
+
+
+	public ArrayList<UserDTO> getAllUser() {
+		List<Utente> myList;
+		ArrayList <UserDTO> myDTOlist = new ArrayList <UserDTO> ();
+		Query q = em.createNamedQuery("Utente.findAll", Utente.class);
+		//q.setParameter("impiegato", "IMPIEGATO");
+		myList = q.getResultList();
+		for (Utente u : myList)
+		    {
+			if (u.getUtenteGruppos().get(0).getGruppo().equals("IMPIEGATO"))
+			 myDTOlist.add(this.convertToDTO(u));
+		    }
+		return myDTOlist;
+				
+	}
+	
+	
 
 }
