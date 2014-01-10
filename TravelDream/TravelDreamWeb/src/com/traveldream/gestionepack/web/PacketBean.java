@@ -28,21 +28,18 @@ public class PacketBean {
 	private PacchettoDTO packet;
 	private ArrayList <PacchettoDTO> packlist; 
 	
-    public PacchettoDTO getPacket() {
-		return packet;
-	}
-
-	public void setPacket(PacchettoDTO packet) {
-		this.packet = packet;
-	}
+  
 
 	private HotelDataModel hotelModels;
     private VoloDataModel  voloModels;
     private EscDataModel escModels;
+    private PacchettoDataModel packModels;
 	
     //---INIZIALIZZAZIONE BEAN---
     
-    public PacketBean()
+   
+
+	public PacketBean()
 	{
 
 	selectedHotels  = new ArrayList <HotelDTO>(); // questo per tenere traccia di quelli selezionati
@@ -56,9 +53,31 @@ public class PacketBean {
 		 setHotelModels(new HotelDataModel(CMB.getAllHotel()));	
 		 setVoloModels(new VoloDataModel(CMB.getAllVolo()));
 		 setEscModels(new EscDataModel(CMB.getAllEscursione()));
+		 setPackModels(new PacchettoDataModel(PMB.getAllPack()));
 		 packlist = PMB.getAllPack();
 	}
-	//---------------------------
+	//---FUNZIONI PER PACCHETTI---------------------
+	 public PacchettoDataModel getPackModels() {
+			return packModels;
+		}
+
+	 public void setPackModels(PacchettoDataModel packModels) {
+			this.packModels = packModels;
+		}
+	  public PacchettoDTO getPacket() {
+			return packet;
+		}
+
+	  public void setPacket(PacchettoDTO packet) {
+			this.packet = packet;
+		}
+	  public ArrayList <PacchettoDTO> getPacklist() {
+			return packlist;
+		}
+
+	  public void setPacklist(ArrayList <PacchettoDTO> packlist) {
+			this.packlist = packlist;
+		}
 	
 	//---FUNZIONI PER I VOLI-----------------------------------------
 	
@@ -135,12 +154,6 @@ public class PacketBean {
 		
 	}
 	
-	public ArrayList <PacchettoDTO> getPacklist() {
-		return packlist;
-	}
-
-	public void setPacklist(ArrayList <PacchettoDTO> packlist) {
-		this.packlist = packlist;
-	}
+	
 
 }

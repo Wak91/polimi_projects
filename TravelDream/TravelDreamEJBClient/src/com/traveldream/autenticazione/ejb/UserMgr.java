@@ -7,7 +7,7 @@ public interface UserMgr {
 	
 	public void saveImpiegato(UserDTO user);
 	
-	public void update(UserDTO user);
+	public void modifyUser(UserDTO user);
 	
 	public void unregister();
 	

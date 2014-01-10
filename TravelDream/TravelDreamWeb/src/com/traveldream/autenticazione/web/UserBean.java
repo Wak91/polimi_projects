@@ -63,6 +63,14 @@ public class UserBean {
 		return "admin/adminhome?faces-redirect=true";
 	}
 	
+	public void getcurrentUser() {
+		this.user=userMgr.getUserDTO();
+	}
+	
+	public void modificaUtente(){
+		userMgr.modifyUser(user);
+	}
+	
 	public String logout() {
 	    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 	    return "/homepage?faces-redirect=true";
