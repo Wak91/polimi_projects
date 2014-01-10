@@ -2,12 +2,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"> 
 
-<h:head></h:head> 
-<h:body>
-	Home Utente
-</h:body>
-	
+<ui:composition template="Template.xhtml">
 
+	<ui:define name="content">
+	    #{PacketBean.initBean()}
+      <h:form id="form">  
+  
+    <p:dataTable var="pack" value="#{PacketBean.packModels}" rowKey="#{pack.nome}" paginator="true" rows="10"  
+                selection="#{PacketBean.packet}" selectionMode="single" filteredValue="#{PacketBean.packlist}" id="packTable">  
+  
+        
+  
+        <f:facet name="header">  
+            <h:outputText value="Pacchetto" />  
+        </f:facet>  
+  
+        <p:column headerText="Nome" sortBy="nome" filterBy="#{pack.nome}" id="pack">  
+            <h:outputText value="#{pack.nome}" />  
+        </p:column>  
+        
+         <p:column headerText="Destinazione" sortBy="destinazione" filterBy="#{pack.destinazione}" id="destinazione">  
+            <h:outputText value="#{pack.destinazione}" />  
+        </p:column> 
+  
+        <p:column headerText="Data inizio" sortBy="data_inizio" filterBy="#{pack.data_inizio}" id="datainizio">  
+            <h:outputText value="#{pack.data_inizio}" />  
+        </p:column>  
+  
+        <p:column headerText="Data fine" sortBy="data_fine" filterBy="#{pack.data_fine}" id="datafine">  
+            <h:outputText value="#{pack.data_fine}" />  
+        </p:column>   
+  
+    </p:dataTable>  
+    </h:form>  
+     
+
+	</ui:define>
+
+</ui:composition>
 </html>

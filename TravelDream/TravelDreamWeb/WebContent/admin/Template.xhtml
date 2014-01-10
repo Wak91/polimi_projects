@@ -14,7 +14,12 @@
 
 <div id="header">
     <ui:insert name="header">
-    	<div>Questo è header</div>
+    	<h:link outcome = "adminhome.xhtml" value="Account"/> 
+    	<h:link outcome = "adminlist.xhtml" value="Lista"/>
+        <h:link outcome = "addImpiegato.xhtml" value="Aggiunta"/>
+        <h:form>
+			<p:commandButton action="#{userBean.logout}" value="Logout" />
+		</h:form>
     </ui:insert>
 </div>
 
@@ -31,7 +36,7 @@
 
 <div id="footer">
   <ui:insert name="footer">
-    	<div>Questo e il footer per l'impiegato</div>
+    	<div>Questo e il footer per l'admin</div>
   </ui:insert>
 </div>
 

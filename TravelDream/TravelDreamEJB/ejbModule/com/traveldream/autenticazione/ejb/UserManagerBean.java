@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 /*
- * Questo è il bean che gestisce
+ * Questo il bean che gestisce
  * gli utenti 
  * */
 @Stateless
@@ -40,9 +40,16 @@ public class UserManagerBean implements UserMgr {
 	
 
 	@Override
-	public void update(UserDTO user) {
+	public void modifyUser(UserDTO user) {
+		Utente result;
+		result = em.find(Utente.class, user.getUsername());
+		result.setNome(user.getFirstName());
+		result.setCognome(user.getLastName());
+		result.setData_di_nascita(user.getData());
+		result.setEmail(user.getEmail());
+		result.setPassword(user.getPassword());
+		em.merge(result);
 		
-
 	}
 
 	@Override
@@ -89,6 +96,23 @@ public class UserManagerBean implements UserMgr {
 		}
 			
 		return false;
+	}
+
+	
+
+	@Override
+	public void saveImpiegato(UserDTO userdto) {
+		// TODO Auto-generated method stub
+		
+		Utente  user = new Utente(userdto);	//aggiungo alla tabella Utente una tupla utilizzanto il DTO
+		
+		UtenteGruppo usergroup = new UtenteGruppo();	//aggiungo una tupla a UtenteGruppo settando manualmente i parametri
+		usergroup.setGruppo(Group._IMPIEGATO);	
+		usergroup.setUtente(user);
+	
+		em.persist(user);
+		em.persist(usergroup);
+		
 	}
 
 }

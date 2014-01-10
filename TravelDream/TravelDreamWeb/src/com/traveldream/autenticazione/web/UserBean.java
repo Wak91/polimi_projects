@@ -1,5 +1,6 @@
 package com.traveldream.autenticazione.web;
 
+import com.sun.mail.util.LogOutputStream;
 import com.traveldream.autenticazione.ejb.*;
 
 import javax.faces.application.FacesMessage;
@@ -57,7 +58,23 @@ public class UserBean {
 		return "utente/userhome?faces-redirect=true";
 	}
 	
+	public String addImpiegato(){
+		userMgr.saveImpiegato(user);
+		return "admin/adminhome?faces-redirect=true";
+	}
 	
+	public void getcurrentUser() {
+		this.user=userMgr.getUserDTO();
+	}
+	
+	public void modificaUtente(){
+		userMgr.modifyUser(user);
+	}
+	
+	public String logout() {
+	    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+	    return "/homepage?faces-redirect=true";
+	  }
 	
 	
 }
