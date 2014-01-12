@@ -129,7 +129,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	
 	public void deletePacchetto(int id)
 	{
-		em.remove(em.find(Pacchetto.class, id));
+		em.remove(em.find(Pacchetto.class,id));
 		
 	}
 	

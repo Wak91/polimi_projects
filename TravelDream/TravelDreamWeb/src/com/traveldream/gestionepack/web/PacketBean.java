@@ -145,13 +145,14 @@ public class PacketBean {
 	}
 	//---------------------------------------------------------------
 	
-	public void PrelevaSelezionatiECrea()
+	public String PrelevaSelezionatiECrea()
 	{
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
 		
 		PMB.createPacket(packet);
+		return "impadd.xhtml?faces-redirect=true";
 		
 	}
 	
@@ -164,10 +165,10 @@ public class PacketBean {
 		
 	}
 	
-	public String deletePacchetto()
-	{ 	System.out.println("deleting packet "+packet.getId());
-		PMB.deletePacchetto(packet.getId());
-	return "impack.xhtml?faces-redirect=true";
+	public void deletePacchetto(int id)
+	{ 	
+		PMB.deletePacchetto(id);
+	
 	}
 	
 
