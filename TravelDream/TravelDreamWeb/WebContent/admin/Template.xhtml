@@ -14,6 +14,7 @@
 
 <div id="header">
     <ui:insert name="header">
+
     
     <p:button outcome="adminhome.xhtml" value="Account"> 
 	</p:button> 
@@ -23,6 +24,10 @@
 	</p:button> 
 	
 	</ui:insert>
+
+        <h:form>
+			<p:commandButton action="#{userBean.logout}" value="Logout" />
+		</h:form>
 </div>
 
 

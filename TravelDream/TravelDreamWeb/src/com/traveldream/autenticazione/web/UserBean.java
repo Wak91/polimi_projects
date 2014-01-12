@@ -2,6 +2,7 @@ package com.traveldream.autenticazione.web;
 
 import java.util.ArrayList;
 
+import com.sun.mail.util.LogOutputStream;
 import com.traveldream.autenticazione.ejb.*;
 
 import javax.faces.application.FacesMessage;
@@ -101,18 +102,11 @@ public class UserBean {
 		return "admin/adminhome?faces-redirect=true";
 	}
 	
-	public void onEdit(RowEditEvent event) {  
-        FacesMessage msg = new FacesMessage("Impiegato Editato", ((UserDTO) event.getObject()).getUsername());  
-  
-        FacesContext.getCurrentInstance().addMessage(null, msg);  
-    }  
-      
-    public void onCancel(RowEditEvent event) {  
-        FacesMessage msg = new FacesMessage("Impiegato Eliminato", ((UserDTO) event.getObject()).getUsername());  
-  
-        FacesContext.getCurrentInstance().addMessage(null, msg);  
-    }  
-	
+
+	public String logout() {
+	    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+	    return "/homepage?faces-redirect=true";
+	  }
 	
 	
 }
