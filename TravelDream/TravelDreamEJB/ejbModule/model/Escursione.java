@@ -41,7 +41,7 @@ public class Escursione implements Serializable {
 	private String nome;
 
 	//bi-directional many-to-many association to Pacchetto
-	@ManyToMany(mappedBy="escursiones",cascade = CascadeType.PERSIST)
+	@ManyToMany(mappedBy="escursiones")
 	private List<Pacchetto> pacchettos;
 
     public Escursione() {

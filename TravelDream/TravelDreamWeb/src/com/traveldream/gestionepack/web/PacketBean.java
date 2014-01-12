@@ -164,10 +164,12 @@ public class PacketBean {
 		
 	}
 	
-	public String deletePacchetto(int id)
-	{ PMB.deletePacchetto(id);
+	public String deletePacchetto()
+	{ 	System.out.println("deleting packet "+packet.getId());
+		PMB.deletePacchetto(packet.getId());
 	return "impack.xhtml?faces-redirect=true";
 	}
+	
 
 	public ArrayList<EscursioneDTO> getFilteredEscursiones() {
 		return filteredEscursiones;

@@ -43,7 +43,7 @@ public class Volo implements Serializable {
 	private String luogo_partenza;
 
 	//bi-directional many-to-many association to Pacchetto
-	@ManyToMany( cascade = CascadeType.ALL)
+	@ManyToMany()
 	@JoinTable(
 		name="VoloPacchetto"
 		, joinColumns={
