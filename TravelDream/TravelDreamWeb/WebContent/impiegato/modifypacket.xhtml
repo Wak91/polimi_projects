@@ -39,8 +39,8 @@
 				<br></br>
 				INSERIMENTO HOTEL   
 				 
-				<p:dataTable id="multiHotels" var="hotel" value="#{PacketBean.hotelModels}" paginator="true" rows="5"  
-                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}">  
+				<p:dataTable id="multiHotels" dynamic="true" var="hotel" value="#{PacketBean.hotelModels}" paginator="true" rows="25"  
+                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}" >  
                 <p:column selectionMode="multiple" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
@@ -78,7 +78,7 @@
 				</h:panelGrid>
 			 
                 <p:commandButton value="Modifica Hotel" update="regGrid"
-				action="#{PacketBean.modifyPacket()}" icon="ui-icon-script"/>
+				action="#{PacketBean.modificaPacchetto(pack.id)}" icon="ui-icon-script"/>
      
 		</p:panel>
 	   

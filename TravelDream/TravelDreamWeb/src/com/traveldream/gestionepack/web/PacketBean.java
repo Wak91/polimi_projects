@@ -11,7 +11,7 @@ import com.traveldream.gestionepack.ejb.PacchettoDTO;
 import com.traveldream.gestionepack.ejb.PackManagerBeanLocal;
 
 @ManagedBean(name="PacketBean") 
-@SessionScoped
+@ViewScoped
 public class PacketBean {
 
 	@EJB
@@ -145,6 +145,21 @@ public class PacketBean {
 	}
 	//---------------------------------------------------------------
 	
+	public void getPacchettoById(int id)
+	{	initBean();
+		this.packet = PMB.getPacchettoByID(id);
+		this.selectedEsc = (ArrayList<EscursioneDTO>) packet.getLista_escursioni();
+		this.selectedHotels = (ArrayList<HotelDTO>) packet.getLista_hotel();
+		
+		for (HotelDTO hotelDTO : selectedHotels) {
+			System.out.println("Selezionato hotel" + hotelDTO.getNome());
+			
+		}
+		this.selectedVolo = (ArrayList<VoloDTO>) packet.getLista_voli();
+		
+	}
+	
+	
 	public String PrelevaSelezionatiECrea()
 	{
 		packet.setLista_escursioni(selectedEsc);
@@ -156,19 +171,18 @@ public class PacketBean {
 		
 	}
 	
-	public void getPacchettoById(int id)
-	{
-		this.packet = PMB.getPacchettoByID(id);
-		this.selectedEsc = (ArrayList<EscursioneDTO>) packet.getLista_escursioni();
-		this.selectedHotels = (ArrayList<HotelDTO>) packet.getLista_hotel();
-		this.selectedVolo = (ArrayList<VoloDTO>) packet.getLista_voli();
-		
-	}
-	
 	public void deletePacchetto(int id)
 	{ 	
 		PMB.deletePacchetto(id);
+	}
 	
+	public String  modificaPacchetto(int id) {
+		packet.setLista_escursioni(selectedEsc);
+		packet.setLista_hotel(selectedHotels);
+		packet.setLista_voli(selectedVolo);
+		System.out.println("ID packet "+packet.getId());
+		PMB.modifyPacchetto(packet);
+		return "impack.xhtml?faces-redirect=true";
 	}
 	
 

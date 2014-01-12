@@ -9,5 +9,6 @@ public interface PackManagerBeanLocal {
 	public ArrayList <PacchettoDTO> getAllPack();
 	public PacchettoDTO getPacchettoByID(int id);
 	public void deletePacchetto(int id);
+	public void modifyPacchetto(PacchettoDTO packet);
 
 }
