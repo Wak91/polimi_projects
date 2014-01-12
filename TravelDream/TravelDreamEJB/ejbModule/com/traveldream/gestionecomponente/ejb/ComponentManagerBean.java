@@ -1,6 +1,7 @@
 package com.traveldream.gestionecomponente.ejb;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import javax.persistence.PersistenceContext;
 
 import model.Escursione;
 import model.Hotel;
+import model.Pacchetto;
 import model.Volo;
 
 /**
@@ -93,7 +95,22 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	
 	public void eliminaHotel(int hid)
 	{
-		
+		List<Pacchetto> pacchetti = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
+		for (Pacchetto pacchetto :pacchetti){
+			List<Hotel> toremoveHotels =new ArrayList<Hotel>();
+			Iterator<Hotel> iterator =pacchetto.getHotels().iterator();
+			while (iterator.hasNext()) {
+				Hotel hotel = (Hotel) iterator.next();
+				if (hotel.getId()==hid) {
+					toremoveHotels.add(hotel);
+				}
+			}
+			for (Hotel hremove : toremoveHotels){
+				pacchetto.getHotels().remove(hremove);
+			}
+			
+		}
+
 		em.remove(em.createNamedQuery("Hotel.findbyId", Hotel.class).setParameter("d", hid).getSingleResult());
 		
 	}

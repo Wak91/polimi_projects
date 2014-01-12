@@ -29,7 +29,6 @@
 				
                   <h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
 				<p:calendar id="datei" binding="#{dates}" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
-				<p:message for="datef"/>
 				
 				<h:outputLabel for="datef">Data Fine Validità</h:outputLabel>
 				<p:calendar id="datef" required="true" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
@@ -130,7 +129,7 @@
               </p:dataTable> 
 				
 			 
-                <p:commandButton value="Modifica Hotel" update="regGrid"
+                <p:commandButton value="Modifica Pacchetto" update="regGrid"
 				action="#{PacketBean.modificaPacchetto(pack.id)}" icon="ui-icon-script"/>
      
 		</p:panel>
