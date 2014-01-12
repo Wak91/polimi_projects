@@ -116,11 +116,10 @@ public class UserManagerBean implements UserMgr {
 
 
 
-	public ArrayList<UserDTO> getAllUser() {
+	public ArrayList<UserDTO> getAllImp() {
 		List<Utente> myList;
 		ArrayList <UserDTO> myDTOlist = new ArrayList <UserDTO> ();
 		Query q = em.createNamedQuery("Utente.findAll", Utente.class);
-		//q.setParameter("impiegato", "IMPIEGATO");
 		myList = q.getResultList();
 		for (Utente u : myList)
 		    {

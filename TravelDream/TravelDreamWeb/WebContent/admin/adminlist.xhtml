@@ -5,41 +5,45 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"> 
       
-      	<ui:composition template="Template.xhtml">
+        <ui:composition template="Template.xhtml">
       
-			<ui:define name="content">
-			
+    <ui:define name="content">
+      
       #{userBean.initBean()} 
         
-	    <h:form id="myform">
-		<p:dataTable id="AllImpiegati" var="utente" value="#{userBean.userModels}" paginator="true" rows="10" rowKey="#{utente.username}"  >
-                     filteredValue="#{userBean.filteredUsers}" selection="#{userBean.selectedUser}" selectionMode="single">  
+      <h:form id="myform">
+    <p:dataTable id="username" var="utente" value="#{userBean.userModels}" paginator="true" rows="10"  filterMatchMode="contains" rowKey="username"
+                     filteredValue="#{userBean.filteredUsers}"  selectionMode="single">  
                      
                 <f:facet name="header">  
-            		IMPIEGATI 
-        		</f:facet>
+                IMPIEGATI 
+            </f:facet>
                         
-                <p:column headerText="Username" style="width:25%" sortBy="username" filterBy="username">  
-                  #{utente.username}	
+                <p:column headerText="Username" style="width:25%" sortBy="#{utente.username}" filterBy="#{utente.username}">  
+        		<h:outputText value="#{utente.username}" />
                 </p:column>  
   
-                <p:column headerText="Nome" style="width:25%" sortBy="firstName" filterBy="firstName">  
-                #{utente.firstName}
+                <p:column headerText="Nome" style="width:25%" sortBy="firstName" filterBy="#{utente.firstName}">  
+                <h:outputText value="#{utente.firstName}" />  
                 </p:column>  
   
-                <p:column headerText="Cognome" style="width:24%" sortBy="lastName" filterBy="lastName">  
-      			#{utente.lastName}
+                <p:column headerText="Cognome" style="width:24%" sortBy="lastName" filterBy="#{utente.lastName}">  
+                <h:outputText value="#{utente.lastName}" />    
                 </p:column>  
                 
-                <p:column headerText="Mail" style="width:24%" sortBy="email" filterBy="email">  
- 				#{utente.email}
+                <p:column headerText="Mail" style="width:24%" sortBy="email" filterBy="#{utente.email}">  
+                <h:outputText value="#{utente.email}" />    
                 </p:column> 
+                
+                <p:column headerText="Modifica" style="width:24%" >  
+                <h:link outcome = "modifyImp?id=#{utenteGruppo.getId}"  value="Modifica"/>
+				</p:column>
   
               </p:dataTable>
               
               
                       
-	</h:form>
+  </h:form>
 </ui:define>
 </ui:composition>
 </html>

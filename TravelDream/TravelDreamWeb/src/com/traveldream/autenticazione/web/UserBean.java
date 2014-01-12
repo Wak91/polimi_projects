@@ -7,30 +7,38 @@ import com.traveldream.autenticazione.ejb.*;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.ejb.EJB;
-import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.faces.view.ViewScoped;
+
+import org.primefaces.event.RowEditEvent;
 
 @ManagedBean(name="userBean")
-@RequestScoped
+@ViewScoped
 public class UserBean {
-
+	
+	@EJB
+	private UserMgr userMgr;
+	
 	private UserDTO user;
 	private UserDataModel userModels;
 	private ArrayList<UserDTO> filteredUsers;
 	
-	@EJB
-	private UserMgr userMgr;
-
 	public UserBean() {
 		user = new UserDTO();
 	}
 	
 	public void initBean()
 	{
-		setUserModels(new UserDataModel(userMgr.getAllUser()));	
+		setUserModels(new UserDataModel(userMgr.getAllImp()));	
 	}
+	
+	public String createUser(){
+		userMgr.saveImpiegato(user);
+		return "impadd.xhtml?faces-redirect=true";
+	}
+		
 
 	//---------------------SETTER&GETTER USER-------------------------------------
 	
@@ -92,6 +100,18 @@ public class UserBean {
 		userMgr.saveImpiegato(user);
 		return "admin/adminhome?faces-redirect=true";
 	}
+	
+	public void onEdit(RowEditEvent event) {  
+        FacesMessage msg = new FacesMessage("Impiegato Editato", ((UserDTO) event.getObject()).getUsername());  
+  
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }  
+      
+    public void onCancel(RowEditEvent event) {  
+        FacesMessage msg = new FacesMessage("Impiegato Eliminato", ((UserDTO) event.getObject()).getUsername());  
+  
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }  
 	
 	
 	
