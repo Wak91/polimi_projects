@@ -37,32 +37,19 @@ public class PackManagerBean implements PackManagerBeanLocal {
 
 	@Override
 	public void createPacket(PacchettoDTO packetDTO) {
-		Hotel hotel;
-		Volo volo;
-		Escursione escursione;
+
 		Pacchetto pacchetto = new Pacchetto();
 		pacchetto.setNome(packetDTO.getNome());
 		pacchetto.setDestinazione(packetDTO.getDestinazione());
 		pacchetto.setData_inizio(packetDTO.getData_inizio());
 		pacchetto.setData_fine(packetDTO.getData_fine());
 		pacchetto.setImmagine(packetDTO.getPathtoImage());
+		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
+		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
+		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
 		em.persist(pacchetto);
 		em.flush();
-		pacchetto = em.find(Pacchetto.class, pacchetto.getId());
-
-		for (HotelDTO hotelDTO : packetDTO.getLista_hotel()) {
-			hotel = em.find(Hotel.class, hotelDTO.getId());
-			
-			pacchetto.addHotel(hotel);
-		}
-		for (VoloDTO voloDTO : packetDTO.getLista_voli()) {
-			volo = em.find(Volo.class, voloDTO.getId());
-			pacchetto.addVolo(volo);
-		}
-		for (EscursioneDTO escursioneDTO :packetDTO.getLista_escursioni()){
-			escursione = em.find(Escursione.class, escursioneDTO.getId());
-			pacchetto.addEscursione(escursione);
-		}
+		
 		
 	}	
 	
@@ -179,23 +166,9 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		pacchetto.setData_fine(packetDTO.getData_fine());
 		pacchetto.setImmagine(packetDTO.getPathtoImage());
 		
-		Hotel hotel;
-		Volo volo;
-		Escursione escursione;
-		for (HotelDTO hotelDTO : packetDTO.getLista_hotel()) {
-			hotel = em.find(Hotel.class, hotelDTO.getId());
-			
-			pacchetto.addHotel(hotel);
-		}
-		for (VoloDTO voloDTO : packetDTO.getLista_voli()) {
-			volo = em.find(Volo.class, voloDTO.getId());
-			pacchetto.addVolo(volo);
-		}
-		for (EscursioneDTO escursioneDTO :packetDTO.getLista_escursioni()){
-			escursione = em.find(Escursione.class, escursioneDTO.getId());
-			pacchetto.addEscursione(escursione);
-
-		}
+		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
+		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
+		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
 		em.merge(pacchetto);
 		em.flush();
 		
