@@ -7,7 +7,6 @@ import javax.persistence.*;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
 
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -42,18 +41,6 @@ public class Volo implements Serializable {
 	@Column(name="`Luogo partenza`")
 	private String luogo_partenza;
 
-	//bi-directional many-to-many association to Pacchetto
-	@ManyToMany()
-	@JoinTable(
-		name="VoloPacchetto"
-		, joinColumns={
-			@JoinColumn(name="Voli_ID")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="Pacchetto_ID")
-			}
-		)
-	private List<Pacchetto> pacchettos;
 
     public Volo() {
     super();
@@ -69,9 +56,7 @@ public class Volo implements Serializable {
      this.immagine = ""; // da sistemare 
   }
   
-  public void addPacchetto(Pacchetto pacchetto){
-		pacchettos.add(pacchetto);
-	}
+
   
 	public int getId() {
 		return this.id;
@@ -129,12 +114,6 @@ public class Volo implements Serializable {
 		this.luogo_partenza = luogo_partenza;
 	}
 
-	public List<Pacchetto> getPacchettos() {
-		return this.pacchettos;
-	}
 
-	public void setPacchettos(List<Pacchetto> pacchettos) {
-		this.pacchettos = pacchettos;
-	}
 
 }

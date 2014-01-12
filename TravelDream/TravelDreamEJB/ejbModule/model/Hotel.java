@@ -7,7 +7,6 @@ import javax.persistence.*;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -47,9 +46,6 @@ public class Hotel implements Serializable {
 
 	private int stelle;
 
-	//bi-directional many-to-many association to Pacchetto
-	@ManyToMany(mappedBy="hotels")
-	private List<Pacchetto> pacchettos;
 
 	  public Hotel() {
 		    super();
@@ -65,10 +61,6 @@ public class Hotel implements Serializable {
 	         this.immagine = ""; // da sistemare
 	         this.stelle = hoteldto.getStelle();
 	  }
-
-	public void addPacchetto(Pacchetto pacchetto){
-		pacchettos.add(pacchetto);
-	}
 
 	public int getId() {
 		return this.id;
@@ -134,12 +126,6 @@ public class Hotel implements Serializable {
 		this.stelle = stelle;
 	}
 
-	public List<Pacchetto> getPacchettos() {
-		return this.pacchettos;
-	}
 
-	public void setPacchettos(List<Pacchetto> pacchettos) {
-		this.pacchettos = pacchettos;
-	}
 
 }

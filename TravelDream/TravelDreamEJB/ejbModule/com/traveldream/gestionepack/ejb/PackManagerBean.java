@@ -54,17 +54,14 @@ public class PackManagerBean implements PackManagerBeanLocal {
 			hotel = em.find(Hotel.class, hotelDTO.getId());
 			
 			pacchetto.addHotel(hotel);
-			hotel.addPacchetto(pacchetto);
 		}
 		for (VoloDTO voloDTO : packetDTO.getLista_voli()) {
 			volo = em.find(Volo.class, voloDTO.getId());
 			pacchetto.addVolo(volo);
-			volo.addPacchetto(pacchetto);
 		}
 		for (EscursioneDTO escursioneDTO :packetDTO.getLista_escursioni()){
 			escursione = em.find(Escursione.class, escursioneDTO.getId());
 			pacchetto.addEscursione(escursione);
-			escursione.addPacchetto(pacchetto);
 		}
 		
 	}	
@@ -189,21 +186,45 @@ public class PackManagerBean implements PackManagerBeanLocal {
 			hotel = em.find(Hotel.class, hotelDTO.getId());
 			
 			pacchetto.addHotel(hotel);
-			hotel.addPacchetto(pacchetto);
 		}
 		for (VoloDTO voloDTO : packetDTO.getLista_voli()) {
 			volo = em.find(Volo.class, voloDTO.getId());
 			pacchetto.addVolo(volo);
-			volo.addPacchetto(pacchetto);
 		}
 		for (EscursioneDTO escursioneDTO :packetDTO.getLista_escursioni()){
 			escursione = em.find(Escursione.class, escursioneDTO.getId());
 			pacchetto.addEscursione(escursione);
-			escursione.addPacchetto(pacchetto);
+
 		}
 		em.merge(pacchetto);
 		em.flush();
 		
 	}
+	
+	 private List<Escursione> DTOtoEntityEscursione(List<EscursioneDTO> escursioneDTOs){
+         ArrayList<Escursione> listaEscursioni = new ArrayList<Escursione>();
+         for (EscursioneDTO escursioneDTO :escursioneDTOs){
+                 Escursione nuovaesc = em.find(Escursione.class, escursioneDTO.getId());
+                 listaEscursioni.add(nuovaesc);
+         }
+         return listaEscursioni;
+ }
+	 private List<Volo> DTOtoEntityVolo(List<VoloDTO> voloDTOs){
+         ArrayList<Volo> listavolo = new ArrayList<Volo>();
+         for (VoloDTO voloDTO :voloDTOs){
+                 Volo nuovovolo = em.find(Volo.class, voloDTO.getId());
+                 listavolo.add(nuovovolo);
+         }
+         return listavolo;
+ }
+	  private List<Hotel> DTOtoEntityHotel(List<HotelDTO> hotelDTOs){
+          ArrayList<Hotel> listaHotel = new ArrayList<Hotel>();
+          for (HotelDTO hotelDTO : hotelDTOs){
+                  Hotel nuovohotel = em.find(Hotel.class, hotelDTO.getId());
+                  listaHotel.add(nuovohotel);
+          }
+          return listaHotel;
+  }
+	
 
 }
