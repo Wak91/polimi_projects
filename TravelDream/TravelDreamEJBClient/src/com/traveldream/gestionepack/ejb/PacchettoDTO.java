@@ -11,6 +11,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class PacchettoDTO {
 
+	private int id;
+	
 	@NotEmpty 
 	private String nome;
 	
@@ -97,6 +99,14 @@ public class PacchettoDTO {
 
 	public void setLista_escursioni(List<EscursioneDTO> lista_escursioni) {
 		this.lista_escursioni = lista_escursioni;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

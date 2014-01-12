@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import com.traveldream.gestionecomponente.ejb.*;
 import com.traveldream.gestionepack.ejb.PacchettoDTO;
@@ -19,15 +20,15 @@ public class PacketBean {
 	private ComponentManagerBeanLocal CMB;
 	
 	private ArrayList <HotelDTO> selectedHotels;
-	private ArrayList<HotelDTO> filteredHotels;
-	
-
 	private ArrayList <VoloDTO>  selectedVolo;
 	private ArrayList <EscursioneDTO> selectedEsc;
 	
 	private PacchettoDTO packet;
 	private ArrayList <PacchettoDTO> packlist; 
 	
+	private ArrayList<HotelDTO> filteredHotels;
+	private ArrayList<EscursioneDTO> filteredEscursiones;
+	private ArrayList<VoloDTO> filteredVolos;
   
 
 	private HotelDataModel hotelModels;
@@ -154,11 +155,33 @@ public class PacketBean {
 		
 	}
 	
-	
-
 	public void getPacchettoById(int id)
 	{
+		this.packet = PMB.getPacchettoByID(id);
+		this.selectedEsc = (ArrayList<EscursioneDTO>) packet.getLista_escursioni();
+		this.selectedHotels = (ArrayList<HotelDTO>) packet.getLista_hotel();
+		this.selectedVolo = (ArrayList<VoloDTO>) packet.getLista_voli();
 		
-		
+	}
+	
+	public String deletePacchetto(int id)
+	{ PMB.deletePacchetto(id);
+	return "impack.xhtml?faces-redirect=true";
+	}
+
+	public ArrayList<EscursioneDTO> getFilteredEscursiones() {
+		return filteredEscursiones;
+	}
+
+	public void setFilteredEscursiones(ArrayList<EscursioneDTO> filteredEscursiones) {
+		this.filteredEscursiones = filteredEscursiones;
+	}
+
+	public ArrayList<VoloDTO> getFilteredVolos() {
+		return filteredVolos;
+	}
+
+	public void setFilteredVolos(ArrayList<VoloDTO> filteredVolos) {
+		this.filteredVolos = filteredVolos;
 	}
 }

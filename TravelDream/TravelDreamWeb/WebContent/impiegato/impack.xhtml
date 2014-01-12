@@ -8,6 +8,7 @@
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
+	
 	 <p:tabMenu activeIndex="2">  
      <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
      <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
@@ -15,30 +16,43 @@
      <p:menuitem value="Add" url="impadd.xhtml" icon="ui-icon-wrench"/>  
      </p:tabMenu>
 	    #{PacketBean.initBean()}
-      <p:dataGrid var="pack" value="#{PacketBean.packlist}" columns="3"  
-        rows="12" paginator="true"  
-        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">  
+     	<p:dataTable id="PackList" var="pack" value="#{PacketBean.packModels}" paginator="true" rows="5"  
+                      selectionMode="single">
   
-        <p:panel  style="text-align:center">  
-            <h:panelGrid columns="1" style="width:100%">  
-                <!--<p:graphicImage value="/images/cars/#{car.manufacturer}.jpg"/>   -->  
+                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{pack.nome}">  
+                 <h:outputText value="#{pack.nome}" />  
+                </p:column>  
   
-                <h:outputText value="#{pack.nome}" />  
+                <p:column headerText="Luogo" style="width:25%" sortBy="luogo" filterBy="#{pack.destinazione}">  
                 <h:outputText value="#{pack.destinazione}" />  
+                </p:column>  
                 
-                <h:outputText value="#{pack.data_inizio}" > 
-                <f:convertDateTime pattern="dd/MM/yyyy" />
-                </h:outputText>
-                <h:outputText value="#{pack.data_fine}" >
-                <f:convertDateTime pattern="dd/MM/yyyy" /> 
-                </h:outputText>
+                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{pack.data_inizio}">  
+                 <h:outputText value="#{pack.data_inizio}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+                  
+                </p:column>  
+                
+                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{pack.data_fine}">  
+                 <h:outputText value="#{pack.data_fine}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				</p:column> 
   
-                <h:link outcome = "modifyPacket"  value="Modifica"/>
-           </h:panelGrid>  
-        </p:panel>  
-  
-    </p:dataGrid>  
+                 <p:column headerText="Modifica" style="width:24%" >  
+                <h:link outcome = "modifypacket?id=#{pack.id}"  value="Modifica"/>
+				</p:column> 
+				
+               <p:column headerText="Elimina" style="width:24%" >  
+                <p:commandLink action= "#{PacketBean.deletePacchetto(pack.id)}" value="Elimina" />
+				</p:column> 
+				
+        
+      
 
+   </p:dataTable>
+              
 	</ui:define>
 
 </ui:composition>

@@ -36,6 +36,45 @@
 				<f:attribute name="dates" value="#{dates}" />
 				</p:calendar>
 				<p:message for="datef"/>
+				<br></br>
+				INSERIMENTO HOTEL   
+				 
+				<p:dataTable id="multiHotels" var="hotel" value="#{PacketBean.hotelModels}" paginator="true" rows="5"  
+                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}">  
+                <p:column selectionMode="multiple" style="width:2%" />  
+  
+                <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
+                 #{hotel.nome}
+                </p:column>  
+  
+                <p:column headerText="Luogo" style="width:25%" sortBy="luogo" filterBy="#{hotel.luogo}">  
+                #{hotel.luogo}  
+                </p:column>  
+  
+                <p:column headerText="Stelle" style="width:24%" sortBy="stelle" filterBy="#{hotel.stelle}">  
+                #{hotel.stelle}  
+                </p:column>  
+  
+                <p:column headerText="Prezzo a persona" style="width:24%" sortBy="costo_giornaliero" filterBy="#{hotel.costo_giornaliero}" >  
+                #{hotel.costo_giornaliero}  
+                </p:column>  
+                
+                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}" filterMatchMode="contains">  
+                 <h:outputText value="#{hotel.data_inizio}">
+    				
+				</h:outputText>
+                  
+                </p:column>  
+                
+                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}" filterMatchMode="contains">  
+                 <h:outputText value="#{hotel.data_fine}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+                </p:column>  
+              </p:dataTable> 
+				
+				
+				
 				</h:panelGrid>
 				
 				

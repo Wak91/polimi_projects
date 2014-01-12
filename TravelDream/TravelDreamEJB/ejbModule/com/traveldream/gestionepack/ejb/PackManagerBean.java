@@ -91,17 +91,86 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		
 	}
 	
-	//converto solo la parte relativa ai dati che non dipendono da foreign key
 	private PacchettoDTO PacchettoToDTO(Pacchetto p)
 	{
+		ArrayList <HotelDTO> hdto_list = new ArrayList <HotelDTO>();
+		ArrayList <EscursioneDTO> edto_list = new ArrayList <EscursioneDTO>();
+		ArrayList <VoloDTO> vdto_list = new ArrayList <VoloDTO>();
+		
 		PacchettoDTO pdto = new PacchettoDTO();
 		pdto.setData_fine(p.getData_fine());
 		pdto.setData_inizio(p.getData_inizio());
 		pdto.setDestinazione(p.getDestinazione());
 		pdto.setNome(p.getNome());
 		pdto.setPathtoImage(p.getImmagine());
-				
+		pdto.setId(p.getId());	
+		
+		for(Escursione e: p.getEscursiones())
+		   {
+			 edto_list.add(EscursioneToDTO(e));
+		   }
+		
+		for(Hotel h: p.getHotels())
+		   {
+			 hdto_list.add(HotelToDTO(h));
+		   }
+		
+		for(Volo v: p.getVolos())
+		   {
+			 vdto_list.add(VoloToDTO(v));
+		   }
+		
+		pdto.setLista_hotel(hdto_list);
+		pdto.setLista_voli(vdto_list);
+		pdto.setLista_escursioni(edto_list);
+		
 		return pdto;
+	}
+	
+	public void deletePacchetto(int id)
+	{
+		em.remove(em.find(Pacchetto.class, id));
+		
+	}
+	
+	public HotelDTO HotelToDTO(Hotel h) {
+		HotelDTO hdto = new HotelDTO();
+		hdto.setId(h.getId());
+		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
+		hdto.setData_fine(h.getData_fine());
+		hdto.setData_inizio(h.getData_inizio());
+		hdto.setLuogo(h.getLuogo());
+		hdto.setNome(h.getNome());
+		hdto.setStelle(h.getStelle());
+		hdto.setPathtoImage("");
+		hdto.setId(h.getId());
+		return hdto;
+ 
+	}
+	
+	public VoloDTO VoloToDTO(Volo v) {
+		VoloDTO vdto = new VoloDTO();
+		vdto.setId(v.getId());
+		vdto.setCompagnia(v.getCompagnia());
+		vdto.setCosto(v.getCosto());
+		vdto.setData(v.getData());
+		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
+		vdto.setLuogo_partenza(v.getLuogo_partenza());
+		vdto.setImmagine("");
+		vdto.setId(v.getId());
+		return vdto;
+	}
+	
+	public EscursioneDTO EscursioneToDTO(Escursione e) {
+		EscursioneDTO edto = new EscursioneDTO();
+		edto.setId(e.getId());
+		edto.setCosto(e.getCosto());
+		edto.setData(e.getData());
+		edto.setLuogo(e.getLuogo());
+		edto.setNome(e.getNome());
+		edto.setImmagine("");
+		edto.setId(e.getId());
+		return edto;
 	}
 
 }

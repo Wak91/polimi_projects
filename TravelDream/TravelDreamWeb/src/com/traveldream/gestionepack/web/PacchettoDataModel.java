@@ -12,6 +12,11 @@ import com.traveldream.gestionepack.ejb.PacchettoDTO;
 
 public class PacchettoDataModel extends ListDataModel <PacchettoDTO> implements SelectableDataModel <PacchettoDTO>{
 
+	
+	public PacchettoDataModel()
+	{}
+	
+	
 	public PacchettoDataModel(List<PacchettoDTO> pdto) {
 		super(pdto);
 	}
