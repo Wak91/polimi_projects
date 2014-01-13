@@ -1,11 +1,14 @@
 package com.traveldream.gestionepack.web;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
+import com.sun.org.apache.xpath.internal.operations.And;
 import com.traveldream.gestionecomponente.ejb.*;
 import com.traveldream.gestionepack.ejb.PacchettoDTO;
 import com.traveldream.gestionepack.ejb.PackManagerBeanLocal;
@@ -144,6 +147,18 @@ public class PacketBean {
 		this.escModels = escModels;
 	}
 	//---------------------------------------------------------------
+	public void filterComponents(){
+	
+		if(packet.getData_fine()!=null & packet.getData_inizio()!=null & packet.getDestinazione()!=null){
+			System.out.println(packet.getData_fine());
+			System.out.println(packet.getData_inizio());
+			System.out.println(packet.getDestinazione());
+		}
+		 filteredHotels = PMB.getListaHotelCompatibili(packet.getDestinazione(), packet.getData_inizio(), packet.getData_fine());
+
+
+	}
+	
 	
 	public void getPacchettoById(int id)
 	{	initBean();
