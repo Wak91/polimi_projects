@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 
 import java.util.Date;
+import java.util.Scanner;
 
 
 /**
@@ -51,14 +53,14 @@ public class Hotel implements Serializable {
 		    super();
 		  }
 
-	  public Hotel(HotelDTO hoteldto)
+	  public Hotel(HotelDTO hoteldto) 
 	  {
 	     this.nome = hoteldto.getNome();
 	         this.luogo = hoteldto.getLuogo();
 	         this.costo_giornaliero = hoteldto.getCosto_giornaliero();
 	         this.data_inizio = hoteldto.getData_inizio();
 	         this.data_fine = hoteldto.getData_fine();
-	         this.immagine = ""; // da sistemare
+			 this.immagine = hoteldto.getHotelImg();
 	         this.stelle = hoteldto.getStelle();
 	  }
 
@@ -125,7 +127,5 @@ public class Hotel implements Serializable {
 	public void setStelle(int stelle) {
 		this.stelle = stelle;
 	}
-
-
 
 }

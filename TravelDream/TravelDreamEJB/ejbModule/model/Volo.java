@@ -53,7 +53,7 @@ public class Volo implements Serializable {
      this.data = volodto.getData();
      this.luogo_arrivo = volodto.getLuogo_arrivo();
      this.luogo_partenza = volodto.getLuogo_partenza();
-     this.immagine = ""; // da sistemare 
+     this.immagine = volodto.getImmagine();
   }
   
 

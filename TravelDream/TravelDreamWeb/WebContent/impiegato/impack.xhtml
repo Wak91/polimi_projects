@@ -40,6 +40,23 @@
     				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 				</p:column> 
+				
+				<p:column headerText="ListaVoli" style="width:25%" sortBy="luogo" >  
+                <p:commandButton id="basic" value="show voli" onclick="PF('dlg').show();" type="button" />  
+                
+                <p:dialog id="dialog" header="Dynamic Dialog" widgetVar="dlg" dynamic="true" resizable="false">  
+                
+                </p:dialog>  
+                
+                </p:column>  
+                
+                 <p:column headerText="ListaEscursioni" style="width:25%" sortBy="luogo" >  
+                
+                </p:column>  
+                
+                <p:column headerText="ListaHotel" style="width:25%" sortBy="luogo">  
+                
+                </p:column>  
   
                  <p:column headerText="Modifica" style="width:24%" >  
                 <h:link outcome = "modifypacket?id=#{pack.id}"  value="Modifica"/>

@@ -124,6 +124,45 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		
 	}
 	
+	public HotelDTO HotelToDTO(Hotel h) {
+		HotelDTO hdto = new HotelDTO();
+		hdto.setId(h.getId());
+		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
+		hdto.setData_fine(h.getData_fine());
+		hdto.setData_inizio(h.getData_inizio());
+		hdto.setLuogo(h.getLuogo());
+		hdto.setNome(h.getNome());
+		hdto.setStelle(h.getStelle());
+		hdto.setHotelImg(h.getImmagine());
+		hdto.setId(h.getId());
+		return hdto;
+ 
+	}
+	
+	public VoloDTO VoloToDTO(Volo v) {
+		VoloDTO vdto = new VoloDTO();
+		vdto.setId(v.getId());
+		vdto.setCompagnia(v.getCompagnia());
+		vdto.setCosto(v.getCosto());
+		vdto.setData(v.getData());
+		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
+		vdto.setLuogo_partenza(v.getLuogo_partenza());
+		vdto.setImmagine(v.getImmagine());
+		vdto.setId(v.getId());
+		return vdto;
+	}
+	
+	public EscursioneDTO EscursioneToDTO(Escursione e) {
+		EscursioneDTO edto = new EscursioneDTO();
+		edto.setId(e.getId());
+		edto.setCosto(e.getCosto());
+		edto.setData(e.getData());
+		edto.setLuogo(e.getLuogo());
+		edto.setNome(e.getNome());
+		edto.setImmagine(e.getImmagine());
+		edto.setId(e.getId());
+		return edto;
+	}
 
 	@Override
 	public void modifyPacchetto(PacchettoDTO packetDTO) {
@@ -293,46 +332,6 @@ public class PackManagerBean implements PackManagerBeanLocal {
           }
           return listaHotel;
   }
-		public HotelDTO HotelToDTO(Hotel h) {
-			HotelDTO hdto = new HotelDTO();
-			hdto.setId(h.getId());
-			hdto.setCosto_giornaliero(h.getCosto_giornaliero());
-			hdto.setData_fine(h.getData_fine());
-			hdto.setData_inizio(h.getData_inizio());
-			hdto.setLuogo(h.getLuogo());
-			hdto.setNome(h.getNome());
-			hdto.setStelle(h.getStelle());
-			hdto.setPathtoImage("");
-			hdto.setId(h.getId());
-			return hdto;
-	 
-		}
-		
-		public VoloDTO VoloToDTO(Volo v) {
-			VoloDTO vdto = new VoloDTO();
-			vdto.setId(v.getId());
-			vdto.setCompagnia(v.getCompagnia());
-			vdto.setCosto(v.getCosto());
-			vdto.setData(v.getData());
-			vdto.setLuogo_arrivo(v.getLuogo_arrivo());
-			vdto.setLuogo_partenza(v.getLuogo_partenza());
-			vdto.setImmagine("");
-			vdto.setId(v.getId());
-			return vdto;
-		}
-		
-		public EscursioneDTO EscursioneToDTO(Escursione e) {
-			EscursioneDTO edto = new EscursioneDTO();
-			edto.setId(e.getId());
-			edto.setCosto(e.getCosto());
-			edto.setData(e.getData());
-			edto.setLuogo(e.getLuogo());
-			edto.setNome(e.getNome());
-			edto.setImmagine("");
-			edto.setId(e.getId());
-			return edto;
-		}
-
 	
 
 }

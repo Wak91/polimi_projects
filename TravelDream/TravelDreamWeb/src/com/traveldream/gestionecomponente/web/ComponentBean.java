@@ -1,19 +1,30 @@
 package com.traveldream.gestionecomponente.web;
 
 
+
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.Part;
 
-import org.primefaces.context.RequestContext;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
@@ -22,7 +33,6 @@ import com.traveldream.gestionecomponente.ejb.VoloDTO;
 import com.traveldream.gestionepack.web.EscDataModel;
 import com.traveldream.gestionepack.web.HotelDataModel;
 import com.traveldream.gestionepack.web.VoloDataModel;
-
 
 @ManagedBean(name="ComponentBean") 
 @ViewScoped
@@ -43,10 +53,13 @@ public class ComponentBean {
 	private HotelDataModel hotelModels;
     private EscDataModel escModels;
     private VoloDataModel voloModels;
+
+    private UploadedFile imgHotel;
+    private UploadedFile imgVolo;
+    private UploadedFile imgEscursione;
     
     
-
-
+    
 	public ComponentBean() {
 		hotel = new HotelDTO();
 		volo  = new VoloDTO();
@@ -72,23 +85,117 @@ public class ComponentBean {
 	}
 	
 //-------------------------CREAZIONE COMPONENTI------------------------------
-	public String createHotel(){
+	public String createHotel() throws IOException{
+		
+		  String filename = FilenameUtils.getName(imgHotel.getFileName());
+		  if(filename.equals(""))
+		    {
+			 hotel.setHotelImg("Hdefault.jpeg");}
+		  else
+		    {
+		  InputStream inputStr = null;
+		    try {
+		        inputStr = imgHotel.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
+		    
+
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+		hotel.setHotelImg(imgHotel.getFileName());
+		    }
 		CMB.saveHotel(hotel);
+		FacesMessage msg = new FacesMessage("Hotel is added");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return "impadd.xhtml?faces-redirect=true";
 	}
-	
+		
 	public String createVolo(){
+		
+		String filename = FilenameUtils.getName(imgVolo.getFileName());
+		  
+		 if(filename.equals(""))
+		    {
+		  volo.setImmagine("Vdefault.jpg");
+		    }
+		 else
+		 {
+		  InputStream inputStr = null;
+		    try {
+		        inputStr = imgVolo.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
+
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+			volo.setImmagine(imgVolo.getFileName());
+		    }
 		CMB.saveVolo(volo);
 		return "impadd.xhtml?faces-redirect=true";
 	}
 	
 	public String createEscursione(){
+		 
+		String filename = FilenameUtils.getName(imgEscursione.getFileName());
+		  
+		 if(filename.equals(""))
+		    {
+		 escursione.setImmagine("Edefault.jpg");
+		    }
+		 else
+		 {
+		  InputStream inputStr = null;
+		    try {
+		        inputStr = imgEscursione.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
+
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+			escursione.setImmagine(imgEscursione.getFileName());
+
+		    }
 		CMB.saveEscursione(escursione);
 		return "impadd.xhtml?faces-redirect=true";
 	}
 	
 //--------------------------GETTER_SETTER_HOTELS--------------------------------------
 	
+
+	public UploadedFile getImgVolo() {
+		return imgVolo;
+	}
+
+	public void setImgVolo(UploadedFile imgVolo) {
+		this.imgVolo = imgVolo;
+	}
 
 	public void setHotel(HotelDTO hoteldto) {
 		this.hotel = hoteldto;
@@ -120,8 +227,30 @@ public class ComponentBean {
 	
 	}
 	
-	public void modifyHotel()
-	{ CMB.modificaHotel(hotel);}
+	public String modifyHotel()
+	{ 
+		  InputStream inputStr = null;
+		    try {
+		        inputStr = imgHotel.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
+
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    String filename = FilenameUtils.getName(imgHotel.getFileName());
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+    hotel.setHotelImg(imgHotel.getFileName());	
+    CMB.modificaHotel(hotel);
+	return "toHotel.xhtml?faces-redirect=true";
+	}
 	
 	public String deleteHotel(int id)
 	{ CMB.eliminaHotel(id);
@@ -209,5 +338,21 @@ public class ComponentBean {
 	  return "toEscursione.xhtml?faces-redirect=true";
 	}
 
-	
+
+	public UploadedFile getImgHotel() {
+		return imgHotel;
+	}
+
+	public void setImgHotel(UploadedFile imgHotel) {
+		this.imgHotel = imgHotel;
+	}
+
+	public UploadedFile getImgEscursione() {
+		return imgEscursione;
+	}
+
+	public void setImgEscursione(UploadedFile imgEscursione) {
+		this.imgEscursione = imgEscursione;
+	}
+
 }

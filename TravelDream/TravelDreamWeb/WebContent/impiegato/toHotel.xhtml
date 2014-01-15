@@ -53,6 +53,7 @@
 				</h:outputText>
 				</p:column>  
                 
+              
                 <p:column headerText="Modifica" style="width:24%" >  
                 <h:link outcome = "modifyHotel?id=#{hotel.id}"  value="Modifica"/>
 				</p:column> 
@@ -61,9 +62,14 @@
                 <p:commandLink action= "#{ComponentBean.deleteHotel(hotel.id)}" value="Elimina" />
 				</p:column> 
               
+              
+				
               </p:dataTable>
               
-              
+         <p:column headerText="img" style="width:24%" >  
+              <h:graphicImage url="#{hotel.hotelImg}" width="200" height="171" />				
+              </p:column> 
+                       
                       
 	</h:form>
 	</ui:define>

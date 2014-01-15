@@ -1,4 +1,7 @@
 package com.traveldream.gestionepack.web;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,9 +11,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import com.sun.org.apache.xpath.internal.operations.And;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.model.UploadedFile;
+
 import com.traveldream.gestionecomponente.ejb.*;
 import com.traveldream.gestionepack.ejb.PacchettoDTO;
 import com.traveldream.gestionepack.ejb.PackManagerBeanLocal;
@@ -30,6 +37,7 @@ public class PacketBean {
 	
 	private PacchettoDTO packet;
 	private ArrayList <PacchettoDTO> packlist; 
+    private UploadedFile imgPack;
 	
 	private ArrayList<HotelDTO> filteredHotels;
 	private ArrayList<EscursioneDTO> filteredEscursiones;
@@ -218,9 +226,33 @@ public class PacketBean {
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
 		
+		 String filename = FilenameUtils.getName(imgPack.getFileName());
+		  if(filename.equals(""))
+		    {
+			 packet.setPathtoImage("Pdefault.jpg");}
+		  else
+		    {
+		  InputStream inputStr = null;
+		    try {
+		        inputStr = imgPack.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
+
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+		packet.setPathtoImage(imgPack.getFileName());
+		    }
+		
 		PMB.createPacket(packet);
-		
-		
 		return "impadd.xhtml?faces-redirect=true";
 		
 	}
@@ -254,5 +286,13 @@ public class PacketBean {
 
 	public void setFilteredVolos(ArrayList<VoloDTO> filteredVolos) {
 		this.filteredVolos = filteredVolos;
+	}
+
+	public UploadedFile getImgPack() {
+		return imgPack;
+	}
+
+	public void setImgPack(UploadedFile imgPack) {
+		this.imgPack = imgPack;
 	}
 }
