@@ -126,7 +126,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		hdto.setLuogo(h.getLuogo());
 		hdto.setNome(h.getNome());
 		hdto.setStelle(h.getStelle());
-		hdto.setHotelImg(null);
+		hdto.setHotelImg(h.getImmagine());
 		hdto.setId(h.getId());
 		return hdto;
  
@@ -140,7 +140,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		vdto.setData(v.getData());
 		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
 		vdto.setLuogo_partenza(v.getLuogo_partenza());
-		vdto.setImmagine("");
+		vdto.setImmagine(v.getImmagine());
 		vdto.setId(v.getId());
 		return vdto;
 	}
@@ -152,7 +152,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		edto.setData(e.getData());
 		edto.setLuogo(e.getLuogo());
 		edto.setNome(e.getNome());
-		edto.setImmagine("");
+		edto.setImmagine(e.getImmagine());
 		edto.setId(e.getId());
 		return edto;
 	}

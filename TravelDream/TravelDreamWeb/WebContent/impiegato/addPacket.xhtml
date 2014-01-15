@@ -7,7 +7,7 @@
        xmlns:p="http://primefaces.org/ui"
        >
        #{PacketBean.initBean()}  
-	   <h:form>  
+	   <h:form enctype="multipart/form-data">  
         <p:panel header="add pack">
 			<h:panelGrid columns="3" id="regGrid">
 				
@@ -118,7 +118,12 @@
                 
               </p:dataTable> 
                  
-                <p:commandButton value="Crea Pacchetto"
+                <h:outputLabel for="immagine">Immagine</h:outputLabel>
+				<p:fileUpload value="#{PacketBean.imgPack}" mode="simple" />
+				<br></br>
+				
+                 
+                <h:commandButton value="Crea Pacchetto"
 				action="#{PacketBean.PrelevaSelezionatiECrea}" />
         
 		</p:panel>

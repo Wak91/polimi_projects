@@ -7,9 +7,9 @@
       xmlns:p="http://primefaces.org/ui"
       template="Template.xhtml">
        
-       <ui:define name="content">
-       #{ComponentBean.getHotelById(param['id'])}
-	    <h:form>
+    <ui:define name="content">
+      #{ComponentBean.getHotelById(param['id'])}
+	    <h:form enctype="multipart/form-data">
 	    <p:tabMenu activeIndex="1">  
      <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
      <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
@@ -40,7 +40,7 @@
                   <h:outputLabel for="datei">Data Inizio</h:outputLabel>
 				<p:calendar id="datei" binding="#{dates}" required="true" value="#{ComponentBean.hotel.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
 				<p:message for="datef"/>
-				
+				<p></p>
 
 				<h:outputLabel for="datef">Data Fine</h:outputLabel>
 				<p:calendar id="datef" required="true" value="#{ComponentBean.hotel.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline"
@@ -48,11 +48,18 @@
 				<f:attribute name="dates" value="#{dates}" />
 				</p:calendar>
 				<p:message for="datef"/>
+				
 				</h:panelGrid>
-				 		
-				<h:graphicImage value="../images/hotel1.jpeg"/>   		
-				 				 
-                <p:commandButton value="Modifica Hotel" update="regGrid"
+				<br></br>
+								
+			    <h:outputLabel for="img">Immagine corrente</h:outputLabel>
+				
+			   <h:graphicImage value="../images/#{ComponentBean.hotel.hotelImg}"/>   		
+			   <br></br>		
+			   <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
+				<p:fileUpload value="#{ComponentBean.imgHotel}" mode="simple" />
+				<br></br>
+                <h:commandButton value="Modifica Hotel" update="regGrid"
 				action="#{ComponentBean.modifyHotel()}" icon="ui-icon-script"/>
      
 		</p:panel>

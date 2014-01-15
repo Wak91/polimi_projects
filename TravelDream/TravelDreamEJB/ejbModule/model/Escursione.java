@@ -49,7 +49,7 @@ public class Escursione implements Serializable {
   {
     this.costo = escursionedto.getCosto();
     this.data = escursionedto.getData();
-    this.immagine = ""; // da sistemare 
+    this.immagine = escursionedto.getImmagine(); // da sistemare 
     this.luogo = escursionedto.getLuogo();
     this.nome = escursionedto.getNome();
     

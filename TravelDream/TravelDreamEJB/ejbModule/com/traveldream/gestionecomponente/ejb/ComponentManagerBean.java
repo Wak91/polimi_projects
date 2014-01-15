@@ -49,11 +49,6 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		
 	}
 	
-	public void update() {
-	}
-
-	public void remove() {
-	}
     
 	//sfrutto la named query per ritornare tutti gli hotel dal DB
 	//convertendoli in DTO per il managed bean
@@ -107,7 +102,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		hdto.setLuogo(h.getLuogo());
 		hdto.setNome(h.getNome());
 		hdto.setStelle(h.getStelle());
-		hdto.setHotelImg("");
+		hdto.setHotelImg(h.getImmagine());
 		hdto.setId(h.getId());
 		return hdto;
  
@@ -141,7 +136,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		vdto.setData(v.getData());
 		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
 		vdto.setLuogo_partenza(v.getLuogo_partenza());
-		vdto.setImmagine("");
+		vdto.setImmagine(v.getImmagine());
 		vdto.setId(v.getId());
 		return vdto;
 	}
@@ -188,8 +183,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		edto.setData(e.getData());
 		edto.setLuogo(e.getLuogo());
 		edto.setNome(e.getNome());
-		edto.setImmagine("");
-		edto.setId(e.getId());
+		edto.setImmagine(e.getImmagine());
 		return edto;
 	}
 	

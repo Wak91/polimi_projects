@@ -53,7 +53,10 @@ public class ComponentBean {
 	private HotelDataModel hotelModels;
     private EscDataModel escModels;
     private VoloDataModel voloModels;
-    
+
+    private UploadedFile imgHotel;
+    private UploadedFile imgVolo;
+    private UploadedFile imgEscursione;
     
     
     
@@ -83,22 +86,115 @@ public class ComponentBean {
 	
 //-------------------------CREAZIONE COMPONENTI------------------------------
 	public String createHotel() throws IOException{
+		
+		  String filename = FilenameUtils.getName(imgHotel.getFileName());
+		  if(filename.equals(""))
+		    {
+			 hotel.setHotelImg("Hdefault.jpeg");}
+		  else
+		    {
+		  InputStream inputStr = null;
+		    try {
+		        inputStr = imgHotel.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
+
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+		hotel.setHotelImg(imgHotel.getFileName());
+		    }
 		CMB.saveHotel(hotel);
+		FacesMessage msg = new FacesMessage("Hotel is added");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return "impadd.xhtml?faces-redirect=true";
 	}
 		
 	public String createVolo(){
+		
+		String filename = FilenameUtils.getName(imgVolo.getFileName());
+		  
+		 if(filename.equals(""))
+		    {
+		  volo.setImmagine("Vdefault.jpg");
+		    }
+		 else
+		 {
+		  InputStream inputStr = null;
+		    try {
+		        inputStr = imgVolo.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
+
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+			volo.setImmagine(imgVolo.getFileName());
+		    }
 		CMB.saveVolo(volo);
 		return "impadd.xhtml?faces-redirect=true";
 	}
 	
 	public String createEscursione(){
+		 
+		String filename = FilenameUtils.getName(imgEscursione.getFileName());
+		  
+		 if(filename.equals(""))
+		    {
+		 escursione.setImmagine("Edefault.jpg");
+		    }
+		 else
+		 {
+		  InputStream inputStr = null;
+		    try {
+		        inputStr = imgEscursione.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
+
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+			escursione.setImmagine(imgEscursione.getFileName());
+
+		    }
 		CMB.saveEscursione(escursione);
 		return "impadd.xhtml?faces-redirect=true";
 	}
 	
 //--------------------------GETTER_SETTER_HOTELS--------------------------------------
 	
+
+	public UploadedFile getImgVolo() {
+		return imgVolo;
+	}
+
+	public void setImgVolo(UploadedFile imgVolo) {
+		this.imgVolo = imgVolo;
+	}
 
 	public void setHotel(HotelDTO hoteldto) {
 		this.hotel = hoteldto;
@@ -130,8 +226,30 @@ public class ComponentBean {
 	
 	}
 	
-	public void modifyHotel()
-	{ CMB.modificaHotel(hotel);}
+	public String modifyHotel()
+	{ 
+		  InputStream inputStr = null;
+		    try {
+		        inputStr = imgHotel.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
+
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    String filename = FilenameUtils.getName(imgHotel.getFileName());
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+    hotel.setHotelImg(imgHotel.getFileName());	
+    CMB.modificaHotel(hotel);
+	return "toHotel.xhtml?faces-redirect=true";
+	}
 	
 	public String deleteHotel(int id)
 	{ CMB.eliminaHotel(id);
@@ -219,30 +337,21 @@ public class ComponentBean {
 	  return "toEscursione.xhtml?faces-redirect=true";
 	}
 
-	public void handleFileUpload(FileUploadEvent event) {
-	    //get uploaded file from the event
-	    UploadedFile uploadedFile = (UploadedFile) event.getFile();
-	    //create an InputStream from the uploaded file
-	    InputStream inputStr = null;
-	    try {
-	        inputStr = uploadedFile.getInputstream();
-	    } catch (IOException e) {
-	        //log error
-	    }
 
-	    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-	    String directory = externalContext.getInitParameter("uploadDirectory");
-	    String filename = FilenameUtils.getName(uploadedFile.getFileName());
-	    File destFile = new File(directory, filename);
+	public UploadedFile getImgHotel() {
+		return imgHotel;
+	}
 
-	    //use org.apache.commons.io.FileUtils to copy the File
-	    try {
-	        FileUtils.copyInputStreamToFile(inputStr, destFile);
-	    } catch (IOException e) {
-	        //log error
-	    }
-	    FacesMessage msg = new FacesMessage(event.getFile().getFileName() + " is uploaded.");
-	    FacesContext.getCurrentInstance().addMessage(null, msg);
+	public void setImgHotel(UploadedFile imgHotel) {
+		this.imgHotel = imgHotel;
+	}
+
+	public UploadedFile getImgEscursione() {
+		return imgEscursione;
+	}
+
+	public void setImgEscursione(UploadedFile imgEscursione) {
+		this.imgEscursione = imgEscursione;
 	}
 
 }
