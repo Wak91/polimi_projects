@@ -4,13 +4,13 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"> 
-	    <h:form>
+	    <h:form >
 		<p:panel header="Hotel creation">
 			<h:panelGrid columns="3" id="regGrid">
 				
 				<h:outputLabel for="nome">Nome Hotel:</h:outputLabel>
 				<p:inputText id="nome" value="#{ComponentBean.hotel.nome}" />
-				<p:message for="nome" />
+				<p:message for="nome" showDetail="true" autoUpdate="true" closable="true"/>
 				
 				<h:outputLabel for="luogo">Luogo Hotel:</h:outputLabel>
 				<p:inputText id="luogo" value="#{ComponentBean.hotel.luogo}" />

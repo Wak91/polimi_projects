@@ -12,14 +12,14 @@
 			<h:panelGrid columns="3" id="regGrid">
 				
 				<h:outputLabel for="nome">Nome:</h:outputLabel>
-				<p:inputText id="nome" value="#{PacketBean.packet.nome}" />
-				<p:message for="nome" />
+				<p:inputText id="nome" value="#{PacketBean.packet.nome}" required="true" />
+				<p:message for="nome" showDetail="true" autoUpdate="true" closable="true" />
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
-				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" >
-				<p:ajax event="onkeyup" listener="#{PacketBean.filterComponents}" update="multiHotels,multiVoli,multiEscursioni" />  
+				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" required="true">
+				<p:ajax event="keyup" listener="#{PacketBean.filterComponents}" update="multiHotels,multiVoli,multiEscursioni" />  
 				</p:inputText>
-				<p:message for="luogo" />
+				<p:message for="luogo"  autoUpdate="true" required="true"/>
 				
                 <h:outputLabel for="datei">Data Inizio validità</h:outputLabel>
 				<p:calendar id="datei" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
@@ -28,9 +28,9 @@
 				<br></br>
 				<h:outputLabel for="datef">Data Fine validità</h:outputLabel>
 				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
-							    <p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}" update="multiHotels,multiVoli,multiEscursioni" />  
+							    <p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}" update="multiHotels,multiVoli,multiEscursioni" required="true" />  
 				</p:calendar>
-				<br/>
+				<p:message for="datef" autoUpdate="true" />
 		  </h:panelGrid>
 		  <br/>		
 				INSERIMENTO HOTEL   
@@ -123,7 +123,7 @@
               </p:dataTable> 
                  
                 <p:commandButton value="Crea Pacchetto"
-				action="#{PacketBean.PrelevaSelezionatiECrea}" />
+				action="#{PacketBean.PrelevaSelezionatiECrea}"/>
         
 		</p:panel>
      

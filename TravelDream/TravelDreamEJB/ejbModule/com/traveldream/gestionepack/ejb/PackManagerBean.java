@@ -146,16 +146,21 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		CriteriaQuery<Hotel> c  = qb.createQuery(Hotel.class);
 		Root<Hotel> hotel = c.from(Hotel.class);
 	   List<Predicate> predicates = new ArrayList<Predicate>(); 
-	    
-	    if (citta != null) {
+	    System.out.println("citta in bean"+citta);
+	    if (citta != null && !citta.isEmpty()) {
+	    	System.out.println("adding citta predicate");
 	        predicates.add(qb.equal(hotel.get("luogo"), citta));
 	    }
-	    if (inizio != null & fine!=null) {
-	        predicates.add(
-	                qb.between( hotel.<Date>get("data_inizio"), inizio, fine));
-	        predicates.add(
-	                qb.between( hotel.<Date>get("data_fine"), inizio, fine));
+	  
+	    if (inizio != null){
+	    	predicates.add(
+	    			qb.greaterThanOrEqualTo(hotel.<Date>get("data_inizio"),inizio));   	
 	    }
+	    if (fine != null){
+	    	predicates.add(
+	    			qb.lessThanOrEqualTo(hotel.<Date>get("data_fine"),fine));   	
+	    }
+	    
 	    c.where(predicates.toArray(new Predicate[]{}));
 
 	    TypedQuery<Hotel> q = em.createQuery(c);
