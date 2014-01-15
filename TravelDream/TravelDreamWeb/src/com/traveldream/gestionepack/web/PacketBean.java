@@ -171,9 +171,17 @@ public class PacketBean {
 				System.out.println("empty destination");
 			}
 		}
+		 filteredEscursiones = PMB.getListaEscursioniCompatibili(packet.getDestinazione(), packet.getData_inizio(), packet.getData_fine());
 		 filteredHotels = PMB.getListaHotelCompatibili(packet.getDestinazione(), packet.getData_inizio(), packet.getData_fine());
+		 for (EscursioneDTO  escursioneDTO : filteredEscursiones) {
+			System.out.println("data escursione"+escursioneDTO.getData());
+			System.out.println("luogo escursione "+escursioneDTO.getLuogo());
 
-
+		}
+		 filteredVolos = PMB.getListaVoliCompatibili(packet.getDestinazione(), packet.getData_inizio(), packet.getData_fine());
+		 for (VoloDTO voloDTO : filteredVolos) {
+			System.out.println("data volo"+voloDTO.getData());
+		}
 	}
 	
 	

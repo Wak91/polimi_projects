@@ -141,14 +141,18 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		em.flush();
 		
 	}
+	/**
+	 * Metodo che restituisce la lista degli hotel compatibili con le date e la citta'  crea una query in modo dinamico 
+	 * in funzione del fatto che i campi inizio fine e citta siano nulli
+	 * la citta deve essere la stessa del pacchetto
+	 * l'inizio deve essere succissivo e la fine precedente
+	 */
 	public ArrayList<HotelDTO> getListaHotelCompatibili(String citta, Date inizio, Date fine) {
 		CriteriaBuilder qb = em.getCriteriaBuilder();
 		CriteriaQuery<Hotel> c  = qb.createQuery(Hotel.class);
 		Root<Hotel> hotel = c.from(Hotel.class);
 	   List<Predicate> predicates = new ArrayList<Predicate>(); 
-	    System.out.println("citta in bean"+citta);
 	    if (citta != null && !citta.isEmpty()) {
-	    	System.out.println("adding citta predicate");
 	        predicates.add(qb.equal(hotel.get("luogo"), citta));
 	    }
 	  
@@ -162,14 +166,68 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	    }
 	    
 	    c.where(predicates.toArray(new Predicate[]{}));
-
 	    TypedQuery<Hotel> q = em.createQuery(c);
-
 	    List<Hotel> hotels = q.getResultList();
 	    return EntitytoDTOHotels(hotels);
-
-
 	}
+	/**
+	 * Metodo che restituisce la lista delle Escursioni compatibili con le date e la citta'  crea una query in modo dinamica 
+	 * in funzione del fatto che i campi inizio fine e citta siano nulli
+	 * la citta deve essere la stessa del pacchetto
+	 * l'inizio deve essere succissivo e la fine precedente
+	 */
+	public ArrayList<EscursioneDTO> getListaEscursioniCompatibili(String citta, Date inizio, Date fine) {
+		CriteriaBuilder qb = em.getCriteriaBuilder();
+		CriteriaQuery<Escursione> c  = qb.createQuery(Escursione.class);
+		Root<Escursione> escursione = c.from(Escursione.class);
+	   List<Predicate> predicates = new ArrayList<Predicate>(); 
+	    if (citta != null && !citta.isEmpty()) {
+	        predicates.add(qb.equal(escursione.get("luogo"), citta));
+	    }
+	  
+	    if (inizio != null){
+	    	predicates.add(
+	    			qb.greaterThanOrEqualTo(escursione.<Date>get("data"),inizio));   	
+	    }
+	    if (fine != null){
+	    	predicates.add(
+	    			qb.lessThanOrEqualTo(escursione.<Date>get("data"),fine));   	
+	    }
+	    
+	    c.where(predicates.toArray(new Predicate[]{}));
+	    TypedQuery<Escursione> q = em.createQuery(c);
+	    List<Escursione> escursiones = q.getResultList();
+	    return EntitytoDTOEscursione(escursiones);
+	}
+	
+	public ArrayList<VoloDTO> getListaVoliCompatibili(String citta, Date inizio, Date fine) {
+		CriteriaBuilder qb = em.getCriteriaBuilder();
+		CriteriaQuery<Volo> c  = qb.createQuery(Volo.class);
+		Root<Volo> volo = c.from(Volo.class);
+	   List<Predicate> predicates = new ArrayList<Predicate>(); 
+	   System.out.println("finding write volo");
+	    if (citta != null && !citta.isEmpty()) {
+	    	Predicate partenza = qb.equal(volo.get("luogo_partenza"), citta);
+	    	Predicate arrivo = qb.equal(volo.get("luogo_arrivo"), citta);
+	    	Predicate partenzaOrArrivo = qb.or(partenza,arrivo);
+	        predicates.add(partenzaOrArrivo);
+	    }
+	  
+	    if (inizio != null){
+	    	predicates.add(
+	    			qb.greaterThanOrEqualTo(volo.<Date>get("data"),inizio));   	
+	    }
+	    if (fine != null){
+	    	predicates.add(
+	    			qb.lessThanOrEqualTo(volo.<Date>get("data"),fine));   	
+	    }
+	    
+	    c.where(predicates.toArray(new Predicate[]{}));
+	    TypedQuery<Volo> q = em.createQuery(c);
+	    List<Volo> volos = q.getResultList();
+	    return EntitytoDTOVolo(volos);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ArrayList<HotelDTO> getListaHotelCompatibili2(String citta, Date inizio, Date fine) {
 		List<Hotel> hotels = em.createQuery("SELECT h FROM Hotel h WHERE h.luogo LIKE citta and h.data_inizio BETWEEN :start AND :end AND"
@@ -191,6 +249,24 @@ public class PackManagerBean implements PackManagerBeanLocal {
                   listaHotel.add(nuovo);
           }
           return listaHotel;
+  }
+	  
+	  private ArrayList<EscursioneDTO> EntitytoDTOEscursione(List<Escursione> escursioni){
+          ArrayList<EscursioneDTO> listaesc = new ArrayList<EscursioneDTO>();
+          for(Escursione e:escursioni){
+                  EscursioneDTO nuovo = EscursioneToDTO(e);
+                  listaesc.add(nuovo);
+          }
+          return listaesc;
+  }
+	  
+	  private ArrayList<VoloDTO> EntitytoDTOVolo(List<Volo> voli){
+          ArrayList<VoloDTO> listavolo = new ArrayList<VoloDTO>();
+          for(Volo v:voli){
+                  VoloDTO nuovo = VoloToDTO(v);
+                  listavolo.add(nuovo);
+          }
+          return listavolo;
   }
 	
 	
