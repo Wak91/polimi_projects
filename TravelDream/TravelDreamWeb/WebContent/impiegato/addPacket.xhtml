@@ -13,32 +13,32 @@
 				
 				<h:outputLabel for="nome">Nome:</h:outputLabel>
 				<p:inputText id="nome" value="#{PacketBean.packet.nome}" required="true" />
-				<p:message for="nome" showDetail="true" autoUpdate="true" closable="true" />
+				<p:message for="nome"  />
 				
 				<h:outputLabel for="luogo">Destinazioneoo:</h:outputLabel>
 				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" >
-				<p:ajax event="keyup" listener="#{PacketBean.filterComponents}" update=":tabView:packform:multiVoli" />  
+				<p:ajax event="keyup" listener="#{PacketBean.filterComponents}" update="multiVoli,multiHotels,multiEscursioni" />  
 				</p:inputText>
-				<p:message for="luogo"  autoUpdate="true" required="true"/>
+				<p:message for="luogo"   />
 				
                 <h:outputLabel for="datei">Data Inizio validità</h:outputLabel>
 				<p:calendar id="datei" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
-			    <p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}"  update=":tabView:packform:multiVoli,:tabView:packform:multiHotels,:tabView:packform:multiEscursioni" />  
+			    <p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}"  update="multiVoli,multiHotels,multiEscursioni" />  
 				</p:calendar>
 				<br></br>
 				<h:outputLabel for="datef">Data Fine validità</h:outputLabel>
 				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
-							    <p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}" process="@this"  update=":tabView:packform:multiVoli" required="true" />  
+				<p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}"   update="multiVoli,multiHotels,multiEscursioni" />  
 				</p:calendar>
 				
 				<h:outputText id="out1" value="#{PacketBean.packet.destinazione}" />  
-				<p:message for="datef" autoUpdate="true" />
+				<p:message for="datef"  />
 		  </h:panelGrid>
 		  <br/>		
 				INSERIMENTO HOTEL   
 				 
 				<p:dataTable id="multiHotels" var="hotel" value="#{PacketBean.hotelModels}" paginator="true" rows="5"  
-                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}" dynamic="true">  
+                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}"  >  
                 <p:column selectionMode="multiple" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
@@ -73,8 +73,8 @@
 		
 		        INSERIMENTO VOLI   
 		
-				<p:dataTable id="multiVoli" var="volo" dynamic="true" value="#{PacketBean.voloModels}" paginator="true" rows="5"  
-                 selection="#{PacketBean.selectedVolo}" >  
+				<p:dataTable id="multiVoli" var="volo" value="#{PacketBean.voloModels}" paginator="true" rows="5"  
+                 selection="#{PacketBean.selectedVolo}" filteredValue="#{PacketBean.filteredVolos}">  
                 
                 <p:column selectionMode="multiple" style="width:2%" />  
   
@@ -101,8 +101,8 @@
               
               INSERIMENTO ESCURSIONI   
 			  	
-				<p:dataTable id="multiEscursioni" var="esc" dynamic="true" value="#{PacketBean.escModels}" paginator="true" rows="5"  
-                 selection="#{PacketBean.selectedEsc}">  
+				<p:dataTable id="multiEscursioni" var="esc"  value="#{PacketBean.escModels}" paginator="true" rows="5"  
+                 selection="#{PacketBean.selectedEsc}" filteredValue="#{PacketBean.filteredEscursiones}">  
                 
                 <p:column selectionMode="multiple" style="width:2%" />  
   

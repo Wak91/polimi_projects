@@ -182,6 +182,9 @@ public class PacketBean {
 		 for (VoloDTO voloDTO : filteredVolos) {
 			System.out.println("data volo"+voloDTO.getData());
 		}
+		 setHotelModels(new HotelDataModel(filteredHotels));	
+		 setVoloModels(new VoloDataModel(filteredVolos));
+		 setEscModels(new EscDataModel(filteredEscursiones));
 	}
 	
 	

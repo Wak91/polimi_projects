@@ -205,7 +205,6 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		CriteriaQuery<Volo> c  = qb.createQuery(Volo.class);
 		Root<Volo> volo = c.from(Volo.class);
 	   List<Predicate> predicates = new ArrayList<Predicate>(); 
-	   System.out.println("finding write volo");
 	    if (citta != null && !citta.isEmpty()) {
 	    	Predicate partenza = qb.equal(volo.get("luogo_partenza"), citta);
 	    	Predicate arrivo = qb.equal(volo.get("luogo_arrivo"), citta);
