@@ -31,6 +31,7 @@
 				<p:calendar id="datei" binding="#{dates}" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
 				<p:message for="datef"/>
 				<br></br>
+
 				
 				<h:outputLabel for="datef">Data Fine Validità</h:outputLabel>
 				<p:calendar id="datef" required="true" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
@@ -130,13 +131,14 @@
                 
               </p:dataTable> 
 				
+
 			 <h:outputLabel for="img">Immagine corrente</h:outputLabel>
 				
 			   <h:graphicImage value="../images/#{PacketBean.packet.pathtoImage}"/> 
 			   
 				 <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
 				<p:fileUpload value="#{PacketBean.imgPack}" mode="simple" />
-				 
+
                 <p:commandButton value="Modifica Pacchetto" update="regGrid"
 				action="#{PacketBean.modificaPacchetto(pack.id)}" icon="ui-icon-script"/>
      

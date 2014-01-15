@@ -16,7 +16,7 @@ public class PacchettoDTO {
 	@NotEmpty 
 	private String nome;
 	
-	@NotEmpty
+	
 	private String destinazione;
 	
 	@NotNull

@@ -1,6 +1,7 @@
 package com.traveldream.gestionepack.ejb;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,6 +11,12 @@ import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Predicate;
 
 import model.Escursione;
 import model.Hotel;
@@ -173,8 +180,60 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		em.flush();
 		
 	}
+	public ArrayList<HotelDTO> getListaHotelCompatibili(String citta, Date inizio, Date fine) {
+		CriteriaBuilder qb = em.getCriteriaBuilder();
+		CriteriaQuery<Hotel> c  = qb.createQuery(Hotel.class);
+		Root<Hotel> hotel = c.from(Hotel.class);
+	   List<Predicate> predicates = new ArrayList<Predicate>(); 
+	    System.out.println("citta in bean"+citta);
+	    if (citta != null && !citta.isEmpty()) {
+	    	System.out.println("adding citta predicate");
+	        predicates.add(qb.equal(hotel.get("luogo"), citta));
+	    }
+	  
+	    if (inizio != null){
+	    	predicates.add(
+	    			qb.greaterThanOrEqualTo(hotel.<Date>get("data_inizio"),inizio));   	
+	    }
+	    if (fine != null){
+	    	predicates.add(
+	    			qb.lessThanOrEqualTo(hotel.<Date>get("data_fine"),fine));   	
+	    }
+	    
+	    c.where(predicates.toArray(new Predicate[]{}));
+
+	    TypedQuery<Hotel> q = em.createQuery(c);
+
+	    List<Hotel> hotels = q.getResultList();
+	    return EntitytoDTOHotels(hotels);
+
+
+	}
+	@SuppressWarnings("unchecked")
+	public ArrayList<HotelDTO> getListaHotelCompatibili2(String citta, Date inizio, Date fine) {
+		List<Hotel> hotels = em.createQuery("SELECT h FROM Hotel h WHERE h.luogo LIKE citta and h.data_inizio BETWEEN :start AND :end AND"
+        		+ " h.data_fine BETWEEN :start AND :end")
+                    .setParameter("citta", citta)
+                    .setParameter("start", inizio, TemporalType.TIMESTAMP)
+                    .setParameter("end", fine, TemporalType.TIMESTAMP)
+                    .getResultList();
+        ArrayList<HotelDTO> listaHotel = EntitytoDTOHotels(hotels);
+        return listaHotel;
+}
 	
-	 private List<Escursione> DTOtoEntityEscursione(List<EscursioneDTO> escursioneDTOs){
+	
+///------------------DTO CONVERTER--------
+	  private ArrayList<HotelDTO> EntitytoDTOHotels(List<Hotel> hotels){
+          ArrayList<HotelDTO> listaHotel = new ArrayList<HotelDTO>();
+          for(Hotel h:hotels){
+                  HotelDTO nuovo = HotelToDTO(h);
+                  listaHotel.add(nuovo);
+          }
+          return listaHotel;
+  }
+	
+	
+	private List<Escursione> DTOtoEntityEscursione(List<EscursioneDTO> escursioneDTOs){
          ArrayList<Escursione> listaEscursioni = new ArrayList<Escursione>();
          for (EscursioneDTO escursioneDTO :escursioneDTOs){
                  Escursione nuovaesc = em.find(Escursione.class, escursioneDTO.getId());

@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"> 
-      
+
       
 	  <h:form id="my_form" enctype="multipart/form-data">
 		<p:panel header="Hotel creation">
@@ -13,7 +13,7 @@
 				
 				<h:outputLabel for="nome">Nome Hotel:</h:outputLabel>
 				<p:inputText id="nome" value="#{ComponentBean.hotel.nome}" />
-				<p:message for="nome" />
+				<p:message for="nome" showDetail="true" autoUpdate="true" closable="true"/>
 				
 				<h:outputLabel for="luogo">Luogo Hotel:</h:outputLabel>
 				<p:inputText id="luogo" value="#{ComponentBean.hotel.luogo}" />

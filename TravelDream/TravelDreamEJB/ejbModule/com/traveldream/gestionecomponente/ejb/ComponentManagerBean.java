@@ -1,6 +1,7 @@
 package com.traveldream.gestionecomponente.ejb;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import javax.persistence.PersistenceContext;
 
 import model.Escursione;
 import model.Hotel;
+import model.Pacchetto;
 import model.Volo;
 
 /**
@@ -88,7 +90,22 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	
 	public void eliminaHotel(int hid)
 	{
-		
+		List<Pacchetto> pacchetti = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
+		for (Pacchetto pacchetto :pacchetti){
+			List<Hotel> toremoveHotels =new ArrayList<Hotel>();
+			Iterator<Hotel> iterator =pacchetto.getHotels().iterator();
+			while (iterator.hasNext()) {
+				Hotel hotel = (Hotel) iterator.next();
+				if (hotel.getId()==hid) {
+					toremoveHotels.add(hotel);
+				}
+			}
+			for (Hotel hremove : toremoveHotels){
+				pacchetto.getHotels().remove(hremove);
+			}
+			
+		}
+
 		em.remove(em.createNamedQuery("Hotel.findbyId", Hotel.class).setParameter("d", hid).getSingleResult());
 		
 	}
@@ -158,7 +175,21 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	
 	public void eliminaVolo(int id)
 	{
-		
+		List<Pacchetto> pacchetti = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
+		for (Pacchetto pacchetto :pacchetti){
+			List<Volo> toremoveVolo =new ArrayList<Volo>();
+			Iterator<Volo> iterator =pacchetto.getVolos().iterator();
+			while (iterator.hasNext()) {
+				Volo volo = (Volo) iterator.next();
+				if (volo.getId()==id) {
+					toremoveVolo.add(volo);
+				}
+			}
+			for (Volo vremove : toremoveVolo){
+				pacchetto.getVolos().remove(vremove);
+			}
+			
+		}
 		em.remove(em.createNamedQuery("Volo.findbyId", Volo.class).setParameter("d", id).getSingleResult());
 		
 	}
@@ -202,7 +233,22 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	
 	public void eliminaEscursione(int id)
 	{
-		
+
+		List<Pacchetto> pacchetti = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
+		for (Pacchetto pacchetto :pacchetti){
+			List<Escursione> toremoveEsc =new ArrayList<Escursione>();
+			Iterator<Escursione> iterator =pacchetto.getEscursiones().iterator();
+			while (iterator.hasNext()) {
+				Escursione esc = (Escursione) iterator.next();
+				if (esc.getId()==id) {
+					toremoveEsc.add(esc);
+				}
+			}
+			for (Escursione eremove : toremoveEsc){
+				pacchetto.getEscursiones().remove(eremove);
+			}
+			
+		}
 		em.remove(em.createNamedQuery("Escursione.findbyId", Escursione.class).setParameter("d",id).getSingleResult());
 		
 	}

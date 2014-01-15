@@ -3,8 +3,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
@@ -154,6 +157,33 @@ public class PacketBean {
 		this.escModels = escModels;
 	}
 	//---------------------------------------------------------------
+	public void filterComponents(){
+		
+	
+		if(packet.getDestinazione()==null){
+			System.out.println("null destination");
+		}
+		else{
+			
+			System.out.println(packet.getDestinazione());
+			if(packet.getDestinazione()==""){
+				System.out.println("empty destination");
+			}
+		}
+	
+		if(packet.getData_fine()!=null & packet.getData_inizio()!=null){
+			System.out.println(packet.getData_fine());
+			System.out.println(packet.getData_inizio());
+			System.out.println(packet.getDestinazione());
+			if(packet.getDestinazione()==""){
+				System.out.println("empty destination");
+			}
+		}
+		 filteredHotels = PMB.getListaHotelCompatibili(packet.getDestinazione(), packet.getData_inizio(), packet.getData_fine());
+
+
+	}
+	
 	
 	public void getPacchettoById(int id)
 	{	initBean();
@@ -172,6 +202,15 @@ public class PacketBean {
 	
 	public String PrelevaSelezionatiECrea()
 	{
+		//check della destinazione perche ho dovuto togliere l'attributo not empty dal DTO e poi non c'e nessun controlo sugli hotel e vli
+				if(packet.getDestinazione()==null || packet.getDestinazione().isEmpty() || selectedVolo.isEmpty() || selectedHotels.isEmpty()){
+					System.out.println("stop packet");
+					FacesContext.getCurrentInstance().addMessage("luogo", new FacesMessage("La destinazione non può essere vuota"));
+					return null;
+
+				}
+				System.out.println("creo packet");
+
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
