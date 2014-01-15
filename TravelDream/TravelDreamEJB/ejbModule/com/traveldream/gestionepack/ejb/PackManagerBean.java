@@ -126,7 +126,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		hdto.setLuogo(h.getLuogo());
 		hdto.setNome(h.getNome());
 		hdto.setStelle(h.getStelle());
-		hdto.setPathtoImage("");
+		hdto.setHotelImg(null);
 		hdto.setId(h.getId());
 		return hdto;
  

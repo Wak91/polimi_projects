@@ -2,6 +2,7 @@ package com.traveldream.gestionecomponente.ejb;
 
 import java.util.Date;
 
+import javax.servlet.http.Part;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -26,8 +27,8 @@ public class HotelDTO {
 	@NotNull
     private Date data_fine;
 	
-	@NotEmpty
-	private String PathtoImage; 
+	@NotNull
+	private String HotelImg; 
 	
 	@NotNull
 	private Integer Stelle;
@@ -40,12 +41,13 @@ public class HotelDTO {
 		Stelle = stelle;
 	}
 
-	public String getPathtoImage() {
-		return PathtoImage;
+
+	public String getHotelImg() {
+		return HotelImg;
 	}
 
-	public void setPathtoImage(String pathtoImage) {
-		PathtoImage = pathtoImage;
+	public void setHotelImg(String hotelImg) {
+		HotelImg = hotelImg;
 	}
 
 	public String getNome() {

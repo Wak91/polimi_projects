@@ -4,7 +4,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"> 
-	    <h:form>
+	    <h:form enctype="multipart/form-data">
 		<p:panel header="Hotel creation">
 			<h:panelGrid columns="3" id="regGrid">
 				
@@ -38,12 +38,16 @@
 				</p:calendar>
 				<p:message for="datef"/>
 				
-                 
                 <p:commandButton value="Crea Hotel" update="regGrid"
 				action="#{ComponentBean.createHotel()}" />
         </h:panelGrid>
-		</p:panel>
-		
-	</h:form>
+		</p:panel>  
+        </h:form>  
+      <h:form  enctype="multipart/form-data">  
+        <p:fileUpload fileUploadListener="#{ComponentBean.handleFileUpload}" mode="advanced" dragDropSupport="false"  
+                      update="messages" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />  
+        <p:messages id="messages" showDetail="true"/>  
 
+    </h:form>  
+        
 </ui:composition>

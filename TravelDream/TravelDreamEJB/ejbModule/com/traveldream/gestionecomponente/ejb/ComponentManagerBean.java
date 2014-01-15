@@ -86,7 +86,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		result.setData_fine(h.getData_fine());
 		result.setLuogo(h.getLuogo());
 		result.setStelle(h.getStelle());
-		result.setImmagine(h.getPathtoImage());
+		result.setImmagine(h.getHotelImg());
 		result.setId(h.getId());
 		em.merge(result);
 	}
@@ -107,7 +107,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		hdto.setLuogo(h.getLuogo());
 		hdto.setNome(h.getNome());
 		hdto.setStelle(h.getStelle());
-		hdto.setPathtoImage("");
+		hdto.setHotelImg("");
 		hdto.setId(h.getId());
 		return hdto;
  

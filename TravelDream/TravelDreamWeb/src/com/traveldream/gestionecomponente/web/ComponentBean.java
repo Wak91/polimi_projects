@@ -1,19 +1,30 @@
 package com.traveldream.gestionecomponente.web;
 
 
+
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.Part;
 
-import org.primefaces.context.RequestContext;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
@@ -22,7 +33,6 @@ import com.traveldream.gestionecomponente.ejb.VoloDTO;
 import com.traveldream.gestionepack.web.EscDataModel;
 import com.traveldream.gestionepack.web.HotelDataModel;
 import com.traveldream.gestionepack.web.VoloDataModel;
-
 
 @ManagedBean(name="ComponentBean") 
 @ViewScoped
@@ -45,8 +55,8 @@ public class ComponentBean {
     private VoloDataModel voloModels;
     
     
-
-
+    
+    
 	public ComponentBean() {
 		hotel = new HotelDTO();
 		volo  = new VoloDTO();
@@ -72,11 +82,11 @@ public class ComponentBean {
 	}
 	
 //-------------------------CREAZIONE COMPONENTI------------------------------
-	public String createHotel(){
+	public String createHotel() throws IOException{
 		CMB.saveHotel(hotel);
 		return "impadd.xhtml?faces-redirect=true";
 	}
-	
+		
 	public String createVolo(){
 		CMB.saveVolo(volo);
 		return "impadd.xhtml?faces-redirect=true";
@@ -209,5 +219,30 @@ public class ComponentBean {
 	  return "toEscursione.xhtml?faces-redirect=true";
 	}
 
-	
+	public void handleFileUpload(FileUploadEvent event) {
+	    //get uploaded file from the event
+	    UploadedFile uploadedFile = (UploadedFile) event.getFile();
+	    //create an InputStream from the uploaded file
+	    InputStream inputStr = null;
+	    try {
+	        inputStr = uploadedFile.getInputstream();
+	    } catch (IOException e) {
+	        //log error
+	    }
+
+	    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	    String directory = externalContext.getInitParameter("uploadDirectory");
+	    String filename = FilenameUtils.getName(uploadedFile.getFileName());
+	    File destFile = new File(directory, filename);
+
+	    //use org.apache.commons.io.FileUtils to copy the File
+	    try {
+	        FileUtils.copyInputStreamToFile(inputStr, destFile);
+	    } catch (IOException e) {
+	        //log error
+	    }
+	    FacesMessage msg = new FacesMessage(event.getFile().getFileName() + " is uploaded.");
+	    FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
 }

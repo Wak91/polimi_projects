@@ -30,6 +30,7 @@
                   <h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
 				<p:calendar id="datei" binding="#{dates}" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
 				<p:message for="datef"/>
+				<br></br>
 				
 				<h:outputLabel for="datef">Data Fine Validità</h:outputLabel>
 				<p:calendar id="datef" required="true" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
