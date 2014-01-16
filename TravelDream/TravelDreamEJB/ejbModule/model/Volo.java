@@ -7,6 +7,7 @@ import javax.persistence.*;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -41,6 +42,8 @@ public class Volo implements Serializable {
 	@Column(name="`Luogo partenza`")
 	private String luogo_partenza;
 
+	@ManyToMany(mappedBy="volos")
+	private List<Pacchetto> pacchettos;
 
     public Volo() {
     super();

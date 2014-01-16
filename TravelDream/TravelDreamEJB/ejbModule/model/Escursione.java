@@ -40,6 +40,8 @@ public class Escursione implements Serializable {
 
 	private String nome;
 
+	@ManyToMany(mappedBy="escursiones")
+	private List<Pacchetto> pacchettos;
 	
     public Escursione() {
     super();

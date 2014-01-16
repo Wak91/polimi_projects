@@ -41,7 +41,19 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	@Resource
 	private EJBContext context;
 
-
+	public ArrayList <PacchettoDTO> getAllPack()
+	{
+		List <Pacchetto> mylist;
+		ArrayList <PacchettoDTO> pdto = new ArrayList <PacchettoDTO> ();
+		
+		mylist = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
+		for(Pacchetto p : mylist)
+		   {
+			pdto.add(PacchettoToDTO(p));
+		   }
+		return pdto;
+	}
+	
 	@Override
 	public void createPacket(PacchettoDTO packetDTO) {
 
@@ -54,115 +66,29 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
 		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
 		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
+		for (Hotel h:pacchetto.getHotels()){
+			h.getPacchettos().add(pacchetto);
+		}
 		em.persist(pacchetto);
 		em.flush();
 		
 		
 	}	
-	
-	
-	
-	public ArrayList <PacchettoDTO> getAllPack()
-	{
-		List <Pacchetto> mylist;
-		ArrayList <PacchettoDTO> pdto = new ArrayList <PacchettoDTO> ();
 		
-		mylist = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
-		for(Pacchetto p : mylist)
-		   {
-			pdto.add(PacchettoToDTO(p));
-		   }
-		return pdto;
-		
-	}
 	
 	public PacchettoDTO getPacchettoByID(int id)
 	{
 		return PacchettoToDTO(em.find(Pacchetto.class, id));
 		
 	}
-	
-	private PacchettoDTO PacchettoToDTO(Pacchetto p)
-	{
-		ArrayList <HotelDTO> hdto_list = new ArrayList <HotelDTO>();
-		ArrayList <EscursioneDTO> edto_list = new ArrayList <EscursioneDTO>();
-		ArrayList <VoloDTO> vdto_list = new ArrayList <VoloDTO>();
-		
-		PacchettoDTO pdto = new PacchettoDTO();
-		pdto.setData_fine(p.getData_fine());
-		pdto.setData_inizio(p.getData_inizio());
-		pdto.setDestinazione(p.getDestinazione());
-		pdto.setNome(p.getNome());
-		pdto.setPathtoImage(p.getImmagine());
-		pdto.setId(p.getId());	
-		
-		for(Escursione e: p.getEscursiones())
-		   {
-			 edto_list.add(EscursioneToDTO(e));
-		   }
 
-		for(Hotel h: p.getHotels())
-		   {
-			 hdto_list.add(HotelToDTO(h));
-		   }
-		
-		for(Volo v: p.getVolos())
-		   {
-			 vdto_list.add(VoloToDTO(v));
-		   }
-		
-		pdto.setLista_hotel(hdto_list);
-		pdto.setLista_voli(vdto_list);
-		pdto.setLista_escursioni(edto_list);
-		
-		return pdto;
-	}
 	
 	public void deletePacchetto(int id)
 	{
 		em.remove(em.find(Pacchetto.class,id));
 		
 	}
-	
-	public HotelDTO HotelToDTO(Hotel h) {
-		HotelDTO hdto = new HotelDTO();
-		hdto.setId(h.getId());
-		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
-		hdto.setData_fine(h.getData_fine());
-		hdto.setData_inizio(h.getData_inizio());
-		hdto.setLuogo(h.getLuogo());
-		hdto.setNome(h.getNome());
-		hdto.setStelle(h.getStelle());
-		hdto.setHotelImg(h.getImmagine());
-		hdto.setId(h.getId());
-		return hdto;
- 
-	}
-	
-	public VoloDTO VoloToDTO(Volo v) {
-		VoloDTO vdto = new VoloDTO();
-		vdto.setId(v.getId());
-		vdto.setCompagnia(v.getCompagnia());
-		vdto.setCosto(v.getCosto());
-		vdto.setData(v.getData());
-		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
-		vdto.setLuogo_partenza(v.getLuogo_partenza());
-		vdto.setImmagine(v.getImmagine());
-		vdto.setId(v.getId());
-		return vdto;
-	}
-	
-	public EscursioneDTO EscursioneToDTO(Escursione e) {
-		EscursioneDTO edto = new EscursioneDTO();
-		edto.setId(e.getId());
-		edto.setCosto(e.getCosto());
-		edto.setData(e.getData());
-		edto.setLuogo(e.getLuogo());
-		edto.setNome(e.getNome());
-		edto.setImmagine(e.getImmagine());
-		edto.setId(e.getId());
-		return edto;
-	}
+
 
 	@Override
 	public void modifyPacchetto(PacchettoDTO packetDTO) {
@@ -266,20 +192,66 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	    return EntitytoDTOVolo(volos);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ArrayList<HotelDTO> getListaHotelCompatibili2(String citta, Date inizio, Date fine) {
-		List<Hotel> hotels = em.createQuery("SELECT h FROM Hotel h WHERE h.luogo LIKE citta and h.data_inizio BETWEEN :start AND :end AND"
-        		+ " h.data_fine BETWEEN :start AND :end")
-                    .setParameter("citta", citta)
-                    .setParameter("start", inizio, TemporalType.TIMESTAMP)
-                    .setParameter("end", fine, TemporalType.TIMESTAMP)
-                    .getResultList();
-        ArrayList<HotelDTO> listaHotel = EntitytoDTOHotels(hotels);
-        return listaHotel;
-}
+//-----------------------SINGLE ELEMENT ENTITY TO DTO CONVERTER--------------	
 	
 	
-///------------------DTO CONVERTER--------
+	private PacchettoDTO PacchettoToDTO(Pacchetto p)
+	{
+		PacchettoDTO pdto = new PacchettoDTO();
+		pdto.setData_fine(p.getData_fine());
+		pdto.setData_inizio(p.getData_inizio());
+		pdto.setDestinazione(p.getDestinazione());
+		pdto.setNome(p.getNome());
+		pdto.setPathtoImage(p.getImmagine());
+		pdto.setId(p.getId());	
+		pdto.setLista_hotel(EntitytoDTOHotels(p.getHotels()));
+		pdto.setLista_escursioni(EntitytoDTOEscursione(p.getEscursiones()));
+		pdto.setLista_voli(EntitytoDTOVolo(p.getVolos()));
+
+		return pdto;
+	}
+	
+	public HotelDTO HotelToDTO(Hotel h) {
+		HotelDTO hdto = new HotelDTO();
+		hdto.setId(h.getId());
+		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
+		hdto.setData_fine(h.getData_fine());
+		hdto.setData_inizio(h.getData_inizio());
+		hdto.setLuogo(h.getLuogo());
+		hdto.setNome(h.getNome());
+		hdto.setStelle(h.getStelle());
+		hdto.setHotelImg(h.getImmagine());
+		hdto.setId(h.getId());
+		return hdto;
+ 
+	}
+	
+	public VoloDTO VoloToDTO(Volo v) {
+		VoloDTO vdto = new VoloDTO();
+		vdto.setId(v.getId());
+		vdto.setCompagnia(v.getCompagnia());
+		vdto.setCosto(v.getCosto());
+		vdto.setData(v.getData());
+		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
+		vdto.setLuogo_partenza(v.getLuogo_partenza());
+		vdto.setImmagine(v.getImmagine());
+		vdto.setId(v.getId());
+		return vdto;
+	}
+	
+	public EscursioneDTO EscursioneToDTO(Escursione e) {
+		EscursioneDTO edto = new EscursioneDTO();
+		edto.setId(e.getId());
+		edto.setCosto(e.getCosto());
+		edto.setData(e.getData());
+		edto.setLuogo(e.getLuogo());
+		edto.setNome(e.getNome());
+		edto.setImmagine(e.getImmagine());
+		edto.setId(e.getId());
+		return edto;
+	}
+	
+///------------------LIST ENTITY TO DTO CONVERTER-----------
 	  private ArrayList<HotelDTO> EntitytoDTOHotels(List<Hotel> hotels){
           ArrayList<HotelDTO> listaHotel = new ArrayList<HotelDTO>();
           for(Hotel h:hotels){
@@ -307,6 +279,8 @@ public class PackManagerBean implements PackManagerBeanLocal {
           return listavolo;
   }
 	
+	///------------------LIST DTO TO ENTITY CONVERTER-----------
+
 	
 	private List<Escursione> DTOtoEntityEscursione(List<EscursioneDTO> escursioneDTOs){
          ArrayList<Escursione> listaEscursioni = new ArrayList<Escursione>();
