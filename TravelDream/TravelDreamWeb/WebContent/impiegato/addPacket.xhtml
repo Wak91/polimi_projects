@@ -15,7 +15,7 @@
 				<p:inputText id="nome" value="#{PacketBean.packet.nome}" required="true" />
 				<p:message for="nome"  />
 				
-				<h:outputLabel for="luogo">Destinazioneoo:</h:outputLabel>
+				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
 				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" >
 				<p:ajax event="keyup" listener="#{PacketBean.filterComponents}" update="multiVoli,multiHotels,multiEscursioni" />  
 				</p:inputText>

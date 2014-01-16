@@ -66,6 +66,6 @@
 </context-param>
     <context-param>  
         <param-name>primefaces.THEME</param-name>  
-        <param-value>humanity</param-value>  
+        <param-value>bootstrap</param-value>  
     </context-param>  
 </web-app>
