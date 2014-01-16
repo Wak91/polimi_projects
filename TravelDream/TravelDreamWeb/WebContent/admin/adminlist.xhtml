@@ -5,41 +5,55 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"> 
       
-        <ui:composition template="Template.xhtml">
-      
+    <ui:composition template="Template.xhtml"> 
     <ui:define name="content">
       
       #{userBean.initBean()} 
         
       <h:form id="myform">
-    <p:dataTable id="username" var="utente" value="#{userBean.userModels}" paginator="true" rows="10"  filterMatchMode="contains" rowKey="username"
-                     filteredValue="#{userBean.filteredUsers}"  selectionMode="single">  
+    <p:dataTable id="username" 
+    		     var="utente" 	
+    		     value="#{userBean.userModels}" 
+    		     paginator="true" 
+    		     rows="10"   
+    		     rowKey="${row.username}"
+                 selectionMode="single"
+                 emptyMessage="Clicca sul pulsante SORT per ordinare">  
+                  
                      
                 <f:facet name="header">  
                 IMPIEGATI 
-            </f:facet>
+            	</f:facet>
                         
-                <p:column headerText="Username" style="width:25%" sortBy="#{utente.username}" filterBy="#{utente.username}">  
+                <p:column headerText="Username" style="width:25%" sortBy="#{utente.username}">  
         		<h:outputText value="#{utente.username}" />
                 </p:column>  
   
-                <p:column headerText="Nome" style="width:25%" sortBy="firstName" filterBy="#{utente.firstName}">  
+                <p:column headerText="Nome" style="width:25%" sortBy="firstName">  
                 <h:outputText value="#{utente.firstName}" />  
                 </p:column>  
   
-                <p:column headerText="Cognome" style="width:24%" sortBy="lastName" filterBy="#{utente.lastName}">  
+                <p:column headerText="Cognome" style="width:24%" sortBy="lastName">  
                 <h:outputText value="#{utente.lastName}" />    
                 </p:column>  
                 
-                <p:column headerText="Mail" style="width:24%" sortBy="email" filterBy="#{utente.email}">  
+                <p:column headerText="Mail" style="width:24%" sortBy="email">  
                 <h:outputText value="#{utente.email}" />    
                 </p:column> 
                 
                 <p:column headerText="Modifica" style="width:24%" >  
-                <h:link outcome = "modifyImp?id=#{utenteGruppo.getId}"  value="Modifica"/>
+                <h:link outcome = "modifyImp?id=#{utente.getusername()}"  value="Modifica"/>
 				</p:column>
+				
+
   
               </p:dataTable>
+              
+              <p:commandButton value="SORT" update="myform" id="ajax"  
+                 actionListener="#{userBean.initBean}" styleClass="ui-priority-primary"/>
+                 
+                 
+                 
               
               
                       
