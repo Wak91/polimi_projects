@@ -206,22 +206,8 @@ public class PackManagerBean implements PackManagerBeanLocal {
 
 	    List<Hotel> hotels = q.getResultList();
 	    return EntitytoDTOHotels(hotels);
-
-
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<HotelDTO> getListaHotelCompatibili2(String citta, Date inizio, Date fine) {
-		List<Hotel> hotels = em.createQuery("SELECT h FROM Hotel h WHERE h.luogo LIKE citta and h.data_inizio BETWEEN :start AND :end AND"
-        		+ " h.data_fine BETWEEN :start AND :end")
-                    .setParameter("citta", citta)
-                    .setParameter("start", inizio, TemporalType.TIMESTAMP)
-                    .setParameter("end", fine, TemporalType.TIMESTAMP)
-                    .getResultList();
-        ArrayList<HotelDTO> listaHotel = EntitytoDTOHotels(hotels);
-        return listaHotel;
-}
-	
-	
+		
 ///------------------DTO CONVERTER--------
 	  private ArrayList<HotelDTO> EntitytoDTOHotels(List<Hotel> hotels){
           ArrayList<HotelDTO> listaHotel = new ArrayList<HotelDTO>();

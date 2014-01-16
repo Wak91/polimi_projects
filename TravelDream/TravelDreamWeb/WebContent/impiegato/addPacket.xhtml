@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
        xmlns:p="http://primefaces.org/ui"
-       >
+>
        #{PacketBean.initBean()}  
 	   <h:form enctype="multipart/form-data">  
         <p:panel header="add pack">
@@ -16,7 +16,7 @@
 				<p:message for="nome" showDetail="true" autoUpdate="true" closable="true" />
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
-				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" required="true">
+				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" >
 				<p:ajax event="keyup" listener="#{PacketBean.filterComponents}" update="multiHotels,multiVoli,multiEscursioni" />  
 				</p:inputText>
 				<p:message for="luogo"  autoUpdate="true" required="true"/>
