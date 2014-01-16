@@ -30,9 +30,11 @@
 				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
 				<p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}"   update="multiVoli,multiHotels,multiEscursioni" />  
 				</p:calendar>
-				
-				<h:outputText id="out1" value="#{PacketBean.packet.destinazione}" />  
 				<p:message for="datef"  />
+				
+				<h:outputLabel for="immagine">Immagine</h:outputLabel>
+				<p:fileUpload value="#{PacketBean.imgPack}" mode="simple" />
+				<br></br>
 		  </h:panelGrid>
 		  <br/>		
 				INSERIMENTO HOTEL   
@@ -124,7 +126,7 @@
                 
               </p:dataTable> 
                  
-                <p:commandButton value="Crea Pacchetto"
+                <h:commandButton value="Crea Pacchetto"
 				action="#{PacketBean.PrelevaSelezionatiECrea}"/>
         
 		</p:panel>
