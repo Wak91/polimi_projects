@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
+import com.traveldream.gestionecomponente.ejb.VoloDTO;
 
 
 public interface PackManagerBeanLocal {
@@ -15,5 +17,7 @@ public interface PackManagerBeanLocal {
 	public void deletePacchetto(int id);
 	public void modifyPacchetto(PacchettoDTO packet);
 	public ArrayList<HotelDTO> getListaHotelCompatibili(String citta, Date inizio, Date fine);
+	public ArrayList<VoloDTO> getListaVoliCompatibili(String citta, Date inizio, Date fine);
+	public ArrayList<EscursioneDTO> getListaEscursioniCompatibili(String citta, Date inizio, Date fine);
 
 }

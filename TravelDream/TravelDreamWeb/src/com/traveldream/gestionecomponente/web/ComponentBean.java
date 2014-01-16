@@ -99,6 +99,7 @@ public class ComponentBean {
 		    } catch (IOException e) {
 		        //log error
 		    }
+		    
 
 		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		    String directory = externalContext.getInitParameter("uploadDirectory");
