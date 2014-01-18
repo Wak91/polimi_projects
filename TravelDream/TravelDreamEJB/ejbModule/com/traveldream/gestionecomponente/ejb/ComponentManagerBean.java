@@ -10,6 +10,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.traveldream.util.Converter;
+
 import model.Escursione;
 import model.Hotel;
 import model.Pacchetto;
@@ -61,7 +63,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		myList = em.createNamedQuery("Hotel.findAll", Hotel.class).getResultList();
 		for (Hotel h : myList)
 		    {
-			 myDTOlist.add(this.HotelToDTO(h));
+			 myDTOlist.add(this.HotelToDTOExtended(h));
 		    }
 		return myDTOlist;
 	}
@@ -70,7 +72,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	{
 		Hotel result;
 		result = em.createNamedQuery("Hotel.findbyId", Hotel.class).setParameter("d", id).getSingleResult();
-		return HotelToDTO(result);
+		return HotelToDTOExtended(result);
 	}
 
 	public void modificaHotel(HotelDTO h)
@@ -110,7 +112,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		
 	}
 	
-	public HotelDTO HotelToDTO(Hotel h) {
+	public  HotelDTO HotelToDTOExtended(Hotel h) {
 		HotelDTO hdto = new HotelDTO();
 		hdto.setId(h.getId());
 		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
@@ -121,8 +123,8 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		hdto.setStelle(h.getStelle());
 		hdto.setHotelImg(h.getImmagine());
 		hdto.setId(h.getId());
+		hdto.setPacchettos(Converter.EntitytoDTOPacchetto(h.getPacchettos()));
 		return hdto;
- 
 	}
 	
 	public ArrayList<VoloDTO> getAllVolo()

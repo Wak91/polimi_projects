@@ -67,6 +67,10 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
 		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
 		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
+		for (HotelDTO hotelDTO : packetDTO.getLista_hotel()) {
+			Hotel hotel =em.find(Hotel.class, hotelDTO.getId());
+			hotel.getPacchettos().add(pacchetto);
+		}
 		em.persist(pacchetto);
 		em.flush();
 		
@@ -84,6 +88,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	public void deletePacchetto(int id)
 	{
 		em.remove(em.find(Pacchetto.class,id));
+		em.flush();
 		
 	}
 
@@ -91,18 +96,26 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	@Override
 	public void modifyPacchetto(PacchettoDTO packetDTO) {
 		Pacchetto pacchetto = em.find(Pacchetto.class, packetDTO.getId());
+		
 		pacchetto.setNome(packetDTO.getNome());
 		pacchetto.setDestinazione(packetDTO.getDestinazione());
 		pacchetto.setData_inizio(packetDTO.getData_inizio());
 		pacchetto.setData_fine(packetDTO.getData_fine());
-		pacchetto.setImmagine(packetDTO.getPathtoImage());
+		pacchetto.setImmagine(packetDTO.getPathtoImage());	
 		
 		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
+		//riaggiorno la lista di pacchetti presente negli hotel del pacchetto
+		for (Hotel hotel : pacchetto.getHotels()) {
+			hotel.getPacchettos().remove(pacchetto);
+		}
+		for (Hotel hotel :DTOtoEntityHotel(packetDTO.getLista_hotel()) ){
+			hotel.getPacchettos().add(pacchetto);
+		}
+		
 		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
 		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
 		em.merge(pacchetto);
-		em.flush();
-		
+		em.flush();		
 	}
 	/**
 	 * Metodo che restituisce la lista degli hotel compatibili con le date e la citta'  crea una query in modo dinamico 

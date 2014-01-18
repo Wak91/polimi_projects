@@ -224,6 +224,7 @@ public class ComponentBean {
 	
 	public void getHotelById(int id)
 	{   
+		System.out.println("refreshing hotel");
 		this.hotel = CMB.getHotelById(id);
 	
 	}
@@ -250,6 +251,13 @@ public class ComponentBean {
 		    }
     hotel.setHotelImg(imgHotel.getFileName());	
     CMB.modificaHotel(hotel);
+    
+    if (hotel.getPacchettos().isEmpty()){
+    	System.out.println("hotel non inserito in nessun pacchetto");
+    }
+    for (PacchettoDTO pacchettoDTO : hotel.getPacchettos()) {
+		System.out.println("hotel "+hotel.getNome()+" e' nel pacchetto "+pacchettoDTO.getNome());
+	}
 
 	return "toHotel.xhtml?faces-redirect=true";
 	}
