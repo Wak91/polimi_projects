@@ -46,12 +46,6 @@ public class UserManagerBean implements UserMgr {
 	
 
 	@Override
-	public void update(UserDTO user) {
-		
-
-	}
-
-	@Override
 	public void unregister() {
 		// TODO Auto-generated method stub
 
@@ -85,7 +79,8 @@ public class UserManagerBean implements UserMgr {
 		return context.getCallerPrincipal().getName(); // ritorna la chiave specificata nel reame ( USERNAME )
 	}
 	
-	private Utente find(String pusername) {
+	
+	public Utente find(String pusername) {
 		return em.find(Utente.class, pusername);
 	}
 
@@ -115,21 +110,59 @@ public class UserManagerBean implements UserMgr {
 	}
 
 
-
-	public ArrayList<UserDTO> getAllImp() {
+		public ArrayList<UserDTO> getAllImp() {
 		List<Utente> myList;
 		ArrayList <UserDTO> myDTOlist = new ArrayList <UserDTO> ();
 		Query q = em.createNamedQuery("Utente.findAll", Utente.class);
 		myList = q.getResultList();
-		for (Utente u : myList)
-		    {
-			if (u.getUtenteGruppos().get(0).getGruppo().equals("IMPIEGATO"))
-			 myDTOlist.add(this.convertToDTO(u));
-		    }
+		for (Utente u : myList){
+			for(int i = 0; i < u.getUtenteGruppos().size(); i++){
+				if (u.getUtenteGruppos().get(i).getGruppo().equals("IMPIEGATO"))
+					myDTOlist.add(this.convertToDTO(u));
+			}
+		}
 		return myDTOlist;
 				
 	}
-	
+
+
+	//Risolvere problema se cambio username non trova nulla
+	@Override
+	public void modifyUser(UserDTO user) {
+		Utente result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", user.getUsername()).getSingleResult();
+		result.setNome(user.getFirstName());
+		result.setCognome(user.getLastName());
+		result.setData_di_nascita(user.getData());
+		result.setEmail(user.getEmail());
+		result.setPassword(user.getPassword());
+		em.merge(result);
+		
+	}
+
+	@Override
+	public void modifyUser(UserDTO user, String username) {
+		// TODO Auto-generated method stub
+		Utente result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", username).getSingleResult();
+		result.setUsername(user.getUsername());
+		result.setNome(user.getFirstName());
+		result.setCognome(user.getLastName());
+		result.setData_di_nascita(user.getData());
+		result.setEmail(user.getEmail());
+		result.setPassword(user.getPassword());
+		em.merge(result);
+		
+	}
+
+
+	@Override
+	public UserDTO findImp(String username) {
+		Utente result;
+		result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", username).getSingleResult();
+		return convertToDTO(result);
+	}
+
+
+
 	
 
 }

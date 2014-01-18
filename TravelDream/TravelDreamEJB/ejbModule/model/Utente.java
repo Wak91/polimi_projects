@@ -21,7 +21,7 @@ import java.util.List;
 			(
 				{	
 					@NamedQuery(name="Utente.findAll", query="SELECT u FROM Utente u"),
-					//@NamedQuery(name="Utente.findByID", query="SELECT u FROM Utente u WHERE u.Id = :id")
+					@NamedQuery(name="Utente.findImp", query="SELECT u FROM Utente u WHERE u.username = :username")
 				}
 			)
 public class Utente implements Serializable {

@@ -92,6 +92,19 @@ public class UserBean {
 		}
 	}
 	
+	public void getcurrentUser() {
+		this.user=userMgr.getUserDTO();
+	}
+	
+	public void getImpByUn(String username)
+	{   
+		this.user = userMgr.findImp(username);
+	}
+	
+	public void modificaUtente(){
+		userMgr.modifyUser(user);
+	}
+	
 	public String register(){
 		userMgr.saveUser(user);
 		return "utente/userhome?faces-redirect=true";
