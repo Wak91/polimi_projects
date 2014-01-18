@@ -30,6 +30,7 @@ import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
+import com.traveldream.gestionepack.ejb.PacchettoDTO;
 import com.traveldream.gestionepack.web.EscDataModel;
 import com.traveldream.gestionepack.web.HotelDataModel;
 import com.traveldream.gestionepack.web.VoloDataModel;
@@ -249,6 +250,7 @@ public class ComponentBean {
 		    }
     hotel.setHotelImg(imgHotel.getFileName());	
     CMB.modificaHotel(hotel);
+
 	return "toHotel.xhtml?faces-redirect=true";
 	}
 	

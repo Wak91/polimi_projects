@@ -28,7 +28,7 @@ import com.traveldream.gestionecomponente.ejb.ComponentManagerBean;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
-
+import com.traveldream.util.Converter;;
 /**
  * Session Bean implementation class PackManagerBean
  */
@@ -41,6 +41,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	@Resource
 	private EJBContext context;
 
+	
 	public ArrayList <PacchettoDTO> getAllPack()
 	{
 		List <Pacchetto> mylist;
@@ -49,7 +50,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		mylist = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
 		for(Pacchetto p : mylist)
 		   {
-			pdto.add(PacchettoToDTO(p));
+			pdto.add(Converter.PacchettoToDTO(p));
 		   }
 		return pdto;
 	}
@@ -66,9 +67,6 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
 		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
 		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
-		for (Hotel h:pacchetto.getHotels()){
-			h.getPacchettos().add(pacchetto);
-		}
 		em.persist(pacchetto);
 		em.flush();
 		
@@ -78,7 +76,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	
 	public PacchettoDTO getPacchettoByID(int id)
 	{
-		return PacchettoToDTO(em.find(Pacchetto.class, id));
+		return Converter.PacchettoToDTO(em.find(Pacchetto.class, id));
 		
 	}
 
@@ -133,7 +131,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	    c.where(predicates.toArray(new Predicate[]{}));
 	    TypedQuery<Hotel> q = em.createQuery(c);
 	    List<Hotel> hotels = q.getResultList();
-	    return EntitytoDTOHotels(hotels);
+	    return Converter.EntitytoDTOHotels(hotels);
 	}
 	/**
 	 * Metodo che restituisce la lista delle Escursioni compatibili con le date e la citta'  crea una query in modo dinamica 
@@ -162,7 +160,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	    c.where(predicates.toArray(new Predicate[]{}));
 	    TypedQuery<Escursione> q = em.createQuery(c);
 	    List<Escursione> escursiones = q.getResultList();
-	    return EntitytoDTOEscursione(escursiones);
+	    return Converter.EntitytoDTOEscursione(escursiones);
 	}
 	
 	public ArrayList<VoloDTO> getListaVoliCompatibili(String citta, Date inizio, Date fine) {
@@ -189,98 +187,12 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	    c.where(predicates.toArray(new Predicate[]{}));
 	    TypedQuery<Volo> q = em.createQuery(c);
 	    List<Volo> volos = q.getResultList();
-	    return EntitytoDTOVolo(volos);
+	    return Converter.EntitytoDTOVolo(volos);
 	}
 	
-//-----------------------SINGLE ELEMENT ENTITY TO DTO CONVERTER--------------	
-	
-	
-	private PacchettoDTO PacchettoToDTO(Pacchetto p)
-	{
-		PacchettoDTO pdto = new PacchettoDTO();
-		pdto.setData_fine(p.getData_fine());
-		pdto.setData_inizio(p.getData_inizio());
-		pdto.setDestinazione(p.getDestinazione());
-		pdto.setNome(p.getNome());
-		pdto.setPathtoImage(p.getImmagine());
-		pdto.setId(p.getId());	
-		pdto.setLista_hotel(EntitytoDTOHotels(p.getHotels()));
-		pdto.setLista_escursioni(EntitytoDTOEscursione(p.getEscursiones()));
-		pdto.setLista_voli(EntitytoDTOVolo(p.getVolos()));
-
-		return pdto;
-	}
-	
-	public HotelDTO HotelToDTO(Hotel h) {
-		HotelDTO hdto = new HotelDTO();
-		hdto.setId(h.getId());
-		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
-		hdto.setData_fine(h.getData_fine());
-		hdto.setData_inizio(h.getData_inizio());
-		hdto.setLuogo(h.getLuogo());
-		hdto.setNome(h.getNome());
-		hdto.setStelle(h.getStelle());
-		hdto.setHotelImg(h.getImmagine());
-		hdto.setId(h.getId());
-		return hdto;
- 
-	}
-	
-	public VoloDTO VoloToDTO(Volo v) {
-		VoloDTO vdto = new VoloDTO();
-		vdto.setId(v.getId());
-		vdto.setCompagnia(v.getCompagnia());
-		vdto.setCosto(v.getCosto());
-		vdto.setData(v.getData());
-		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
-		vdto.setLuogo_partenza(v.getLuogo_partenza());
-		vdto.setImmagine(v.getImmagine());
-		vdto.setId(v.getId());
-		return vdto;
-	}
-	
-	public EscursioneDTO EscursioneToDTO(Escursione e) {
-		EscursioneDTO edto = new EscursioneDTO();
-		edto.setId(e.getId());
-		edto.setCosto(e.getCosto());
-		edto.setData(e.getData());
-		edto.setLuogo(e.getLuogo());
-		edto.setNome(e.getNome());
-		edto.setImmagine(e.getImmagine());
-		edto.setId(e.getId());
-		return edto;
-	}
-	
-///------------------LIST ENTITY TO DTO CONVERTER-----------
-	  private ArrayList<HotelDTO> EntitytoDTOHotels(List<Hotel> hotels){
-          ArrayList<HotelDTO> listaHotel = new ArrayList<HotelDTO>();
-          for(Hotel h:hotels){
-                  HotelDTO nuovo = HotelToDTO(h);
-                  listaHotel.add(nuovo);
-          }
-          return listaHotel;
-  }
-	  
-	  private ArrayList<EscursioneDTO> EntitytoDTOEscursione(List<Escursione> escursioni){
-          ArrayList<EscursioneDTO> listaesc = new ArrayList<EscursioneDTO>();
-          for(Escursione e:escursioni){
-                  EscursioneDTO nuovo = EscursioneToDTO(e);
-                  listaesc.add(nuovo);
-          }
-          return listaesc;
-  }
-	  
-	  private ArrayList<VoloDTO> EntitytoDTOVolo(List<Volo> voli){
-          ArrayList<VoloDTO> listavolo = new ArrayList<VoloDTO>();
-          for(Volo v:voli){
-                  VoloDTO nuovo = VoloToDTO(v);
-                  listavolo.add(nuovo);
-          }
-          return listavolo;
-  }
 	
 	///------------------LIST DTO TO ENTITY CONVERTER-----------
-
+//non puo essere spostato in converter perche c'e la necessita di chiamare Entity manager
 	
 	private List<Escursione> DTOtoEntityEscursione(List<EscursioneDTO> escursioneDTOs){
          ArrayList<Escursione> listaEscursioni = new ArrayList<Escursione>();
@@ -290,7 +202,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
          }
          return listaEscursioni;
  }
-	 private List<Volo> DTOtoEntityVolo(List<VoloDTO> voloDTOs){
+	  private  List<Volo> DTOtoEntityVolo(List<VoloDTO> voloDTOs){
          ArrayList<Volo> listavolo = new ArrayList<Volo>();
          for (VoloDTO voloDTO :voloDTOs){
                  Volo nuovovolo = em.find(Volo.class, voloDTO.getId());
@@ -301,11 +213,11 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	  private List<Hotel> DTOtoEntityHotel(List<HotelDTO> hotelDTOs){
           ArrayList<Hotel> listaHotel = new ArrayList<Hotel>();
           for (HotelDTO hotelDTO : hotelDTOs){
+        	  	System.out.println(hotelDTO.getNome()+" "+hotelDTO.getId());
                   Hotel nuovohotel = em.find(Hotel.class, hotelDTO.getId());
                   listaHotel.add(nuovohotel);
           }
           return listaHotel;
   }
 	
-
 }
