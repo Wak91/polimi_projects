@@ -111,7 +111,12 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		em.remove(em.createNamedQuery("Hotel.findbyId", Hotel.class).setParameter("d", hid).getSingleResult());
 		
 	}
-	
+	/**
+	 * Questo metodo converte da entita HOTEL a DTO ritornando anche l'insieme di pacchetti a cui appartiene
+	 * è perciò diverso dal metodo del Converter HotelToDTOSimple che non ritorna la lista dei pacchetti in cui e' incluso
+	 * @param h Hotel da convertire
+	 * @return HOTELDTO
+	 */
 	public  HotelDTO HotelToDTOExtended(Hotel h) {
 		HotelDTO hdto = new HotelDTO();
 		hdto.setId(h.getId());
@@ -134,7 +139,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		myList = em.createNamedQuery("Volo.findAll", Volo.class).getResultList();
 		for (Volo v : myList)
 		    {
-			 myDTOlist.add(this.VoloToDTO(v));
+			 myDTOlist.add(this.VoloToDTOExtended(v));
 		    }
 		return myDTOlist;
 	}
@@ -144,10 +149,10 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	{
 		Volo result;
 		result = em.createNamedQuery("Volo.findbyId", Volo.class).setParameter("d", id).getSingleResult();
-		return VoloToDTO(result);
+		return VoloToDTOExtended(result);
 	}
 	
-	public VoloDTO VoloToDTO(Volo v) {
+	public VoloDTO VoloToDTOExtended(Volo v) {
 		VoloDTO vdto = new VoloDTO();
 		vdto.setId(v.getId());
 		vdto.setCompagnia(v.getCompagnia());
@@ -157,6 +162,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		vdto.setLuogo_partenza(v.getLuogo_partenza());
 		vdto.setImmagine(v.getImmagine());
 		vdto.setId(v.getId());
+		vdto.setPacchettos(Converter.EntitytoDTOPacchetto(v.getPacchettos()));
 		return vdto;
 	}
 	
@@ -204,12 +210,12 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		myList = em.createNamedQuery("Escursione.findAll", Escursione.class).getResultList();
 		for (Escursione e : myList)
 		    {
-			 myDTOlist.add(this.EscursioneToDTO(e));
+			 myDTOlist.add(this.EscursioneToDTOExtended(e));
 		    }
 		return myDTOlist;
 	}
 
-	public EscursioneDTO EscursioneToDTO(Escursione e) {
+	public EscursioneDTO EscursioneToDTOExtended(Escursione e) {
 		EscursioneDTO edto = new EscursioneDTO();
 		edto.setId(e.getId());
 		edto.setCosto(e.getCosto());
@@ -217,6 +223,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		edto.setLuogo(e.getLuogo());
 		edto.setNome(e.getNome());
 		edto.setImmagine(e.getImmagine());
+		edto.setPacchettos(Converter.EntitytoDTOPacchetto(e.getPacchettos()));
 		return edto;
 	}
 	
@@ -258,7 +265,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	{
 		Escursione result;
 		result = em.createNamedQuery("Escursione.findbyId", Escursione.class).setParameter("d", id).getSingleResult();
-		return EscursioneToDTO(result);
+		return EscursioneToDTOExtended(result);
 	}
 
 

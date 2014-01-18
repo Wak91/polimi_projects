@@ -220,7 +220,6 @@ public class PacketBean {
 					return null;
 
 				}
-				System.out.println("creo packet");
 
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);

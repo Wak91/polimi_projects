@@ -7,6 +7,7 @@
        xmlns:p="http://primefaces.org/ui"
 >
        #{PacketBean.initBean()}  
+       
 	   <h:form enctype="multipart/form-data">  
         <p:panel header="add pack">
 			<h:panelGrid columns="3" id="regGrid">
@@ -17,11 +18,11 @@
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
 				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" >
+       			<p:message for="luogo"   />
 
 				<p:ajax event="keyup" listener="#{PacketBean.filterComponents}" update="multiVoli,multiHotels,multiEscursioni" />  
 
 				</p:inputText>
-				<p:message for="luogo"   />
 				
                 <h:outputLabel for="datei">Data Inizio validità</h:outputLabel>
 				<p:calendar id="datei" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">

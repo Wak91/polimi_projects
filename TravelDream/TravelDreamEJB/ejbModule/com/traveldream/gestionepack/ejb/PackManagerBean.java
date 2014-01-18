@@ -71,6 +71,15 @@ public class PackManagerBean implements PackManagerBeanLocal {
 			Hotel hotel =em.find(Hotel.class, hotelDTO.getId());
 			hotel.getPacchettos().add(pacchetto);
 		}
+		for (VoloDTO voloDTO : packetDTO.getLista_voli()) {
+			Volo volo =em.find(Volo.class, voloDTO.getId());
+			volo.getPacchettos().add(pacchetto);
+		}
+		
+		for (EscursioneDTO escursioneDTO : packetDTO.getLista_escursioni()) {
+			Escursione escursione =em.find(Escursione.class, escursioneDTO.getId());
+			escursione.getPacchettos().add(pacchetto);
+		}
 		em.persist(pacchetto);
 		em.flush();
 		
@@ -94,6 +103,9 @@ public class PackManagerBean implements PackManagerBeanLocal {
 
 
 	@Override
+	/**
+	 * Modifica il pacchetto e aggiorna la lista di pacchetti a cui si riferiscono i vari componenti che lo compongono(Volo.Hotel,Escursione)
+	 */
 	public void modifyPacchetto(PacchettoDTO packetDTO) {
 		Pacchetto pacchetto = em.find(Pacchetto.class, packetDTO.getId());
 		
@@ -103,17 +115,40 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		pacchetto.setData_fine(packetDTO.getData_fine());
 		pacchetto.setImmagine(packetDTO.getPathtoImage());	
 		
-		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
-		//riaggiorno la lista di pacchetti presente negli hotel del pacchetto
+		//riaggiorno la lista di pacchetti presente negli hotel (che indica in che pacchetti è inserito) del pacchetto(Hotel.pacchettos)
+		System.out.println("in modify packet ");
 		for (Hotel hotel : pacchetto.getHotels()) {
+			System.out.println("in modify packet rimuovo "+hotel.getNome());
 			hotel.getPacchettos().remove(pacchetto);
 		}
 		for (Hotel hotel :DTOtoEntityHotel(packetDTO.getLista_hotel()) ){
+			System.out.println("in modify packet aggiungo "+hotel.getNome());
+
 			hotel.getPacchettos().add(pacchetto);
-		}
+		}		
+		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
+
 		
+		//riaggiorno la lista di pacchetti contenuta in escursione(che indica in che pacchetti e' inserita) prima rimuovo quelli vecchi poi aggiungo quelli nuovi
+		//faccio in questo modo considerando che il numero di hotel in un pacchetto non sia troppo grosso
+		for(Escursione escursione:pacchetto.getEscursiones()){
+			escursione.getPacchettos().remove(pacchetto);
+		}
+		for (Escursione escursione : DTOtoEntityEscursione(packetDTO.getLista_escursioni())) {
+			escursione.getPacchettos().add(pacchetto);
+		}
 		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
+
+		
+		for (Volo volo : pacchetto.getVolos()) {
+			volo.getPacchettos().remove(pacchetto);
+		}
+		for (Volo volo:DTOtoEntityVolo(packetDTO.getLista_voli())){
+			volo.getPacchettos().add(pacchetto);
+		}
 		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
+
+		
 		em.merge(pacchetto);
 		em.flush();		
 	}

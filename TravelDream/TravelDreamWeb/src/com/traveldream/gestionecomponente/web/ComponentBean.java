@@ -298,8 +298,19 @@ public class ComponentBean {
 	
 	}
 	
-	public void modificaVolo()
-	{ CMB.modificaVolo(volo);}
+	public String modificaVolo()
+	{ CMB.modificaVolo(volo);
+
+    if (volo.getPacchettos().isEmpty()){
+    	System.out.println("volo non inserito in nessun pacchetto");
+    }
+    for (PacchettoDTO pacchettoDTO : volo.getPacchettos()) {
+		System.out.println("volo "+volo.getCompagnia()+" e' nel pacchetto "+pacchettoDTO.getNome());
+	}
+	return "toVolo.xhtml?faces-redirect=true";
+
+	
+	}
 	
 	public String eliminaVolo(int id)
 	{ CMB.eliminaVolo(id);
@@ -339,8 +350,19 @@ public class ComponentBean {
 	
 	}
 	
-	public void modificaEscursione()
-	{ CMB.modificaEscursione(escursione);}
+	public String modificaEscursione()
+	{ CMB.modificaEscursione(escursione);
+
+    if (escursione.getPacchettos().isEmpty()){
+    	System.out.println("escursione non inserito in nessun pacchetto");
+    }
+    for (PacchettoDTO pacchettoDTO : escursione.getPacchettos()) {
+		System.out.println("escursione "+escursione.getNome()+" e' nel pacchetto "+pacchettoDTO.getNome());
+	}
+	return "toEscursione.xhtml?faces-redirect=true";
+
+	}
+	
 	
 	public String eliminaEscursione(int id)
 	{ 

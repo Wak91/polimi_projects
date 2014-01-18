@@ -45,7 +45,9 @@ public class Volo implements Serializable {
 	@ManyToMany(mappedBy="volos")
 	private List<Pacchetto> pacchettos;
 
-    public Volo() {
+ 
+
+	public Volo() {
     super();
   }
   
@@ -116,7 +118,14 @@ public class Volo implements Serializable {
 	public void setLuogo_partenza(String luogo_partenza) {
 		this.luogo_partenza = luogo_partenza;
 	}
+	   
+	public List<Pacchetto> getPacchettos() {
+			return pacchettos;
+		}
 
+	public void setPacchettos(List<Pacchetto> pacchettos) {
+			this.pacchettos = pacchettos;
+		}
 
 
 }
