@@ -129,20 +129,10 @@ public class UserManagerBean implements UserMgr {
 	//Risolvere problema se cambio username non trova nulla
 	@Override
 	public void modifyUser(UserDTO user) {
+		String casa = user.getUsername();
+		System.out.println("il mio username: " +casa);
+		System.out.println(user.getFirstName());
 		Utente result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", user.getUsername()).getSingleResult();
-		result.setNome(user.getFirstName());
-		result.setCognome(user.getLastName());
-		result.setData_di_nascita(user.getData());
-		result.setEmail(user.getEmail());
-		result.setPassword(user.getPassword());
-		em.merge(result);
-		
-	}
-
-	@Override
-	public void modifyUser(UserDTO user, String username) {
-		// TODO Auto-generated method stub
-		Utente result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", username).getSingleResult();
 		result.setUsername(user.getUsername());
 		result.setNome(user.getFirstName());
 		result.setCognome(user.getLastName());
@@ -153,12 +143,28 @@ public class UserManagerBean implements UserMgr {
 		
 	}
 
-
 	@Override
 	public UserDTO findImp(String username) {
 		Utente result;
 		result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", username).getSingleResult();
 		return convertToDTO(result);
+	}
+
+	@Override
+	public void modifyUser(UserDTO user, String username) {
+		// TODO Auto-generated method stub
+		String casa = user.getUsername();
+		System.out.println("alooora" +username);
+		System.out.println("il mio username: " +casa);
+		System.out.println(user.getFirstName());
+		Utente result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", username).getSingleResult();
+		result.setUsername(user.getUsername());
+		result.setNome(user.getFirstName());
+		result.setCognome(user.getLastName());
+		result.setData_di_nascita(user.getData());
+		result.setEmail(user.getEmail());
+		result.setPassword(user.getPassword());
+		em.merge(result);
 	}
 
 

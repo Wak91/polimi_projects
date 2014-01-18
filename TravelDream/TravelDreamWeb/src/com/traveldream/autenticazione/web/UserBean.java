@@ -2,18 +2,16 @@ package com.traveldream.autenticazione.web;
 
 import java.util.ArrayList;
 
-import com.sun.mail.util.LogOutputStream;
 import com.traveldream.autenticazione.ejb.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
-
-import org.primefaces.event.RowEditEvent;
 
 @ManagedBean(name="userBean")
 @ViewScoped
@@ -101,8 +99,11 @@ public class UserBean {
 		this.user = userMgr.findImp(username);
 	}
 	
-	public void modificaUtente(){
+	public String modificaUtente(){
+		System.out.println("xxxxxxxxxxxx" +user.getUsername());
+		System.out.println("yyyyyyyyyyyy" +user.getLastName());
 		userMgr.modifyUser(user);
+		return "admin/adminlist?faces-redirect=true";
 	}
 	
 	public String register(){

@@ -104,7 +104,7 @@ public class Utente implements Serializable {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = DigestUtils.sha512Hex(password);
 	}
 
 	public List<UtenteGruppo> getUtenteGruppos() {

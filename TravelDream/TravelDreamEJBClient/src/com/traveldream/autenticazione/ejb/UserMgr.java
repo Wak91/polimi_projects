@@ -15,10 +15,7 @@ public interface UserMgr {
 	public void saveImpiegato(UserDTO user);
 	
 	public void modifyUser(UserDTO user);
-	
-	public void modifyUser(UserDTO user, String username);
-
-	
+		
 	public void unregister();
 	
 	public UserDTO getUserDTO();
@@ -28,6 +25,8 @@ public interface UserMgr {
 	public boolean existUsername(String value);
 
 	public ArrayList<UserDTO> getAllImp();
+
+	public void modifyUser(UserDTO user, String username);
 
 
 }
