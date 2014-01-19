@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -43,13 +44,6 @@ public class UserManagerBean implements UserMgr {
 		
 	}
 	
-	
-
-	@Override
-	public void unregister() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public UserDTO getUserDTO() {
@@ -132,6 +126,10 @@ public class UserManagerBean implements UserMgr {
 		String casa = user.getUsername();
 		System.out.println("il mio username: " +casa);
 		System.out.println(user.getFirstName());
+		System.out.println(user.getLastName());
+		System.out.println(user.getEmail());
+		System.out.println(user.getPassword());
+		System.out.println(user.getData().toString());
 		Utente result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", user.getUsername()).getSingleResult();
 		result.setUsername(user.getUsername());
 		result.setNome(user.getFirstName());
@@ -139,36 +137,28 @@ public class UserManagerBean implements UserMgr {
 		result.setData_di_nascita(user.getData());
 		result.setEmail(user.getEmail());
 		result.setPassword(user.getPassword());
-		em.merge(result);
+		em.merge(result); 
 		
 	}
-
+	
 	@Override
 	public UserDTO findImp(String username) {
 		Utente result;
-		result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", username).getSingleResult();
-		return convertToDTO(result);
+		try{
+			result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", username).getSingleResult();
+			return convertToDTO(result);
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
+	
+
 
 	@Override
-	public void modifyUser(UserDTO user, String username) {
+	public void unregister(UserDTO user) {
 		// TODO Auto-generated method stub
-		String casa = user.getUsername();
-		System.out.println("alooora" +username);
-		System.out.println("il mio username: " +casa);
-		System.out.println(user.getFirstName());
-		Utente result = em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", username).getSingleResult();
-		result.setUsername(user.getUsername());
-		result.setNome(user.getFirstName());
-		result.setCognome(user.getLastName());
-		result.setData_di_nascita(user.getData());
-		result.setEmail(user.getEmail());
-		result.setPassword(user.getPassword());
-		em.merge(result);
-	}
-
-
-
-	
+		em.remove(em.createNamedQuery("Utente.findImp", Utente.class).setParameter("username", user.getUsername()).getSingleResult());
+		
+	}	
 
 }

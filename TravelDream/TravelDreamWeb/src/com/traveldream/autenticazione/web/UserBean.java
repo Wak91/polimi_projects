@@ -7,11 +7,14 @@ import com.traveldream.autenticazione.ejb.*;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
+
+import org.primefaces.event.RowEditEvent;
 
 @ManagedBean(name="userBean")
 @ViewScoped
@@ -28,6 +31,7 @@ public class UserBean {
 		user = new UserDTO();
 	}
 	
+	@PostConstruct
 	public void initBean()
 	{
 		setUserModels(new UserDataModel(userMgr.getAllImp()));	
@@ -35,7 +39,7 @@ public class UserBean {
 	
 	public String createUser(){
 		userMgr.saveImpiegato(user);
-		return "impadd.xhtml?faces-redirect=true";
+		return "adminhome.xhtml?faces-redirect=true";
 	}
 		
 
@@ -46,6 +50,10 @@ public class UserBean {
 	private void setUserModels(UserDataModel userModels) {
 		this.userModels = userModels;		
 	}
+	
+	public void saveUserModels() {
+        userMgr.modifyUser(userModels.getRowData());
+    }
 	
 	public UserDataModel getUserModels() {
 		return userModels;
@@ -100,27 +108,29 @@ public class UserBean {
 	}
 	
 	public String modificaUtente(){
-		System.out.println("xxxxxxxxxxxx" +user.getUsername());
-		System.out.println("yyyyyyyyyyyy" +user.getLastName());
 		userMgr.modifyUser(user);
-		return "admin/adminlist?faces-redirect=true";
+		return "adminlist?faces-redirect=true";
 	}
 	
 	public String register(){
 		userMgr.saveUser(user);
-		return "utente/userhome?faces-redirect=true";
+		return "adminlist?faces-redirect=true";
 	}
 	
 	public String addImpiegato(){
 		userMgr.saveImpiegato(user);
-		return "admin/adminhome?faces-redirect=true";
+		return "adminhome?faces-redirect=true";
 	}
 	
 
 	public String logout() {
 	    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-	    return "/homepage?faces-redirect=true";
+	    return "homepage?faces-redirect=true";
 	  }
 	
-	
+	public String deleteUser(){
+		userMgr.unregister(user);
+		return "adminlist?faces-redirect=true";
+		}
+
 }

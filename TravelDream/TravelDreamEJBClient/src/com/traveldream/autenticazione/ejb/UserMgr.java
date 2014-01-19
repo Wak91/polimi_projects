@@ -16,17 +16,13 @@ public interface UserMgr {
 	
 	public void modifyUser(UserDTO user);
 		
-	public void unregister();
+	public void unregister(UserDTO user);
 	
 	public UserDTO getUserDTO();
 	
-	public <Utente> Utente find(String un);
-
 	public boolean existUsername(String value);
 
 	public ArrayList<UserDTO> getAllImp();
-
-	public void modifyUser(UserDTO user, String username);
 
 
 }

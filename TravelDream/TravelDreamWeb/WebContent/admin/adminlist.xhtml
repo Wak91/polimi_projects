@@ -6,19 +6,19 @@
       xmlns:p="http://primefaces.org/ui"> 
       
     <ui:composition template="Template.xhtml"> 
-    <ui:define name="content">
+    	<ui:define name="content">
       
-      #{userBean.initBean()} 
+      		#{userBean.initBean()} 
         
-      <h:form id="myform">
-    <p:dataTable id="tab" 
-    		     var="utente" 	
-    		     value="#{userBean.userModels}" 
-    		     paginator="true" 
-    		     rows="10"   
-    		     rowKey="${row.username}"
-                 selectionMode="single"
-                 emptyMessage="Clicca sul pulsante SORT per ordinare">  
+      			<h:form id="myform">
+   				 	<p:dataTable id="tab" 
+    		    	 var="utente" 	
+    		    	 value="#{userBean.userModels}" 
+    		   		 paginator="true" 
+    		  	  	 rows="10"   
+    		     	 rowKey="${row.username}"
+                	 selectionMode="single"
+               		 emptyMessage="Clicca sul pulsante SORT per ordinare">  
                   
                      
                 <f:facet name="header">  
@@ -36,27 +36,21 @@
                 <p:column headerText="Cognome" style="width:24%" sortBy="lastName">  
                 <h:outputText value="#{utente.lastName}" />    
                 </p:column>  
+             
                 
                 <p:column headerText="Mail" style="width:24%" sortBy="email">  
                 <h:outputText value="#{utente.email}" />    
                 </p:column> 
                 
-                <p:column headerText="Modifica" style="width:24%" >  
-                <h:link outcome = "modifyImp?id=#{utente.username}"  value="Modifica"/>
-				</p:column>
-				
-
-  
+                <p:column headerText="Modifica" style="width:24%" >  			
+    			<h:link value="Modifica" outcome="modifyImp">
+  				<f:param name="id" value="#{utente.username}"/>
+  				
+  				
+				</h:link>
+   				</p:column>
               </p:dataTable>
-              
-              <p:commandButton value="SORT" update="myform" id="ajax"  
-                 actionListener="#{userBean.initBean}" styleClass="ui-priority-primary"/>
-                 
-                 
-                 
-              
-              
-                      
+                    
   </h:form>
 </ui:define>
 </ui:composition>
