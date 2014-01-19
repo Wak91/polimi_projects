@@ -8,5 +8,6 @@
 		<class>model.Volo</class>
 		<class>model.Escursione</class>
 		<class>model.Pacchetto</class>
+		<class>model.Viaggio</class>
 	</persistence-unit>
 </persistence>

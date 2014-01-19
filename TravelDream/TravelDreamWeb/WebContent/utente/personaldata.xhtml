@@ -8,6 +8,12 @@
 	<ui:composition template="Template.xhtml">
 	 <ui:define name="content">
        #{userBean.getcurrentUser()}
+     <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>  
 	    <h:form>
 		<p:panel header="Dati Personali">
 			

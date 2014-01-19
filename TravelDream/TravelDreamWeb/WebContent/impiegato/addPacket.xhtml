@@ -125,8 +125,11 @@
                 </p:column>  
                 
               </p:dataTable> 
+                <h:outputLabel for="immagine">Immagine</h:outputLabel>
+				<p:fileUpload value="#{PacketBean.imgPack}" mode="simple" />
+				<br></br>
                  
-                <p:commandButton value="Crea Pacchetto"
+               <h:commandButton value="Crea Pacchetto"
 				action="#{PacketBean.PrelevaSelezionatiECrea}"/>
         
 		</p:panel>

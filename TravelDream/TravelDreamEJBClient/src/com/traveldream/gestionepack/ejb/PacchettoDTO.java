@@ -88,7 +88,29 @@ public class PacchettoDTO {
 	public List<VoloDTO> getLista_voli() {
 		return lista_voli;
 	}
+	
+	public List<VoloDTO> getLista_voli_andata()
+	{
+		ArrayList <VoloDTO> voli_a = new ArrayList <VoloDTO>();
+		for(VoloDTO v: this.lista_voli)
+		   {
+			if(v.getLuogo_arrivo().equals(this.destinazione)  )
+				voli_a.add(v);
+		   }
+		return voli_a;	
+	}
 
+	public List<VoloDTO> getLista_voli_ritorno()
+	{
+		ArrayList <VoloDTO> voli_r = new ArrayList <VoloDTO>();
+		for(VoloDTO v: this.lista_voli)
+		   {
+			if(v.getLuogo_partenza().equals(this.destinazione))
+				voli_r.add(v);
+		   }
+		return voli_r;	
+	}
+	
 	public void setLista_voli(List<VoloDTO> lista_voli) {
 		this.lista_voli = lista_voli;
 	}

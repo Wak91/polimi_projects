@@ -9,12 +9,18 @@
 
 	<ui:define name="content">
 	    #{PacketBean.initBean()}
+	    <p:tabMenu activeIndex="0">  
+     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>   
       <h:form id="form">  
-  
+    WELCOME TO TRAVEL DREAM 
+    .......................
+    LISTA PACCHETTI DISPONIBILI
     <p:dataTable var="pack" value="#{PacketBean.packModels}" rowKey="#{pack.nome}" paginator="true" rows="10"  
                 selection="#{PacketBean.packet}" selectionMode="single" filteredValue="#{PacketBean.packlist}" id="packTable">  
-  
-        
   
         <f:facet name="header">  
             <h:outputText value="Pacchetto" />  
@@ -35,10 +41,17 @@
         <p:column headerText="Data fine" sortBy="data_fine" filterBy="#{pack.data_fine}" id="datafine">  
             <h:outputText value="#{pack.data_fine}" />  
         </p:column>   
+        
+        <p:column headerText="Esplora pacchetto" style="width:24%" >  
+        <h:link outcome = "creaviaggio?id=#{pack.id}"  value="Esplora"/>
+	    </p:column> 
   
-    </p:dataTable>  
-    </h:form>  
+    </p:dataTable> 
      
+    </h:form>  
+
+    <p:commandButton action="#{userBean.logout}" value="Logout" />
+	         
 
 	</ui:define>
 
