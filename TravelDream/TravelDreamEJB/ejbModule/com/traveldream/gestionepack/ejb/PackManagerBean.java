@@ -96,7 +96,18 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	
 	public void deletePacchetto(int id)
 	{
-		em.remove(em.find(Pacchetto.class,id));
+		Pacchetto pacchetto = em.find(Pacchetto.class,id);
+		for(Hotel h : pacchetto.getHotels()){
+			h.getPacchettos().remove(pacchetto);
+		}
+		for(Volo volo :pacchetto.getVolos()){
+			volo.getPacchettos().remove(pacchetto);
+		}
+		for (Escursione escursione: pacchetto.getEscursiones()){
+			escursione.getPacchettos().remove(escursione);
+		}
+
+		em.remove(pacchetto);
 		em.flush();
 		
 	}

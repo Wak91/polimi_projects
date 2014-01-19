@@ -49,8 +49,7 @@ public class Pacchetto implements Serializable {
 
 	//uni-directional many-to-many association to Escursione
 	@ManyToMany(cascade = {CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE})
+            CascadeType.MERGE})
 	@JoinTable(
 		name="EscursionePacchetto"
 		, joinColumns={
@@ -64,8 +63,7 @@ public class Pacchetto implements Serializable {
 
 	//uni-directional many-to-many association to Hotel
 	@ManyToMany(cascade = {CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE})
+            CascadeType.MERGE})
 	@JoinTable(
 		name="HotelPacchetto"
 		, joinColumns={
@@ -80,8 +78,7 @@ public class Pacchetto implements Serializable {
 	//uni-directional many-to-many association to Volo
 
 	@ManyToMany(cascade = {CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE})
+            CascadeType.MERGE})
 	@JoinTable(
 		name="VoloPacchetto"
 		, joinColumns={
