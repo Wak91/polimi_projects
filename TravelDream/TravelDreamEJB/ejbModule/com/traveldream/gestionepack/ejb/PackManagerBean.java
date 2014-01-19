@@ -28,7 +28,7 @@ import com.traveldream.gestionecomponente.ejb.ComponentManagerBean;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
-
+import com.traveldream.util.Converter;;
 /**
  * Session Bean implementation class PackManagerBean
  */
@@ -41,7 +41,20 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	@Resource
 	private EJBContext context;
 
-
+	
+	public ArrayList <PacchettoDTO> getAllPack()
+	{
+		List <Pacchetto> mylist;
+		ArrayList <PacchettoDTO> pdto = new ArrayList <PacchettoDTO> ();
+		
+		mylist = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
+		for(Pacchetto p : mylist)
+		   {
+			pdto.add(Converter.PacchettoToDTO(p));
+		   }
+		return pdto;
+	}
+	
 	@Override
 	public void createPacket(PacchettoDTO packetDTO) {
 
@@ -54,131 +67,101 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
 		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
 		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
+		for (HotelDTO hotelDTO : packetDTO.getLista_hotel()) {
+			Hotel hotel =em.find(Hotel.class, hotelDTO.getId());
+			hotel.getPacchettos().add(pacchetto);
+		}
+		for (VoloDTO voloDTO : packetDTO.getLista_voli()) {
+			Volo volo =em.find(Volo.class, voloDTO.getId());
+			volo.getPacchettos().add(pacchetto);
+		}
+		
+		for (EscursioneDTO escursioneDTO : packetDTO.getLista_escursioni()) {
+			Escursione escursione =em.find(Escursione.class, escursioneDTO.getId());
+			escursione.getPacchettos().add(pacchetto);
+		}
 		em.persist(pacchetto);
 		em.flush();
 		
 		
 	}	
-	
-	
-	
-	public ArrayList <PacchettoDTO> getAllPack()
-	{
-		List <Pacchetto> mylist;
-		ArrayList <PacchettoDTO> pdto = new ArrayList <PacchettoDTO> ();
 		
-		mylist = em.createNamedQuery("Pacchetto.findAll", Pacchetto.class).getResultList();
-		for(Pacchetto p : mylist)
-		   {
-			pdto.add(PacchettoToDTO(p));
-		   }
-		return pdto;
-		
-	}
 	
 	public PacchettoDTO getPacchettoByID(int id)
 	{
-		return PacchettoToDTO(em.find(Pacchetto.class, id));
+		return Converter.PacchettoToDTO(em.find(Pacchetto.class, id));
 		
 	}
-	
-	private PacchettoDTO PacchettoToDTO(Pacchetto p)
-	{
-		ArrayList <HotelDTO> hdto_list = new ArrayList <HotelDTO>();
-		ArrayList <EscursioneDTO> edto_list = new ArrayList <EscursioneDTO>();
-		ArrayList <VoloDTO> vdto_list = new ArrayList <VoloDTO>();
-		
-		PacchettoDTO pdto = new PacchettoDTO();
-		pdto.setData_fine(p.getData_fine());
-		pdto.setData_inizio(p.getData_inizio());
-		pdto.setDestinazione(p.getDestinazione());
-		pdto.setNome(p.getNome());
-		pdto.setPathtoImage(p.getImmagine());
-		pdto.setId(p.getId());	
-		
-		for(Escursione e: p.getEscursiones())
-		   {
-			 edto_list.add(EscursioneToDTO(e));
-		   }
 
-		for(Hotel h: p.getHotels())
-		   {
-			 hdto_list.add(HotelToDTO(h));
-		   }
-		
-		for(Volo v: p.getVolos())
-		   {
-			 vdto_list.add(VoloToDTO(v));
-		   }
-		
-		pdto.setLista_hotel(hdto_list);
-		pdto.setLista_voli(vdto_list);
-		pdto.setLista_escursioni(edto_list);
-		
-		return pdto;
-	}
 	
 	public void deletePacchetto(int id)
 	{
-		em.remove(em.find(Pacchetto.class,id));
+		Pacchetto pacchetto = em.find(Pacchetto.class,id);
+		for(Hotel h : pacchetto.getHotels()){
+			h.getPacchettos().remove(pacchetto);
+		}
+		for(Volo volo :pacchetto.getVolos()){
+			volo.getPacchettos().remove(pacchetto);
+		}
+		for (Escursione escursione: pacchetto.getEscursiones()){
+			escursione.getPacchettos().remove(escursione);
+		}
+
+		em.remove(pacchetto);
+		em.flush();
 		
 	}
-	
-	public HotelDTO HotelToDTO(Hotel h) {
-		HotelDTO hdto = new HotelDTO();
-		hdto.setId(h.getId());
-		hdto.setCosto_giornaliero(h.getCosto_giornaliero());
-		hdto.setData_fine(h.getData_fine());
-		hdto.setData_inizio(h.getData_inizio());
-		hdto.setLuogo(h.getLuogo());
-		hdto.setNome(h.getNome());
-		hdto.setStelle(h.getStelle());
-		hdto.setHotelImg(h.getImmagine());
-		hdto.setId(h.getId());
-		return hdto;
- 
-	}
-	
-	public VoloDTO VoloToDTO(Volo v) {
-		VoloDTO vdto = new VoloDTO();
-		vdto.setId(v.getId());
-		vdto.setCompagnia(v.getCompagnia());
-		vdto.setCosto(v.getCosto());
-		vdto.setData(v.getData());
-		vdto.setLuogo_arrivo(v.getLuogo_arrivo());
-		vdto.setLuogo_partenza(v.getLuogo_partenza());
-		vdto.setImmagine(v.getImmagine());
-		vdto.setId(v.getId());
-		return vdto;
-	}
-	
-	public EscursioneDTO EscursioneToDTO(Escursione e) {
-		EscursioneDTO edto = new EscursioneDTO();
-		edto.setId(e.getId());
-		edto.setCosto(e.getCosto());
-		edto.setData(e.getData());
-		edto.setLuogo(e.getLuogo());
-		edto.setNome(e.getNome());
-		edto.setImmagine(e.getImmagine());
-		edto.setId(e.getId());
-		return edto;
-	}
+
 
 	@Override
+	/**
+	 * Modifica il pacchetto e aggiorna la lista di pacchetti a cui si riferiscono i vari componenti che lo compongono(Volo.Hotel,Escursione)
+	 */
 	public void modifyPacchetto(PacchettoDTO packetDTO) {
 		Pacchetto pacchetto = em.find(Pacchetto.class, packetDTO.getId());
+		
 		pacchetto.setNome(packetDTO.getNome());
 		pacchetto.setDestinazione(packetDTO.getDestinazione());
 		pacchetto.setData_inizio(packetDTO.getData_inizio());
 		pacchetto.setData_fine(packetDTO.getData_fine());
-		pacchetto.setImmagine(packetDTO.getPathtoImage());
+		pacchetto.setImmagine(packetDTO.getPathtoImage());	
 		
+		//riaggiorno la lista di pacchetti presente negli hotel (che indica in che pacchetti è inserito) del pacchetto(Hotel.pacchettos)
+		System.out.println("in modify packet ");
+		for (Hotel hotel : pacchetto.getHotels()) {
+			System.out.println("in modify packet rimuovo "+hotel.getNome());
+			hotel.getPacchettos().remove(pacchetto);
+		}
+		for (Hotel hotel :DTOtoEntityHotel(packetDTO.getLista_hotel()) ){
+			System.out.println("in modify packet aggiungo "+hotel.getNome());
+
+			hotel.getPacchettos().add(pacchetto);
+		}		
 		pacchetto.setHotels(DTOtoEntityHotel(packetDTO.getLista_hotel()));
-		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
-		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
-		em.merge(pacchetto);
-		em.flush();
+
 		
+		//riaggiorno la lista di pacchetti contenuta in escursione(che indica in che pacchetti e' inserita) prima rimuovo quelli vecchi poi aggiungo quelli nuovi
+		//faccio in questo modo considerando che il numero di hotel in un pacchetto non sia troppo grosso
+		for(Escursione escursione:pacchetto.getEscursiones()){
+			escursione.getPacchettos().remove(pacchetto);
+		}
+		for (Escursione escursione : DTOtoEntityEscursione(packetDTO.getLista_escursioni())) {
+			escursione.getPacchettos().add(pacchetto);
+		}
+		pacchetto.setEscursiones(DTOtoEntityEscursione(packetDTO.getLista_escursioni()));
+
+		
+		for (Volo volo : pacchetto.getVolos()) {
+			volo.getPacchettos().remove(pacchetto);
+		}
+		for (Volo volo:DTOtoEntityVolo(packetDTO.getLista_voli())){
+			volo.getPacchettos().add(pacchetto);
+		}
+		pacchetto.setVolos(DTOtoEntityVolo(packetDTO.getLista_voli()));
+
+		
+		em.merge(pacchetto);
+		em.flush();		
 	}
 	/**
 	 * Metodo che restituisce la lista degli hotel compatibili con le date e la citta'  crea una query in modo dinamico 
@@ -207,9 +190,8 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	    c.where(predicates.toArray(new Predicate[]{}));
 	    TypedQuery<Hotel> q = em.createQuery(c);
 	    List<Hotel> hotels = q.getResultList();
-	    return EntitytoDTOHotels(hotels);
+	    return Converter.EntitytoDTOHotels(hotels);
 	}
-
 	/**
 	 * Metodo che restituisce la lista delle Escursioni compatibili con le date e la citta'  crea una query in modo dinamica 
 	 * in funzione del fatto che i campi inizio fine e citta siano nulli
@@ -237,7 +219,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	    c.where(predicates.toArray(new Predicate[]{}));
 	    TypedQuery<Escursione> q = em.createQuery(c);
 	    List<Escursione> escursiones = q.getResultList();
-	    return EntitytoDTOEscursione(escursiones);
+	    return Converter.EntitytoDTOEscursione(escursiones);
 	}
 	
 	public ArrayList<VoloDTO> getListaVoliCompatibili(String citta, Date inizio, Date fine) {
@@ -264,37 +246,12 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	    c.where(predicates.toArray(new Predicate[]{}));
 	    TypedQuery<Volo> q = em.createQuery(c);
 	    List<Volo> volos = q.getResultList();
-	    return EntitytoDTOVolo(volos);
+	    return Converter.EntitytoDTOVolo(volos);
 	}
 	
-///------------------DTO CONVERTER--------
-	  private ArrayList<HotelDTO> EntitytoDTOHotels(List<Hotel> hotels){
-          ArrayList<HotelDTO> listaHotel = new ArrayList<HotelDTO>();
-          for(Hotel h:hotels){
-                  HotelDTO nuovo = HotelToDTO(h);
-                  listaHotel.add(nuovo);
-          }
-          return listaHotel;
-  }
-	  
-	  private ArrayList<EscursioneDTO> EntitytoDTOEscursione(List<Escursione> escursioni){
-          ArrayList<EscursioneDTO> listaesc = new ArrayList<EscursioneDTO>();
-          for(Escursione e:escursioni){
-                  EscursioneDTO nuovo = EscursioneToDTO(e);
-                  listaesc.add(nuovo);
-          }
-          return listaesc;
-  }
-	  
-	  private ArrayList<VoloDTO> EntitytoDTOVolo(List<Volo> voli){
-          ArrayList<VoloDTO> listavolo = new ArrayList<VoloDTO>();
-          for(Volo v:voli){
-                  VoloDTO nuovo = VoloToDTO(v);
-                  listavolo.add(nuovo);
-          }
-          return listavolo;
-  }
 	
+	///------------------LIST DTO TO ENTITY CONVERTER-----------
+//non puo essere spostato in converter perche c'e la necessita di chiamare Entity manager
 	
 	private List<Escursione> DTOtoEntityEscursione(List<EscursioneDTO> escursioneDTOs){
          ArrayList<Escursione> listaEscursioni = new ArrayList<Escursione>();
@@ -304,7 +261,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
          }
          return listaEscursioni;
  }
-	 private List<Volo> DTOtoEntityVolo(List<VoloDTO> voloDTOs){
+	  private  List<Volo> DTOtoEntityVolo(List<VoloDTO> voloDTOs){
          ArrayList<Volo> listavolo = new ArrayList<Volo>();
          for (VoloDTO voloDTO :voloDTOs){
                  Volo nuovovolo = em.find(Volo.class, voloDTO.getId());
@@ -315,11 +272,11 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	  private List<Hotel> DTOtoEntityHotel(List<HotelDTO> hotelDTOs){
           ArrayList<Hotel> listaHotel = new ArrayList<Hotel>();
           for (HotelDTO hotelDTO : hotelDTOs){
+        	  	System.out.println(hotelDTO.getNome()+" "+hotelDTO.getId());
                   Hotel nuovohotel = em.find(Hotel.class, hotelDTO.getId());
                   listaHotel.add(nuovohotel);
           }
           return listaHotel;
   }
 	
-
 }

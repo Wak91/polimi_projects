@@ -30,6 +30,7 @@ import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
+import com.traveldream.gestionepack.ejb.PacchettoDTO;
 import com.traveldream.gestionepack.web.EscDataModel;
 import com.traveldream.gestionepack.web.HotelDataModel;
 import com.traveldream.gestionepack.web.VoloDataModel;
@@ -223,6 +224,7 @@ public class ComponentBean {
 	
 	public void getHotelById(int id)
 	{   
+		System.out.println("refreshing hotel");
 		this.hotel = CMB.getHotelById(id);
 	
 	}
@@ -249,6 +251,14 @@ public class ComponentBean {
 		    }
     hotel.setHotelImg(imgHotel.getFileName());	
     CMB.modificaHotel(hotel);
+    
+    if (hotel.getPacchettos().isEmpty()){
+    	System.out.println("hotel non inserito in nessun pacchetto");
+    }
+    for (PacchettoDTO pacchettoDTO : hotel.getPacchettos()) {
+		System.out.println("hotel "+hotel.getNome()+" e' nel pacchetto "+pacchettoDTO.getNome());
+	}
+
 	return "toHotel.xhtml?faces-redirect=true";
 	}
 	
@@ -288,8 +298,19 @@ public class ComponentBean {
 	
 	}
 	
-	public void modificaVolo()
-	{ CMB.modificaVolo(volo);}
+	public String modificaVolo()
+	{ CMB.modificaVolo(volo);
+
+    if (volo.getPacchettos().isEmpty()){
+    	System.out.println("volo non inserito in nessun pacchetto");
+    }
+    for (PacchettoDTO pacchettoDTO : volo.getPacchettos()) {
+		System.out.println("volo "+volo.getCompagnia()+" e' nel pacchetto "+pacchettoDTO.getNome());
+	}
+	return "toVolo.xhtml?faces-redirect=true";
+
+	
+	}
 	
 	public String eliminaVolo(int id)
 	{ CMB.eliminaVolo(id);
@@ -329,8 +350,19 @@ public class ComponentBean {
 	
 	}
 	
-	public void modificaEscursione()
-	{ CMB.modificaEscursione(escursione);}
+	public String modificaEscursione()
+	{ CMB.modificaEscursione(escursione);
+
+    if (escursione.getPacchettos().isEmpty()){
+    	System.out.println("escursione non inserito in nessun pacchetto");
+    }
+    for (PacchettoDTO pacchettoDTO : escursione.getPacchettos()) {
+		System.out.println("escursione "+escursione.getNome()+" e' nel pacchetto "+pacchettoDTO.getNome());
+	}
+	return "toEscursione.xhtml?faces-redirect=true";
+
+	}
+	
 	
 	public String eliminaEscursione(int id)
 	{ 

@@ -23,7 +23,7 @@
 				<p:inputText id="username" value="#{userBean.user.username}" />
 				
 				<h:outputLabel for="password">Password</h:outputLabel>
-				<p:inputText id="password" value="#{userBean.user.password}" />
+				<p:password id="password" value="#{userBean.user.password}" />
 				
 				<h:outputLabel for="nome"> Nome</h:outputLabel>  
 				<p:inputText id="nome" value="#{userBean.user.firstName}" />
@@ -35,7 +35,7 @@
 				<p:inputText id="email" value="#{userBean.user.email}" />
 				
 				<h:outputLabel for="date">Data di nascita:</h:outputLabel>
-				<p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
+				<p:calendar id="date" value="#{userBean.user.data}" pattern="dd/MM/yyyy" navigator="true" display="inline"/>  
 
 				</h:panelGrid>
 				<p:commandButton value="Modifica" update="regGrid"

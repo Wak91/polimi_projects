@@ -1,5 +1,6 @@
 package com.traveldream.gestionecomponente.ejb;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.Part;
@@ -7,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.traveldream.gestionepack.ejb.PacchettoDTO;
 
 public class HotelDTO {
 
@@ -32,6 +35,16 @@ public class HotelDTO {
 	
 	@NotNull
 	private Integer Stelle;
+	
+	private ArrayList<PacchettoDTO> pacchettos;
+
+	public ArrayList<PacchettoDTO> getPacchettos() {
+		return pacchettos;
+	}
+
+	public void setPacchettos(ArrayList<PacchettoDTO> pacchettos) {
+		this.pacchettos = pacchettos;
+	}
 
 	public Integer getStelle() {
 		return Stelle;

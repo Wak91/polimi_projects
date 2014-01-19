@@ -7,6 +7,7 @@
        xmlns:p="http://primefaces.org/ui"
 >
        #{PacketBean.initBean()}  
+       
 	   <h:form enctype="multipart/form-data">  
         <p:panel header="add pack">
 			<h:panelGrid columns="3" id="regGrid">
@@ -17,9 +18,9 @@
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
 				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" >
+       			
 
 				<p:ajax event="keyup" listener="#{PacketBean.filterComponents}" update="multiVoli,multiHotels,multiEscursioni" />  
-
 				</p:inputText>
 				<p:message for="luogo"   />
 				
@@ -32,9 +33,11 @@
 				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
 				<p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}"   update="multiVoli,multiHotels,multiEscursioni" />  
 				</p:calendar>
-				
-				<h:outputText id="out1" value="#{PacketBean.packet.destinazione}" />  
 				<p:message for="datef"  />
+				
+				<h:outputLabel for="immagine">Immagine</h:outputLabel>
+				<p:fileUpload value="#{PacketBean.imgPack}" mode="simple" />
+				<br></br>
 		  </h:panelGrid>
 		  <br/>		
 				INSERIMENTO HOTEL   
@@ -125,11 +128,8 @@
                 </p:column>  
                 
               </p:dataTable> 
-                <h:outputLabel for="immagine">Immagine</h:outputLabel>
-				<p:fileUpload value="#{PacketBean.imgPack}" mode="simple" />
-				<br></br>
                  
-               <h:commandButton value="Crea Pacchetto"
+                <h:commandButton value="Crea Pacchetto"
 				action="#{PacketBean.PrelevaSelezionatiECrea}"/>
         
 		</p:panel>

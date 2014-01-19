@@ -8,6 +8,7 @@ import javax.persistence.*;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -48,8 +49,12 @@ public class Hotel implements Serializable {
 
 	private int stelle;
 
+	@ManyToMany(mappedBy="hotels")
+	private List<Pacchetto> pacchettos;
+	 
 
-	  public Hotel() {
+
+	public Hotel() {
 		    super();
 		  }
 
@@ -126,6 +131,13 @@ public class Hotel implements Serializable {
 
 	public void setStelle(int stelle) {
 		this.stelle = stelle;
+	}
+	public List<Pacchetto> getPacchettos() {
+		return pacchettos;
+	}
+
+	public void setPacchettos(List<Pacchetto> pacchettos) {
+		this.pacchettos = pacchettos;
 	}
 
 }

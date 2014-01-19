@@ -40,8 +40,12 @@ public class Escursione implements Serializable {
 
 	private String nome;
 
+	@ManyToMany(mappedBy="escursiones")
+	private List<Pacchetto> pacchettos;
 	
-    public Escursione() {
+    
+
+	public Escursione() {
     super();
   }
   
@@ -103,6 +107,13 @@ public class Escursione implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	public List<Pacchetto> getPacchettos() {
+		return pacchettos;
+	}
+
+	public void setPacchettos(List<Pacchetto> pacchettos) {
+		this.pacchettos = pacchettos;
 	}
 
 }
