@@ -40,27 +40,27 @@ public class Escursione implements Serializable {
 
 	private String nome;
 
+	//bi-directional many-to-many association to Pacchetto
 	@ManyToMany(mappedBy="escursiones")
 	private List<Pacchetto> pacchettos;
-	
-    
+
+	//bi-directional many-to-many association to Viaggio
+	@ManyToMany(mappedBy="escursiones")
+	private List<Viaggio> viaggios;
 
 	public Escursione() {
-    super();
-  }
-  
-  public Escursione(EscursioneDTO escursionedto)
-  {
-    this.costo = escursionedto.getCosto();
-    this.data = escursionedto.getData();
-    this.immagine = escursionedto.getImmagine(); // da sistemare 
-    this.luogo = escursionedto.getLuogo();
-    this.nome = escursionedto.getNome();
-    
-  }
-
-
-  
+	    super();
+	  }
+	  
+	  public Escursione(EscursioneDTO escursionedto)
+	  {
+	    this.costo = escursionedto.getCosto();
+	    this.data = escursionedto.getData();
+	    this.immagine = escursionedto.getImmagine(); // da sistemare 
+	    this.luogo = escursionedto.getLuogo();
+	    this.nome = escursionedto.getNome();
+	    
+	  }
 	public int getId() {
 		return this.id;
 	}
@@ -108,12 +108,21 @@ public class Escursione implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public List<Pacchetto> getPacchettos() {
-		return pacchettos;
+		return this.pacchettos;
 	}
 
 	public void setPacchettos(List<Pacchetto> pacchettos) {
 		this.pacchettos = pacchettos;
+	}
+
+	public List<Viaggio> getViaggios() {
+		return this.viaggios;
+	}
+
+	public void setViaggios(List<Viaggio> viaggios) {
+		this.viaggios = viaggios;
 	}
 
 }

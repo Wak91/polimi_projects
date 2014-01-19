@@ -42,27 +42,24 @@ public class Volo implements Serializable {
 	@Column(name="`Luogo partenza`")
 	private String luogo_partenza;
 
+	//bi-directional many-to-many association to Pacchetto
 	@ManyToMany(mappedBy="volos")
 	private List<Pacchetto> pacchettos;
 
- 
-
 	public Volo() {
-    super();
-  }
-  
-  public Volo(VoloDTO volodto)
-  {
-     this.compagnia = volodto.getCompagnia();
-     this.costo = volodto.getCosto();
-     this.data = volodto.getData();
-     this.luogo_arrivo = volodto.getLuogo_arrivo();
-     this.luogo_partenza = volodto.getLuogo_partenza();
-     this.immagine = volodto.getImmagine();
-  }
-  
-
-  
+	    super();
+	  }
+	  
+	  public Volo(VoloDTO volodto)
+	  {
+	     this.compagnia = volodto.getCompagnia();
+	     this.costo = volodto.getCosto();
+	     this.data = volodto.getData();
+	     this.luogo_arrivo = volodto.getLuogo_arrivo();
+	     this.luogo_partenza = volodto.getLuogo_partenza();
+	     this.immagine = volodto.getImmagine();
+	  }
+	  
 	public int getId() {
 		return this.id;
 	}
@@ -118,14 +115,13 @@ public class Volo implements Serializable {
 	public void setLuogo_partenza(String luogo_partenza) {
 		this.luogo_partenza = luogo_partenza;
 	}
-	   
+
 	public List<Pacchetto> getPacchettos() {
-			return pacchettos;
-		}
+		return this.pacchettos;
+	}
 
 	public void setPacchettos(List<Pacchetto> pacchettos) {
-			this.pacchettos = pacchettos;
-		}
-
+		this.pacchettos = pacchettos;
+	}
 
 }

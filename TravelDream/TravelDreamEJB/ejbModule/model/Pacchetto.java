@@ -4,14 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
-import com.traveldream.gestionecomponente.ejb.HotelDTO;
-import com.traveldream.gestionecomponente.ejb.VoloDTO;
-import com.traveldream.gestionepack.ejb.PacchettoDTO;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -28,7 +22,7 @@ import java.util.List;
               )
 public class Pacchetto implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
@@ -47,7 +41,7 @@ public class Pacchetto implements Serializable {
 
 	private String nome;
 
-	//uni-directional many-to-many association to Escursione
+	//bi-directional many-to-many association to Escursione
 	@ManyToMany(cascade = {CascadeType.PERSIST,
             CascadeType.MERGE})
 	@JoinTable(
@@ -56,12 +50,12 @@ public class Pacchetto implements Serializable {
 			@JoinColumn(name="Pacchetto_ID")
 			}
 		, inverseJoinColumns={
-			@JoinColumn(name="Escursioni_ID")
+			@JoinColumn(name="Escursione_ID")
 			}
 		)
 	private List<Escursione> escursiones;
 
-	//uni-directional many-to-many association to Hotel
+	//bi-directional many-to-many association to Hotel
 	@ManyToMany(cascade = {CascadeType.PERSIST,
             CascadeType.MERGE})
 	@JoinTable(
@@ -75,8 +69,7 @@ public class Pacchetto implements Serializable {
 		)
 	private List<Hotel> hotels;
 
-	//uni-directional many-to-many association to Volo
-
+	//bi-directional many-to-many association to Volo
 	@ManyToMany(cascade = {CascadeType.PERSIST,
             CascadeType.MERGE})
 	@JoinTable(
@@ -96,7 +89,6 @@ public class Pacchetto implements Serializable {
 		escursiones = new ArrayList<Escursione>();
 	}
 
-	
 	public void addHotel(Hotel hotel){
 		hotels.add(hotel);
 	}

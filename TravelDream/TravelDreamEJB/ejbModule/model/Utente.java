@@ -1,11 +1,12 @@
 package model;
 
 import java.io.Serializable;
-import org.apache.commons.codec.digest.DigestUtils;
-import com.traveldream.autenticazione.ejb.*;
 
 import javax.persistence.*;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
+import com.traveldream.autenticazione.ejb.UserDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,18 @@ public class Utente implements Serializable {
 
 	private String password;
 
+	//bi-directional many-to-one association to Gift_List
+	@OneToMany(mappedBy="utente")
+	private List<Gift_List> giftLists;
+
+	//bi-directional many-to-one association to Invito
+	@OneToMany(mappedBy="utenteBean")
+	private List<Invito> invitos;
+
+	//bi-directional many-to-one association to Prenotazione
+	@OneToMany(mappedBy="utenteBean")
+	private List<Prenotazione> prenotaziones;
+
 	//bi-directional many-to-one association to UtenteGruppo
 	@OneToMany(mappedBy="utente")
 	private List<UtenteGruppo> utenteGruppos;
@@ -52,7 +65,6 @@ public class Utente implements Serializable {
           this.email = user.getEmail();
           this.data_di_nascita = user.getData();
   }
-
 	public String getUsername() {
 		return this.username;
 	}
@@ -99,6 +111,72 @@ public class Utente implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<Gift_List> getGiftLists() {
+		return this.giftLists;
+	}
+
+	public void setGiftLists(List<Gift_List> giftLists) {
+		this.giftLists = giftLists;
+	}
+
+	public Gift_List addGiftList(Gift_List giftList) {
+		getGiftLists().add(giftList);
+		giftList.setUtente(this);
+
+		return giftList;
+	}
+
+	public Gift_List removeGiftList(Gift_List giftList) {
+		getGiftLists().remove(giftList);
+		giftList.setUtente(null);
+
+		return giftList;
+	}
+
+	public List<Invito> getInvitos() {
+		return this.invitos;
+	}
+
+	public void setInvitos(List<Invito> invitos) {
+		this.invitos = invitos;
+	}
+
+	public Invito addInvito(Invito invito) {
+		getInvitos().add(invito);
+		invito.setUtenteBean(this);
+
+		return invito;
+	}
+
+	public Invito removeInvito(Invito invito) {
+		getInvitos().remove(invito);
+		invito.setUtenteBean(null);
+
+		return invito;
+	}
+
+	public List<Prenotazione> getPrenotaziones() {
+		return this.prenotaziones;
+	}
+
+	public void setPrenotaziones(List<Prenotazione> prenotaziones) {
+		this.prenotaziones = prenotaziones;
+	}
+
+	public Prenotazione addPrenotazione(Prenotazione prenotazione) {
+		getPrenotaziones().add(prenotazione);
+		prenotazione.setUtenteBean(this);
+
+		return prenotazione;
+	}
+
+	public Prenotazione removePrenotazione(Prenotazione prenotazione) {
+		getPrenotaziones().remove(prenotazione);
+		prenotazione.setUtenteBean(null);
+
+		return prenotazione;
 	}
 
 	public List<UtenteGruppo> getUtenteGruppos() {
