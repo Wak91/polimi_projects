@@ -67,8 +67,9 @@ public class UserBean {
 		this.user=userMgr.getUserDTO();
 	}
 	
-	public void modificaUtente(){
+	public String modificaUtente(){
 		userMgr.modifyUser(user);
+		return "userhome.xhtml?faces-redirect=true";
 	}
 	
 	public String logout() {
