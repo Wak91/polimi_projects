@@ -120,7 +120,6 @@ public class UserManagerBean implements UserMgr {
 	}
 
 
-	//Risolvere problema se cambio username non trova nulla
 	@Override
 	public void modifyUser(UserDTO user) {
 		String casa = user.getUsername();

@@ -13,6 +13,10 @@
 		<p:panel header="Aggiunta Impiegato">
 			<h:panelGrid columns="3" id="regGrid">
 				
+			    <h:outputLabel for="username">Username:</h:outputLabel>
+				<p:inputText id="username" value="#{userBean.user.username}" />
+				<p:message for="username" />
+				
 				<h:outputLabel for="nome">Nome:</h:outputLabel>
 				<p:inputText id="nome" value="#{userBean.user.firstName}" />
 				<p:message for="nome" />
@@ -20,10 +24,6 @@
 				<h:outputLabel for="cognome">Cognome:</h:outputLabel>
 				<p:inputText id="cognome" value="#{userBean.user.lastName}" />
 				<p:message for="cognome" />
-                   
-				<h:outputLabel for="username">Username:</h:outputLabel>
-				<p:inputText id="username" value="#{userBean.user.username}" />
-				<p:message for="username" />
 				
 				<h:outputLabel for="password">Password:</h:outputLabel>
 				<p:password id="password" value="#{userBean.user.password}"

@@ -37,11 +37,6 @@ public class UserBean {
 		setUserModels(new UserDataModel(userMgr.getAllImp()));	
 	}
 	
-	public String createUser(){
-		userMgr.saveImpiegato(user);
-		return "adminhome.xhtml?faces-redirect=true";
-	}
-		
 
 	//---------------------SETTER&GETTER USER------------------------------------
 	
@@ -119,7 +114,7 @@ public class UserBean {
 	
 	public String addImpiegato(){
 		userMgr.saveImpiegato(user);
-		return "adminhome?faces-redirect=true";
+		return "adminlist?faces-redirect=true";
 	}
 	
 
