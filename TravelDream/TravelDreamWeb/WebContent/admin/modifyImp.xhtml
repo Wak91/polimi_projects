@@ -35,13 +35,13 @@
 										<p:message for="data"/>
 
                                         <h:outputLabel for="password">Password:</h:outputLabel>
-                                        <p:inputText id="password"
+                                        <p:password id="password"
                                                 value="#{userBean.user.password}" feedback="true"
                                                 match="pwd2" label="Password" />
                                         <p:message for="password" />
 
                                         <h:outputLabel for="pwd2">Confirm Password:</h:outputLabel>
-                                        <p:inputText id="pwd2" label="Confirm Password"
+                                        <p:password id="pwd2" label="Confirm Password"
                                                 value="#{userBean.user.password}" />
                                          
                                          <br/>       
@@ -57,8 +57,6 @@
                                 <h:commandLink value="Salva" styleClass="btn btn-default"
                                         update="@regGrid" action="#{userBean.modificaUtente()}" />
                                         
-                                 <p:commandLink value="Elimina" update="regGrid" 
-								 action="#{userBean.deleteUser()}" icon="ui-icon-script"/>
                                 
 
                         </p:panel>

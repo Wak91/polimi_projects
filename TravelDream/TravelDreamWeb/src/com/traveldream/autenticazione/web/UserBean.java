@@ -6,15 +6,12 @@ import com.traveldream.autenticazione.ejb.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
-
-import org.primefaces.event.RowEditEvent;
 
 @ManagedBean(name="userBean")
 @ViewScoped
@@ -123,9 +120,10 @@ public class UserBean {
 	    return "homepage?faces-redirect=true";
 	  }
 	
-	public String deleteUser(){
-		userMgr.unregister(user);
-		return "adminlist?faces-redirect=true";
-		}
+	
+	public String deleteImp(String username){
+		userMgr.unregister(userMgr.findImp(username));
+		return "adminlist?faces-redirect=true";		
+	}
 
 }
