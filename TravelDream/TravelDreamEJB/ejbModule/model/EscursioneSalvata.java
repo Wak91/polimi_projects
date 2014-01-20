@@ -1,7 +1,11 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
+
 import java.util.Date;
 
 
@@ -14,6 +18,7 @@ import java.util.Date;
 public class EscursioneSalvata implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
 
@@ -33,6 +38,17 @@ public class EscursioneSalvata implements Serializable {
 	private Viaggio viaggio;
 
 	public EscursioneSalvata() {
+		
+		super();
+	}
+	
+	public EscursioneSalvata(EscursioneDTO escursionedto)
+	{
+	    this.costo = escursionedto.getCosto();
+	    this.data = escursionedto.getData();
+	    this.immagine = escursionedto.getImmagine(); 
+	    this.luogo = escursionedto.getLuogo();
+	    this.nome = escursionedto.getNome();	
 	}
 
 	public int getId() {

@@ -85,11 +85,4 @@ public class ViaggioDTO {
 	public void setLista_escursioni(List<EscursioneDTO> lista_escursioni) {
 		this.lista_escursioni = lista_escursioni;
 	}
-
-
-	
-	
-	
-	
-	
 }

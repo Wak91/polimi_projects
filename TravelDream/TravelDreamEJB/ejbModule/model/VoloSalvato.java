@@ -1,7 +1,11 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.traveldream.gestionecomponente.ejb.VoloDTO;
+
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +19,7 @@ import java.util.List;
 public class VoloSalvato implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
 
@@ -38,8 +43,19 @@ public class VoloSalvato implements Serializable {
 	private List<Viaggio> viaggios;
 
 	public VoloSalvato() {
+		super();
 	}
 
+	public VoloSalvato(VoloDTO volodto){
+		
+	     this.compagnia = volodto.getCompagnia();
+	     this.costo = volodto.getCosto();
+	     this.data = volodto.getData();
+	     this.luogo_arrivo = volodto.getLuogo_arrivo();
+	     this.luogo_partenza = volodto.getLuogo_partenza();
+	     this.immagine = volodto.getImmagine();
+	}
+	
 	public int getId() {
 		return this.id;
 	}

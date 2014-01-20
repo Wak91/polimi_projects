@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +13,12 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="Viaggio")
 @NamedQuery(name="Viaggio.findAll", query="SELECT v FROM Viaggio v")
 public class Viaggio implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
 

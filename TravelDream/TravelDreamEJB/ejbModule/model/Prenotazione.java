@@ -1,7 +1,10 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.traveldream.gestioneprenotazione.ejb.PrenotazioneDTO;
 
 
 /**
@@ -33,7 +36,7 @@ public class Prenotazione implements Serializable {
 
 	public Prenotazione() {
 	}
-
+	
 	public int getId() {
 		return this.id;
 	}

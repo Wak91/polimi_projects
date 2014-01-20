@@ -3,8 +3,8 @@ package com.traveldream.gestioneprenotazione.ejb;
 public interface BookManagerBeanLocal {
 
 	
-	void saveViaggio(ViaggioDTO v);
+	int saveViaggio(ViaggioDTO v);
 	int cercaViaggio(ViaggioDTO viaggiodto);
-	
+	void savePrenotazione(PrenotazioneDTO pdto);
 	
 }

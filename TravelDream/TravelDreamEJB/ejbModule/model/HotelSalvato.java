@@ -1,20 +1,31 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.traveldream.gestionecomponente.ejb.HotelDTO;
+
 import java.util.Date;
 import java.util.List;
 
 
 /**
  * The persistent class for the HotelSalvato database table.
- * 
+ * Questa classe serve per congelare gli hotel che sono 
+ * stati salvati in un viaggio o in una prenotazione , se avessimo usato
+ * la classe Hotel normale in caso di eliminazione di componenti, gli utenti
+ * si sarebbero ritrovato delle prenotazioni incoerenti.
+ * La tabella HotelSalvato può essere utilizzata per tracciare tutti gli hotel prenotati
+ * almeno una volta nella history del sito.
  */
 @Entity
+@Table(name="HotelSalvato")
 @NamedQuery(name="HotelSalvato.findAll", query="SELECT h FROM HotelSalvato h")
 public class HotelSalvato implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
 
@@ -42,7 +53,19 @@ public class HotelSalvato implements Serializable {
 	private List<Viaggio> viaggios;
 
 	public HotelSalvato() {
+		super();
 	}
+
+  public HotelSalvato(HotelDTO hoteldto) 
+  {
+     this.nome = hoteldto.getNome();
+         this.luogo = hoteldto.getLuogo();
+         this.costo_giornaliero = hoteldto.getCosto_giornaliero();
+         this.data_inizio = hoteldto.getData_inizio();
+         this.data_fine = hoteldto.getData_fine();
+		 this.immagine = hoteldto.getHotelImg();
+         this.stelle = hoteldto.getStelle();
+  }
 
 	public int getId() {
 		return this.id;

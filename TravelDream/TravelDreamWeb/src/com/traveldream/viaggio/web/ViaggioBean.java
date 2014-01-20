@@ -8,6 +8,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
+import com.traveldream.autenticazione.ejb.UserMgr;
+import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
@@ -20,6 +22,7 @@ import com.traveldream.gestionepack.web.EscDataModel;
 import com.traveldream.gestionepack.web.HotelDataModel;
 import com.traveldream.gestionepack.web.VoloDataModel;
 import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
+import com.traveldream.gestioneprenotazione.ejb.PrenotazioneDTO;
 import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
 
 
@@ -32,6 +35,12 @@ public class ViaggioBean {
     
 	@EJB
 	private BookManagerBeanLocal BMB; 
+	
+	@EJB
+	private ComponentManagerBeanLocal CMB;
+	
+	@EJB
+	private UserMgr userMgr;
 	
 	private HotelDTO selectedHotels;
 	private VoloDTO selectedVolo_a;
@@ -51,6 +60,8 @@ public class ViaggioBean {
 	private PacchettoDTO packet;
 
     private ViaggioDTO viaggio;
+    private PrenotazioneDTO prenotazione;
+    
     private Date data_inizio;
     private Date data_fine;
     
@@ -178,28 +189,19 @@ public class ViaggioBean {
 	
 	public String acquista_paga()
 	{
-		int id;
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null)
 		  {
 			return "userhome.xhtml?faces-redirect=true";
 		  }
 		
+		viaggio.setData_inizio(this.data_inizio);   //creo il viaggio temporaneo per controllare se esiste già
+		viaggio.setData_fine(this.data_fine);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setVolo_andata(selectedVolo_a);
-		viaggio.setVolo_ritorno(selectedVolo_r);		  
+		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setLista_escursioni(selectedEsc);
-		viaggio.setData_inizio(this.data_inizio);
-		viaggio.setData_fine(this.data_fine);
 		
-		id = BMB.cercaViaggio(viaggio); // cerco se qualcuno ha già creato un viaggio del genere per non mettere doppioni nel db
-		
-		if(id == -1) // se non era presente il viaggio che stavo creando allora lo salvo
-	       { 
-			 BMB.saveViaggio(viaggio);
-	         //id = BMB.cercaViaggio(viaggio);
-	       }
-	   
-		return "pagamento.xhtml?faces-redirect=true"; 	//&id=" +id
+		return "pagamento.xhtml?faces-redirect=true"; 	
 	}
 	
 	public void calcoloquota()
@@ -228,12 +230,40 @@ public class ViaggioBean {
 		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXquotacomplessiva" + this.getQuotacomplessiva());
 	}
 	
-	public void creaPrenotazione()
+	public String creaPrenotazione()
 	{
+        int id = BMB.cercaViaggio(viaggio); // cerco se qualcuno ha già creato un viaggio del genere per non mettere doppioni nel db
 		
+		if(id == -1) // se non era presente il viaggio che stavo creando allora lo salvo
+	       { 
+			 // salvo le copie degli elementi selezionati per la creazione del viaggio
+			int id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
+			int id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
+			int id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
+			for(EscursioneDTO edto: selectedEsc)
+			    edto.setId(CMB.saveEscursioneSalvata(edto));
+			
+			 selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono già a posto
+			 selectedVolo_a.setId(id_vsa);
+			 selectedVolo_r.setId(id_vsr);
+			
+	         viaggio.setHotel(selectedHotels);
+	         viaggio.setVolo_andata(selectedVolo_a);
+	         viaggio.setVolo_ritorno(selectedVolo_r);
+	         viaggio.setLista_escursioni(selectedEsc);
+	         
+			 id= BMB.saveViaggio(viaggio);
+	       }
 		
+		viaggio.setId(id);
+		prenotazione.setViaggio(viaggio);
+		prenotazione.setNumero_persone(n_partecipanti);
+		prenotazione.setUtente(userMgr.getUserDTO());
+		prenotazione.setCosto(quotacomplessiva);
 		
-		
+	    BMB.savePrenotazione(prenotazione);
+	    
+		return "imieiviaggi.xhtml?faces-redirect=true"; 	
 	}
 	
 	
@@ -327,6 +357,14 @@ public class ViaggioBean {
 
 		public void setQuotapp(int quotapp) {
 			this.quotapp = quotapp;
+		}
+
+		public PrenotazioneDTO getPrenotazione() {
+			return prenotazione;
+		}
+
+		public void setPrenotazione(PrenotazioneDTO prenotazione) {
+			this.prenotazione = prenotazione;
 		}
 	
 	/*
