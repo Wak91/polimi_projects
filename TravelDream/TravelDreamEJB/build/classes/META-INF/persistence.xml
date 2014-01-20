@@ -9,7 +9,7 @@
 		<class>model.Volo</class>
 		<class>model.Invito</class>
 		<class>model.Prenotazione</class>
-		<class>model.Viaggio</class>
+		<class>model.Viaggio</class>		
 		<class>model.Amico</class>
 		<class>model.Gift_List</class>
 		<class>model.UtenteGruppo</class>
