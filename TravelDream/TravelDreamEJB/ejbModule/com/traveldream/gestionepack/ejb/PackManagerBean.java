@@ -122,7 +122,9 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		
 		pacchetto.setNome(packetDTO.getNome());
 		pacchetto.setDestinazione(packetDTO.getDestinazione());
+		System.out.println("In modify packet inizio"+packetDTO.getData_inizio());
 		pacchetto.setData_inizio(packetDTO.getData_inizio());
+		System.out.println("In modify pacchetto inizio"+pacchetto.getData_inizio());
 		pacchetto.setData_fine(packetDTO.getData_fine());
 		pacchetto.setImmagine(packetDTO.getPathtoImage());	
 		

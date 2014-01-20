@@ -265,7 +265,7 @@ public class PacketBean {
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
-		System.out.println("ID packet "+packet.getId());
+		System.out.println(" packet data "+packet.getData_inizio());
 		PMB.modifyPacchetto(packet);
 		return "impack.xhtml?faces-redirect=true";
 	}

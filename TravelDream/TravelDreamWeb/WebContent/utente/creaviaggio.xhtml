@@ -147,7 +147,7 @@
 				<p:dataTable id="multiEscursioni" var="esc" value="#{ViaggioBean.escModels}" paginator="true" rows="5"  
                  selection="#{ViaggioBean.selectedEsc}">  
                 
-                <p:column selectionMode="multiple" style="width:2%" />  
+                <p:column selectionMode="single" style="width:2%" />  
   
                 <p:column headerText="nome" style="width:25%" sortBy="nome" filterBy="#{esc.nome}" >  
                  #{esc.nome}

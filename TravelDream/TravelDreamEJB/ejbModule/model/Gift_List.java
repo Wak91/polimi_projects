@@ -1,9 +1,7 @@
 package model;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import java.util.List;
 
 
@@ -26,31 +24,21 @@ public class Gift_List implements Serializable {
 
 	private byte voloRPag;
 
-	//uni-directional many-to-many association to Escursione
-	@ManyToMany()
-	@JoinTable(
-		name="Gift ListEscursione"
-		, joinColumns={
-			@JoinColumn(name="Gift List_ID")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="Escursione_ID")
-			}
-		)
-	private List<Escursione> escursiones;
+	//bi-directional many-to-one association to EscursionePagata
+	@OneToMany(mappedBy="giftList")
+	private List<EscursionePagata> escursionePagatas;
 
 	//bi-directional many-to-many association to Amico
-	@ManyToMany()
-	@JoinTable(
-			name="AmicoGift List"
-			, joinColumns={
-				@JoinColumn(name="Gift List_ID")
-				}
-			, inverseJoinColumns={
-				@JoinColumn(name="Amico_ID")
-				}
-			)
-	private List<Amico> amicos;
+	  @ManyToMany()
+	  @JoinTable(
+	      name="AmicoGift List"
+	      , joinColumns={
+	        @JoinColumn(name="Gift List_ID")
+	        }
+	      , inverseJoinColumns={
+	        @JoinColumn(name="Amico_ID")
+	        }
+	      )	private List<Amico> amicos;
 
 	//bi-directional many-to-one association to Utente
 	@ManyToOne
@@ -95,12 +83,26 @@ public class Gift_List implements Serializable {
 		this.voloRPag = voloRPag;
 	}
 
-	public List<Escursione> getEscursiones() {
-		return this.escursiones;
+	public List<EscursionePagata> getEscursionePagatas() {
+		return this.escursionePagatas;
 	}
 
-	public void setEscursiones(List<Escursione> escursiones) {
-		this.escursiones = escursiones;
+	public void setEscursionePagatas(List<EscursionePagata> escursionePagatas) {
+		this.escursionePagatas = escursionePagatas;
+	}
+
+	public EscursionePagata addEscursionePagata(EscursionePagata escursionePagata) {
+		getEscursionePagatas().add(escursionePagata);
+		escursionePagata.setGiftList(this);
+
+		return escursionePagata;
+	}
+
+	public EscursionePagata removeEscursionePagata(EscursionePagata escursionePagata) {
+		getEscursionePagatas().remove(escursionePagata);
+		escursionePagata.setGiftList(null);
+
+		return escursionePagata;
 	}
 
 	public List<Amico> getAmicos() {

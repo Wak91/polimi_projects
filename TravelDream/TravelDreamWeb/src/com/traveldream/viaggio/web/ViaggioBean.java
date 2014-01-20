@@ -240,12 +240,12 @@ public class ViaggioBean {
 	//---QUESTI VANNO NEL BEAN GESTIONE GIFT LIST E GESTIONE INVITO 
 	public String aggiungi_gift()
 	{
-
+/*
 		if(selectedHotels == null || selectedVolo_a == null || selectedVolo_r == null)
 		  {
 			return null;
 		  }
-		
+		*/
 		
 		
 		//creazione entita gift

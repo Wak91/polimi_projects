@@ -26,33 +26,23 @@ public class Viaggio implements Serializable {
 	@Column(name="`Data inizio`")
 	private Date data_inizio;
 
-	//bi-directional many-to-many association to Escursione
-	@ManyToMany
-	@JoinTable(
-		name="EscursioneViaggio"
-		, joinColumns={
-			@JoinColumn(name="Viaggio_ID")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="Escursioni_ID")
-			}
-		)
-	private List<Escursione> escursiones;
+	//bi-directional many-to-one association to EscursioneSalvata
+	@OneToMany(mappedBy="viaggio")
+	private List<EscursioneSalvata> escursioneSalvatas;
 
-	//uni-directional many-to-one association to Hotel
+	//bi-directional many-to-one association to HotelSalvato
 	@ManyToOne
-	@JoinColumn(name="Hotel")
-	private Hotel hotelBean;
+	private HotelSalvato hotelSalvato;
 
-	//uni-directional many-to-one association to Volo
+	//bi-directional many-to-one association to VoloSalvato
 	@ManyToOne
-	@JoinColumn(name="VoloAndata")
-	private Volo volo1;
+	@JoinColumn(name="VoloSalvatoAndata_ID")
+	private VoloSalvato voloSalvato1;
 
-	//uni-directional many-to-one association to Volo
+	//uni-directional many-to-one association to VoloSalvato
 	@ManyToOne
-	@JoinColumn(name="VoloRitorno")
-	private Volo volo2;
+	@JoinColumn(name="VoloSalvatoRitorno_ID")
+	private VoloSalvato voloSalvato2;
 
 	public Viaggio() {
 	}
@@ -81,36 +71,50 @@ public class Viaggio implements Serializable {
 		this.data_inizio = data_inizio;
 	}
 
-	public List<Escursione> getEscursiones() {
-		return this.escursiones;
+	public List<EscursioneSalvata> getEscursioneSalvatas() {
+		return this.escursioneSalvatas;
 	}
 
-	public void setEscursiones(List<Escursione> escursiones) {
-		this.escursiones = escursiones;
+	public void setEscursioneSalvatas(List<EscursioneSalvata> escursioneSalvatas) {
+		this.escursioneSalvatas = escursioneSalvatas;
 	}
 
-	public Hotel getHotelBean() {
-		return this.hotelBean;
+	public EscursioneSalvata addEscursioneSalvata(EscursioneSalvata escursioneSalvata) {
+		getEscursioneSalvatas().add(escursioneSalvata);
+		escursioneSalvata.setViaggio(this);
+
+		return escursioneSalvata;
 	}
 
-	public void setHotelBean(Hotel hotelBean) {
-		this.hotelBean = hotelBean;
+	public EscursioneSalvata removeEscursioneSalvata(EscursioneSalvata escursioneSalvata) {
+		getEscursioneSalvatas().remove(escursioneSalvata);
+		escursioneSalvata.setViaggio(null);
+
+		return escursioneSalvata;
 	}
 
-	public Volo getVolo1() {
-		return this.volo1;
+	public HotelSalvato getHotelSalvato() {
+		return this.hotelSalvato;
 	}
 
-	public void setVolo1(Volo volo1) {
-		this.volo1 = volo1;
+	public void setHotelSalvato(HotelSalvato hotelSalvato) {
+		this.hotelSalvato = hotelSalvato;
 	}
 
-	public Volo getVolo2() {
-		return this.volo2;
+	public VoloSalvato getVoloSalvato1() {
+		return this.voloSalvato1;
 	}
 
-	public void setVolo2(Volo volo2) {
-		this.volo2 = volo2;
+	public void setVoloSalvato1(VoloSalvato voloSalvato1) {
+		this.voloSalvato1 = voloSalvato1;
+	}
+
+	public VoloSalvato getVoloSalvato2() {
+		return this.voloSalvato2;
+	}
+
+	public void setVoloSalvato2(VoloSalvato voloSalvato2) {
+		this.voloSalvato2 = voloSalvato2;
 	}
 
 }
