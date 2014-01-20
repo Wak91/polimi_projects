@@ -13,5 +13,9 @@
 		<class>model.Amico</class>
 		<class>model.Gift_List</class>
 		<class>model.UtenteGruppo</class>
+		<class>model.EscursionePagata</class>
+		<class>model.EscursioneSalvata</class>
+		<class>model.HotelSalvato</class>
+		<class>model.VoloSalvato</class>
 	</persistence-unit>
 </persistence>

@@ -40,13 +40,8 @@ public class Escursione implements Serializable {
 
 	private String nome;
 
-	//bi-directional many-to-many association to Pacchetto
 	@ManyToMany(mappedBy="escursiones")
 	private List<Pacchetto> pacchettos;
-
-	//bi-directional many-to-many association to Viaggio
-	@ManyToMany(mappedBy="escursiones")
-	private List<Viaggio> viaggios;
 
 	public Escursione() {
 	    super();
@@ -110,19 +105,11 @@ public class Escursione implements Serializable {
 	}
 
 	public List<Pacchetto> getPacchettos() {
-		return this.pacchettos;
+		return pacchettos;
 	}
 
 	public void setPacchettos(List<Pacchetto> pacchettos) {
 		this.pacchettos = pacchettos;
-	}
-
-	public List<Viaggio> getViaggios() {
-		return this.viaggios;
-	}
-
-	public void setViaggios(List<Viaggio> viaggios) {
-		this.viaggios = viaggios;
 	}
 
 }

@@ -1,27 +1,18 @@
 package model;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
-import com.traveldream.gestionecomponente.ejb.VoloDTO;
-
 import java.util.Date;
 import java.util.List;
 
 
 /**
- * The persistent class for the Volo database table.
+ * The persistent class for the VoloSalvato database table.
  * 
  */
 @Entity
-@Table(name="Volo")
-@NamedQueries ( {
-                @NamedQuery(name="Volo.findAll", query="SELECT v FROM Volo v"),
-                @NamedQuery(name="Volo.findbyId", query="SELECT v FROM Volo v WHERE v.id= :d")
-                }
-              )
-public class Volo implements Serializable {
+@NamedQuery(name="VoloSalvato.findAll", query="SELECT v FROM VoloSalvato v")
+public class VoloSalvato implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -42,23 +33,13 @@ public class Volo implements Serializable {
 	@Column(name="`Luogo partenza`")
 	private String luogo_partenza;
 
-	//bi-directional many-to-many association to Pacchetto
-	@ManyToMany(mappedBy="volos")
-	private List<Pacchetto> pacchettos;
+	//bi-directional many-to-one association to Viaggio
+	@OneToMany(mappedBy="voloSalvato1")
+	private List<Viaggio> viaggios;
 
-	public Volo() {
-	    super();
-	  }
-	  
-	  public Volo(VoloDTO volodto)
-	  {
-	     this.compagnia = volodto.getCompagnia();
-	     this.costo = volodto.getCosto();
-	     this.data = volodto.getData();
-	     this.luogo_arrivo = volodto.getLuogo_arrivo();
-	     this.luogo_partenza = volodto.getLuogo_partenza();
-	     this.immagine = volodto.getImmagine();
-	  }
+	public VoloSalvato() {
+	}
+
 	public int getId() {
 		return this.id;
 	}
@@ -115,12 +96,26 @@ public class Volo implements Serializable {
 		this.luogo_partenza = luogo_partenza;
 	}
 
-	public List<Pacchetto> getPacchettos() {
-		return this.pacchettos;
+	public List<Viaggio> getViaggios() {
+		return this.viaggios;
 	}
 
-	public void setPacchettos(List<Pacchetto> pacchettos) {
-		this.pacchettos = pacchettos;
+	public void setViaggios(List<Viaggio> viaggios) {
+		this.viaggios = viaggios;
+	}
+
+	public Viaggio addViaggio(Viaggio viaggio) {
+		getViaggios().add(viaggio);
+		viaggio.setVoloSalvato1(this);
+
+		return viaggio;
+	}
+
+	public Viaggio removeViaggio(Viaggio viaggio) {
+		getViaggios().remove(viaggio);
+		viaggio.setVoloSalvato1(null);
+
+		return viaggio;
 	}
 
 }

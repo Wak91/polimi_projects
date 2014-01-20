@@ -55,6 +55,7 @@ public class Pacchetto implements Serializable {
 		)
 	private List<Escursione> escursiones;
 
+
 	//bi-directional many-to-many association to Hotel
 	@ManyToMany(cascade = {CascadeType.PERSIST,
             CascadeType.MERGE})
@@ -89,18 +90,6 @@ public class Pacchetto implements Serializable {
 		escursiones = new ArrayList<Escursione>();
 	}
 
-	public void addHotel(Hotel hotel){
-		hotels.add(hotel);
-	}
-	
-	public void addEscursione(Escursione esc){
-		escursiones.add(esc);
-	}
-	
-	public void addVolo(Volo volo){
-		volos.add(volo);
-	}
-	
 	public int getId() {
 		return this.id;
 	}
@@ -149,8 +138,9 @@ public class Pacchetto implements Serializable {
 		this.nome = nome;
 	}
 
+
 	public List<Escursione> getEscursiones() {
-		return this.escursiones;
+		return escursiones;
 	}
 
 	public void setEscursiones(List<Escursione> escursiones) {
