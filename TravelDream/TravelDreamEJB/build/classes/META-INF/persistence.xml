@@ -13,5 +13,6 @@
 		<class>model.Amico</class>
 		<class>model.Gift_List</class>
 		<class>model.UtenteGruppo</class>
+		<class>model.EscursionePagata</class>
 	</persistence-unit>
 </persistence>

@@ -17,12 +17,12 @@ import java.util.List;
 @Entity
 @Table(name="Escursione")
 @NamedQueries 
-             ( 
-              {
-               @NamedQuery(name="Escursione.findAll", query="SELECT e FROM Escursione e"),
-               @NamedQuery(name="Escursione.findbyId", query="SELECT e FROM Escursione e WHERE e.id = :d")
-              }
-             )
+( 
+ {
+  @NamedQuery(name="Escursione.findAll", query="SELECT e FROM Escursione e"),
+  @NamedQuery(name="Escursione.findbyId", query="SELECT e FROM Escursione e WHERE e.id = :d")
+ }
+)
 public class Escursione implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -39,19 +39,10 @@ public class Escursione implements Serializable {
 	private String luogo;
 
 	private String nome;
-
-	//bi-directional many-to-many association to Pacchetto
+	
 	@ManyToMany(mappedBy="escursiones")
 	private List<Pacchetto> pacchettos;
 
-	//bi-directional many-to-many association to Viaggio
-	@ManyToMany(mappedBy="escursiones")
-	private List<Viaggio> viaggios;
-
-	public Escursione() {
-	    super();
-	  }
-	  
 	  public Escursione(EscursioneDTO escursionedto)
 	  {
 	    this.costo = escursionedto.getCosto();
@@ -61,6 +52,7 @@ public class Escursione implements Serializable {
 	    this.nome = escursionedto.getNome();
 	    
 	  }
+
 	public int getId() {
 		return this.id;
 	}
@@ -110,19 +102,16 @@ public class Escursione implements Serializable {
 	}
 
 	public List<Pacchetto> getPacchettos() {
-		return this.pacchettos;
+		return pacchettos;
 	}
 
 	public void setPacchettos(List<Pacchetto> pacchettos) {
 		this.pacchettos = pacchettos;
 	}
 
-	public List<Viaggio> getViaggios() {
-		return this.viaggios;
-	}
-
-	public void setViaggios(List<Viaggio> viaggios) {
-		this.viaggios = viaggios;
-	}
+	public Escursione() {
+	    super();
+	  }
+	  
 
 }

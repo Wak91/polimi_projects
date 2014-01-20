@@ -6,6 +6,9 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import com.traveldream.autenticazione.ejb.UserMgr;
+import com.traveldream.condivisione.ejb.GiftListDTO;
+import com.traveldream.condivisione.web.GiftListBean;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
@@ -18,6 +21,7 @@ import com.traveldream.gestionepack.web.EscDataModel;
 import com.traveldream.gestionepack.web.HotelDataModel;
 import com.traveldream.gestionepack.web.VoloDataModel;
 import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
+import com.traveldream.util.web.FacesUtil;
 
 
 @ManagedBean(name="ViaggioBean") 
@@ -27,18 +31,22 @@ public class ViaggioBean {
 	@EJB
 	private PackManagerBeanLocal PMB;
 	
+	@EJB 
+	private UserMgr UMG;
+	
+	
 	public HotelDTO getSelectedHotels() {
 		return selectedHotels;
 	}
 
-	public EscursioneDTO getSelectedEsc() {
+	public ArrayList<EscursioneDTO> getSelectedEsc() {
 		return selectedEsc;
 	}
 
 	private HotelDTO selectedHotels;
 	private VoloDTO selectedVolo_a;
 	private VoloDTO selectedVolo_r;
-	private EscursioneDTO selectedEsc;
+	private ArrayList<EscursioneDTO> selectedEsc;
 	
 	
 	private HotelDataModel hotelModels;
@@ -57,6 +65,7 @@ public class ViaggioBean {
 	public ViaggioBean() {
 		
 		 packet = new PacchettoDTO();
+		 viaggio = new ViaggioDTO();
 		
 	}
 
@@ -115,7 +124,7 @@ public class ViaggioBean {
 		this.selectedHotels = selectedHotels;
 	}
 
-	public void setSelectedEsc(EscursioneDTO selectedEsc) {
+	public void setSelectedEsc(ArrayList<EscursioneDTO> selectedEsc) {
 		this.selectedEsc = selectedEsc;
 	}
 
@@ -175,13 +184,21 @@ public class ViaggioBean {
 	//---QUESTI VANNO NEL BEAN GESTIONE GIFT LIST E GESTIONE INVITO 
 	public String aggiungi_gift()
 	{
-/*
+
 		if(selectedHotels == null || selectedVolo_a == null || selectedVolo_r == null)
 		  {
 			return null;
 		  }
-		*/
+		viaggio.setVolo_andata(selectedVolo_a);
+		viaggio.setVolo_ritorno(selectedVolo_r);
+		viaggio.setHotel(selectedHotels);
+		viaggio.setLista_escursioni(selectedEsc);
 		
+		GiftListDTO gift= new GiftListDTO();
+		gift.setViaggio(viaggio);
+		gift.setUtente(UMG.getUserDTO());
+		gift.setId(2);
+		FacesUtil.setSessionMapValue("GiftDTO", gift);		
 		//creazione entita gift
 		
 		

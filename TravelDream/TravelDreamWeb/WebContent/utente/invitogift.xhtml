@@ -11,7 +11,7 @@
 			<p:panel header="AGGIUNTA AMICI">
 	       		<h:form>
 	       			<h:panelGrid columns="2" value="Inserisci le mail dei tuoi amici">
-		    			<ui:repeat value= "#{GiftListBean.amici}" var="value">
+		    			<ui:repeat value= "#{GiftListBean.giftListDTO.amico}" var="value">
 		    			   	<h:outputLabel for="email" value="Email Amico "/>
 		        			<p:inputText id="email" name="email" value="#{value}" />
 		       				 <br />
@@ -20,7 +20,7 @@
 		    			<p:commandButton value="Aggiungi nuovo amico">
 		       				 <f:ajax listener="#{GiftListBean.addAmico()}" process="@form"  render="@form" />
 		    			</p:commandButton>
-	   				 	<p:commandButton action="#{bean.submit}" value="Save" />
+	   				 	<p:commandButton action="#{GiftListBean.submit}" value="Save" />
 	   				 </h:panelGrid>
 				</h:form>
 			</p:panel>
