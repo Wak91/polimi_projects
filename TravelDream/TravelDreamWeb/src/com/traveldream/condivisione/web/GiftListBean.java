@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
@@ -14,8 +15,11 @@ import com.traveldream.util.web.FacesUtil;
 
 
 @ManagedBean(name="GiftListBean") 
-@SessionScoped
+@RequestScoped
 public class GiftListBean {
+
+	String amico;
+
 
 	GiftListDTO giftListDTO;
 	
@@ -23,7 +27,7 @@ public class GiftListBean {
 	@PostConstruct
     public void init() {
 		giftListDTO = (GiftListDTO)FacesUtil.getSessionMapValue("GiftDTO");
-		giftListDTO.getAmico().add("");
+
 
 		System.out.println("volod"+giftListDTO.getId());
 
@@ -31,10 +35,19 @@ public class GiftListBean {
 			System.out.println("XXXXXXXXXXXXXXinding cazzi");
 		}
     }
-	public void addAmico(){
-		giftListDTO.getAmico().add("");
-	}
 	
+	public String reinit() {  
+        amico = new String();           
+        return null;  
+    }  
+	
+	public String getAmico() {
+		return amico;
+	}
+	public void setAmico(String amico) {
+		this.amico = amico;
+	}
+
 	public GiftListDTO getGiftListDTO() {
 		return giftListDTO;
 	}
@@ -42,17 +55,20 @@ public class GiftListBean {
 	public void setGiftListDTO(GiftListDTO giftListDTO) {
 		this.giftListDTO = giftListDTO;
 	}
-
+	
 	public void submit(){
+		System.out.println("dddewdwedewew");
 		if (giftListDTO==null) {
 			System.out.println("XXXXXXXXXXXXXXinding cazzi");
 		}
-		for (String string : giftListDTO.getAmico()) {
+		for (String string : getGiftListDTO().getAmico() ) {
 			System.out.println("gift "+string);
 
 		}
 		System.out.println("volo"+giftListDTO.getViaggio().getVolo_andata().getCompagnia());
 	}
+
+	
 	
 	
 }

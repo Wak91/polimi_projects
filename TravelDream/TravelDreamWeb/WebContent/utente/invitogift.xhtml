@@ -8,22 +8,54 @@
       template="Template.xhtml">
       
        <ui:define name="content">
-			<p:panel header="AGGIUNTA AMICI">
-	       		<h:form>
-	       			<h:panelGrid columns="2" value="Inserisci le mail dei tuoi amici">
-		    			<ui:repeat value= "#{GiftListBean.giftListDTO.amico}" var="value">
-		    			   	<h:outputLabel for="email" value="Email Amico "/>
-		        			<p:inputText id="email" name="email" value="#{value}" />
-		       				 <br />
-		    			</ui:repeat>
-	
-		    			<p:commandButton value="Aggiungi nuovo amico">
-		       				 <f:ajax listener="#{GiftListBean.addAmico()}" process="@form"  render="@form" />
-		    			</p:commandButton>
-	   				 	<p:commandButton action="#{GiftListBean.submit}" value="Save" />
-	   				 </h:panelGrid>
-				</h:form>
-			</p:panel>
+			<h:form id="form">  
+  
+    <p:growl id="msgs" />  
+  
+    <p:panel header="Aggiungi un nuovo amico">  
+        <h:panelGrid columns="2" id="grid">  
+            <h:outputLabel value="Email " for="email"></h:outputLabel>  
+            <p:inputText id="email"   
+                            value="#{GiftListBean.amico}" />  
+              
+             
+              
+            <p:commandButton id="btn_add" value="Aggiungi Amico" update="emails msgs @parent"  
+                            action="#{GiftListBean.reinit}" >  
+                <p:collector value="#{GiftListBean.amico}"   
+                            addTo="#{GiftListBean.giftListDTO.amico}" />  
+            </p:commandButton>  
+        </h:panelGrid>  
+    </p:panel>  
+      
+    <p:outputPanel id="emails">  
+        <p:dataTable id="emailsTable" value="#{GiftListBean.giftListDTO.amico}" var="amico">  
+  
+            <p:column>  
+                <f:facet name="header">  
+                    <h:outputText value="Title" />  
+                </f:facet>  
+                <h:outputText value="#{amico}" />  
+            </p:column>  
+  
+            
+  
+            <p:column>  
+                <f:facet name="header">  
+                    <h:outputText value="Operation" />  
+                </f:facet>  
+                <p:commandLink value="Remove" update=":form:emails" process=":form:emails">  
+                    <p:collector value="#{amico}"  
+                                 removeFrom="#{GiftListBean.giftListDTO.amico}" />  
+                </p:commandLink>  
+            </p:column>  
+  
+        </p:dataTable>  
+    </p:outputPanel>  
+              <p:commandButton value="Create Gift List" action="#{GiftListBean.submit()}"/>  
+              
+  
+</h:form> 
        
        </ui:define>
       
