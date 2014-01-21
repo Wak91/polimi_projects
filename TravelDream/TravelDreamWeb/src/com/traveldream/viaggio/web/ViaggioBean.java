@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import com.traveldream.autenticazione.ejb.UserMgr;
+import com.traveldream.condivisione.ejb.GiftListDTO;
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
@@ -23,6 +24,7 @@ import com.traveldream.gestionepack.web.VoloDataModel;
 import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
 import com.traveldream.gestioneprenotazione.ejb.PrenotazioneDTO;
 import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
+import com.traveldream.util.web.FacesUtil;
 
 
 @ManagedBean(name="ViaggioBean") 
@@ -272,14 +274,22 @@ public class ViaggioBean {
 	//---QUESTI VANNO NEL BEAN GESTIONE GIFT LIST E GESTIONE INVITO 
 	public String aggiungi_gift()
 	{
-/*
+
 		if(selectedHotels == null || selectedVolo_a == null || selectedVolo_r == null)
 		  {
 			return null;
 		  }
-		*/
+		viaggio.setVolo_andata(selectedVolo_a);
+		viaggio.setVolo_ritorno(selectedVolo_r);
+		viaggio.setHotel(selectedHotels);
+		viaggio.setLista_escursioni(selectedEsc);
 		
 		
+		GiftListDTO gift= new GiftListDTO();
+		gift.setViaggio(viaggio);
+		gift.setUtente(userMgr.getUserDTO());
+		gift.setId(2);
+		FacesUtil.setSessionMapValue("GiftDTO", gift);		
 		//creazione entita gift
 		
 		

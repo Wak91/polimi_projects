@@ -9,7 +9,6 @@ import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the Escursione database table.
  * 
@@ -111,5 +110,4 @@ public class Escursione implements Serializable {
 	public void setPacchettos(List<Pacchetto> pacchettos) {
 		this.pacchettos = pacchettos;
 	}
-
 }
