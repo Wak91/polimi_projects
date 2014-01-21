@@ -16,7 +16,6 @@ public class EscDataModel extends ListDataModel <EscursioneDTO> implements Selec
 	public EscDataModel(List <EscursioneDTO> escdto)
 	{super(escdto);}
 	
-	@Override
 	public EscursioneDTO getRowData(String arg0) {
 		List<EscursioneDTO> edto = ((List<EscursioneDTO>) getWrappedData());  
         for(EscursioneDTO e : edto) {  
@@ -27,7 +26,7 @@ public class EscDataModel extends ListDataModel <EscursioneDTO> implements Selec
         return null;
 	}
 
-	@Override
+
 	public String getRowKey(EscursioneDTO arg0) {
 		return arg0.getNome();
 	}

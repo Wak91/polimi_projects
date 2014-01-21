@@ -16,11 +16,10 @@ public class VoloDataModel  extends ListDataModel <VoloDTO> implements Selectabl
 	public VoloDataModel(List <VoloDTO> vdto)
 	{ super(vdto); }
 	
-	@Override
 	public VoloDTO getRowData(String arg0) {
 		List<VoloDTO> vdto = (List<VoloDTO>) getWrappedData();  
         for(VoloDTO v : vdto) {  
-            if(v.getCompagnia().equals(arg0))  
+            if((v.getId()+"").equals(arg0))  
                 return v;  
         }  
           
@@ -29,7 +28,7 @@ public class VoloDataModel  extends ListDataModel <VoloDTO> implements Selectabl
 
 	@Override
 	public Object getRowKey(VoloDTO arg0) {
-		return arg0.getCompagnia();
+		return arg0.getId();
 	}
 
 }

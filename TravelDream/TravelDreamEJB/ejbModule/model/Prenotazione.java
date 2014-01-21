@@ -12,6 +12,7 @@ import com.traveldream.gestioneprenotazione.ejb.PrenotazioneDTO;
  * 
  */
 @Entity
+@Table(name="Prenotazione")
 @NamedQuery(name="Prenotazione.findAll", query="SELECT p FROM Prenotazione p")
 public class Prenotazione implements Serializable {
 	private static final long serialVersionUID = 1L;

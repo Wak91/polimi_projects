@@ -14,7 +14,7 @@ import java.util.List;
  * The persistent class for the HotelSalvato database table.
  * Questa classe serve per congelare gli hotel che sono 
  * stati salvati in un viaggio o in una prenotazione , se avessimo usato
- * la classe Hotel normale in caso di eliminazione di componenti, gli utenti
+ * la classe Hotel in caso di eliminazione di componenti, gli utenti
  * si sarebbero ritrovato delle prenotazioni incoerenti.
  * La tabella HotelSalvato può essere utilizzata per tracciare tutti gli hotel prenotati
  * almeno una volta nella history del sito.

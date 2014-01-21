@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
@@ -76,7 +75,7 @@ public class ViaggioBean {
 		
 		 packet = new PacchettoDTO();
 		 viaggio = new ViaggioDTO();
-		 selectedEsc = new ArrayList <EscursioneDTO>();
+		 prenotazione = new PrenotazioneDTO();
 	}
 
 	public HotelDataModel getHotelModels() {
@@ -249,13 +248,16 @@ public class ViaggioBean {
 			
 	         viaggio.setHotel(selectedHotels);
 	         viaggio.setVolo_andata(selectedVolo_a);
-	         viaggio.setVolo_ritorno(selectedVolo_r);
-	         viaggio.setLista_escursioni(selectedEsc);
-	         
+	         viaggio.setVolo_ritorno(selectedVolo_r);	         
 			 id= BMB.saveViaggio(viaggio);
+			 viaggio.setId(id);
+			 
+			 for(EscursioneDTO edto: selectedEsc)
+				    edto.setViaggio(viaggio);
+			 
+	         viaggio.setLista_escursioni(selectedEsc);
 	       }
 		
-		viaggio.setId(id);
 		prenotazione.setViaggio(viaggio);
 		prenotazione.setNumero_persone(n_partecipanti);
 		prenotazione.setUtente(userMgr.getUserDTO());
