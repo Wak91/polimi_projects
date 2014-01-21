@@ -43,7 +43,7 @@ public class Utente implements Serializable {
 	private String password;
 
 	//bi-directional many-to-one association to UtenteGruppo
-	@OneToMany(mappedBy="utente")
+	@OneToMany(mappedBy="utente", cascade = CascadeType.REMOVE)
 	private List<UtenteGruppo> utenteGruppos;
 
 	public Utente() {

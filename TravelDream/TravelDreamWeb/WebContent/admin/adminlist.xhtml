@@ -6,21 +6,20 @@
       xmlns:p="http://primefaces.org/ui"> 
       
     <ui:composition template="Template.xhtml"> 
-    	<ui:define name="content">
-      
-      		#{userBean.initBean()} 
+    <ui:define name="content">
+       #{userBean.initBean()}
+ 
         
       			<h:form id="myform">
-   				 	<p:dataTable id="tab" 
+      			
+   				 	<p:dataTable id="tab"    				 	
     		    	 var="utente" 	
     		    	 value="#{userBean.userModels}" 
     		   		 paginator="true" 
     		  	  	 rows="10"   
     		     	 rowKey="${row.username}"
-                	 selectionMode="single"
-               		 emptyMessage="Clicca sul pulsante SORT per ordinare">  
-                  
-                     
+                	 selectionMode="single">  
+                                       
                 <f:facet name="header">  
                 IMPIEGATI 
             	</f:facet>

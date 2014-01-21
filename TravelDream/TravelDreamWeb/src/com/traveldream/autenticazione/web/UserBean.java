@@ -6,6 +6,7 @@ import com.traveldream.autenticazione.ejb.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
@@ -124,6 +125,11 @@ public class UserBean {
 	public String deleteImp(String username){
 		userMgr.unregister(userMgr.findImp(username));
 		return "adminlist?faces-redirect=true";		
+	}
+	
+	//TOGLIEREEEEEEE
+	public void scrivi(){
+		System.out.println("data: " +user.getData());
 	}
 
 }

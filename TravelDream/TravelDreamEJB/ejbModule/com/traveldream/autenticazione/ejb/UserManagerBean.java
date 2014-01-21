@@ -57,6 +57,7 @@ public class UserManagerBean implements UserMgr {
 		udto.setFirstName(user.getNome());
 		udto.setLastName(user.getCognome());
 		udto.setEmail(user.getEmail());
+		udto.setData(user.getData_di_nascita());
 		return udto;
 	}
 
@@ -100,10 +101,10 @@ public class UserManagerBean implements UserMgr {
 	
 		em.persist(user);
 		em.persist(usergroup);
-		
 	}
 
 
+		@SuppressWarnings("unchecked")
 		public ArrayList<UserDTO> getAllImp() {
 		List<Utente> myList;
 		ArrayList <UserDTO> myDTOlist = new ArrayList <UserDTO> ();
@@ -122,8 +123,7 @@ public class UserManagerBean implements UserMgr {
 
 	@Override
 	public void modifyUser(UserDTO user) {
-		String casa = user.getUsername();
-		System.out.println("il mio username: " +casa);
+		System.out.println(user.getUsername());
 		System.out.println(user.getFirstName());
 		System.out.println(user.getLastName());
 		System.out.println(user.getEmail());

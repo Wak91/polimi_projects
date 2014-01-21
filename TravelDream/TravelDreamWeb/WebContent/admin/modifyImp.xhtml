@@ -10,6 +10,7 @@
         <ui:define name="content">
         
         #{userBean.getImpByUn(param['id'])}
+        #{userBean.scrivi()}
         <f:metadata>
         <f:viewParam name="id" value="#{userBean.user.username}" />
     	</f:metadata>
@@ -18,8 +19,7 @@
                         <p:panel header="MODIFICA">
                                 <h:panelGrid columns="3" id="regGrid">
                                 
-                                        
-
+                                      
                                         <h:outputLabel for="nome">Nome:</h:outputLabel>
                                         <p:inputText id="nome" value="#{userBean.user.firstName}" />
                                         <p:message for="nome" />
@@ -29,7 +29,7 @@
                                         <p:message for="cognome" />
 
                                         <h:outputLabel for="data">Data di nascita:</h:outputLabel>
-										<p:calendar id="data" binding="#{dates}" required="true" value="#{userBean.user.data}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
+										<p:calendar id="data" value="#{userBean.user.data}"  required="true"  pattern="dd/MM/yyyy" navigator="true" display="inline" />
 										<p:message for="data"/>
 
                                         <h:outputLabel for="password">Password:</h:outputLabel>

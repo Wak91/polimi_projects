@@ -9,7 +9,7 @@
       
 			<ui:define name="content">
 
- <h:form>
+ <h:form id="form">
 		<p:panel header="Aggiunta Impiegato">
 			<h:panelGrid columns="3" id="regGrid">
 				
@@ -41,7 +41,7 @@
 				<h:outputLabel for="date">Data di nascita:</h:outputLabel>
 				<p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/> 
 				
-                <p:commandButton value="Aggiungi Impiegato" update="regGrid"
+                <h:commandButton value="Aggiungi Impiegato" update="regGrid"
 				action="#{userBean.addImpiegato()}" />
         </h:panelGrid>
 		</p:panel>
