@@ -10,6 +10,8 @@ import javax.persistence.Convert;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import sun.security.util.Cache;
+
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
@@ -42,6 +44,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	public int saveViaggio(ViaggioDTO v)
 	{
 		Viaggio travel = new Viaggio();
+		Viaggio travel2 = new Viaggio();
 		travel.setData_inizio(v.getData_inizio());
 		travel.setData_fine(v.getData_fine());
 		travel.setHotelSalvato(this.DTOtoEntityHotel(v.getHotel()));
@@ -49,7 +52,17 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
         em.persist(travel);	
         em.flush();
-        return em.find(Viaggio.class, travel.getId()).getId();
+        travel2 = em.find(Viaggio.class, travel.getId());
+        for(EscursioneSalvata es: (this.DTOtoEntityEscursione(v.getLista_escursioni())))
+		    es.setViaggio(travel2);	
+	    for(EscursioneSalvata es: (this.DTOtoEntityEscursione(v.getLista_escursioni())))
+	    	{
+	    	em.persist(es);
+	    	travel.getEscursioneSalvatas().add(em.find(EscursioneSalvata.class, es.getId()));
+	    	};     
+			em.merge(travel2);
+		
+			return  em.find(Viaggio.class, travel.getId()).getId();
 	}
 	
 	public void updateViaggio(ViaggioDTO v)
@@ -61,7 +74,6 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		travel.setVoloSalvato1(this.DTOtoEntityVolo(v.getVolo_andata()));
 		travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
 		travel.setEscursioneSalvatas(this.DTOtoEntityEscursione(v.getLista_escursioni()));
-		em.merge(travel);
 	}
 	
 	public void savePrenotazione(PrenotazioneDTO pdto)
@@ -134,6 +146,21 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		   }
 		return 1;
 		
+	}
+	
+	public int saveEscursioneSalvata(EscursioneDTO escursioneDTO)
+	{
+		EscursioneSalvata escursione = new EscursioneSalvata();
+		escursione.setViaggio(this.DTOtoEntityViaggio(escursioneDTO.getViaggio()));
+		escursione.setNome(escursioneDTO.getNome());
+		escursione.setLuogo(escursioneDTO.getLuogo());
+		escursione.setImmagine(escursioneDTO.getImmagine());
+		escursione.setData(escursioneDTO.getData());
+		escursione.setCosto(escursioneDTO.getCosto());
+		
+		em.persist(escursione);
+		em.flush();
+		return em.find(EscursioneSalvata.class, escursione.getId()).getId();
 	}
 	
 }

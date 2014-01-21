@@ -252,15 +252,6 @@ public class ViaggioBean {
 	         viaggio.setVolo_ritorno(selectedVolo_r);	         
 			 id= BMB.saveViaggio(viaggio);
 			 viaggio.setId(id);
-			 
-			 for(EscursioneDTO edto: selectedEsc)
-				    edto.setViaggio(viaggio);	
-			 for(EscursioneDTO edto: selectedEsc)
-				    edto.setId(CMB.saveEscursioneSalvata(edto));
-	         viaggio.setLista_escursioni(selectedEsc);
-	         
-			 BMB.updateViaggio(viaggio);
-
 	       }
 		
 		prenotazione.setViaggio(viaggio);
