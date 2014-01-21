@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
 import com.traveldream.util.Converter;
 
 import model.Escursione;
@@ -17,6 +18,7 @@ import model.EscursioneSalvata;
 import model.Hotel;
 import model.HotelSalvato;
 import model.Pacchetto;
+import model.Viaggio;
 import model.Volo;
 import model.VoloSalvato;
 
@@ -74,7 +76,14 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	
 	public int saveEscursioneSalvata(EscursioneDTO escursioneDTO)
 	{
-		EscursioneSalvata escursione = new EscursioneSalvata(escursioneDTO);
+		EscursioneSalvata escursione = new EscursioneSalvata();
+		escursione.setViaggio(this.DTOtoEntityViaggio(escursioneDTO.getViaggio()));
+		escursione.setNome(escursioneDTO.getNome());
+		escursione.setLuogo(escursioneDTO.getLuogo());
+		escursione.setImmagine(escursioneDTO.getImmagine());
+		escursione.setData(escursioneDTO.getData());
+		escursione.setCosto(escursioneDTO.getCosto());
+		
 		em.persist(escursione);
 		em.flush();
 		return em.find(EscursioneSalvata.class, escursione.getId()).getId();
@@ -294,6 +303,10 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		return EscursioneToDTOExtended(result);
 	}
 
+
+	private Viaggio DTOtoEntityViaggio(ViaggioDTO viaggio) {
+		return em.find(Viaggio.class, viaggio.getId());
+	}
 
 	
 }

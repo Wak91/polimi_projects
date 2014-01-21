@@ -231,6 +231,7 @@ public class ViaggioBean {
 		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXquotacomplessiva" + this.getQuotacomplessiva());
 	}
 	
+	// This method sucks...
 	public String creaPrenotazione()
 	{
         int id = BMB.cercaViaggio(viaggio); // cerco se qualcuno ha già creato un viaggio del genere per non mettere doppioni nel db
@@ -241,25 +242,25 @@ public class ViaggioBean {
 			int id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
 			int id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
 			int id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
-			for(EscursioneDTO edto: selectedEsc)
-			    edto.setId(CMB.saveEscursioneSalvata(edto));
 			
 			 selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono già a posto
 			 selectedVolo_a.setId(id_vsa);
 			 selectedVolo_r.setId(id_vsr);
 			
-	         viaggio.setHotel(selectedHotels);
+	         viaggio.setHotel(selectedHotels); 
 	         viaggio.setVolo_andata(selectedVolo_a);
 	         viaggio.setVolo_ritorno(selectedVolo_r);	         
 			 id= BMB.saveViaggio(viaggio);
 			 viaggio.setId(id);
 			 
 			 for(EscursioneDTO edto: selectedEsc)
-				    edto.setViaggio(viaggio);
-			 
-			 BMB
-			 
+				    edto.setViaggio(viaggio);	
+			 for(EscursioneDTO edto: selectedEsc)
+				    edto.setId(CMB.saveEscursioneSalvata(edto));
 	         viaggio.setLista_escursioni(selectedEsc);
+	         
+			 BMB.updateViaggio(viaggio);
+
 	       }
 		
 		prenotazione.setViaggio(viaggio);

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
+import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
 
 import java.util.Date;
 
@@ -43,15 +44,6 @@ public class EscursioneSalvata implements Serializable {
 		super();
 	}
 	
-	public EscursioneSalvata(EscursioneDTO escursionedto)
-	{
-	    this.costo = escursionedto.getCosto();
-	    this.data = escursionedto.getData();
-	    this.immagine = escursionedto.getImmagine(); 
-	    this.luogo = escursionedto.getLuogo();
-	    this.nome = escursionedto.getNome();	
-	}
-
 	public int getId() {
 		return this.id;
 	}
