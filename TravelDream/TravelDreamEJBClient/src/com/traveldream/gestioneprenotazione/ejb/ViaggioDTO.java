@@ -1,5 +1,6 @@
 package com.traveldream.gestioneprenotazione.ejb;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ViaggioDTO {
 	@NotNull
     private Date data_fine;
 	
-	private List <EscursioneDTO> lista_escursioni;
+	private ArrayList <EscursioneDTO> lista_escursioni;
 
 	public int getId() {
 		return id;
@@ -82,14 +83,7 @@ public class ViaggioDTO {
 		return lista_escursioni;
 	}
 
-	public void setLista_escursioni(List<EscursioneDTO> lista_escursioni) {
+	public void setLista_escursioni(ArrayList<EscursioneDTO> lista_escursioni) {
 		this.lista_escursioni = lista_escursioni;
 	}
-
-
-	
-	
-	
-	
-	
 }

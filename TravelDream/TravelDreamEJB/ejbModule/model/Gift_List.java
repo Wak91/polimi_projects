@@ -38,17 +38,16 @@ public class Gift_List implements Serializable {
 	      , inverseJoinColumns={
 	        @JoinColumn(name="Amico_ID")
 	        }
-	      )
-	  private List<Amico> amicos;
-	  
-	//bi-directional many-to-one association to Utente
-	  @ManyToOne
-	  private Utente utente;
+	      )	private List<Amico> amicos;
 
-	  //uni-directional many-to-one association to Viaggio
-	  @ManyToOne
-	  private Viaggio viaggio;
-	
+	//bi-directional many-to-one association to Utente
+	@ManyToOne
+	private Utente utente;
+
+	//uni-directional many-to-one association to Viaggio
+	@ManyToOne
+	private Viaggio viaggio;
+
 	public Gift_List() {
 	}
 
@@ -66,30 +65,6 @@ public class Gift_List implements Serializable {
 
 	public void setHotelPag(byte hotelPag) {
 		this.hotelPag = hotelPag;
-	}
-
-	public List<Amico> getAmicos() {
-		return amicos;
-	}
-
-	public void setAmicos(List<Amico> amicos) {
-		this.amicos = amicos;
-	}
-
-	public Utente getUtente() {
-		return utente;
-	}
-
-	public void setUtente(Utente utente) {
-		this.utente = utente;
-	}
-
-	public Viaggio getViaggio() {
-		return viaggio;
-	}
-
-	public void setViaggio(Viaggio viaggio) {
-		this.viaggio = viaggio;
 	}
 
 	public byte getVoloAPag() {
@@ -128,6 +103,30 @@ public class Gift_List implements Serializable {
 		escursionePagata.setGiftList(null);
 
 		return escursionePagata;
+	}
+
+	public List<Amico> getAmicos() {
+		return this.amicos;
+	}
+
+	public void setAmicos(List<Amico> amicos) {
+		this.amicos = amicos;
+	}
+
+	public Utente getUtente() {
+		return this.utente;
+	}
+
+	public void setUtente(Utente utente) {
+		this.utente = utente;
+	}
+
+	public Viaggio getViaggio() {
+		return this.viaggio;
+	}
+
+	public void setViaggio(Viaggio viaggio) {
+		this.viaggio = viaggio;
 	}
 
 }

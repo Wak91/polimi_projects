@@ -17,21 +17,19 @@ public class EscursionePagata implements Serializable {
 	@Id
 	private int id;
 
-	private byte escPagata;
-
 	@Column(name="`Gift List_ID`")
 	private int gift_List_ID;
 
-	//uni-directional many-to-one association to Escursione
-	@ManyToOne
-	private Escursione escursione;
+	private byte[] pagata;
 
 	//bi-directional many-to-one association to Gift_List
 	@ManyToOne
-	@JoinColumns({
-		@JoinColumn(name="Gift List_ID", referencedColumnName="ID"),
-		})
+    @JoinColumn(name="Gift List_ID", referencedColumnName="ID")
 	private Gift_List giftList;
+
+	//uni-directional many-to-one association to EscursioneSalvata
+	@ManyToOne
+	private EscursioneSalvata escursioneSalvata;
 
 	public EscursionePagata() {
 	}
@@ -44,14 +42,6 @@ public class EscursionePagata implements Serializable {
 		this.id = id;
 	}
 
-	public byte getEscPagata() {
-		return this.escPagata;
-	}
-
-	public void setEscPagata(byte escPagata) {
-		this.escPagata = escPagata;
-	}
-
 	public int getGift_List_ID() {
 		return this.gift_List_ID;
 	}
@@ -60,12 +50,12 @@ public class EscursionePagata implements Serializable {
 		this.gift_List_ID = gift_List_ID;
 	}
 
-	public Escursione getEscursione() {
-		return this.escursione;
+	public byte[] getPagata() {
+		return this.pagata;
 	}
 
-	public void setEscursione(Escursione escursione) {
-		this.escursione = escursione;
+	public void setPagata(byte[] pagata) {
+		this.pagata = pagata;
 	}
 
 	public Gift_List getGiftList() {
@@ -74,6 +64,14 @@ public class EscursionePagata implements Serializable {
 
 	public void setGiftList(Gift_List giftList) {
 		this.giftList = giftList;
+	}
+
+	public EscursioneSalvata getEscursioneSalvata() {
+		return this.escursioneSalvata;
+	}
+
+	public void setEscursioneSalvata(EscursioneSalvata escursioneSalvata) {
+		this.escursioneSalvata = escursioneSalvata;
 	}
 
 }
