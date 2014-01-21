@@ -8,6 +8,7 @@ import model.*;
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
+import javax.persistence.Cache;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -41,7 +42,6 @@ public class UserManagerBean implements UserMgr {
 	
 		em.persist(user);
 		em.persist(usergroup);
-		
 	}
 	
 
@@ -106,6 +106,7 @@ public class UserManagerBean implements UserMgr {
 
 		@SuppressWarnings("unchecked")
 		public ArrayList<UserDTO> getAllImp() {
+		em.getEntityManagerFactory().getCache().evictAll();		
 		List<Utente> myList;
 		ArrayList <UserDTO> myDTOlist = new ArrayList <UserDTO> ();
 		Query q = em.createNamedQuery("Utente.findAll", Utente.class);

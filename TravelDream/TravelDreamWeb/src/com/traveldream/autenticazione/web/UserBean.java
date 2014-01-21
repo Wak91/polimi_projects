@@ -127,9 +127,5 @@ public class UserBean {
 		return "adminlist?faces-redirect=true";		
 	}
 	
-	//TOGLIEREEEEEEE
-	public void scrivi(){
-		System.out.println("data: " +user.getData());
-	}
 
 }
