@@ -1,13 +1,19 @@
 package com.traveldream.gestionecomponente.ejb;
 
+import java.util.ArrayList;
 import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.traveldream.gestionepack.ejb.PacchettoDTO;
+
 
 public class EscursioneDTO {
 
+	private int id;
+	
 	@NotNull
 	private int costo;
 
@@ -22,6 +28,10 @@ public class EscursioneDTO {
 
 	@NotEmpty
 	private String nome;
+	
+	private ArrayList<PacchettoDTO> pacchettos;
+
+	
 
 	public int getCosto() {
 		return costo;
@@ -61,6 +71,22 @@ public class EscursioneDTO {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public ArrayList<PacchettoDTO> getPacchettos() {
+		return pacchettos;
+	}
+
+	public void setPacchettos(ArrayList<PacchettoDTO> pacchettos) {
+		this.pacchettos = pacchettos;
 	}
 	
 	

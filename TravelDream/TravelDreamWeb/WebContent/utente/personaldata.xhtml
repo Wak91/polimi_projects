@@ -2,8 +2,48 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<ui:composition template="Template.xhtml">
+	 <ui:define name="content">
+       #{userBean.getcurrentUser()}
+     <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>  
+	    <h:form>
+		<p:panel header="Dati Personali">
+			
+			<h:panelGrid columns="2" id="regGrid">
+			
+				<h:outputLabel for="username">Username</h:outputLabel>
+				<p:inputText id="username" value="#{userBean.user.username}" />
+				
+				<h:outputLabel for="password">Password</h:outputLabel>
+				<p:password id="password" value="#{userBean.user.password}" />
+				
+				<h:outputLabel for="nome"> Nome</h:outputLabel>  
+				<p:inputText id="nome" value="#{userBean.user.firstName}" />
+                      
+				<h:outputLabel for="cognome">Cognome</h:outputLabel>
+				<p:inputText id="cognome" value="#{userBean.user.lastName}" />
+				
+                  <h:outputLabel for="email">Email</h:outputLabel>
+				<p:inputText id="email" value="#{userBean.user.email}" />
+				
+				<h:outputLabel for="date">Data di nascita:</h:outputLabel>
+				<p:calendar id="date" value="#{userBean.user.data}" pattern="dd/MM/yyyy" navigator="true" display="inline"/>  
+
+				</h:panelGrid>
+				<p:commandButton value="Modifica" update="regGrid"
+				action="#{userBean.modificaUtente()}" />
+     
+		</p:panel>
+	   
+	</h:form>
+</ui:define>
 	</ui:composition>
 </html>

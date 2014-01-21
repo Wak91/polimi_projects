@@ -1,14 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition 
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"> 
+      xmlns:p="http://primefaces.org/ui"
+> 
 
-<ui:composition template="Template.xhtml">
-
-	<ui:define name="content">
-	    	    <h:form>
+	 <h:form id="my_form2" enctype="multipart/form-data">
 		<p:panel header="Volo creation">
 			<h:panelGrid columns="3" id="regGrid">
 				
@@ -33,15 +32,12 @@
 				<p:inputText id="costo" value="#{ComponentBean.volo.costo}" />
 				<p:message for="costo" />
 				
-
-                <p:commandButton value="Crea Volo" update="regGrid"
+				<p:fileUpload value="#{ComponentBean.imgVolo}" mode="simple" />
+				<br></br>
+                <h:commandButton value="Crea Volo" update="regGrid"
 				action="#{ComponentBean.createVolo()}" />
+				
         </h:panelGrid>
 		</p:panel>
-		
 	</h:form>
-	</ui:define>
-
 </ui:composition>
-
-</html>

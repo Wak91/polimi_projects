@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="Template.xhtml">
+       
+    <ui:define name="content">
+      #{ComponentBean.getHotelById(param['id'])}
+	    <h:form enctype="multipart/form-data">
+	    <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Add" url="impadd.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>   
+	    <p:tabMenu activeIndex="0">  
+    <p:menuitem value="Cerca e modifica Hotel" url="toHotel.xhtml" icon="ui-icon-star"/>  
+    <p:menuitem value="Cerca e modifica Volo" url="toVolo.xhtml" icon="ui-icon-search" />  
+    <p:menuitem value="Cerca e modifica Escursione" url="toEscursione.xhtml" icon="ui-icon-document"/>  
+    </p:tabMenu> 
+		<p:panel header="Hotel modification">
+			
+			<h:panelGrid columns="2" id="regGrid">
+			
+				<h:outputLabel for="nome">Nome Hotel:</h:outputLabel>
+				<p:inputText id="nome" value="#{ComponentBean.hotel.nome}" />
+				
+				<h:outputLabel for="luogo">Luogo Hotel:</h:outputLabel>
+				<p:inputText id="luogo" value="#{ComponentBean.hotel.luogo}" />
+				
+				<h:outputLabel for="stars"> Stars:</h:outputLabel>  
+                <p:rating id="stars" value="#{ComponentBean.hotel.stelle}" stars="5" disable="true" cancel="false" />  
+                      
+				<h:outputLabel for="costogg">Costo giornaliero per persona:</h:outputLabel>
+				<p:inputText id="costogg" value="#{ComponentBean.hotel.costo_giornaliero}" />
+				
+                  <h:outputLabel for="datei">Data Inizio</h:outputLabel>
+				<p:calendar id="datei" binding="#{dates}" required="true" value="#{ComponentBean.hotel.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
+				<p:message for="datef"/>
+				<p></p>
+
+				<h:outputLabel for="datef">Data Fine</h:outputLabel>
+				<p:calendar id="datef" required="true" value="#{ComponentBean.hotel.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline"
+								validator="#{ComponentBean.validate_Date}" >
+				<f:attribute name="dates" value="#{dates}" />
+				</p:calendar>
+				<p:message for="datef"/>
+				
+				</h:panelGrid>
+				<br></br>
+								
+			    <h:outputLabel for="img">Immagine corrente</h:outputLabel>
+				
+			   <h:graphicImage value="../images/#{ComponentBean.hotel.hotelImg}" height="100" width="100"/>   		
+			   <br></br>		
+			   <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
+				<p:fileUpload value="#{ComponentBean.imgHotel}" mode="simple" />
+				<br></br>
+                <h:commandButton value="Modifica Hotel" update="regGrid"
+				action="#{ComponentBean.modifyHotel()}" icon="ui-icon-script"/>
+		</p:panel>
+	   
+	</h:form>
+</ui:define>
+</ui:composition>

@@ -7,53 +7,55 @@ import javax.persistence.*;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
  * The persistent class for the Escursione database table.
  * 
  */
-//Entity per escursione
 @Entity
-@Table(name = "Escursione")
-@NamedQuery(name="Escursione.findAll", query="SELECT e FROM Escursione e")
+@Table(name="Escursione")
+@NamedQueries 
+             ( 
+              {
+               @NamedQuery(name="Escursione.findAll", query="SELECT e FROM Escursione e"),
+               @NamedQuery(name="Escursione.findbyId", query="SELECT e FROM Escursione e WHERE e.id = :d")
+              }
+             )
 public class Escursione implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
 	private int id;
 
-	@Column(name="Costo")
 	private int costo;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="Data")
 	private Date data;
 
-	@Column(name="Immagine")
 	private String immagine;
 
-	@Column(name="Luogo")
 	private String luogo;
 
-	@Column(name="Nome")
 	private String nome;
 
-	public Escursione() {
-		super();
-	}
-	
-	public Escursione(EscursioneDTO escursionedto)
-	{
-		this.costo = escursionedto.getCosto();
-		this.data = escursionedto.getData();
-		this.immagine = ""; // da sistemare 
-		this.luogo = escursionedto.getLuogo();
-		this.nome = escursionedto.getNome();
-		
-	}
+	@ManyToMany(mappedBy="escursiones")
+	private List<Pacchetto> pacchettos;
 
+	public Escursione() {
+	    super();
+	  }
+	  
+	  public Escursione(EscursioneDTO escursionedto)
+	  {
+	    this.costo = escursionedto.getCosto();
+	    this.data = escursionedto.getData();
+	    this.immagine = escursionedto.getImmagine(); // da sistemare 
+	    this.luogo = escursionedto.getLuogo();
+	    this.nome = escursionedto.getNome();
+	    
+	  }
 	public int getId() {
 		return this.id;
 	}
@@ -100,6 +102,14 @@ public class Escursione implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public List<Pacchetto> getPacchettos() {
+		return pacchettos;
+	}
+
+	public void setPacchettos(List<Pacchetto> pacchettos) {
+		this.pacchettos = pacchettos;
 	}
 
 }

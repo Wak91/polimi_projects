@@ -1,12 +1,19 @@
 package com.traveldream.gestionecomponente.ejb;
 
+import java.util.ArrayList;
 import java.util.Date;
+
 import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.traveldream.gestionepack.ejb.PacchettoDTO;
 
 
 public class VoloDTO {
 
+	private int id;
+	
 	@NotEmpty
 	private String compagnia;
 
@@ -24,6 +31,8 @@ public class VoloDTO {
 
 	@NotEmpty
 	private String luogo_partenza;
+	
+	private ArrayList<PacchettoDTO> pacchettos;
 
 	public String getCompagnia() {
 		return compagnia;
@@ -72,7 +81,22 @@ public class VoloDTO {
 	public void setLuogo_partenza(String luogo_partenza) {
 		this.luogo_partenza = luogo_partenza;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	
+	public ArrayList<PacchettoDTO> getPacchettos() {
+		return pacchettos;
+	}
+
+	public void setPacchettos(ArrayList<PacchettoDTO> pacchettos) {
+		this.pacchettos = pacchettos;
+	}
 	
 	
 }

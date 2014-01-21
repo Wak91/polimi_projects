@@ -7,34 +7,33 @@ import javax.persistence.*;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
  * The persistent class for the Volo database table.
  * 
  */
-//Entity per volo
 @Entity
 @Table(name="Volo")
-@NamedQuery(name="Volo.findAll", query="SELECT v FROM Volo v")
+@NamedQueries ( {
+                @NamedQuery(name="Volo.findAll", query="SELECT v FROM Volo v"),
+                @NamedQuery(name="Volo.findbyId", query="SELECT v FROM Volo v WHERE v.id= :d")
+                }
+              )
 public class Volo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
 	private int id;
 
-	@Column(name="Compagnia")
 	private String compagnia;
 
-	@Column(name="Costo")
 	private int costo;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="Data")
 	private Date data;
 
-	@Column(name="Immagine")
 	private String immagine;
 
 	@Column(name="`Luogo arrivo`")
@@ -43,20 +42,23 @@ public class Volo implements Serializable {
 	@Column(name="`Luogo partenza`")
 	private String luogo_partenza;
 
-	public Volo() {
-		super();
-	}
-	
-	public Volo(VoloDTO volodto)
-	{
-     this.compagnia = volodto.getCompagnia();
-     this.costo = volodto.getCosto();
-     this.data = volodto.getData();
-     this.luogo_arrivo = volodto.getLuogo_arrivo();
-     this.luogo_partenza = volodto.getLuogo_partenza();
-     this.immagine = ""; // da sistemare 
-	}
+	//bi-directional many-to-many association to Pacchetto
+	@ManyToMany(mappedBy="volos")
+	private List<Pacchetto> pacchettos;
 
+	public Volo() {
+	    super();
+	  }
+	  
+	  public Volo(VoloDTO volodto)
+	  {
+	     this.compagnia = volodto.getCompagnia();
+	     this.costo = volodto.getCosto();
+	     this.data = volodto.getData();
+	     this.luogo_arrivo = volodto.getLuogo_arrivo();
+	     this.luogo_partenza = volodto.getLuogo_partenza();
+	     this.immagine = volodto.getImmagine();
+	  }
 	public int getId() {
 		return this.id;
 	}
@@ -111,6 +113,14 @@ public class Volo implements Serializable {
 
 	public void setLuogo_partenza(String luogo_partenza) {
 		this.luogo_partenza = luogo_partenza;
+	}
+
+	public List<Pacchetto> getPacchettos() {
+		return this.pacchettos;
+	}
+
+	public void setPacchettos(List<Pacchetto> pacchettos) {
+		this.pacchettos = pacchettos;
 	}
 
 }

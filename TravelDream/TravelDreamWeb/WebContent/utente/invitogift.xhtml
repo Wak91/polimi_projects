@@ -1,9 +1,62 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-
-	<ui:composition template="">
-	</ui:composition>
-</html>
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="Template.xhtml">
+      
+       <ui:define name="content">
+			<h:form id="form">  
+  
+    <p:growl id="msgs" />  
+  
+    <p:panel header="Aggiungi un nuovo amico">  
+        <h:panelGrid columns="2" id="grid">  
+            <h:outputLabel value="Email " for="email"></h:outputLabel>  
+            <p:inputText id="email"   
+                            value="#{GiftListBean.amico}" />  
+              
+             
+              
+            <p:commandButton id="btn_add" value="Aggiungi Amico" update="emails msgs @parent"  
+                            action="#{GiftListBean.reinit}" >  
+                <p:collector value="#{GiftListBean.amico}"   
+                            addTo="#{GiftListBean.giftListDTO.amico}" />  
+            </p:commandButton>  
+        </h:panelGrid>  
+    </p:panel>  
+      
+    <p:outputPanel id="emails">  
+        <p:dataTable id="emailsTable" value="#{GiftListBean.giftListDTO.amico}" var="amico">  
+  
+            <p:column>  
+                <f:facet name="header">  
+                    <h:outputText value="Title" />  
+                </f:facet>  
+                <h:outputText value="#{amico}" />  
+            </p:column>  
+  
+            
+  
+            <p:column>  
+                <f:facet name="header">  
+                    <h:outputText value="Operation" />  
+                </f:facet>  
+                <p:commandLink value="Remove" update=":form:emails" process=":form:emails">  
+                    <p:collector value="#{amico}"  
+                                 removeFrom="#{GiftListBean.giftListDTO.amico}" />  
+                </p:commandLink>  
+            </p:column>  
+  
+        </p:dataTable>  
+    </p:outputPanel>  
+              <p:commandButton value="Create Gift List" action="#{GiftListBean.submit()}"/>  
+              
+  
+</h:form> 
+       
+       </ui:define>
+      
+</ui:composition>

@@ -2,12 +2,77 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
 
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
-	    MODIFICA E RICERCA PACCHETTI
+	
+	 <p:tabMenu activeIndex="2">  
+     <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Add" url="impadd.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>
+	    #{PacketBean.initBean()}
+	    <h:form>
+     	<p:dataTable id="PackList" var="pack" value="#{PacketBean.packModels}" paginator="true" rows="5"  
+                      selectionMode="single">
+  
+                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{pack.nome}">  
+                 <h:outputText value="#{pack.nome}" />  
+                </p:column>  
+  
+                <p:column headerText="Luogo" style="width:25%" sortBy="luogo" filterBy="#{pack.destinazione}">  
+                <h:outputText value="#{pack.destinazione}" />  
+                </p:column>  
+                
+                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{pack.data_inizio}">  
+                 <h:outputText value="#{pack.data_inizio}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+                  
+                </p:column>  
+                
+                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{pack.data_fine}">  
+                 <h:outputText value="#{pack.data_fine}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				</p:column> 
+				
+				<p:column headerText="ListaVoli" style="width:25%" sortBy="luogo" >  
+                <p:commandButton id="basic" value="show voli" onclick="PF('dlg').show();" type="button" />  
+                
+                <p:dialog id="dialog" header="Dynamic Dialog" widgetVar="dlg" dynamic="true" resizable="false">  
+                
+                </p:dialog>  
+                
+                </p:column>  
+                
+                 <p:column headerText="ListaEscursioni" style="width:25%" sortBy="luogo" >  
+                
+                </p:column>  
+                
+                <p:column headerText="ListaHotel" style="width:25%" sortBy="luogo">  
+                
+                </p:column>  
+  
+                 <p:column headerText="Modifica" style="width:24%" >  
+                <h:link outcome = "modifypacket?id=#{pack.id}"  value="Modifica"/>
+				</p:column> 
+				
+               <p:column headerText="Elimina" style="width:24%" >
+               <p:commandLink action="#{PacketBean.deletePacchetto(pack.id)}" value="Elimina" ajax="false" immediate="true" process="@this"/>                 
+                          
+
+				</p:column> 
+				
+        
+      
+
+   </p:dataTable>
+     </h:form>         
 	</ui:define>
 
 </ui:composition>

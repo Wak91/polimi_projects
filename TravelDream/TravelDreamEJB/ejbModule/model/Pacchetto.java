@@ -1,8 +1,12 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -11,12 +15,16 @@ import java.util.Date;
  */
 @Entity
 @Table(name="Pacchetto")
-@NamedQuery(name="Pacchetto.findAll", query="SELECT p FROM Pacchetto p")
+@NamedQueries ( 
+		     {
+@NamedQuery(name="Pacchetto.findAll", query="SELECT p FROM Pacchetto p"),
+		     }
+              )
 public class Pacchetto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
-	@Column(name="ID")
 	private int id;
 
 	@Temporal(TemporalType.DATE)
@@ -27,16 +35,59 @@ public class Pacchetto implements Serializable {
 	@Column(name="`Data inizio`")
 	private Date data_inizio;
 
-	@Column(name="Destinazione")
 	private String destinazione;
 
-	@Column(name="Immagine")
 	private String immagine;
 
-	@Column(name="Nome")
 	private String nome;
 
+	//bi-directional many-to-many association to Escursione
+	@ManyToMany(cascade = {CascadeType.PERSIST,
+            CascadeType.MERGE})
+	@JoinTable(
+		name="EscursionePacchetto"
+		, joinColumns={
+			@JoinColumn(name="Pacchetto_ID")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="Escursione_ID")
+			}
+		)
+	private List<Escursione> escursiones;
+
+
+	//bi-directional many-to-many association to Hotel
+	@ManyToMany(cascade = {CascadeType.PERSIST,
+            CascadeType.MERGE})
+	@JoinTable(
+		name="HotelPacchetto"
+		, joinColumns={
+			@JoinColumn(name="Pacchetto_ID")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="Hotel_ID")
+			}
+		)
+	private List<Hotel> hotels;
+
+	//bi-directional many-to-many association to Volo
+	@ManyToMany(cascade = {CascadeType.PERSIST,
+            CascadeType.MERGE})
+	@JoinTable(
+		name="VoloPacchetto"
+		, joinColumns={
+			@JoinColumn(name="Pacchetto_ID")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="Voli_ID")
+			}
+		)
+	private List<Volo> volos;
+
 	public Pacchetto() {
+		hotels = new ArrayList<Hotel>();
+		volos = new ArrayList<Volo>();
+		escursiones = new ArrayList<Escursione>();
 	}
 
 	public int getId() {
@@ -85,6 +136,31 @@ public class Pacchetto implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+
+	public List<Escursione> getEscursiones() {
+		return escursiones;
+	}
+
+	public void setEscursiones(List<Escursione> escursiones) {
+		this.escursiones = escursiones;
+	}
+
+	public List<Hotel> getHotels() {
+		return this.hotels;
+	}
+
+	public void setHotels(List<Hotel> hotels) {
+		this.hotels = hotels;
+	}
+
+	public List<Volo> getVolos() {
+		return this.volos;
+	}
+
+	public void setVolos(List<Volo> volos) {
+		this.volos = volos;
 	}
 
 }

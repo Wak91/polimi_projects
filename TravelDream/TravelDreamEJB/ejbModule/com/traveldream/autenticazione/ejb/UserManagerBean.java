@@ -15,7 +15,7 @@ import javax.persistence.Query;
 
 import com.sun.tools.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 /*
- * Questo è il bean che gestisce
+ * Questo il bean che gestisce
  * gli utenti 
  * */
 @Stateless
@@ -44,6 +44,9 @@ public class UserManagerBean implements UserMgr {
 		
 	}
 	
+
+
+
 
 	@Override
 	public UserDTO getUserDTO() {
@@ -87,7 +90,7 @@ public class UserManagerBean implements UserMgr {
 		return false;
 	}
 
-
+	
 
 	@Override
 	public void saveImpiegato(UserDTO userdto) {

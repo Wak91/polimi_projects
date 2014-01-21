@@ -7,6 +7,7 @@ import javax.persistence.*;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -15,14 +16,16 @@ import java.util.Date;
  */
 @Entity
 @Table(name="Hotel")
-@NamedQueries({
-	@NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h")
-
-})public class Hotel implements Serializable {
+@NamedQueries ( 
+		       {
+		    	@NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h"),
+                @NamedQuery(name="Hotel.findbyId", query="SELECT h FROM Hotel h WHERE h.id = :d")
+		       }
+		      )
+public class Hotel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
 	private int id;
 
 	@Column(name="`Costo giornaliero`")
@@ -36,34 +39,32 @@ import java.util.Date;
 	@Column(name="`Data inizio`")
 	private Date data_inizio;
 
-	@Column(name="Immagine")
 	private String immagine;
 
-	@Column(name="Luogo")
 	private String luogo;
 
-	@Column(name="Nome")
 	private String nome;
 
-	@Column(name="Stelle")
 	private int stelle;
 
+	//bi-directional many-to-many association to Pacchetto
+	@ManyToMany(mappedBy="hotels")
+	private List<Pacchetto> pacchettos;
 
 	public Hotel() {
-		super();
-	}
+	    super();
+	  }
 
-	public Hotel(HotelDTO hoteldto)
-	{
-		 this.nome = hoteldto.getNome();
+  public Hotel(HotelDTO hoteldto) 
+  {
+     this.nome = hoteldto.getNome();
          this.luogo = hoteldto.getLuogo();
          this.costo_giornaliero = hoteldto.getCosto_giornaliero();
          this.data_inizio = hoteldto.getData_inizio();
          this.data_fine = hoteldto.getData_fine();
-         this.immagine = ""; // da sistemare
+		 this.immagine = hoteldto.getHotelImg();
          this.stelle = hoteldto.getStelle();
-	}
-
+  }
 	public int getId() {
 		return this.id;
 	}
@@ -126,6 +127,14 @@ import java.util.Date;
 
 	public void setStelle(int stelle) {
 		this.stelle = stelle;
+	}
+
+	public List<Pacchetto> getPacchettos() {
+		return this.pacchettos;
+	}
+
+	public void setPacchettos(List<Pacchetto> pacchettos) {
+		this.pacchettos = pacchettos;
 	}
 
 }

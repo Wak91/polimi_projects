@@ -15,8 +15,10 @@ public interface UserMgr {
 	public void saveImpiegato(UserDTO user);
 	
 	public void modifyUser(UserDTO user);
+
 		
-	public void unregister(UserDTO user);
+	public void unregister(UserDTO user);	
+
 	
 	public UserDTO getUserDTO();
 	

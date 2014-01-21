@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="Template.xhtml">
+       
+       <ui:define name="content">
+       #{ComponentBean.getEscursioneById(param['id'])}
+	    <h:form enctype="multipart/form-data">
+	    <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Add" url="impadd.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>   
+	    <p:tabMenu activeIndex="2">  
+    <p:menuitem value="Cerca e modifica Hotel" url="toHotel.xhtml" icon="ui-icon-star"/>  
+    <p:menuitem value="Cerca e modifica Volo" url="toVolo.xhtml" icon="ui-icon-search" />  
+    <p:menuitem value="Cerca e modifica Escursione" url="toEscursione.xhtml" icon="ui-icon-document"/>  
+    </p:tabMenu> 
+		<p:panel header="Escursione modification">
+			
+			<h:panelGrid columns="2" id="regGrid">
+			
+				<h:outputLabel for="nome">Nome escursione:</h:outputLabel>
+				<p:inputText id="nome" value="#{ComponentBean.escursione.nome}" />
+				
+				<h:outputLabel for="luogo">Luogo:</h:outputLabel>
+				<p:inputText id="luogo" value="#{ComponentBean.escursione.luogo}" />
+				
+				<h:outputLabel for="costo">Costo per persona:</h:outputLabel>
+				<p:inputText id="costo" value="#{ComponentBean.escursione.costo}" />
+				
+                <h:outputLabel for="datei">Data partenza</h:outputLabel>
+				<p:calendar id="datei" required="true" value="#{ComponentBean.escursione.data}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
+				
+				
+			   <h:graphicImage value="../images/#{ComponentBean.escursione.immagine}"/>   		
+			   <br></br>		
+			   <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
+				<p:fileUpload value="#{ComponentBean.imgEscursione}" mode="simple" />
+				
+				</h:panelGrid>
+				 
+                <h:commandButton value="Modifica Escursione" update="regGrid"
+				action="#{ComponentBean.modificaEscursione()}" icon="ui-icon-script"/>
+     
+		</p:panel>
+	   
+	</h:form>
+</ui:define>
+</ui:composition>

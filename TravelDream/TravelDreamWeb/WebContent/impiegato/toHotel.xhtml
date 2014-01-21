@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html
+      
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+      <ui:composition template="Template.xhtml">
+      <ui:define name="content">
+         #{ComponentBean.initBean()} 
+	    <h:form id="myform">
+	 <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Add" url="impadd.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>       
+	<p:tabMenu activeIndex="0">  
+    <p:menuitem value="Cerca e modifica Hotel" url="toHotel.xhtml" icon="ui-icon-search"/>  
+    <p:menuitem value="Cerca e modifica Volo" url="toVolo.xhtml" icon="ui-icon-search" />  
+    <p:menuitem value="Cerca e modifica Escursione" url="toEscursione.xhtml" icon="ui-icon-search"/>  
+    </p:tabMenu>  
+		<p:dataTable id="multiHotels" var="hotel" value="#{ComponentBean.hotelModels}" paginator="true" rows="5"  
+                     filteredValue="#{ComponentBean.filteredHotels}" selectionMode="single">  
+                        
+                <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
+                  <h:outputText value="#{hotel.nome}" />  
+                </p:column>  
+  
+                <p:column headerText="Luogo" style="width:25%" sortBy="luogo" filterBy="#{hotel.luogo}">  
+                <h:outputText value="#{hotel.luogo}" />  
+                </p:column>  
+  
+                <p:column headerText="Stelle" style="width:24%" sortBy="stelle" filterBy="#{hotel.stelle}">  
+                <h:outputText value="#{hotel.stelle}" />    
+                </p:column>  
+  
+                <p:column headerText="Prezzo a persona" style="width:24%" sortBy="costo_giornaliero" filterBy="#{hotel.costo_giornaliero}" >  
+                <h:outputText value="#{hotel.costo_giornaliero}" />    
+                </p:column>  
+                
+                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}">  
+                 <h:outputText value="#{hotel.data_inizio}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+                  
+                </p:column>  
+                
+                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}">  
+                 <h:outputText value="#{hotel.data_fine}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				</p:column>  
+                
+              
+                <p:column headerText="Modifica" style="width:24%" >  
+                <h:link outcome = "modifyHotel?id=#{hotel.id}"  value="Modifica"/>
+				</p:column> 
+              
+               <p:column headerText="Elimina" style="width:24%" >  
+                <p:commandLink action= "#{ComponentBean.deleteHotel(hotel.id)}" value="Elimina" />
+				</p:column> 
+              
+              
+				
+              </p:dataTable>
+              
+         <p:column headerText="img" style="width:24%" >  
+              <h:graphicImage url="#{hotel.hotelImg}" width="200" height="171" />				
+              </p:column> 
+                       
+                      
+	</h:form>
+	</ui:define>
+</ui:composition>
+</html>
