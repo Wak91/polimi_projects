@@ -10,13 +10,14 @@
        <ui:define name="content">
 			<h:form id="form">  
   
-    <p:growl id="msgs" />  
+    <p:growl id="msgs" value="Inserisci valida email"/>  
   
     <p:panel header="Aggiungi un nuovo amico">  
         <h:panelGrid columns="2" id="grid">  
-            <h:outputLabel value="Email " for="email"></h:outputLabel>  
-            <p:inputText id="email"   
-                            value="#{GiftListBean.amico}" />  
+            <h:outputLabel value="Email Amico a" for="email"></h:outputLabel>  
+            <p:inputText id="email"   value="#{GiftListBean.amico}" >  
+               <f:validateRegex pattern="(^$|^.*@.*\..*$)" />
+            </p:inputText>
               
              
               
@@ -52,7 +53,7 @@
   
         </p:dataTable>  
     </p:outputPanel>  
-              <p:commandButton value="Create Gift List" action="#{GiftListBean.submit()}"/>  
+              <p:commandButton value="Create Gift List" action="#{GiftListBean.submit()}" update="emails msgs @parent" />  
               
   
 </h:form> 

@@ -5,7 +5,10 @@ import javax.ejb.Stateless;
 @Stateless
 public class GiftListManagerBean implements GiftListManagerBeanLocal {
 	
-	public void addToGiftList(){}
+	public void addToGiftList(GiftListDTO giftListDTO){
+		
+		
+	}
 	
 	
 
