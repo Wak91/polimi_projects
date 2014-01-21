@@ -20,7 +20,7 @@ public class EscursionePagata implements Serializable {
 	@Column(name="`Gift List_ID`")
 	private int gift_List_ID;
 
-	private byte[] pagata;
+	private byte pagata;
 
 	//bi-directional many-to-one association to Gift_List
 	@ManyToOne
@@ -50,11 +50,11 @@ public class EscursionePagata implements Serializable {
 		this.gift_List_ID = gift_List_ID;
 	}
 
-	public byte[] getPagata() {
+	public byte getPagata() {
 		return this.pagata;
 	}
 
-	public void setPagata(byte[] pagata) {
+	public void setPagata(byte pagata) {
 		this.pagata = pagata;
 	}
 

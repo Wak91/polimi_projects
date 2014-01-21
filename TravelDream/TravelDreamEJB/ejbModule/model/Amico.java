@@ -19,8 +19,11 @@ public class Amico implements Serializable {
 	private String amico;
 
 	public Amico() {
+	super();}
+	
+	public Amico(String mail) {
+		amico=mail;
 	}
-
 	public int getId() {
 		return this.id;
 	}
