@@ -257,6 +257,8 @@ public class ViaggioBean {
 			 for(EscursioneDTO edto: selectedEsc)
 				    edto.setViaggio(viaggio);
 			 
+			 BMB
+			 
 	         viaggio.setLista_escursioni(selectedEsc);
 	       }
 		
