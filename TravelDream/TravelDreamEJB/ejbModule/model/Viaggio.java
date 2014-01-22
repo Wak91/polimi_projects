@@ -30,9 +30,18 @@ public class Viaggio implements Serializable {
 	@Column(name="`Data inizio`")
 	private Date data_inizio;
 
-	//bi-directional many-to-one association to EscursioneSalvata
-	@OneToMany(mappedBy="viaggio")
-	private List<EscursioneSalvata> escursioneSalvatas;
+	//bi-directional many-to-many association to EscursioneSalvata
+		@ManyToMany()
+		@JoinTable(
+			name="EscursioneSalvataViaggio"
+			, joinColumns={
+				@JoinColumn(name="Viaggio_ID")
+				}
+			, inverseJoinColumns={
+				@JoinColumn(name="EscursioneSalvata_ID")
+				}
+			)
+		private List<EscursioneSalvata> escursioneSalvatas;
 
 	//bi-directional many-to-one association to HotelSalvato
 	@ManyToOne
@@ -83,19 +92,6 @@ public class Viaggio implements Serializable {
 		this.escursioneSalvatas = escursioneSalvatas;
 	}
 
-	public EscursioneSalvata addEscursioneSalvata(EscursioneSalvata escursioneSalvata) {
-		getEscursioneSalvatas().add(escursioneSalvata);
-		escursioneSalvata.setViaggio(this);
-
-		return escursioneSalvata;
-	}
-
-	public EscursioneSalvata removeEscursioneSalvata(EscursioneSalvata escursioneSalvata) {
-		getEscursioneSalvatas().remove(escursioneSalvata);
-		escursioneSalvata.setViaggio(null);
-
-		return escursioneSalvata;
-	}
 
 	public HotelSalvato getHotelSalvato() {
 		return this.hotelSalvato;
