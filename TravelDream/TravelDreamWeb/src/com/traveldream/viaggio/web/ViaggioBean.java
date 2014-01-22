@@ -224,7 +224,7 @@ public class ViaggioBean {
 		invito.setViaggio(viaggio);
 		invito.setUtente(UMG.getUserDTO());
 		invito.setId(2);
-		FacesUtil.setSessionMapValue("SharedDTO", invito);	
+		FacesUtil.setSessionMapValue("InvDTO", invito);	
 		
 		//creazione entita invito
 		
