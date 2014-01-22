@@ -233,29 +233,25 @@ public class ViaggioBean {
 	
 	public String creaPrenotazione()
 	{
-        int id = BMB.cercaViaggio(viaggio); // cerco se qualcuno ha gi�� creato un viaggio del genere per non mettere doppioni nel db
 		
-		if(id == -1) // se non era presente il viaggio che stavo creando allora lo salvo
-	       { 
-			 // salvo le copie degli elementi selezionati per la creazione del viaggio
-			int id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
-			int id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
-			int id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
+		// salvo le copie degli elementi selezionati per la creazione del viaggio
+		int id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
+		int id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
+		int id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
 
 			
-			 selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perch�� gli altri campi sono gi�� a posto
-			 selectedVolo_a.setId(id_vsa);
-			 selectedVolo_r.setId(id_vsr);
+	    selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono gi�� a posto
+	    selectedVolo_a.setId(id_vsa);
+	    selectedVolo_r.setId(id_vsr);
 			
-	         viaggio.setHotel(selectedHotels);
-	         viaggio.setVolo_andata(selectedVolo_a);
-	         viaggio.setVolo_ritorno(selectedVolo_r);	         
-			 id= BMB.saveViaggio(viaggio);
-			 viaggio.setId(id);
+	    viaggio.setHotel(selectedHotels);
+	    viaggio.setVolo_andata(selectedVolo_a);
+	    viaggio.setVolo_ritorno(selectedVolo_r);	         
+	    int id= BMB.saveViaggio(viaggio);
+	    viaggio.setId(id);
 			
-	         viaggio.setLista_escursioni(selectedEsc);
-	       }
-		
+	    viaggio.setLista_escursioni(selectedEsc);
+	       
 		prenotazione.setViaggio(viaggio);
 		prenotazione.setNumero_persone(n_partecipanti);
 		prenotazione.setUtente(userMgr.getUserDTO());

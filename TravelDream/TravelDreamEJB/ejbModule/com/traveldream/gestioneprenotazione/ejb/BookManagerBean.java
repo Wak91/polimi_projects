@@ -52,14 +52,17 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
         em.persist(travel);	
         em.flush();
+        
         travel2 = em.find(Viaggio.class, travel.getId());
+        
         for(EscursioneSalvata es: (this.DTOtoEntityEscursione(v.getLista_escursioni())))
-		    es.setViaggio(travel2);	
-	    for(EscursioneSalvata es: (this.DTOtoEntityEscursione(v.getLista_escursioni())))
-	    	{
+		    {
+        	es.setViaggio(travel2);
 	    	em.persist(es);
-	    	travel.getEscursioneSalvatas().add(em.find(EscursioneSalvata.class, es.getId()));
-	    	};     
+	    	em.flush();
+	    	travel2.getEscursioneSalvatas().add(em.find(EscursioneSalvata.class, es.getId()));
+		    }
+        
 			em.merge(travel2);
 		
 			return  em.find(Viaggio.class, travel.getId()).getId();
@@ -102,9 +105,14 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	 
 	 private List<EscursioneSalvata> DTOtoEntityEscursione(List<EscursioneDTO> escursioneDTOs){
          ArrayList<EscursioneSalvata> listaEscursioni = new ArrayList<EscursioneSalvata>();
+         EscursioneSalvata es = new EscursioneSalvata();
          for (EscursioneDTO escursioneDTO :escursioneDTOs){
-                 EscursioneSalvata nuovaesc = em.find(EscursioneSalvata.class, escursioneDTO.getId());
-                 listaEscursioni.add(nuovaesc);
+        	      es.setCosto(escursioneDTO.getCosto());
+        	      es.setData(escursioneDTO.getData());
+        	      es.setImmagine(escursioneDTO.getImmagine());
+        	      es.setLuogo(escursioneDTO.getLuogo());
+        	      es.setNome(escursioneDTO.getNome());
+                  listaEscursioni.add(es);
          }
          return listaEscursioni;
  }

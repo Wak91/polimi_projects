@@ -21,7 +21,7 @@ public class HotelDataModel extends ListDataModel <HotelDTO> implements Selectab
 		
 		List<HotelDTO> hdto = (List<HotelDTO>) getWrappedData();  
         for(HotelDTO h : hdto) {  
-            if(h.getNome().equals(arg0))  
+            if((h.getId()+"").equals(arg0))  
                 return h;  
         }  
           
@@ -29,8 +29,8 @@ public class HotelDataModel extends ListDataModel <HotelDTO> implements Selectab
 	}
 
 	@Override
-	public String getRowKey(HotelDTO arg0) {
-		return arg0.getNome();
+	public Object getRowKey(HotelDTO arg0) {
+		return arg0.getId();
 	}
 	
 }
