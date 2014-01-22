@@ -232,6 +232,7 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 		List <Prenotazione> myList = em.createNamedQuery("Prenotazione.findAll", Prenotazione.class).getResultList();
 		PrenotazioneDTO p1 = new PrenotazioneDTO();
 		ArrayList <PrenotazioneDTO> myDTOList = new ArrayList <PrenotazioneDTO>();
+		
 		for(Prenotazione p : myList )
 		   {
 			if(p.getUtenteBean().getUsername().equals(udto.getUsername()))
