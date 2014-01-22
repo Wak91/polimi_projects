@@ -123,7 +123,7 @@ public int cercaHotelSalvato(HotelDTO hdto)
 		     && hs.getData_fine().equals(hdto.getData_fine())
 			 && (hs.getData_inizio().equals(hdto.getData_inizio())) 
 			 && (hs.getLuogo().equals(hdto.getLuogo()))	
-			 &&  (hs.getNome().equals(hdto.getNome())) 
+			 && (hs.getNome().equals(hdto.getNome()))
 			 && (hs.getStelle() == hdto.getStelle()))
 		    {
 			 return hs.getId();
@@ -136,17 +136,47 @@ public int cercaHotelSalvato(HotelDTO hdto)
 
 @Override
 public int cercaVoloSalvato(VoloDTO vdto) {
-	// TODO Auto-generated method stub
-	return 0;
+	
+	List<VoloSalvato> myList;
+	myList = em.createNamedQuery("VoloSalvato.findAll", VoloSalvato.class).getResultList();
+	
+	for(VoloSalvato vs : myList)
+	   {
+		if( (   vs.getCosto() == vdto.getCosto() ) 
+		     && vs.getData().equals(vdto.getData())
+			 && (vs.getLuogo_arrivo().equals(vdto.getLuogo_arrivo()))	
+			 &&  (vs.getLuogo_partenza().equals(vdto.getLuogo_partenza())) 
+			 && (vs.getCompagnia() == vdto.getCompagnia()))  
+		    {
+			 return vs.getId();
+		    }
+	   }
+	return -1;
+	
 }
 
 @Override
 public int cercaEscursioneSalvata(EscursioneDTO edto) {
-	// TODO Auto-generated method stub
-	return 0;
+	
+	List<EscursioneSalvata> myList;
+	myList = em.createNamedQuery("EscursioneSalvata.findAll", EscursioneSalvata.class).getResultList();
+	
+	for(EscursioneSalvata es : myList)
+	   {
+		if( (   es.getCosto() == edto.getCosto() ) 
+		     && es.getData().equals(edto.getData())
+			 &&  (es.getLuogo().equals(edto.getLuogo())) 
+			 && (es.getNome() == edto.getNome()))  
+		    {
+			 return es.getId();
+		    }
+	   }
+	return -1;
+	
 }
 
-	  
+//Forse meglio many to many, dovrei aggiungere ad un escursione esistente la nuova key del viaggio
+// ma le escurisioni hanno un solo attribut key viaggio! 
  public int cercaViaggio(ViaggioDTO viaggiodto)
  {
 		List <Viaggio> mylist;
@@ -159,7 +189,7 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 				v.getData_inizio().equals(viaggiodto.getData_inizio()) &&
 				v.getVoloSalvato1().getId() == viaggiodto.getVolo_andata().getId() &&
 				v.getVoloSalvato2().getId() == viaggiodto.getVolo_ritorno().getId() &&
-				sameEscursioni(v,viaggiodto) == 1 )
+				sameEscursioni(v,viaggiodto) == 1 ) 
 			    {
 				  return v.getId();
 			    }
@@ -197,5 +227,23 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 		return em.find(EscursioneSalvata.class, escursione.getId()).getId();
 	}
 
+	public ArrayList <PrenotazioneDTO> cercaPrenotazione(UserDTO udto)
+	{
+		List <Prenotazione> myList = em.createNamedQuery("Prenotazione.findAll", Prenotazione.class).getResultList();
+		PrenotazioneDTO p1 = new PrenotazioneDTO();
+		ArrayList <PrenotazioneDTO> myDTOList = new ArrayList <PrenotazioneDTO>();
+		for(Prenotazione p : myList )
+		   {
+			if(p.getUtenteBean().getUsername().equals(udto.getUsername()))
+			  {
+				p1.setCosto(p.getCosto());
+				p1.setId(p.getId());
+				p1.setNumero_persone(p.getNumero_persone());
+				myDTOList.add(p1);
+			  }
+		   }
+		return myDTOList;
+		
+	}
 	
 }

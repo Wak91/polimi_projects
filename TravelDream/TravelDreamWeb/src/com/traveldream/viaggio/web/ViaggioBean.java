@@ -7,6 +7,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.GiftListDTO;
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
@@ -53,8 +54,10 @@ public class ViaggioBean {
     private VoloDataModel  voloModels_a;
     private VoloDataModel  voloModels_r;
     private EscDataModel escModels;
+    private PreDataModel premodels;
     
-    private ArrayList<HotelDTO> filteredHotels;
+ 
+	private ArrayList<HotelDTO> filteredHotels;
 	private ArrayList<EscursioneDTO> filteredEscursiones;
 	private ArrayList<VoloDTO> filteredVolos;
     
@@ -62,9 +65,6 @@ public class ViaggioBean {
 
     private ViaggioDTO viaggio;
     private PrenotazioneDTO prenotazione;
-    
-    private Date data_inizio;
-    private Date data_fine;
     
     private int n_partecipanti;
     private int quotacomplessiva;
@@ -111,8 +111,14 @@ public class ViaggioBean {
 		 setHotelModels(new HotelDataModel(packet.getLista_hotel()));	
 		 setVoloModels_a(new VoloDataModel(packet.getLista_voli_andata()));
 		 setVoloModels_r(new VoloDataModel(packet.getLista_voli_ritorno()));
-		 setEscModels(new EscDataModel(packet.getLista_escursioni()));
-		
+		 setEscModels(new EscDataModel(packet.getLista_escursioni()));		
+	}
+	
+	//Riempie la struttura premodels per permettere di visualizzare nella view tutte le prenotazioni di un utente
+	public void getPrenotazioni()
+	{
+		UserDTO current_user = userMgr.getUserDTO();
+		setPremodels(new PreDataModel(BMB.cercaPrenotazione(current_user)));
 	}
 	
 	public VoloDTO getSelectedVolo_a() {
@@ -188,6 +194,16 @@ public class ViaggioBean {
 		this.voloModels_r = voloModels_r;
 	}
 	
+	
+    public PreDataModel getPremodels() {
+			return premodels;
+		}
+
+    public void setPremodels(PreDataModel premodels) {
+			this.premodels = premodels;
+		}
+
+		
 	public String acquista_paga()
 	{
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null)
@@ -195,8 +211,6 @@ public class ViaggioBean {
 			return "userhome.xhtml?faces-redirect=true";
 		  }
 		
-		viaggio.setData_inizio(this.data_inizio);   //creo il viaggio temporaneo per controllare se esiste gi��
-		viaggio.setData_fine(this.data_fine);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
@@ -228,7 +242,6 @@ public class ViaggioBean {
 	public void updatePrice()
 	{
 		this.setQuotacomplessiva(this.getN_partecipanti() * this.getQuotapp());
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXquotacomplessiva" + this.getQuotacomplessiva());
 	}
 	
 	public String creaPrenotazione()
@@ -252,13 +265,16 @@ public class ViaggioBean {
 		  }
 
 			
-	    selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono gi�� a posto
+	    selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono gia' a posto
 	    selectedVolo_a.setId(id_vsa);
 	    selectedVolo_r.setId(id_vsr);
 			
-	    viaggio.setHotel(selectedHotels);
+	    viaggio.setHotel(selectedHotels); // ora selectedHotels ecc.. si riferiscono a entity delle tabelle XSalvato
 	    viaggio.setVolo_andata(selectedVolo_a);
-	    viaggio.setVolo_ritorno(selectedVolo_r);	         
+	    viaggio.setVolo_ritorno(selectedVolo_r);
+	    
+	    BMB.cercaViaggio(viaggio); // vado alla ricerca di possibili duplicati del viaggio appena creato
+	    
 	    int id= BMB.saveViaggio(viaggio);
 	    viaggio.setId(id);
 			
@@ -336,21 +352,6 @@ public class ViaggioBean {
 		this.n_partecipanti = n_partecipanti;
 	}
 
-	public Date getData_inizio() {
-		return data_inizio;
-	}
-
-	public void setData_inizio(Date data_inizio) {
-		this.data_inizio = data_inizio;
-	}
-
-	public Date getData_fine() {
-		return data_fine;
-	}
-
-	public void setData_fine(Date data_fine) {
-		this.data_fine = data_fine;
-	}
 
 	public int getQuotacomplessiva() {
 		return quotacomplessiva;

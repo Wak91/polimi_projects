@@ -8,31 +8,30 @@
       template="Template.xhtml"
 >
        <ui:define name="content">
-       
+       #{ViaggioBean.getPrenotazioni()}
        PRENOTAZIONI CONFERMATE
-       <p:dataTable id="multiPrenotazioni" var="hotel" value="#{ViaggioBean.hotelModels}" paginator="true" rows="5"  
-                     filteredValue="#{ComponentBean.filteredHotels}" >  
+       <p:dataTable id="multiPrenotazioni" var="pre" value="#{ViaggioBean.premodels}" paginator="true" rows="5">  
                         
-                <p:column headerText="Nome viaggio" style="width:25%"  >  
-                  <h:outputText value="#{}" />  
+                <p:column headerText="Codice prenotazione" style="width:25%"  >  
+                  <h:outputText value="#{pre.id}" />  
                 </p:column>  
   
                 <p:column headerText="Numero persone" style="width:25%">  
-                <h:outputText value="#{}" />  
+                <h:outputText value="#{pre.numero_persone}" />  
                 </p:column>  
   
                 <p:column headerText="Prezzo totale" style="width:24%" >  
-                <h:outputText value="#{}" />    
+                <h:outputText value="#{pre.costo}" />    
                 </p:column>  
   
                 <p:column headerText="Dal" style="width:24%" >  
-                <h:outputText value="#{}">
+                <h:outputText value="#{pre.viaggio.data_inizio}">
                 <f:convertDateTime pattern="dd/MM/yyyy" />
                 </h:outputText>    
                 </p:column>  
                 
                  <p:column headerText="Al" style="width:24%" >  
-                 <h:outputText value="#{}">
+                 <h:outputText value="#{pre.viaggio.data_fine}">
     				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
                   
