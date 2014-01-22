@@ -1,12 +1,9 @@
 package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.GiftListDTO;
@@ -48,6 +45,7 @@ public class ViaggioBean {
 	private VoloDTO selectedVolo_a;
 	private VoloDTO selectedVolo_r;
 	private ArrayList <EscursioneDTO> selectedEsc;
+	private PrenotazioneDTO selectedpre;
 	
 	
 	private HotelDataModel hotelModels;
@@ -287,7 +285,6 @@ public class ViaggioBean {
 		
 	    BMB.savePrenotazione(prenotazione);
 	    
-	    
 		return "imieiviaggi.xhtml?faces-redirect=true"; 	
 	}
 	
@@ -384,7 +381,15 @@ public class ViaggioBean {
 		public void setPrenotazione(PrenotazioneDTO prenotazione) {
 			this.prenotazione = prenotazione;
 		}
-	
+
+		public PrenotazioneDTO getSelectedpre() {
+			return selectedpre;
+		}
+
+		public void setSelectedpre(PrenotazioneDTO selectedpre) {
+			this.selectedpre = selectedpre;
+		}
+			
 	/*
 	 * dovrebbe servire per filtrare i risultati in base alle date di inzio e fine del viaggio ( TODO )
 	public void filterComponents(){

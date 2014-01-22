@@ -230,13 +230,13 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 	public ArrayList <PrenotazioneDTO> cercaPrenotazione(UserDTO udto)
 	{
 		List <Prenotazione> myList = em.createNamedQuery("Prenotazione.findAll", Prenotazione.class).getResultList();
-		PrenotazioneDTO p1 = new PrenotazioneDTO();
 		ArrayList <PrenotazioneDTO> myDTOList = new ArrayList <PrenotazioneDTO>();
 		
 		for(Prenotazione p : myList )
 		   {
 			if(p.getUtenteBean().getUsername().equals(udto.getUsername()))
 			  {
+				PrenotazioneDTO p1 = new PrenotazioneDTO();
 				p1.setCosto(p.getCosto());
 				p1.setId(p.getId());
 				p1.setNumero_persone(p.getNumero_persone());

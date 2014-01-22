@@ -8,10 +8,22 @@
       template="Template.xhtml"
 >
        <ui:define name="content">
+      <p:tabMenu activeIndex="2">  
+     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>  
+     	    <h:form id="myform">
+     
        #{ViaggioBean.getPrenotazioni()}
-       PRENOTAZIONI CONFERMATE
-       <p:dataTable id="multiPrenotazioni" var="pre" value="#{ViaggioBean.premodels}" paginator="true" rows="5">  
-                        
+       PRENOTAZIONI CONFERMATE                   
+   				 <p:contextMenu for="Prenotazioni">  
+        		 <p:menuitem value="View" update="display" icon="ui-icon-search" oncomplete="PF('preDialog').show()"/>  
+    			</p:contextMenu>  
+       <p:dataTable id="Prenotazioni" var="pre" value="#{ViaggioBean.premodels}" selectionMode="single" selection="#{tableBean.selectedpre}" paginator="true" rows="5"
+       rowKey="#{pre.id}">  
+                                
                 <p:column headerText="Codice prenotazione" style="width:25%"  >  
                   <h:outputText value="#{pre.id}" />  
                 </p:column>  
@@ -36,10 +48,25 @@
 				</h:outputText>
                   
                 </p:column>  
-                
-                <p:column headerText="Visualizza" style="width:24%" >  
-                <h:link outcome = "modifyHotel?id=#{hotel.id}"  value="Modifica"/>
-				</p:column> 
+               
               </p:dataTable>
+              
+               <p:dialog header="Dettagli prenotazione" widgetVar="preDialog" resizable="false"  
+              width="200" showEffect="clip" hideEffect="fold" id="dialog">  
+  
+        <h:panelGrid id="display" columns="2" cellpadding="4">  
+  
+  
+  	        <h:outputText value="Destinazione" />  
+            <h:outputText value="#{ViaggioBean}" style="font-weight:bold"/>  
+ 
+            <h:outputText value="Hotel" />  
+            <h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.nome}" style="font-weight:bold"/>  
+  
+            <h:outputText value="Volo andata:" />  
+            <h:outputText value="#{ViaggioBean.selectedVolo_a.data}" style="font-weight:bold"/>   
+        </h:panelGrid>  
+    </p:dialog> 
+    </h:form>
        </ui:define>
 </ui:composition>
