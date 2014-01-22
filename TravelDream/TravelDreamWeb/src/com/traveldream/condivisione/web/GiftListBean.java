@@ -10,11 +10,14 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
+import com.traveldream.autenticazione.ejb.UserDTO;
+import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.EscursionePagataDTO;
 import com.traveldream.condivisione.ejb.GiftListDTO;
 import com.traveldream.condivisione.ejb.GiftListManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.util.web.FacesUtil;
+import com.traveldream.viaggio.web.PreDataModel;
 
 
 
@@ -23,7 +26,13 @@ import com.traveldream.util.web.FacesUtil;
 public class GiftListBean {
 
 	String amico;
-
+	
+	GiftDataModel giftDataModel;
+	GiftListDTO selectedGiftListDTO;
+	
+	@EJB
+	UserMgr userMgr;
+	
 	@EJB
 	GiftListManagerBeanLocal GLM;
 
@@ -75,6 +84,29 @@ public class GiftListBean {
 		}
 		
 	}
+	
+	public void getGiftList() {
+		UserDTO current_user = userMgr.getUserDTO();
+		setGiftDataModel(new GiftDataModel(GLM.getGiftListDTO(current_user)));
+	}
+
+	public GiftDataModel getGiftDataModel() {
+		return giftDataModel;
+	}
+
+	public void setGiftDataModel(GiftDataModel giftDataModel) {
+		this.giftDataModel = giftDataModel;
+	}
+
+	public GiftListDTO getSelectedGiftListDTO() {
+		return selectedGiftListDTO;
+	}
+
+	public void setSelectedGiftListDTO(GiftListDTO selectedGiftListDTO) {
+		this.selectedGiftListDTO = selectedGiftListDTO;
+	}
+
+	
 
 	
 	

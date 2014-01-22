@@ -10,15 +10,18 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.gestioneprenotazione.ejb.BookManagerBean;
 import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
 import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
+import com.traveldream.util.Converter;
 
 import model.Amico;
 import model.EscursionePagata;
 import model.EscursioneSalvata;
 import model.Gift_List;
+import model.Hotel;
 import model.Utente;
 import model.Viaggio;
 
@@ -31,6 +34,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 	
 	@Resource
 	private EJBContext context;
+	
 	
 	@EJB
 	private UserMgr userMgr;
@@ -80,8 +84,38 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		return friends;
 	}
 
-	
-	
 
+	@Override
+	public ArrayList<GiftListDTO> getGiftListDTO(UserDTO user) {
+		ArrayList<GiftListDTO> giftListDTOs = new ArrayList<GiftListDTO>();
+		List<Gift_List> gift_Lists =em.createNamedQuery("Gift_List.findbyuser", Gift_List.class).setParameter("u", em.find(Utente.class, user.getUsername())).getResultList();
+		
+		for (Gift_List gift_List : gift_Lists) {
+			giftListDTOs.add(EntitytoDtoGift(gift_List));
+		}
+		return giftListDTOs;
+	}
+
+	private GiftListDTO EntitytoDtoGift(Gift_List gift_List){
+		GiftListDTO giftListDTO =new GiftListDTO();
+		giftListDTO.setHotelPag(gift_List.getHotelPag());
+		giftListDTO.setVoloAPag(gift_List.getVoloAPag());
+		giftListDTO.setVoloRPag(gift_List.getVoloRPag());
+		for (Amico amico : gift_List.getAmicos()) {
+			giftListDTO.getAmico().add(amico.getAmico());
+		}
+		for (EscursionePagata escursionePagata : gift_List.getEscursionePagatas()) {
+			giftListDTO.getEscursionePagata().add(EntitytoDTOEscuzionePagata(escursionePagata));
+		}
+		return giftListDTO;
+	}
+	
+	private EscursionePagataDTO EntitytoDTOEscuzionePagata(EscursionePagata escursionePagata) {
+		EscursionePagataDTO escursionePagataDTO = new EscursionePagataDTO();
+		escursionePagataDTO.setEscPagata(escursionePagata.getPagata());
+		escursionePagataDTO.setEscursione(Converter.EscursioneSalvataToDTO((escursionePagata.getEscursioneSalvata())));
+		return escursionePagataDTO;
+
+	}
 	
 }

@@ -14,7 +14,12 @@ import java.util.List;
  */
 @Entity
 @Table(name="GiftList")
-@NamedQuery(name="Gift_List.findAll", query="SELECT g FROM Gift_List g")
+@NamedQueries ( 
+	       {
+	    	   @NamedQuery(name="Gift_List.findbyuser", query="SELECT g FROM Gift_List g WHERE g.utente  = :u"),
+	    	   @NamedQuery(name="Gift_List.findAll", query="SELECT g FROM Gift_List g")
+	       }
+	       )
 public class Gift_List implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -23,9 +28,9 @@ public class Gift_List implements Serializable {
 	private int id;
 
 	private byte hotelPag;
-
+	
 	private byte voloAPag;
-
+	
 	private byte voloRPag;
 
 	//bi-directional many-to-one association to EscursionePagata
