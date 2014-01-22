@@ -268,7 +268,7 @@ public class ViaggioBean {
 			id_e = BMB.cercaEscursioneSalvata(edto);
 			if(id_e == -1 )
 			  {
-				id_e = CMB.saveEscursioneSalvata(edto);
+				id_e = BMB.saveEscursioneSalvata(edto);
 			  }
 			id_escursioni.add(id_e); // salvo tutti gli id delle escursioni in entrambi i casi ( salvate o no )
 		    edto.setId(id_e); // già che sto ciclando sulle selectedEsc metto a posto il DTO con il nuovo ID

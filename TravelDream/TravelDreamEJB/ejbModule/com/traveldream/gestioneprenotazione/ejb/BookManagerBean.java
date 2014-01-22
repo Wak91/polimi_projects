@@ -45,18 +45,8 @@ public class BookManagerBean implements BookManagerBeanLocal {
         em.persist(travel);	
         em.flush();
         
-        travel2 = em.find(Viaggio.class, travel.getId());
-        
-        for(EscursioneSalvata es: (this.DTOtoEntityEscursione(v.getLista_escursioni())))
-		    {
-	    	em.persist(es);
-	    	em.flush();
-	    	travel2.getEscursioneSalvatas().add(em.find(EscursioneSalvata.class, es.getId()));
-		    }
-        
-			em.merge(travel2);
 		
-			return  em.find(Viaggio.class, travel.getId()).getId();
+	    return  em.find(Viaggio.class, travel.getId()).getId();
 	}
 	
 	public void updateViaggio(ViaggioDTO v)
@@ -78,6 +68,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		p.setUtenteBean(DTOtoEntityUtente(pdto.getUtente()));
 		p.setViaggioBean(DTOtoEntityViaggio(pdto.getViaggio()));
 		em.persist(p);
+		em.flush();
 	}
 	
 	 private Viaggio DTOtoEntityViaggio(ViaggioDTO viaggio) {
@@ -166,7 +157,7 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 		if( (   es.getCosto() == edto.getCosto() ) 
 		     && es.getData().equals(edto.getData())
 			 &&  (es.getLuogo().equals(edto.getLuogo())) 
-			 && (es.getNome() == edto.getNome()))   
+			 && (es.getNome().equals(edto.getNome())))   
 		    {
 			 return es.getId();
 		    }
@@ -202,9 +193,18 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
  
 	private int sameEscursioni(Viaggio v, ViaggioDTO vdto)
 	{
+		int cont=0;
+		if(v.getEscursioneSalvatas().size() != vdto.getLista_escursioni().size())
+			return 0; // se già le dimensioni sono diverse una conterrà un'escursione diversa da un altra
 		for(EscursioneSalvata e: v.getEscursioneSalvatas())
 		   {
-			if(e.getId() != vdto.getId() )
+			cont=0;
+			for(EscursioneDTO edto : vdto.getLista_escursioni())
+			   {
+				if(e.getId() == edto.getId() )
+				  cont++;
+			   }
+			if(cont==0) // il cont deve essere andato a uno per avere le corrispondenze di escursioni uguali
 				return 0;
 		   }
 		return 1;
