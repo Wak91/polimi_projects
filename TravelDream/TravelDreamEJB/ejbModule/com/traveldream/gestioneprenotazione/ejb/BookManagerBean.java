@@ -6,26 +6,17 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
-import javax.persistence.Convert;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import sun.security.util.Cache;
-
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
-
-import model.Escursione;
 import model.EscursioneSalvata;
-import model.Hotel;
 import model.HotelSalvato;
-import model.Pacchetto;
 import model.Prenotazione;
 import model.Utente;
 import model.Viaggio;
-import model.Volo;
 import model.VoloSalvato;
 
 /**
@@ -53,14 +44,16 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
         em.persist(travel);	
         em.flush();
+        
         travel2 = em.find(Viaggio.class, travel.getId());
+        
         for(EscursioneSalvata es: (this.DTOtoEntityEscursione(v.getLista_escursioni())))
-		    es.setViaggio(travel2);	
-	    for(EscursioneSalvata es: (this.DTOtoEntityEscursione(v.getLista_escursioni())))
-	    	{
+		    {
 	    	em.persist(es);
-	    	travel.getEscursioneSalvatas().add(em.find(EscursioneSalvata.class, es.getId()));
-	    	};     
+	    	em.flush();
+	    	travel2.getEscursioneSalvatas().add(em.find(EscursioneSalvata.class, es.getId()));
+		    }
+        
 			em.merge(travel2);
 		
 			return  em.find(Viaggio.class, travel.getId()).getId();
@@ -103,9 +96,14 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	 
 	 private List<EscursioneSalvata> DTOtoEntityEscursione(List<EscursioneDTO> escursioneDTOs){
          ArrayList<EscursioneSalvata> listaEscursioni = new ArrayList<EscursioneSalvata>();
+         EscursioneSalvata es = new EscursioneSalvata();
          for (EscursioneDTO escursioneDTO :escursioneDTOs){
-                 EscursioneSalvata nuovaesc = em.find(EscursioneSalvata.class, escursioneDTO.getId());
-                 listaEscursioni.add(nuovaesc);
+        	      es.setCosto(escursioneDTO.getCosto());
+        	      es.setData(escursioneDTO.getData());
+        	      es.setImmagine(escursioneDTO.getImmagine());
+        	      es.setLuogo(escursioneDTO.getLuogo());
+        	      es.setNome(escursioneDTO.getNome());
+                  listaEscursioni.add(es);
          }
          return listaEscursioni;
  }
@@ -114,6 +112,71 @@ public class BookManagerBean implements BookManagerBeanLocal {
       return em.find(VoloSalvato.class, volodto.getId());
   }
 	  
+public int cercaHotelSalvato(HotelDTO hdto)
+{
+	List<HotelSalvato> myList;
+	myList = em.createNamedQuery("HotelSalvato.findAll", HotelSalvato.class).getResultList();
+	
+	for(HotelSalvato hs : myList)
+	   {
+		if( (   hs.getCosto_giornaliero() == hdto.getCosto_giornaliero() ) 
+		     && hs.getData_fine().equals(hdto.getData_fine())
+			 && (hs.getData_inizio().equals(hdto.getData_inizio())) 
+			 && (hs.getLuogo().equals(hdto.getLuogo()))	
+			 && (hs.getNome().equals(hdto.getNome()))
+			 && (hs.getStelle() == hdto.getStelle()))
+		    {
+			 return hs.getId();
+		    }
+	   }
+	return -1;
+
+}
+
+
+@Override
+public int cercaVoloSalvato(VoloDTO vdto) {
+	
+	List<VoloSalvato> myList;
+	myList = em.createNamedQuery("VoloSalvato.findAll", VoloSalvato.class).getResultList();
+	
+	for(VoloSalvato vs : myList)
+	   {
+		if( (   vs.getCosto() == vdto.getCosto() ) 
+		     && vs.getData().equals(vdto.getData())
+			 && (vs.getLuogo_arrivo().equals(vdto.getLuogo_arrivo()))	
+			 &&  (vs.getLuogo_partenza().equals(vdto.getLuogo_partenza())) 
+			 && (vs.getCompagnia() == vdto.getCompagnia()))  
+		    {
+			 return vs.getId();
+		    }
+	   }
+	return -1;
+	
+}
+
+@Override
+public int cercaEscursioneSalvata(EscursioneDTO edto) {
+	
+	List<EscursioneSalvata> myList;
+	myList = em.createNamedQuery("EscursioneSalvata.findAll", EscursioneSalvata.class).getResultList();
+	
+	for(EscursioneSalvata es : myList)
+	   {
+		if( (   es.getCosto() == edto.getCosto() ) 
+		     && es.getData().equals(edto.getData())
+			 &&  (es.getLuogo().equals(edto.getLuogo())) 
+			 && (es.getNome() == edto.getNome()))   
+		    {
+			 return es.getId();
+		    }
+	   }
+	return -1;
+	
+}
+
+//Forse meglio many to many, dovrei aggiungere ad un escursione esistente la nuova key del viaggio
+// ma le escurisioni hanno un solo attribut key viaggio! 
  public int cercaViaggio(ViaggioDTO viaggiodto)
  {
 		List <Viaggio> mylist;
@@ -126,7 +189,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
 				v.getData_inizio().equals(viaggiodto.getData_inizio()) &&
 				v.getVoloSalvato1().getId() == viaggiodto.getVolo_andata().getId() &&
 				v.getVoloSalvato2().getId() == viaggiodto.getVolo_ritorno().getId() &&
-				sameEscursioni(v,viaggiodto) == 1 )
+				sameEscursioni(v,viaggiodto) == 1 ) 
 			    {
 				  return v.getId();
 			    }
@@ -137,7 +200,6 @@ public class BookManagerBean implements BookManagerBeanLocal {
  }	
  
  
-
 	private int sameEscursioni(Viaggio v, ViaggioDTO vdto)
 	{
 		for(EscursioneSalvata e: v.getEscursioneSalvatas())
@@ -152,7 +214,6 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	public int saveEscursioneSalvata(EscursioneDTO escursioneDTO)
 	{
 		EscursioneSalvata escursione = new EscursioneSalvata();
-		escursione.setViaggio(this.DTOtoEntityViaggio(escursioneDTO.getViaggio()));
 		escursione.setNome(escursioneDTO.getNome());
 		escursione.setLuogo(escursioneDTO.getLuogo());
 		escursione.setImmagine(escursioneDTO.getImmagine());
@@ -162,6 +223,26 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		em.persist(escursione);
 		em.flush();
 		return em.find(EscursioneSalvata.class, escursione.getId()).getId();
+	}
+
+	public ArrayList <PrenotazioneDTO> cercaPrenotazione(UserDTO udto)
+	{
+		List <Prenotazione> myList = em.createNamedQuery("Prenotazione.findAll", Prenotazione.class).getResultList();
+		ArrayList <PrenotazioneDTO> myDTOList = new ArrayList <PrenotazioneDTO>();
+		
+		for(Prenotazione p : myList )
+		   {
+			if(p.getUtenteBean().getUsername().equals(udto.getUsername()))
+			  {
+				PrenotazioneDTO p1 = new PrenotazioneDTO();
+				p1.setCosto(p.getCosto());
+				p1.setId(p.getId());
+				p1.setNumero_persone(p.getNumero_persone());
+				myDTOList.add(p1);
+			  }
+		   }
+		return myDTOList;
+		
 	}
 	
 }

@@ -19,7 +19,7 @@ public class EscDataModel extends ListDataModel <EscursioneDTO> implements Selec
 	public EscursioneDTO getRowData(String arg0) {
 		List<EscursioneDTO> edto = ((List<EscursioneDTO>) getWrappedData());  
         for(EscursioneDTO e : edto) {  
-            if(e.getNome().equals(arg0))  
+            if((e.getId()+"").equals(arg0))  
                 return e;  
         }  
           
@@ -27,8 +27,8 @@ public class EscDataModel extends ListDataModel <EscursioneDTO> implements Selec
 	}
 
 
-	public String getRowKey(EscursioneDTO arg0) {
-		return arg0.getNome();
+	public Object getRowKey(EscursioneDTO arg0) {
+		return arg0.getId();
 	}
 
 }

@@ -1,12 +1,10 @@
 package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
+import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.GiftListDTO;
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
@@ -47,14 +45,17 @@ public class ViaggioBean {
 	private VoloDTO selectedVolo_a;
 	private VoloDTO selectedVolo_r;
 	private ArrayList <EscursioneDTO> selectedEsc;
+	private PrenotazioneDTO selectedpre;
 	
 	
 	private HotelDataModel hotelModels;
     private VoloDataModel  voloModels_a;
     private VoloDataModel  voloModels_r;
     private EscDataModel escModels;
+    private PreDataModel premodels;
     
-    private ArrayList<HotelDTO> filteredHotels;
+ 
+	private ArrayList<HotelDTO> filteredHotels;
 	private ArrayList<EscursioneDTO> filteredEscursiones;
 	private ArrayList<VoloDTO> filteredVolos;
     
@@ -62,9 +63,6 @@ public class ViaggioBean {
 
     private ViaggioDTO viaggio;
     private PrenotazioneDTO prenotazione;
-    
-    private Date data_inizio;
-    private Date data_fine;
     
     private int n_partecipanti;
     private int quotacomplessiva;
@@ -111,8 +109,14 @@ public class ViaggioBean {
 		 setHotelModels(new HotelDataModel(packet.getLista_hotel()));	
 		 setVoloModels_a(new VoloDataModel(packet.getLista_voli_andata()));
 		 setVoloModels_r(new VoloDataModel(packet.getLista_voli_ritorno()));
-		 setEscModels(new EscDataModel(packet.getLista_escursioni()));
-		
+		 setEscModels(new EscDataModel(packet.getLista_escursioni()));		
+	}
+	
+	//Riempie la struttura premodels per permettere di visualizzare nella view tutte le prenotazioni di un utente
+	public void getPrenotazioni()
+	{
+		UserDTO current_user = userMgr.getUserDTO();
+		setPremodels(new PreDataModel(BMB.cercaPrenotazione(current_user)));
 	}
 	
 	public VoloDTO getSelectedVolo_a() {
@@ -188,6 +192,16 @@ public class ViaggioBean {
 		this.voloModels_r = voloModels_r;
 	}
 	
+	
+    public PreDataModel getPremodels() {
+			return premodels;
+		}
+
+    public void setPremodels(PreDataModel premodels) {
+			this.premodels = premodels;
+		}
+
+		
 	public String acquista_paga()
 	{
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null)
@@ -195,8 +209,6 @@ public class ViaggioBean {
 			return "userhome.xhtml?faces-redirect=true";
 		  }
 		
-		viaggio.setData_inizio(this.data_inizio);   //creo il viaggio temporaneo per controllare se esiste gi��
-		viaggio.setData_fine(this.data_fine);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
@@ -228,34 +240,56 @@ public class ViaggioBean {
 	public void updatePrice()
 	{
 		this.setQuotacomplessiva(this.getN_partecipanti() * this.getQuotapp());
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXquotacomplessiva" + this.getQuotacomplessiva());
 	}
 	
 	public String creaPrenotazione()
 	{
-        int id = BMB.cercaViaggio(viaggio); // cerco se qualcuno ha gi�� creato un viaggio del genere per non mettere doppioni nel db
+		ArrayList <Integer> id_escursioni = new ArrayList <Integer> ();
+		int id_e;
+		// salvo le copie degli elementi selezionati per la creazione del viaggio, controllando se esistono già
+		int id_h = BMB.cercaHotelSalvato(selectedHotels);
+		if(id_h == -1 )
+		   {
+			id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
+		   }
+		int id_vsa = BMB.cercaVoloSalvato(selectedVolo_a);
+		if(id_vsa == -1)
+		   {
+			id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
+		   }
+		int id_vsr = BMB.cercaVoloSalvato(selectedVolo_r);
+		if(id_vsr == -1)
+		  {
+			id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
+		  }
 		
-		if(id == -1) // se non era presente il viaggio che stavo creando allora lo salvo
-	       { 
-			 // salvo le copie degli elementi selezionati per la creazione del viaggio
-			int id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
-			int id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
-			int id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
-
-			
-			 selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perch�� gli altri campi sono gi�� a posto
-			 selectedVolo_a.setId(id_vsa);
-			 selectedVolo_r.setId(id_vsr);
-			
-	         viaggio.setHotel(selectedHotels);
-	         viaggio.setVolo_andata(selectedVolo_a);
-	         viaggio.setVolo_ritorno(selectedVolo_r);	         
-			 id= BMB.saveViaggio(viaggio);
-			 viaggio.setId(id);
-			
-	         viaggio.setLista_escursioni(selectedEsc);
-	       }
+		for(EscursioneDTO edto: selectedEsc)
+		   {
+			id_e = BMB.cercaEscursioneSalvata(edto);
+			if(id_e == -1 )
+			  {
+				id_e = CMB.saveEscursioneSalvata(edto);
+			  }
+			id_escursioni.add(id_e); // salvo tutti gli id delle escursioni in entrambi i casi ( salvate o no )
+		    edto.setId(id_e); // già che sto ciclando sulle selectedEsc metto a posto il DTO con il nuovo ID
+		   }
 		
+	    selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono gia' a posto
+	    selectedVolo_a.setId(id_vsa);
+	    selectedVolo_r.setId(id_vsr);
+	    
+			
+	    viaggio.setHotel(selectedHotels); // ora selectedHotels ecc.. si riferiscono a entity delle tabelle XSalvato
+	    viaggio.setVolo_andata(selectedVolo_a);
+	    viaggio.setVolo_ritorno(selectedVolo_r);
+	    viaggio.setLista_escursioni(selectedEsc);
+	    
+	    int id = BMB.cercaViaggio(viaggio); // vado alla ricerca di possibili duplicati del viaggio appena creato
+	    if(id == -1 )
+	       id= BMB.saveViaggio(viaggio);
+	  
+	    viaggio.setId(id);
+				       
 		prenotazione.setViaggio(viaggio);
 		prenotazione.setNumero_persone(n_partecipanti);
 		prenotazione.setUtente(userMgr.getUserDTO());
@@ -339,21 +373,6 @@ public class ViaggioBean {
 		this.n_partecipanti = n_partecipanti;
 	}
 
-	public Date getData_inizio() {
-		return data_inizio;
-	}
-
-	public void setData_inizio(Date data_inizio) {
-		this.data_inizio = data_inizio;
-	}
-
-	public Date getData_fine() {
-		return data_fine;
-	}
-
-	public void setData_fine(Date data_fine) {
-		this.data_fine = data_fine;
-	}
 
 	public int getQuotacomplessiva() {
 		return quotacomplessiva;
@@ -386,7 +405,15 @@ public class ViaggioBean {
 		public void setPrenotazione(PrenotazioneDTO prenotazione) {
 			this.prenotazione = prenotazione;
 		}
-	
+
+		public PrenotazioneDTO getSelectedpre() {
+			return selectedpre;
+		}
+
+		public void setSelectedpre(PrenotazioneDTO selectedpre) {
+			this.selectedpre = selectedpre;
+		}
+			
 	/*
 	 * dovrebbe servire per filtrare i risultati in base alle date di inzio e fine del viaggio ( TODO )
 	public void filterComponents(){

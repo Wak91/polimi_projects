@@ -1,9 +1,72 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-
-	<ui:composition template="">
-	</ui:composition>
-</html>
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="Template.xhtml"
+>
+       <ui:define name="content">
+      <p:tabMenu activeIndex="2">  
+     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>  
+     	    <h:form id="myform">
+     
+       #{ViaggioBean.getPrenotazioni()}
+       PRENOTAZIONI CONFERMATE                   
+   				 <p:contextMenu for="Prenotazioni">  
+        		 <p:menuitem value="View" update="display" icon="ui-icon-search" oncomplete="PF('preDialog').show()"/>  
+    			</p:contextMenu>  
+       <p:dataTable id="Prenotazioni" var="pre" value="#{ViaggioBean.premodels}" selectionMode="single" selection="#{tableBean.selectedpre}" paginator="true" rows="5"
+       rowKey="#{pre.id}">  
+                                
+                <p:column headerText="Codice prenotazione" style="width:25%"  >  
+                  <h:outputText value="#{pre.id}" />  
+                </p:column>  
+  
+                <p:column headerText="Numero persone" style="width:25%">  
+                <h:outputText value="#{pre.numero_persone}" />  
+                </p:column>  
+  
+                <p:column headerText="Prezzo totale" style="width:24%" >  
+                <h:outputText value="#{pre.costo}" />    
+                </p:column>  
+  
+                <p:column headerText="Dal" style="width:24%" >  
+                <h:outputText value="#{pre.viaggio.data_inizio}">
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>    
+                </p:column>  
+                
+                 <p:column headerText="Al" style="width:24%" >  
+                 <h:outputText value="#{pre.viaggio.data_fine}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+                  
+                </p:column>  
+               
+              </p:dataTable>
+              
+               <p:dialog header="Dettagli prenotazione" widgetVar="preDialog" resizable="false"  
+              width="200" showEffect="clip" hideEffect="fold" id="dialog">  
+  
+        <h:panelGrid id="display" columns="2" cellpadding="4">  
+  
+  
+  	        <h:outputText value="Destinazione" />  
+            <h:outputText value="#{ViaggioBean}" style="font-weight:bold"/>  
+ 
+            <h:outputText value="Hotel" />  
+            <h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.nome}" style="font-weight:bold"/>  
+  
+            <h:outputText value="Volo andata:" />  
+            <h:outputText value="#{ViaggioBean.selectedVolo_a.data}" style="font-weight:bold"/>   
+        </h:panelGrid>  
+    </p:dialog> 
+    </h:form>
+       </ui:define>
+</ui:composition>

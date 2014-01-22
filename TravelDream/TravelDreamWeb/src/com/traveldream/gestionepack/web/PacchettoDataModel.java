@@ -24,7 +24,7 @@ public class PacchettoDataModel extends ListDataModel <PacchettoDTO> implements 
 	public PacchettoDTO getRowData(String arg0) {
 		List<PacchettoDTO> pdto = (List<PacchettoDTO>) getWrappedData();  
         for(PacchettoDTO pacchettoDTO : pdto) {  
-            if(pacchettoDTO.getNome().equals(arg0))  
+            if((pacchettoDTO.getId()+"").equals(arg0))  
                 return pacchettoDTO;  
         }  
 		return null;
@@ -32,7 +32,7 @@ public class PacchettoDataModel extends ListDataModel <PacchettoDTO> implements 
 
 	@Override
 	public Object getRowKey(PacchettoDTO arg0) {
-		return arg0.getNome();
+		return arg0.getId();
 	}
 
 }
