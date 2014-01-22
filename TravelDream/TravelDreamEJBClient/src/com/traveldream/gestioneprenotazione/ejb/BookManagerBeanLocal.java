@@ -17,6 +17,7 @@ public interface BookManagerBeanLocal {
 	int cercaHotelSalvato(HotelDTO hdto);
 	int cercaVoloSalvato(VoloDTO vdto);
 	int cercaEscursioneSalvata(EscursioneDTO edto);
+	int saveEscursioneSalvata(EscursioneDTO escursioneDTO);
 	ArrayList <PrenotazioneDTO> cercaPrenotazione(UserDTO udto);
 
 	

@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
 
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
@@ -31,6 +32,7 @@ import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
 import com.traveldream.gestionepack.ejb.PacchettoDTO;
+import com.traveldream.gestionepack.ejb.PackManagerBeanLocal;
 import com.traveldream.gestionepack.web.EscDataModel;
 import com.traveldream.gestionepack.web.HotelDataModel;
 import com.traveldream.gestionepack.web.VoloDataModel;
@@ -41,6 +43,9 @@ public class ComponentBean {
 
 	@EJB
 	private ComponentManagerBeanLocal CMB;
+	
+	@EJB
+	private PackManagerBeanLocal PMB;
 	
     private HotelDTO hotel; 
     private VoloDTO  volo;
@@ -249,21 +254,63 @@ public class ComponentBean {
 		    } catch (IOException e) {
 		        //log error
 		    }
-    hotel.setHotelImg(imgHotel.getFileName());	
-    CMB.modificaHotel(hotel);
+    hotel.setHotelImg(imgHotel.getFileName());
     
-    if (hotel.getPacchettos().isEmpty()){
-    	System.out.println("hotel non inserito in nessun pacchetto");
-    }
-    for (PacchettoDTO pacchettoDTO : hotel.getPacchettos()) {
-		System.out.println("hotel "+hotel.getNome()+" e' nel pacchetto "+pacchettoDTO.getNome());
-	}
+  //Prima di modificare con le nuove date controllo se ci sono pacchetti che hanno questo hotel dentro che potrebbero diventare incoerenti
+  		for(PacchettoDTO p : CMB.getHotelById(hotel.getId()).getPacchettos())
+  		   {
+  			//se c'è una situazione di incoerenza nelle date o nel luogo elimino l'hotel dal pacchetto, 
+  			//controllo se nel pacchetto ci sono altre componenti e nel caso update o elimino pack
+
+  			if(hotel.getData_inizio().before(p.getData_inizio()) || hotel.getData_inizio().after(p.getData_fine()) || (hotel.getLuogo().equals(p.getDestinazione())==false))
+  			{
+  				if(p.getLista_hotel().size()== 1)// se nel pacchetto c'è solo un hotel, in questo caso è proprio quello da eliminare, butto quindi il pacchetto
+  				 {
+  					PMB.deletePacchetto(p.getId());
+  				 }
+  				else
+  				   { // se non era l'unico hotel, rimuovo dalla lista del pacchetto e update pacchetto
+  					 ArrayList <HotelDTO> phdto = (ArrayList<HotelDTO>) p.getLista_hotel();
+  					 
+  					 for(HotelDTO hdto: phdto)
+  					    {
+  						 if(hdto.getId() == hotel.getId())
+  						  phdto.remove(hdto);
+  					    }
+
+  					 p.setLista_hotel(phdto); // modifico la lista degli hotel al pacchetto corrente
+  					 PMB.modifyPacchetto(p);
+  				   }
+  			 }
+  		   }
+    
+    CMB.modificaHotel(hotel);
 
 	return "toHotel.xhtml?faces-redirect=true";
 	}
 	
 	public String deleteHotel(int id)
-	{ CMB.eliminaHotel(id);
+	{ 
+		for(PacchettoDTO p : CMB.getHotelById(id).getPacchettos())
+		   {
+				if(p.getLista_hotel().size()== 1)// se nel pacchetto c'è solo un hotel, in questo caso è proprio quello da eliminare
+				 {
+					PMB.deletePacchetto(p.getId());
+				 }
+				else
+				   { // se non era l'unico hotel, rimuovo dalla lista del pacchetto e elimina pacchetto
+					 ArrayList <HotelDTO> phdto = (ArrayList<HotelDTO>) p.getLista_hotel();
+					 ArrayList <HotelDTO> new_phdto = new ArrayList <HotelDTO>();
+					 for(HotelDTO hdto: phdto)
+					    {
+						 if(hdto.getId() != id)
+						  new_phdto.add(hdto);
+					    }
+					 p.setLista_hotel(new_phdto); // modifico la lista degli hotel al pacchetto corrente
+					 PMB.modifyPacchetto(p);
+				   }
+			 }
+		CMB.eliminaHotel(id);
 	return "toHotel.xhtml?faces-redirect=true";
 	}
 //------------------------GETTER_SETTER_VOLO------------------------------------
@@ -299,21 +346,80 @@ public class ComponentBean {
 	}
 	
 	public String modificaVolo()
-	{ CMB.modificaVolo(volo);
-
-    if (volo.getPacchettos().isEmpty()){
-    	System.out.println("volo non inserito in nessun pacchetto");
+	{  
+	InputStream inputStr = null;
+    try {
+        inputStr = imgVolo.getInputstream();
+    } catch (IOException e) {
+        //log error
     }
-    for (PacchettoDTO pacchettoDTO : volo.getPacchettos()) {
-		System.out.println("volo "+volo.getCompagnia()+" e' nel pacchetto "+pacchettoDTO.getNome());
-	}
+
+    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    String directory = externalContext.getInitParameter("uploadDirectory");
+    String filename = FilenameUtils.getName(imgVolo.getFileName());
+    File destFile = new File(directory, filename);
+
+    //use org.apache.commons.io.FileUtils to copy the File
+    try {
+        FileUtils.copyInputStreamToFile(inputStr, destFile);
+    } catch (IOException e) {
+        //log error
+    }
+    volo.setImmagine(imgVolo.getFileName());
+	
+		for(PacchettoDTO p : CMB.getVoloById(volo.getId()).getPacchettos())
+		   {
+			if(volo.getData().before(p.getData_inizio()) || (volo.getData().after(p.getData_fine()) || 
+			 (  (volo.getLuogo_arrivo().equals(p.getDestinazione())==false) && (volo.getLuogo_partenza().equals(p.getDestinazione())==false))))
+			{   
+				       { // se i voli erano di più, rimuovo dalla lista del pacchetto e update pacchetto
+					    ArrayList <VoloDTO> pvdto = (ArrayList<VoloDTO>) p.getLista_voli();
+					    ArrayList <VoloDTO> new_pvdto = new ArrayList <VoloDTO>();
+					    for(VoloDTO vdto: pvdto)
+					    {
+						 if(vdto.getId() != volo.getId())
+							 new_pvdto.add(vdto);
+ 					    }					    
+					    p.setLista_voli(new_pvdto); 
+					    PMB.modifyPacchetto(p);
+					    PacchettoDTO pdto2= PMB.getPacchettoByID(p.getId());
+					    if(pdto2.getLista_voli_andata().isEmpty() || pdto2.getLista_voli_ritorno().isEmpty())
+					      {
+					    	PMB.deletePacchetto(p.getId());
+					      }
+				       }
+			 }
+		   }
+    
+	CMB.modificaVolo(volo);
+
+	
 	return "toVolo.xhtml?faces-redirect=true";
 
 	
 	}
 	
 	public String eliminaVolo(int id)
-	{ CMB.eliminaVolo(id);
+	{ 
+		for(PacchettoDTO p : CMB.getVoloById(id).getPacchettos())
+		   {
+					    ArrayList <VoloDTO> pvdto = (ArrayList<VoloDTO>) p.getLista_voli();
+					    for(VoloDTO vdto: pvdto)
+					    {
+						 if(vdto.getId() == id)
+						  pvdto.remove(pvdto);
+					    }					    
+					    p.setLista_voli(pvdto); 
+					    PMB.modifyPacchetto(p);
+					    PacchettoDTO pdto2= PMB.getPacchettoByID(p.getId());
+					    if(pdto2.getLista_voli_andata().isEmpty() || pdto2.getLista_voli_ritorno().isEmpty())
+					      {
+					    	PMB.deletePacchetto(p.getId());
+					      }
+	       }
+			 
+		   
+		CMB.eliminaVolo(id);
 	  return "toVolo.xhtml?faces-redirect=true";
 	}
 	
@@ -351,14 +457,49 @@ public class ComponentBean {
 	}
 	
 	public String modificaEscursione()
-	{ CMB.modificaEscursione(escursione);
+	{ 
+		 InputStream inputStr = null;
+		    try {
+		        inputStr = imgEscursione.getInputstream();
+		    } catch (IOException e) {
+		        //log error
+		    }
 
-    if (escursione.getPacchettos().isEmpty()){
-    	System.out.println("escursione non inserito in nessun pacchetto");
-    }
-    for (PacchettoDTO pacchettoDTO : escursione.getPacchettos()) {
-		System.out.println("escursione "+escursione.getNome()+" e' nel pacchetto "+pacchettoDTO.getNome());
-	}
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    String directory = externalContext.getInitParameter("uploadDirectory");
+		    String filename = FilenameUtils.getName(imgEscursione.getFileName());
+		    File destFile = new File(directory, filename);
+
+		    //use org.apache.commons.io.FileUtils to copy the File
+		    try {
+		        FileUtils.copyInputStreamToFile(inputStr, destFile);
+		    } catch (IOException e) {
+		        //log error
+		    }
+ escursione.setImmagine(imgEscursione.getFileName());
+ 
+//Prima di modificare con le nuove date controllo se ci sono pacchetti che hanno questa esc dentro che potrebbero diventare incoerenti
+		for(PacchettoDTO p : CMB.getEscursioneById(escursione.getId()).getPacchettos())
+		   {
+			//se c'è una situazione di incoerenza nelle date o nel luogo elimino l'escursione dal pacchetto, 
+			//controllo se nel pacchetto ci sono altre componenti e nel caso update pack ( posso avere zero esc )
+
+			if(escursione.getData().before(p.getData_inizio()) || (escursione.getData().after(p.getData_fine()) || (escursione.getLuogo().equals(p.getDestinazione())==false)))
+			{
+					ArrayList <EscursioneDTO> pedto = (ArrayList<EscursioneDTO>) p.getLista_escursioni();
+					ArrayList <EscursioneDTO> new_pedto = new ArrayList <EscursioneDTO>();
+					 for(EscursioneDTO edto: pedto)
+					    {
+						 if(edto.getId() != escursione.getId())
+						  new_pedto.remove(edto);
+					    }
+
+					 p.setLista_escursioni(new_pedto); // modifico la lista delle esc al pacchetto corrente
+					 PMB.modifyPacchetto(p);	   
+			 }
+		   }
+		CMB.modificaEscursione(escursione);
+
 	return "toEscursione.xhtml?faces-redirect=true";
 
 	}
@@ -366,6 +507,22 @@ public class ComponentBean {
 	
 	public String eliminaEscursione(int id)
 	{ 
+		for(PacchettoDTO p : CMB.getEscursioneById(id).getPacchettos())
+		   {
+				
+								 
+					ArrayList <EscursioneDTO> pedto = (ArrayList<EscursioneDTO>) p.getLista_escursioni();
+					 for(EscursioneDTO edto: pedto)
+					    {
+						 if(edto.getId() == id)
+						  pedto.remove(edto);
+					    }
+
+					 p.setLista_escursioni(pedto); // modifico la lista degli hotel al pacchetto corrente
+					 PMB.modifyPacchetto(p);
+		   }
+			 
+		   
       CMB.eliminaEscursione(id);
 	  return "toEscursione.xhtml?faces-redirect=true";
 	}
