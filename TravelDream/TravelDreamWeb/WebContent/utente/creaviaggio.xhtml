@@ -10,7 +10,7 @@
        <ui:define name="content">
        #{ViaggioBean.getPacchettoById(param['id'])}
 	    <h:form enctype="multipart/form-data">
-	    <p:tabMenu activeIndex="2">  
+	    <p:tabMenu activeIndex="0">  
      <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
      <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
      <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
@@ -31,12 +31,18 @@
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
 				<h:outputText id="luogo" value="#{ViaggioBean.packet.destinazione}" />
 				
-                  <h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
-				<p:calendar id="datei" binding="#{dates}" editable="false" value="#{ViaggioBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
-				<br></br>
-	
+				<h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
+				<h:outputText id="datei" value="#{ViaggioBean.packet.data_inizio}"  pattern="dd/MM/yyyy"/>
+				
 				<h:outputLabel for="datef">Data Fine Validità</h:outputLabel>
-				<p:calendar id="datef" editable="false" value="#{ViaggioBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+				<h:outputText id="datef" value="#{ViaggioBean.packet.data_fine}"  pattern="dd/MM/yyyy" />				
+							
+			    <h:outputLabel for="datef">Quando vuoi partire?</h:outputLabel>
+				<p:calendar id="datei2" value="#{ViaggioBean.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+				</p:calendar>
+				
+				<h:outputLabel for="datef">Quando vuoi rientrare?</h:outputLabel>
+				<p:calendar id="datef2" value="#{ViaggioBean.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
 				</p:calendar>
 				
 				
@@ -46,7 +52,7 @@
 				ELENCO HOTEL   
 				 
 				<p:dataTable id="multiHotels" dynamic="true" var="hotel" value="#{ViaggioBean.hotelModels}" paginator="true" rows="25"  
-                 selection="#{ViaggioBean.selectedHotels}" filteredValue="#{ViaggioBean.filteredHotels}" >  
+                 selection="#{ViaggioBean.selectedHotels}" >  
                 <p:column selectionMode="single" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
@@ -110,29 +116,29 @@
               
                 SCELTA VOLO RITORNO
 		
-				<p:dataTable id="multiVoli_2" var="volo" value="#{ViaggioBean.voloModels_r}" paginator="true" rows="5"  
+				<p:dataTable id="multiVoli_2" var="volo2" value="#{ViaggioBean.voloModels_r}" paginator="true" rows="5"  
                  selection="#{ViaggioBean.selectedVolo_r}">  
                 
                 <p:column selectionMode="single" style="width:2%" />  
   
                 <p:column headerText="compagnia" style="width:25%" sortBy="compagnia" filterBy="#{volo.compagnia}">  
-                 #{volo.compagnia}
+                 #{volo2.compagnia}
                 </p:column>  
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
-                #{volo.data}  
+                #{volo2.data}  
                 </p:column>  
   
                 <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{volo.costo}">  
-                #{volo.costo}  
+                #{volo2.costo}  
                 </p:column>  
   
                 <p:column headerText="partenza" style="width:24%" sortBy="luogo_partenza" filterBy="#{volo.luogo_partenza}">  
-                #{volo.luogo_partenza}  
+                #{volo2.luogo_partenza}  
                 </p:column>  
                 
                  <p:column headerText="arrivo" style="width:24%" sortBy="luogo_arrivo" filterBy="#{volo.luogo_arrivo}">  
-                #{volo.luogo_arrivo}  
+                #{volo2.luogo_arrivo}  
                 </p:column>  
               </p:dataTable> 
               
@@ -161,14 +167,15 @@
                 
               </p:dataTable> 
 								
-                <h:commandButton value="Acquista viaggio" update="regGrid"
-				action="#{ViaggioBean.acquista_paga}" icon="ui-icon-script"/>
+                <h:commandButton value="Acquista viaggio" 
+				action="#{ViaggioBean.acquista_paga()}" icon="ui-icon-script"/>
 				
 				<h:commandButton value="Aggiungi alla gift list" update="regGrid"
-				action="#{ViaggioBean.aggiungi_gift}" icon="ui-icon-script"/>
+				action="#{ViaggioBean}" icon="ui-icon-script"/>
 				
 				<h:commandButton value="Invita a partecipare" update="regGrid"
 				action="#{ViaggioBean.invita}" icon="ui-icon-script"/>
+
      
 		</p:panel>
 	   

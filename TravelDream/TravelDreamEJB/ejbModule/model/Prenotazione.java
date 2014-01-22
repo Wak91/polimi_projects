@@ -1,7 +1,10 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.traveldream.gestioneprenotazione.ejb.PrenotazioneDTO;
 
 
 /**
@@ -9,6 +12,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name="Prenotazione")
 @NamedQuery(name="Prenotazione.findAll", query="SELECT p FROM Prenotazione p")
 public class Prenotazione implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -33,7 +37,7 @@ public class Prenotazione implements Serializable {
 
 	public Prenotazione() {
 	}
-
+	
 	public int getId() {
 		return this.id;
 	}

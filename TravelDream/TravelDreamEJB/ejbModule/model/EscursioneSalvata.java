@@ -1,7 +1,12 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
+import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
+
 import java.util.Date;
 
 
@@ -10,10 +15,12 @@ import java.util.Date;
  * 
  */
 @Entity
+@Table(name="EscursioneSalvata")
 @NamedQuery(name="EscursioneSalvata.findAll", query="SELECT e FROM EscursioneSalvata e")
 public class EscursioneSalvata implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
 
@@ -33,8 +40,10 @@ public class EscursioneSalvata implements Serializable {
 	private Viaggio viaggio;
 
 	public EscursioneSalvata() {
+		
+		super();
 	}
-
+	
 	public int getId() {
 		return this.id;
 	}

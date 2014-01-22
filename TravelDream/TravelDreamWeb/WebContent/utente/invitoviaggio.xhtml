@@ -12,12 +12,11 @@
   
     <p:growl id="msgs" />  
   
-    <p:panel header="Aggiungi un nuovo amico">  
+    <p:panel header="Condividi">  
         <h:panelGrid columns="2" id="grid">  
             <h:outputLabel value="Email " for="email"></h:outputLabel>  
             <p:inputText id="email"   
                             value="#{InvitoBean.amico}" />  
-              
              
               
             <p:commandButton id="btn_add" value="Aggiungi Amico" update="emails msgs @parent"  

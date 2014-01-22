@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.traveldream.gestionepack.ejb.PacchettoDTO;
+import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
 
 
 public class EscursioneDTO {
@@ -31,7 +32,15 @@ public class EscursioneDTO {
 	
 	private ArrayList<PacchettoDTO> pacchettos;
 
-	
+	private ViaggioDTO viaggio;
+
+	public ViaggioDTO getViaggio() {
+		return viaggio;
+	}
+
+	public void setViaggio(ViaggioDTO viaggio) {
+		this.viaggio = viaggio;
+	}
 
 	public int getCosto() {
 		return costo;
