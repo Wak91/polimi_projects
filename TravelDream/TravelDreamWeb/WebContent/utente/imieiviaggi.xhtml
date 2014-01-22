@@ -1,9 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-
-	<ui:composition template="">
-	</ui:composition>
-</html>
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="Template.xhtml"
+>
+       <ui:define name="content">
+       
+       PRENOTAZIONI CONFERMATE
+       <p:dataTable id="multiPrenotazioni" var="hotel" value="#{ViaggioBean.hotelModels}" paginator="true" rows="5"  
+                     filteredValue="#{ComponentBean.filteredHotels}" >  
+                        
+                <p:column headerText="Nome viaggio" style="width:25%"  >  
+                  <h:outputText value="#{}" />  
+                </p:column>  
+  
+                <p:column headerText="Numero persone" style="width:25%">  
+                <h:outputText value="#{}" />  
+                </p:column>  
+  
+                <p:column headerText="Prezzo totale" style="width:24%" >  
+                <h:outputText value="#{}" />    
+                </p:column>  
+  
+                <p:column headerText="Dal" style="width:24%" >  
+                <h:outputText value="#{}">
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>    
+                </p:column>  
+                
+                 <p:column headerText="Al" style="width:24%" >  
+                 <h:outputText value="#{}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+                  
+                </p:column>  
+                
+                <p:column headerText="Visualizza" style="width:24%" >  
+                <h:link outcome = "modifyHotel?id=#{hotel.id}"  value="Modifica"/>
+				</p:column> 
+              </p:dataTable>
+       </ui:define>
+</ui:composition>

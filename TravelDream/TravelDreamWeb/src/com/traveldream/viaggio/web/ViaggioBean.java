@@ -234,10 +234,22 @@ public class ViaggioBean {
 	public String creaPrenotazione()
 	{
 		
-		// salvo le copie degli elementi selezionati per la creazione del viaggio
-		int id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
-		int id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
-		int id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
+		// salvo le copie degli elementi selezionati per la creazione del viaggio, controllando se esistono già
+		int id_h = BMB.cercaHotelSalvato(selectedHotels);
+		if(id_h == -1 )
+		   {
+			id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
+		   }
+		int id_vsa = BMB.cercaVoloSalvato(selectedVolo_a);
+		if(id_vsa == -1)
+		   {
+			id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
+		   }
+		int id_vsr = BMB.cercaVoloSalvato(selectedVolo_r);
+		if(id_vsr == -1)
+		  {
+			id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
+		  }
 
 			
 	    selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono gi�� a posto
@@ -258,6 +270,7 @@ public class ViaggioBean {
 		prenotazione.setCosto(quotacomplessiva);
 		
 	    BMB.savePrenotazione(prenotazione);
+	    
 	    
 		return "imieiviaggi.xhtml?faces-redirect=true"; 	
 	}

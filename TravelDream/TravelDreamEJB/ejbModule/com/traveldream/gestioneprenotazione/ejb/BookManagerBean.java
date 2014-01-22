@@ -6,26 +6,17 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
-import javax.persistence.Convert;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import sun.security.util.Cache;
-
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
-
-import model.Escursione;
 import model.EscursioneSalvata;
-import model.Hotel;
 import model.HotelSalvato;
-import model.Pacchetto;
 import model.Prenotazione;
 import model.Utente;
 import model.Viaggio;
-import model.Volo;
 import model.VoloSalvato;
 
 /**
@@ -121,6 +112,41 @@ public class BookManagerBean implements BookManagerBeanLocal {
       return em.find(VoloSalvato.class, volodto.getId());
   }
 	  
+public int cercaHotelSalvato(HotelDTO hdto)
+{
+	List<HotelSalvato> myList;
+	myList = em.createNamedQuery("HotelSalvato.findAll", HotelSalvato.class).getResultList();
+	
+	for(HotelSalvato hs : myList)
+	   {
+		if( (   hs.getCosto_giornaliero() == hdto.getCosto_giornaliero() ) 
+		     && hs.getData_fine().equals(hdto.getData_fine())
+			 && (hs.getData_inizio().equals(hdto.getData_inizio())) 
+			 && (hs.getLuogo().equals(hdto.getLuogo()))	
+			 &&  (hs.getNome().equals(hdto.getNome())) 
+			 && (hs.getStelle() == hdto.getStelle()))
+		    {
+			 return hs.getId();
+		    }
+	   }
+	return -1;
+
+}
+
+
+@Override
+public int cercaVoloSalvato(VoloDTO vdto) {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public int cercaEscursioneSalvata(EscursioneDTO edto) {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+	  
  public int cercaViaggio(ViaggioDTO viaggiodto)
  {
 		List <Viaggio> mylist;
@@ -170,5 +196,6 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		em.flush();
 		return em.find(EscursioneSalvata.class, escursione.getId()).getId();
 	}
+
 	
 }

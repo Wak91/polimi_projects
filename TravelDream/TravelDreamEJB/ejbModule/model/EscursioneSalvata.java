@@ -3,10 +3,6 @@ package model;
 import java.io.Serializable;
 
 import javax.persistence.*;
-
-import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
-import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
-
 import java.util.Date;
 
 
