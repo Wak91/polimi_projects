@@ -265,7 +265,26 @@ public class PacketBean {
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
-		System.out.println(" packet data "+packet.getData_inizio());
+		
+		InputStream inputStr = null;
+	    try {
+	        inputStr = imgPack.getInputstream();
+	    } catch (IOException e) {
+	        //log error
+	    }
+
+	    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	    String directory = externalContext.getInitParameter("uploadDirectory");
+	    String filename = FilenameUtils.getName(imgPack.getFileName());
+	    File destFile = new File(directory, filename);
+
+	    //use org.apache.commons.io.FileUtils to copy the File
+	    try {
+	        FileUtils.copyInputStreamToFile(inputStr, destFile);
+	    } catch (IOException e) {
+	        //log error
+	    }
+	    packet.setPathtoImage(imgPack.getFileName());
 		PMB.modifyPacchetto(packet);
 		return "impack.xhtml?faces-redirect=true";
 	}

@@ -526,20 +526,20 @@ public class ComponentBean {
 	{ 
 		for(PacchettoDTO p : CMB.getEscursioneById(id).getPacchettos())
 		   {
-				
-								 
 					ArrayList <EscursioneDTO> pedto = (ArrayList<EscursioneDTO>) p.getLista_escursioni();
-					 for(EscursioneDTO edto: pedto)
+					if(!pedto.isEmpty()) 
+					  {
+					   for(EscursioneDTO edto: pedto)
 					    {
 						 if(edto.getId() == id)
 						  pedto.remove(edto);
 					    }
 
-					 p.setLista_escursioni(pedto); // modifico la lista degli hotel al pacchetto corrente
-					 PMB.modifyPacchetto(p);
+					    p.setLista_escursioni(pedto); // modifico la lista degli hotel al pacchetto corrente
+					    PMB.modifyPacchetto(p);
+					  }
 		   }
-			 
-		   
+			 	   
       CMB.eliminaEscursione(id);
 	  return "toEscursione.xhtml?faces-redirect=true";
 	}

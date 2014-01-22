@@ -213,9 +213,49 @@ public class ViaggioBean {
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setLista_escursioni(selectedEsc);
-		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null)
+		//Controllo che le date dei voli scelti, e delle escursioni siano a posto.
+		// Gli hotel vengono filtrati in base alla disponibilità, si da per scontato
+		//per semplicità che l'hotel sia sempre disponibile nelle date scelte del viaggio
+		//Controllo anche che le date del viaggio non sparino fuori dalla disponibilità del pack
+		
+		
+		//Occhio che qua controlla anche che l'ora del volo combaci con l'ora di partenza
+		// del viaggio, DA METTERE A POSTO!!!
+		//Possibili errori durante la creazione---------------------------------
+		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
+		   selectedVolo_a.getData().equals(viaggio.getData_inizio())==false  ||
+		   selectedVolo_r.getData().equals(viaggio.getData_fine())==false || 
+		   escOutOfData() == 1 ||
+		   viaggio.getData_inizio().before(packet.getData_inizio()) || 
+		   viaggio.getData_fine().after(packet.getData_fine())
+		   )
+		{  
+			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
+			//DEBUG
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 			return "userhome.xhtml?faces-redirect=true";
+
+		}
+		
 		return "pagamento.xhtml?faces-redirect=true"; 	
+	}
+	
+	private int escOutOfData()
+	{
+		for(EscursioneDTO edto: selectedEsc)
+		  {
+			if(edto.getData().before(viaggio.getData_inizio()) || edto.getData().after(viaggio.getData_fine()))
+			  {
+				return 1;
+			  }
+		  }
+		return 0;
+		
 	}
 	
 	public void calcoloquota()

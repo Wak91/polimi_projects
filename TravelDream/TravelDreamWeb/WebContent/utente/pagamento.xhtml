@@ -25,9 +25,7 @@
             <p:spinner id="minmax"   
             value="#{ViaggioBean.n_partecipanti}" min="1" max="15">         
             </p:spinner> 
-             <p:poll interval="1"   
-            listener="#{ViaggioBean.updatePrice}" update="qcc" />     
-				
+           
 			<h:outputLabel for="costogg">Quota per persona</h:outputLabel>
 			<h:outputText id="qpp"  value="#{ViaggioBean.quotapp}"></h:outputText> 
 			<br></br>
