@@ -77,7 +77,6 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 	public int saveEscursioneSalvata(EscursioneDTO escursioneDTO)
 	{
 		EscursioneSalvata escursione = new EscursioneSalvata();
-		escursione.setViaggio(this.DTOtoEntityViaggio(escursioneDTO.getViaggio()));
 		escursione.setNome(escursioneDTO.getNome());
 		escursione.setLuogo(escursioneDTO.getLuogo());
 		escursione.setImmagine(escursioneDTO.getImmagine());

@@ -48,7 +48,6 @@ public class BookManagerBean implements BookManagerBeanLocal {
         
         for(EscursioneSalvata es: (this.DTOtoEntityEscursione(v.getLista_escursioni())))
 		    {
-        	es.setViaggio(travel2);
 	    	em.persist(es);
 	    	em.flush();
 	    	travel2.getEscursioneSalvatas().add(em.find(EscursioneSalvata.class, es.getId()));
@@ -166,7 +165,7 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 		if( (   es.getCosto() == edto.getCosto() ) 
 		     && es.getData().equals(edto.getData())
 			 &&  (es.getLuogo().equals(edto.getLuogo())) 
-			 && (es.getNome() == edto.getNome()))  
+			 && (es.getNome() == edto.getNome()))   
 		    {
 			 return es.getId();
 		    }
@@ -200,7 +199,6 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
  }	
  
  
-
 	private int sameEscursioni(Viaggio v, ViaggioDTO vdto)
 	{
 		for(EscursioneSalvata e: v.getEscursioneSalvatas())
@@ -215,7 +213,6 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 	public int saveEscursioneSalvata(EscursioneDTO escursioneDTO)
 	{
 		EscursioneSalvata escursione = new EscursioneSalvata();
-		escursione.setViaggio(this.DTOtoEntityViaggio(escursioneDTO.getViaggio()));
 		escursione.setNome(escursioneDTO.getNome());
 		escursione.setLuogo(escursioneDTO.getLuogo());
 		escursione.setImmagine(escursioneDTO.getImmagine());
