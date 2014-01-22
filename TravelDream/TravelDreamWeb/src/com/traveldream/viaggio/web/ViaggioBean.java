@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.GiftListDTO;
+import com.traveldream.condivisione.ejb.InvitoDTO;
 import com.traveldream.condivisione.web.GiftListBean;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
@@ -214,7 +215,16 @@ public class ViaggioBean {
 		  {
 			return null;
 		  }
+		viaggio.setVolo_andata(selectedVolo_a);
+		viaggio.setVolo_ritorno(selectedVolo_r);
+		viaggio.setHotel(selectedHotels);
+		viaggio.setLista_escursioni(selectedEsc);
 		
+		InvitoDTO invito = new InvitoDTO();
+		invito.setViaggio(viaggio);
+		invito.setUtente(UMG.getUserDTO());
+		invito.setId(2);
+		FacesUtil.setSessionMapValue("SharedDTO", invito);	
 		
 		//creazione entita invito
 		
