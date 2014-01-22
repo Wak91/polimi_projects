@@ -10,12 +10,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.traveldream.autenticazione.ejb.UserMgr;
+import com.traveldream.gestioneprenotazione.ejb.BookManagerBean;
+import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
+import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
 
 import model.Amico;
 import model.EscursionePagata;
 import model.EscursioneSalvata;
 import model.Gift_List;
 import model.Utente;
+import model.Viaggio;
 
 
 @Stateless
@@ -30,12 +34,16 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 	@EJB
 	private UserMgr userMgr;
 	
+	@EJB
+	private BookManagerBeanLocal BMG;
+	
 	
 	public void addToGiftList(GiftListDTO giftListDTO){
 		Gift_List gift_List = new Gift_List();
 		//crea viaggio
 		
-			
+			Viaggio viaggio = em.find(Viaggio.class, BMG.saveViaggio(giftListDTO.getViaggio()));
+			gift_List.setViaggio(viaggio);
 			for (String mail:giftListDTO.getAmico()){
 				Amico friend =new Amico(mail);
 				em.persist(friend);

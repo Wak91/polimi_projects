@@ -275,13 +275,25 @@ public class ViaggioBean {
 		  {
 			return null;
 		  }
-		viaggio.setVolo_andata(selectedVolo_a);
-		viaggio.setVolo_ritorno(selectedVolo_r);
-		viaggio.setHotel(selectedHotels);
+		
+		int id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
+		int id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
+		int id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
+
+		
+		 selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perch�� gli altri campi sono gi�� a posto
+		 selectedVolo_a.setId(id_vsa);
+		 selectedVolo_r.setId(id_vsr);
+		
+         viaggio.setHotel(selectedHotels);
+         viaggio.setVolo_andata(selectedVolo_a);
+         viaggio.setVolo_ritorno(selectedVolo_r);
+
 		viaggio.setLista_escursioni(selectedEsc);
 		
-		
 		GiftListDTO gift= new GiftListDTO();
+		viaggio.setData_fine(data_fine);
+		viaggio.setData_inizio(data_inizio);
 		gift.setViaggio(viaggio);
 		gift.setUtente(userMgr.getUserDTO());
 		gift.setId(2);

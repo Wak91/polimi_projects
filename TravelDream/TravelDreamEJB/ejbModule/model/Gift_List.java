@@ -1,7 +1,10 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -10,7 +13,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="`Gift List`")
+@Table(name="Gift List")
 @NamedQuery(name="Gift_List.findAll", query="SELECT g FROM Gift_List g")
 public class Gift_List implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -49,6 +52,7 @@ public class Gift_List implements Serializable {
 	private Viaggio viaggio;
 
 	public Gift_List() {
+		amicos = new ArrayList<Amico>();
 	}
 
 	public int getId() {

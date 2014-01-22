@@ -66,6 +66,8 @@ public class GiftListBean {
 			System.out.println("aggiunta "+escursionePagata.getEscursione().getNome());
 			giftListDTO.getEscursionePagata().add(escursionePagata);
 		}
+		System.out.println("aggiunta "+giftListDTO.getViaggio().getData_fine());
+
 		GLM.addToGiftList(giftListDTO);
 		for (String string : getGiftListDTO().getAmico() ) {
 			System.out.println("gift "+string);
