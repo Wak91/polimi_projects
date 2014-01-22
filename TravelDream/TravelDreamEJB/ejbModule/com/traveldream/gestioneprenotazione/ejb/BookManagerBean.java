@@ -77,8 +77,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	 private Viaggio DTOtoEntityViaggio(ViaggioDTO viaggio) {
 		return em.find(Viaggio.class, viaggio.getId());
 	}
-
-
+	 
 	private Utente DTOtoEntityUtente(UserDTO utente) {
 		return em.find(Utente.class, utente.getUsername());
 	}

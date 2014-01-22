@@ -314,6 +314,8 @@ public class ViaggioBean {
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
+		viaggio.setData_inizio(data_inizio);
+		viaggio.setData_fine(data_fine);
 		
 		InvitoDTO invito = new InvitoDTO();
 		invito.setViaggio(viaggio);

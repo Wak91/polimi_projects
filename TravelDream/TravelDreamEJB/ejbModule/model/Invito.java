@@ -1,7 +1,12 @@
 package model;
 
 import java.io.Serializable;
+
+import javax.ejb.EJB;
 import javax.persistence.*;
+
+import com.traveldream.condivisione.ejb.InvitoDTO;
+import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
 
 
 /**
@@ -29,8 +34,18 @@ public class Invito implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="Viaggio")
 	private Viaggio viaggioBean;
+	
 
 	public Invito() {
+		super();
+	}
+	
+	public Invito(InvitoDTO invito, Utente utente, Viaggio viaggio){
+		this.id = invito.getId();
+		this.amico = invito.getAmico();
+		this.status = invito.getStatus();
+		this.utenteBean = utente;
+		this.viaggioBean = viaggio;
 	}
 
 	public int getId() {

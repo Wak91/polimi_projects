@@ -18,7 +18,7 @@ import com.traveldream.util.web.FacesUtil;
 @RequestScoped
 public class GiftListBean {
 
-	String amico;
+	private String amico;
 
 
 	GiftListDTO giftListDTO;

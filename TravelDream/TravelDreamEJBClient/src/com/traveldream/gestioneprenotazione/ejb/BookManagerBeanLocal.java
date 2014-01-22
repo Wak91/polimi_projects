@@ -1,5 +1,8 @@
 package com.traveldream.gestioneprenotazione.ejb;
 
+import javax.ejb.Local;
+
+@Local
 public interface BookManagerBeanLocal {
 
 	
@@ -7,5 +10,4 @@ public interface BookManagerBeanLocal {
 	int cercaViaggio(ViaggioDTO viaggiodto);
 	void savePrenotazione(PrenotazioneDTO pdto);
 	void updateViaggio(ViaggioDTO v);
-	
 }
