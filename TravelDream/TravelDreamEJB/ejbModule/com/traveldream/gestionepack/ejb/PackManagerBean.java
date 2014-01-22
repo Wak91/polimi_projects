@@ -180,13 +180,25 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	        predicates.add(qb.equal(hotel.get("luogo"), citta));
 	    }
 	  
-	    if (inizio != null){
+	    if (inizio != null && fine==null){
 	    	predicates.add(
-	    			qb.greaterThanOrEqualTo(hotel.<Date>get("data_inizio"),inizio));   	
+	    			qb.lessThanOrEqualTo(hotel.<Date>get("data_inizio"),inizio));   	
 	    }
-	    if (fine != null){
+	    if (fine != null && inizio ==null){
 	    	predicates.add(
-	    			qb.lessThanOrEqualTo(hotel.<Date>get("data_fine"),fine));   	
+	    			qb.greaterThanOrEqualTo(hotel.<Date>get("data_fine"),fine));   	
+	    }
+	    if(fine !=null && inizio !=null){
+	    	//Predicate inizioHotelInMezzoPacchetto = qb.between(hotel.<Date>get("data_inizio"), inizio,fine);
+	    //	Predicate fineHotelInMezzoPacchetto = qb.between(hotel.<Date>get("data_fine"), inizio,fine);
+	    	Predicate inizioHotelPrimaInizioPacchettoPredicate = qb.lessThanOrEqualTo(hotel.<Date>get("data_inizio"),inizio); 
+	    	Predicate fineHoteldopofinePacchettoPredicate = qb.greaterThanOrEqualTo(hotel.<Date>get("data_fine"),fine); 
+
+	    	Predicate HotelContienePacchetto = qb.and(inizioHotelPrimaInizioPacchettoPredicate,fineHoteldopofinePacchettoPredicate);
+	    //	Predicate inizioOFineHotelInPredicateMezzoPacchettoPredicate = qb.or(inizioHotelInMezzoPacchetto,fineHotelInMezzoPacchetto);
+
+	    //	Predicate DataOK = qb.or(HotelContienePacchetto,inizioOFineHotelInPredicateMezzoPacchettoPredicate);
+	        predicates.add(HotelContienePacchetto);
 	    }
 	    
 	    c.where(predicates.toArray(new Predicate[]{}));
