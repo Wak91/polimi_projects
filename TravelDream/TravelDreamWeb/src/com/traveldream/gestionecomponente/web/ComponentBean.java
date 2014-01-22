@@ -378,15 +378,24 @@ public class ComponentBean {
 					    for(VoloDTO vdto: pvdto)
 					    {
 						 if(vdto.getId() != volo.getId())
-							 new_pvdto.add(vdto);
- 					    }					    
-					    p.setLista_voli(new_pvdto); 
-					    PMB.modifyPacchetto(p);
-					    PacchettoDTO pdto2= PMB.getPacchettoByID(p.getId());
-					    if(pdto2.getLista_voli_andata().isEmpty() || pdto2.getLista_voli_ritorno().isEmpty())
-					      {
+							 new_pvdto.add(vdto); //new_pvdto è la nuova list voli del pack
+ 					    }	
+					    int andata=0,ritorno=0; //controllo nella lista nuova se esiste almeno un volo di andata e uno di ritorno
+					    for(VoloDTO vdto2 : new_pvdto)
+					       {
+					    	if(vdto2.getLuogo_partenza().equals(p.getDestinazione()))
+					    		andata++;
+					    	else
+					    		if(vdto2.getLuogo_arrivo().equals(p.getDestinazione()))
+					    			ritorno++;
+					       }
+					    if(andata>=1 && ritorno>=1) // se ho ancora abbastanza voli salvo la nuova lista e aggiorno il pack
+					    {
+					      p.setLista_voli(new_pvdto); 
+						  PMB.modifyPacchetto(p);
+					    }
+					    else
 					    	PMB.deletePacchetto(p.getId());
-					      }
 				       }
 			 }
 		   }
@@ -403,22 +412,30 @@ public class ComponentBean {
 	{ 
 		for(PacchettoDTO p : CMB.getVoloById(id).getPacchettos())
 		   {
-					    ArrayList <VoloDTO> pvdto = (ArrayList<VoloDTO>) p.getLista_voli();
-					    for(VoloDTO vdto: pvdto)
-					    {
-						 if(vdto.getId() == id)
-						  pvdto.remove(pvdto);
-					    }					    
-					    p.setLista_voli(pvdto); 
-					    PMB.modifyPacchetto(p);
-					    PacchettoDTO pdto2= PMB.getPacchettoByID(p.getId());
-					    if(pdto2.getLista_voli_andata().isEmpty() || pdto2.getLista_voli_ritorno().isEmpty())
-					      {
-					    	PMB.deletePacchetto(p.getId());
-					      }
-	       }
-			 
-		   
+			  ArrayList <VoloDTO> pvdto = (ArrayList<VoloDTO>) p.getLista_voli();
+			    ArrayList <VoloDTO> new_pvdto = new ArrayList <VoloDTO>();
+			    for(VoloDTO vdto: pvdto)
+			    {
+				 if(vdto.getId() != id)
+					 new_pvdto.add(vdto); //new_pvdto è la nuova list voli del pack
+			    }	
+			    int andata=0,ritorno=0; //controllo nella lista nuova se esiste almeno un volo di andata e uno di ritorno
+			    for(VoloDTO vdto2 : new_pvdto)
+			       {
+			    	if(vdto2.getLuogo_partenza().equals(p.getDestinazione()))
+			    		andata++;
+			    	else
+			    		if(vdto2.getLuogo_arrivo().equals(p.getDestinazione()))
+			    			ritorno++;
+			       }
+			    if(andata>=1 && ritorno>=1) // se ho ancora abbastanza voli salvo la nuova lista e aggiorno il pack
+			    {
+			      p.setLista_voli(new_pvdto); 
+				  PMB.modifyPacchetto(p);
+			    }
+			    else
+			    	PMB.deletePacchetto(p.getId());
+		       }
 		CMB.eliminaVolo(id);
 	  return "toVolo.xhtml?faces-redirect=true";
 	}

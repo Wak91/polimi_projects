@@ -213,7 +213,8 @@ public class ViaggioBean {
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setLista_escursioni(selectedEsc);
-		
+		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null)
+			return "userhome.xhtml?faces-redirect=true";
 		return "pagamento.xhtml?faces-redirect=true"; 	
 	}
 	
