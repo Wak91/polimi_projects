@@ -3,7 +3,9 @@ package model;
 import java.io.Serializable;
 
 import javax.persistence.*;
+
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -32,8 +34,8 @@ public class EscursioneSalvata implements Serializable {
 	private String nome;
 
 	//bi-directional many-to-one association to Viaggio
-	@ManyToOne
-	private Viaggio viaggio;
+	@ManyToMany(mappedBy="escursioneSalvatas")
+	private List<Viaggio> viaggios;
 
 	public EscursioneSalvata() {
 		
@@ -88,12 +90,12 @@ public class EscursioneSalvata implements Serializable {
 		this.nome = nome;
 	}
 
-	public Viaggio getViaggio() {
-		return this.viaggio;
+	public List<Viaggio> getViaggio() {
+		return this.viaggios;
 	}
 
-	public void setViaggio(Viaggio viaggio) {
-		this.viaggio = viaggio;
+	public void setViaggio(List<Viaggio> viaggio) {
+		this.viaggios = viaggio;
 	}
 
 }
