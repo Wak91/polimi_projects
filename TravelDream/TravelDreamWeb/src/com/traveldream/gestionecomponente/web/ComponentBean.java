@@ -508,7 +508,7 @@ public class ComponentBean {
 					 for(EscursioneDTO edto: pedto)
 					    {
 						 if(edto.getId() != escursione.getId())
-						  new_pedto.remove(edto);
+						  new_pedto.add(edto);
 					    }
 
 					 p.setLista_escursioni(new_pedto); // modifico la lista delle esc al pacchetto corrente
