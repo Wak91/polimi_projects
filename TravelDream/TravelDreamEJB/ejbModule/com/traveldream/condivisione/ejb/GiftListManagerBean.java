@@ -1,6 +1,7 @@
 package com.traveldream.condivisione.ejb;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -44,19 +45,16 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		
 			Viaggio viaggio = em.find(Viaggio.class, BMG.saveViaggio(giftListDTO.getViaggio()));
 			gift_List.setViaggio(viaggio);
-			for (String mail:giftListDTO.getAmico()){
-				Amico friend =new Amico(mail);
-				em.persist(friend);
-				em.flush();
-				gift_List.getAmicos().add(friend);
-			}
 			gift_List.setHotelPag((byte)0);
 			gift_List.setVoloAPag((byte)0);
 			gift_List.setVoloRPag((byte)0);
 			gift_List.setUtente(em.find(Utente.class, giftListDTO.getUtente().getUsername()));
+			gift_List.setAmicos(saveEntityAmico(giftListDTO.getAmico()));
+			System.out.println("id gift list +"+gift_List.getId());
 			em.persist(gift_List);
 			em.flush();
-		
+
+			System.out.println("Sono dopo fluscXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 			ArrayList<EscursionePagata> escursionePagatas = new ArrayList<EscursionePagata>();
 			for (EscursionePagataDTO escursionePagataDTO : giftListDTO.getEscursionePagata()) {
 				EscursioneSalvata escursioneSalvata = em.find(EscursioneSalvata.class, escursionePagataDTO.getEscursione().getId());
@@ -67,8 +65,19 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 				escursionePagatas.add(escursionePagata);
 			}
 			gift_List.setEscursionePagatas(escursionePagatas);
-		
-		
+	}
+	
+
+	private List<Amico> saveEntityAmico(List<String> emails) {
+		ArrayList<Amico> friends =new ArrayList<Amico>();
+		for (String string : emails) {
+			Amico amico =new Amico(string);
+			em.persist(amico);
+			em.flush();
+			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXid amico "+amico.getId());
+			friends.add(em.find(Amico.class, amico.getId()));
+		}
+		return friends;
 	}
 
 	

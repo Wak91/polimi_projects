@@ -322,15 +322,11 @@ public class ViaggioBean {
          viaggio.setHotel(selectedHotels);
          viaggio.setVolo_andata(selectedVolo_a);
          viaggio.setVolo_ritorno(selectedVolo_r);
-
-		viaggio.setLista_escursioni(selectedEsc);
+		 viaggio.setLista_escursioni(selectedEsc);
 		
 		GiftListDTO gift= new GiftListDTO();
-		viaggio.setData_fine(data_fine);
-		viaggio.setData_inizio(data_inizio);
 		gift.setViaggio(viaggio);
 		gift.setUtente(userMgr.getUserDTO());
-		gift.setId(2);
 		FacesUtil.setSessionMapValue("GiftDTO", gift);		
 		//creazione entita gift
 		

@@ -13,11 +13,12 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="Gift List")
+@Table(name="GiftList")
 @NamedQuery(name="Gift_List.findAll", query="SELECT g FROM Gift_List g")
 public class Gift_List implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
 
@@ -28,20 +29,23 @@ public class Gift_List implements Serializable {
 	private byte voloRPag;
 
 	//bi-directional many-to-one association to EscursionePagata
-	@OneToMany(mappedBy="giftList")
+	@OneToMany(mappedBy="giftList",cascade = {CascadeType.PERSIST,
+            CascadeType.MERGE})
 	private List<EscursionePagata> escursionePagatas;
 
 	//bi-directional many-to-many association to Amico
-	  @ManyToMany()
+	  @ManyToMany(cascade = {CascadeType.PERSIST,
+	            CascadeType.MERGE})
 	  @JoinTable(
-	      name="AmicoGift List"
+	      name="AmicoGiftList"
 	      , joinColumns={
-	        @JoinColumn(name="Gift List_ID")
+	        @JoinColumn(name="`GiftList_ID`")
 	        }
 	      , inverseJoinColumns={
 	        @JoinColumn(name="Amico_ID")
 	        }
-	      )	private List<Amico> amicos;
+	      )	
+	  private List<Amico> amicos;
 
 	//bi-directional many-to-one association to Utente
 	@ManyToOne
