@@ -138,5 +138,16 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		em.remove(em.find(Gift_List.class, giftListDTO.getId()));
 		
 	}
+
+
+	@Override
+	public GiftListDTO findGiftByHash(String codice) {
+		List<Gift_List> gift_List =em.createNamedQuery("Gift_List.findbyhash", Gift_List.class).setParameter("h", codice).getResultList();
+		if (gift_List.isEmpty()){
+			return null;}
+		else{	
+			return EntitytoDtoGift(gift_List.get(0));
+		}
+	}
 	
 }

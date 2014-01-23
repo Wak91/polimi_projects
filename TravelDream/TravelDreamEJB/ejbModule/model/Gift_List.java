@@ -16,6 +16,7 @@ import java.util.List;
 @Table(name="GiftList")
 @NamedQueries ( 
 	       {
+	    	   @NamedQuery(name="Gift_List.findbyhash", query="SELECT g FROM Gift_List g WHERE g.hash  = :h"),
 	    	   @NamedQuery(name="Gift_List.findbyuser", query="SELECT g FROM Gift_List g WHERE g.utente  = :u"),
 	    	   @NamedQuery(name="Gift_List.findAll", query="SELECT g FROM Gift_List g")
 	       }

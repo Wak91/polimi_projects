@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
@@ -25,15 +27,17 @@ import com.traveldream.viaggio.web.PreDataModel;
 public class GiftListBean {
 
 	String amico;
+	amiciDatamodel amiciDatamodel;
+
 	
 	GiftDataModel giftDataModel;
-	GiftListDTO selectedGiftListDTO;
+	GiftListDTO selectedGiftListDTO;	//gift list per la visualizzazione
 	
-	amiciDatamodel amiciDatamodel;
 	
 	EscursionePagataDatamodel escursionePagataDatamodel;
 	ArrayList<GiftListDTO> filteredGift;
 	
+	String codiceGift;
 	
 	@EJB
 	UserMgr userMgr;
@@ -41,7 +45,9 @@ public class GiftListBean {
 	@EJB
 	GiftListManagerBeanLocal GLM;
 
-	GiftListDTO giftListDTO;
+	GiftListDTO giftListDTO; //gift list per la creazione
+	
+	GiftListDTO giftListDTOAmicoDto; //gift list vista dall'amico
 	
 
 	@PostConstruct
@@ -112,6 +118,23 @@ public class GiftListBean {
 		setGiftDataModel(new GiftDataModel(GLM.getGiftListDTO(current_user)));
 	}
 
+	public String verifyCode(String codice) {
+		System.out.println(codice);
+		GiftListDTO gift=GLM.findGiftByHash(codice);
+		if (gift==null){
+			System.out.println("sono nel if");
+			FacesContext.getCurrentInstance().addMessage("codice", new FacesMessage("Il codice inserito non e' corretto"));
+			return null;
+		}
+		System.out.println("sono fuori nel if");
+
+		giftListDTOAmicoDto=gift;
+		return "invitogift.xhtml?faces-redirect=true";
+
+	}
+	
+	
+	
 	public GiftDataModel getGiftDataModel() {
 		return giftDataModel;
 	}
@@ -152,6 +175,22 @@ public class GiftListBean {
 
 	public void setAmiciDatamodel(amiciDatamodel amiciDatamodel) {
 		this.amiciDatamodel = amiciDatamodel;
+	}
+
+	public String getCodiceGift() {
+		return codiceGift;
+	}
+
+	public void setCodiceGift(String codiceGift) {
+		this.codiceGift = codiceGift;
+	}
+
+	public GiftListDTO getGiftListDTOAmicoDto() {
+		return giftListDTOAmicoDto;
+	}
+
+	public void setGiftListDTOAmicoDto(GiftListDTO giftListDTOAmicoDto) {
+		this.giftListDTOAmicoDto = giftListDTOAmicoDto;
 	}
 
 	

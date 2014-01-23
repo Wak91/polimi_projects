@@ -12,4 +12,5 @@ public interface GiftListManagerBeanLocal {
 	ArrayList<GiftListDTO> getGiftListDTO(UserDTO user);
 	void addToGiftList(GiftListDTO giftListDTO);
 	void removeFromGift(GiftListDTO giftListDTO);
+	GiftListDTO findGiftByHash(String codice);
 }
