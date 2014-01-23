@@ -146,6 +146,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		if (gift_List.isEmpty()){
 			return null;}
 		else{	
+			em.refresh(gift_List.get(0));
 			return EntitytoDtoGift(gift_List.get(0));
 		}
 	}

@@ -129,8 +129,20 @@ public class GiftListBean {
 		System.out.println("sono fuori nel if");
 
 		giftListDTOAmicoDto=gift;
-		return "invitogift.xhtml?faces-redirect=true";
+		return "answergift.xhtml?faces-redirect=true&id="+codice;
 
+	}
+	
+	public void loadGiftFromHash(String codice){
+		System.out.println(codice);
+		GiftListDTO gift=GLM.findGiftByHash(codice);
+		if (gift==null){
+			System.out.println("sono nel if");
+			FacesContext.getCurrentInstance().addMessage("codice", new FacesMessage("Il codice inserito non e' corretto"));
+		}
+
+		giftListDTOAmicoDto=gift;
+		
 	}
 	
 	

@@ -22,17 +22,9 @@
 			</h:panelGrid>
 		</h:form>
 		<h:form rendered="#{param['user']}">
-			<h:link value="Register" outcome="register" />
-       </h:form>
-       <h:form id="gift">
-			<h:panelGrid columns="3">
-				<p:outputLabel for="codice" value="Codice Gift" />
-				<p:inputText id="codice" name="codice" binding="#{cod}"/>
-				<p:message for="codice"/>
-				<p:commandButton value="Submit" action="#{GiftListBean.verifyCode(cod.value)}" >
-				</p:commandButton>
-			</h:panelGrid>
-		</h:form>
+			<h:link value="Registero" outcome="register" />
+       </h:form>      
+       	<h:link value="Inserisci Codice Gift" outcome="verifycodegift"/>
 	</p:panel>
 </h:body>
 </html>
