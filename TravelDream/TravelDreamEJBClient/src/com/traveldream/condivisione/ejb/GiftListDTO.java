@@ -23,6 +23,7 @@ public class GiftListDTO {
 	@NotNull
 	private boolean voloAPag;
 
+	private String hash;
 	
 	@NotNull
 	private boolean voloRPag;
@@ -105,6 +106,14 @@ public class GiftListDTO {
 
 	public void setViaggio(ViaggioDTO viaggio) {
 		this.viaggio = viaggio;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
 	}
 
 	

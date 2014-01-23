@@ -32,15 +32,17 @@ public class Gift_List implements Serializable {
 	private boolean voloAPag;
 	
 	private boolean voloRPag;
+	
+	private String hash;
 
 	//bi-directional many-to-one association to EscursionePagata
 	@OneToMany(mappedBy="giftList",cascade = {CascadeType.PERSIST,
-            CascadeType.MERGE, CascadeType.REFRESH})
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
 	private List<EscursionePagata> escursionePagatas;
 
 	//bi-directional many-to-many association to Amico
 	  @ManyToMany(cascade = {CascadeType.PERSIST,
-	            CascadeType.MERGE,CascadeType.REFRESH})
+	            CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE})
 	  @JoinTable(
 	      name="AmicoGiftList"
 	      , joinColumns={
@@ -141,6 +143,14 @@ public class Gift_List implements Serializable {
 
 	public void setVoloRPag(boolean voloRPag) {
 		this.voloRPag = voloRPag;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
 	}
 	
 	

@@ -10,6 +10,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.gestioneprenotazione.ejb.BookManagerBean;
@@ -55,6 +57,8 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 			gift_List.setUtente(em.find(Utente.class, giftListDTO.getUtente().getUsername()));
 			gift_List.setAmicos(saveEntityAmico(giftListDTO.getAmico()));
 			System.out.println("id gift list +"+gift_List.getId());
+			gift_List.setHash(DigestUtils.sha512Hex((int)Math.random()*10000000+gift_List.getViaggio().getId()+gift_List.getUtente().getUsername()+gift_List.getViaggio().getHotelSalvato().getNome()));
+
 			em.persist(gift_List);
 			em.flush();
 
@@ -69,6 +73,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 				System.out.println("escursione salvat :"+escursionePagata.getEscursioneSalvata().getNome()+escursionePagata.getEscursioneSalvata().getId());
 				escursionePagatas.add(escursionePagata);
 			}
+
 			gift_List.setEscursionePagatas(escursionePagatas);
 
 	}
@@ -106,6 +111,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		giftListDTO.setHotelPag(gift_List.isHotelPag());
 		giftListDTO.setVoloAPag(gift_List.isVoloAPag());
 		giftListDTO.setVoloRPag(gift_List.isVoloRPag());
+		giftListDTO.setHash(gift_List.getHash());
 		for (Amico amico : gift_List.getAmicos()) {
 			giftListDTO.getAmico().add(amico.getAmico());
 		}
@@ -123,6 +129,14 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		escursionePagataDTO.setEscursione(Converter.EscursioneToDTO((escursionePagata.getEscursioneSalvata())));
 		return escursionePagataDTO;
 
+	}
+
+
+	@Override
+	public void removeFromGift(GiftListDTO giftListDTO) {
+		System.out.println("remove id "+giftListDTO.getId());
+		em.remove(em.find(Gift_List.class, giftListDTO.getId()));
+		
 	}
 	
 }

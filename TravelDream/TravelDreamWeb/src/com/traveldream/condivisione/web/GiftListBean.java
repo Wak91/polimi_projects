@@ -69,7 +69,7 @@ public class GiftListBean {
 		this.giftListDTO = giftListDTO;
 	}
 	
-	public void submit(){
+	public void creaGift(){
 		giftListDTO.setVoloAPag(false);
 		giftListDTO.setVoloRPag(false);
 		giftListDTO.setHotelPag(false);
@@ -86,9 +86,16 @@ public class GiftListBean {
 		GLM.addToGiftList(giftListDTO);
 		for (String string : getGiftListDTO().getAmico() ) {
 			System.out.println("gift "+string);
+		}	
+	}
+	
+	public void eliminaGift() {
+		GLM.removeFromGift(selectedGiftListDTO);
+		UserDTO current_user = userMgr.getUserDTO();
 
-		}
-		
+		setGiftDataModel(new GiftDataModel(GLM.getGiftListDTO(current_user)));
+
+
 	}
 	public void setupamicidialog() {
 		amiciDatamodel = new amiciDatamodel(selectedGiftListDTO.getAmico());
