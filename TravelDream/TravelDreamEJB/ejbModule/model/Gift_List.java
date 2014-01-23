@@ -27,11 +27,11 @@ public class Gift_List implements Serializable {
 	@Id
 	private int id;
 
-	private byte hotelPag;
+	private boolean hotelPag;
 	
-	private byte voloAPag;
+	private boolean voloAPag;
 	
-	private byte voloRPag;
+	private boolean voloRPag;
 
 	//bi-directional many-to-one association to EscursionePagata
 	@OneToMany(mappedBy="giftList",cascade = {CascadeType.PERSIST,
@@ -72,29 +72,6 @@ public class Gift_List implements Serializable {
 		this.id = id;
 	}
 
-	public byte getHotelPag() {
-		return this.hotelPag;
-	}
-
-	public void setHotelPag(byte hotelPag) {
-		this.hotelPag = hotelPag;
-	}
-
-	public byte getVoloAPag() {
-		return this.voloAPag;
-	}
-
-	public void setVoloAPag(byte voloAPag) {
-		this.voloAPag = voloAPag;
-	}
-
-	public byte getVoloRPag() {
-		return this.voloRPag;
-	}
-
-	public void setVoloRPag(byte voloRPag) {
-		this.voloRPag = voloRPag;
-	}
 
 	public List<EscursionePagata> getEscursionePagatas() {
 		return this.escursionePagatas;
@@ -141,5 +118,31 @@ public class Gift_List implements Serializable {
 	public void setViaggio(Viaggio viaggio) {
 		this.viaggio = viaggio;
 	}
+
+	public boolean isHotelPag() {
+		return hotelPag;
+	}
+
+	public void setHotelPag(boolean hotelPag) {
+		this.hotelPag = hotelPag;
+	}
+
+	public boolean isVoloAPag() {
+		return voloAPag;
+	}
+
+	public void setVoloAPag(boolean voloAPag) {
+		this.voloAPag = voloAPag;
+	}
+
+	public boolean isVoloRPag() {
+		return voloRPag;
+	}
+
+	public void setVoloRPag(boolean voloRPag) {
+		this.voloRPag = voloRPag;
+	}
+	
+	
 
 }

@@ -6,7 +6,7 @@ import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 public class EscursionePagataDTO {
 	private int id;
 	
-	private byte escPagata;
+	private boolean escPagata;
 	
 	private EscursioneDTO escursione;
 
@@ -19,11 +19,11 @@ public class EscursionePagataDTO {
 		this.id = id;
 	}
 
-	public byte getEscPagata() {
+	public boolean getEscPagata() {
 		return escPagata;
 	}
 
-	public void setEscPagata(byte escPagata) {
+	public void setEscPagata(boolean escPagata) {
 		this.escPagata = escPagata;
 	}
 

@@ -17,7 +17,7 @@ public class EscursionePagata implements Serializable {
 	@Id
 	private int id;
 
-	private byte pagata;
+	private boolean pagata;
 
 	//bi-directional many-to-one association to Gift_List
 	@ManyToOne
@@ -29,6 +29,7 @@ public class EscursionePagata implements Serializable {
 	private EscursioneSalvata escursioneSalvata;
 
 	public EscursionePagata() {
+		escursioneSalvata= new EscursioneSalvata();
 	}
 
 	public int getId() {
@@ -40,11 +41,11 @@ public class EscursionePagata implements Serializable {
 	}
 
 
-	public byte getPagata() {
+	public boolean getPagata() {
 		return this.pagata;
 	}
 
-	public void setPagata(byte pagata) {
+	public void setPagata(boolean pagata) {
 		this.pagata = pagata;
 	}
 

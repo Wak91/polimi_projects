@@ -161,6 +161,7 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 	
 	for(EscursioneSalvata es : myList)
 	   {
+		System.out.println("escursione  "+es.getId()+es.getNome());
 		if( (   es.getCosto() == edto.getCosto() ) 
 		     && es.getData().equals(edto.getData())
 			 &&  (es.getLuogo().equals(edto.getLuogo())) 
@@ -202,7 +203,7 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 	{
 		int cont=0;
 		if(v.getEscursioneSalvatas().size() != vdto.getLista_escursioni().size())
-			return 0; // se già le dimensioni sono diverse una conterrà un'escursione diversa da un altra
+			return 0; // se gi�� le dimensioni sono diverse una conterr�� un'escursione diversa da un altra
 		for(EscursioneSalvata e: v.getEscursioneSalvatas())
 		   {
 			cont=0;
@@ -248,8 +249,9 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 				myDTOList.add(p1);
 			  }
 		   }
-		return myDTOList;
-		
+		return myDTOList;	
 	}
+	
+
 	
 }

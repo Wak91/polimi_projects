@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
@@ -22,13 +21,18 @@ import com.traveldream.viaggio.web.PreDataModel;
 
 
 @ManagedBean(name="GiftListBean") 
-@RequestScoped
+@ViewScoped
 public class GiftListBean {
 
 	String amico;
 	
 	GiftDataModel giftDataModel;
 	GiftListDTO selectedGiftListDTO;
+	
+	
+	EscursionePagataDatamodel escursionePagataDatamodel;
+	ArrayList<GiftListDTO> filteredGift;
+	
 	
 	@EJB
 	UserMgr userMgr;
@@ -65,12 +69,13 @@ public class GiftListBean {
 	}
 	
 	public void submit(){
-		giftListDTO.setVoloAPag((byte)0);
-		giftListDTO.setVoloRPag((byte)0);
-		giftListDTO.setHotelPag((byte)0);
+		giftListDTO.setVoloAPag(false);
+		giftListDTO.setVoloRPag(false);
+		giftListDTO.setHotelPag(false);
 		for (EscursioneDTO escursioneDTO : giftListDTO.getViaggio().getLista_escursioni()) {
+			System.out.println("Aggiungo escursioni a pagata"+escursioneDTO.getId()+escursioneDTO.getNome());
 			EscursionePagataDTO escursionePagata = new EscursionePagataDTO();
-			escursionePagata.setEscPagata((byte)0);
+			escursionePagata.setEscPagata(false);
 			escursionePagata.setEscursione(escursioneDTO);
 			System.out.println("aggiunta "+escursionePagata.getEscursione().getNome());
 			giftListDTO.getEscursionePagata().add(escursionePagata);
@@ -83,6 +88,10 @@ public class GiftListBean {
 
 		}
 		
+	}
+	public void setupEscursioniPagatedialog(){
+		System.out.println("ID selected"+selectedGiftListDTO.getId());
+		escursionePagataDatamodel= new EscursionePagataDatamodel(selectedGiftListDTO.getEscursionePagata());
 	}
 	
 	public void getGiftList() {
@@ -107,6 +116,22 @@ public class GiftListBean {
 	}
 
 	
+	public ArrayList<GiftListDTO> getFilteredGift() {
+		return filteredGift;
+	}
+
+	public void setFilteredGift(ArrayList<GiftListDTO> filteredGift) {
+		this.filteredGift = filteredGift;
+	}
+
+	public EscursionePagataDatamodel getEscursionePagataDatamodel() {
+		return escursionePagataDatamodel;
+	}
+
+	public void setEscursionePagataDatamodel(
+			EscursionePagataDatamodel escursionePagataDatamodel) {
+		this.escursionePagataDatamodel = escursionePagataDatamodel;
+	}
 
 	
 	

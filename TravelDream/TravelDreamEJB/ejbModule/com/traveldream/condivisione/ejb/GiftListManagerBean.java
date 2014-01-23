@@ -49,9 +49,9 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		
 			Viaggio viaggio = em.find(Viaggio.class, BMG.saveViaggio(giftListDTO.getViaggio()));
 			gift_List.setViaggio(viaggio);
-			gift_List.setHotelPag((byte)0);
-			gift_List.setVoloAPag((byte)0);
-			gift_List.setVoloRPag((byte)0);
+			gift_List.setHotelPag(false);
+			gift_List.setVoloAPag(false);
+			gift_List.setVoloRPag(false);
 			gift_List.setUtente(em.find(Utente.class, giftListDTO.getUtente().getUsername()));
 			gift_List.setAmicos(saveEntityAmico(giftListDTO.getAmico()));
 			System.out.println("id gift list +"+gift_List.getId());
@@ -64,8 +64,9 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 				EscursioneSalvata escursioneSalvata = em.find(EscursioneSalvata.class, escursionePagataDTO.getEscursione().getId());
 				EscursionePagata escursionePagata = new EscursionePagata();
 				escursionePagata.setEscursioneSalvata(escursioneSalvata);
-				escursionePagata.setPagata((byte)0);
+				escursionePagata.setPagata(false);
 				escursionePagata.setGiftList(em.find(Gift_List.class, gift_List.getId()));
+				System.out.println("escursione salvat :"+escursionePagata.getEscursioneSalvata().getNome()+escursionePagata.getEscursioneSalvata().getId());
 				escursionePagatas.add(escursionePagata);
 			}
 			gift_List.setEscursionePagatas(escursionePagatas);
@@ -78,7 +79,6 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 			Amico amico =new Amico(string);
 			em.persist(amico);
 			em.flush();
-			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXid amico "+amico.getId());
 			friends.add(em.find(Amico.class, amico.getId()));
 		}
 		return friends;
@@ -93,20 +93,24 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		for (Gift_List gift_List : gift_Lists) {
 			giftListDTOs.add(EntitytoDtoGift(gift_List));
 		}
+
+		System.out.println(giftListDTOs);
 		return giftListDTOs;
 	}
 
 	private GiftListDTO EntitytoDtoGift(Gift_List gift_List){
 		GiftListDTO giftListDTO =new GiftListDTO();
-		giftListDTO.setHotelPag(gift_List.getHotelPag());
-		giftListDTO.setVoloAPag(gift_List.getVoloAPag());
-		giftListDTO.setVoloRPag(gift_List.getVoloRPag());
+		giftListDTO.setId(gift_List.getId());
+		giftListDTO.setHotelPag(gift_List.isHotelPag());
+		giftListDTO.setVoloAPag(gift_List.isVoloAPag());
+		giftListDTO.setVoloRPag(gift_List.isVoloRPag());
 		for (Amico amico : gift_List.getAmicos()) {
 			giftListDTO.getAmico().add(amico.getAmico());
 		}
 		for (EscursionePagata escursionePagata : gift_List.getEscursionePagatas()) {
 			giftListDTO.getEscursionePagata().add(EntitytoDTOEscuzionePagata(escursionePagata));
 		}
+		//giftListDTO.setViaggio(viaggio);
 		return giftListDTO;
 	}
 	
