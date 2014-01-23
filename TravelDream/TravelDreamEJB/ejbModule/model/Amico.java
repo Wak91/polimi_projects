@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.*;
 
 
@@ -9,18 +11,23 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name="Amico")
 @NamedQuery(name="Amico.findAll", query="SELECT a FROM Amico a")
 public class Amico implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
 
 	private String amico;
-
+	
 	public Amico() {
+	super();}
+	
+	public Amico(String mail) {
+		amico=mail;
 	}
-
 	public int getId() {
 		return this.id;
 	}
@@ -37,4 +44,6 @@ public class Amico implements Serializable {
 		this.amico = amico;
 	}
 
+
+	
 }

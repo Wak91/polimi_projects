@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
+import com.traveldream.autenticazione.ejb.UserDTO;
+import com.traveldream.autenticazione.ejb.UserMgr;
+import com.traveldream.condivisione.ejb.EscursionePagataDTO;
 import com.traveldream.condivisione.ejb.GiftListDTO;
+import com.traveldream.condivisione.ejb.GiftListManagerBeanLocal;
+import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.util.web.FacesUtil;
+import com.traveldream.viaggio.web.PreDataModel;
 
 
 
@@ -19,7 +26,15 @@ import com.traveldream.util.web.FacesUtil;
 public class GiftListBean {
 
 	String amico;
-
+	
+	GiftDataModel giftDataModel;
+	GiftListDTO selectedGiftListDTO;
+	
+	@EJB
+	UserMgr userMgr;
+	
+	@EJB
+	GiftListManagerBeanLocal GLM;
 
 	GiftListDTO giftListDTO;
 	
@@ -27,13 +42,6 @@ public class GiftListBean {
 	@PostConstruct
     public void init() {
 		giftListDTO = (GiftListDTO)FacesUtil.getSessionMapValue("GiftDTO");
-
-
-		System.out.println("volod"+giftListDTO.getId());
-
-		if (giftListDTO==null) {
-			System.out.println("XXXXXXXXXXXXXXinding cazzi");
-		}
     }
 	
 	public String reinit() {  
@@ -57,16 +65,48 @@ public class GiftListBean {
 	}
 	
 	public void submit(){
-		System.out.println("dddewdwedewew");
-		if (giftListDTO==null) {
-			System.out.println("XXXXXXXXXXXXXXinding cazzi");
+		giftListDTO.setVoloAPag((byte)0);
+		giftListDTO.setVoloRPag((byte)0);
+		giftListDTO.setHotelPag((byte)0);
+		for (EscursioneDTO escursioneDTO : giftListDTO.getViaggio().getLista_escursioni()) {
+			EscursionePagataDTO escursionePagata = new EscursionePagataDTO();
+			escursionePagata.setEscPagata((byte)0);
+			escursionePagata.setEscursione(escursioneDTO);
+			System.out.println("aggiunta "+escursionePagata.getEscursione().getNome());
+			giftListDTO.getEscursionePagata().add(escursionePagata);
 		}
+		System.out.println("aggiunta "+giftListDTO.getViaggio().getData_fine());
+
+		GLM.addToGiftList(giftListDTO);
 		for (String string : getGiftListDTO().getAmico() ) {
 			System.out.println("gift "+string);
 
 		}
-		System.out.println("volo"+giftListDTO.getViaggio().getVolo_andata().getCompagnia());
+		
 	}
+	
+	public void getGiftList() {
+		UserDTO current_user = userMgr.getUserDTO();
+		setGiftDataModel(new GiftDataModel(GLM.getGiftListDTO(current_user)));
+	}
+
+	public GiftDataModel getGiftDataModel() {
+		return giftDataModel;
+	}
+
+	public void setGiftDataModel(GiftDataModel giftDataModel) {
+		this.giftDataModel = giftDataModel;
+	}
+
+	public GiftListDTO getSelectedGiftListDTO() {
+		return selectedGiftListDTO;
+	}
+
+	public void setSelectedGiftListDTO(GiftListDTO selectedGiftListDTO) {
+		this.selectedGiftListDTO = selectedGiftListDTO;
+	}
+
+	
 
 	
 	

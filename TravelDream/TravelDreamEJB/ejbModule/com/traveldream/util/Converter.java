@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import model.Escursione;
+import model.EscursioneSalvata;
 import model.Hotel;
 import model.Pacchetto;
 import model.Volo;
@@ -94,6 +95,20 @@ public class Converter {
 			edto.setId(e.getId());
 			return edto;
 		}
+		
+		public static EscursioneDTO EscursioneSalvataToDTO(EscursioneSalvata e) {
+			EscursioneDTO edto = new EscursioneDTO();
+			edto.setId(e.getId());
+			edto.setCosto(e.getCosto());
+			edto.setData(e.getData());
+			edto.setLuogo(e.getLuogo());
+			edto.setNome(e.getNome());
+			edto.setImmagine(e.getImmagine());
+			edto.setId(e.getId());
+			return edto;
+		}
+		
+		
 		
 	///------------------LIST ENTITY TO DTO CONVERTER-----------
 		public static ArrayList<PacchettoDTO> EntitytoDTOPacchetto(List<Pacchetto> pacchettos){

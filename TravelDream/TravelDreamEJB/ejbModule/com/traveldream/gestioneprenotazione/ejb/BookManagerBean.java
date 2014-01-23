@@ -39,6 +39,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		travel.setData_inizio(v.getData_inizio());
 		travel.setData_fine(v.getData_fine());
 		travel.setHotelSalvato(this.DTOtoEntityHotel(v.getHotel()));
+		System.out.println("sava"+v.getHotel().getNome());
 		travel.setVoloSalvato1(this.DTOtoEntityVolo(v.getVolo_andata()));
 		travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
         em.persist(travel);	
