@@ -286,54 +286,10 @@ public class ViaggioBean {
 	}
 	
 	public String creaPrenotazione()
-	{
-		ArrayList <Integer> id_escursioni = new ArrayList <Integer> ();
-		int id_e;
-		// salvo le copie degli elementi selezionati per la creazione del viaggio, controllando se esistono già
-		int id_h = BMB.cercaHotelSalvato(selectedHotels);
-		if(id_h == -1 )
-		   {
-			id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
-		   }
-		int id_vsa = BMB.cercaVoloSalvato(selectedVolo_a);
-		if(id_vsa == -1)
-		   {
-			id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
-		   }
-		int id_vsr = BMB.cercaVoloSalvato(selectedVolo_r);
-		if(id_vsr == -1)
-		  {
-			id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
-		  }
-		
-		for(EscursioneDTO edto: selectedEsc)
-		   {
-			id_e = BMB.cercaEscursioneSalvata(edto);
-			if(id_e == -1 )
-			  {
-				id_e = BMB.saveEscursioneSalvata(edto);
-			  }
-			id_escursioni.add(id_e); // salvo tutti gli id delle escursioni in entrambi i casi ( salvate o no )
-		    edto.setId(id_e); // già che sto ciclando sulle selectedEsc metto a posto il DTO con il nuovo ID
-		   }
-		
-	    selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono gia' a posto
-	    selectedVolo_a.setId(id_vsa);
-	    selectedVolo_r.setId(id_vsr);
+	{	
+	    ViaggioDTO viaggio_creato = BMB.saveViaggio(viaggio);	// salvo il viaggio se non esiste già
 	    
-			
-	    viaggio.setHotel(selectedHotels); // ora selectedHotels ecc.. si riferiscono a entity delle tabelle XSalvato
-	    viaggio.setVolo_andata(selectedVolo_a);
-	    viaggio.setVolo_ritorno(selectedVolo_r);
-	    viaggio.setLista_escursioni(selectedEsc);
-	    
-	    int id = BMB.cercaViaggio(viaggio); // vado alla ricerca di possibili duplicati del viaggio appena creato
-	    if(id == -1 )
-	       id= BMB.saveViaggio(viaggio);
-	  
-	    viaggio.setId(id);
-				       
-		prenotazione.setViaggio(viaggio);
+		prenotazione.setViaggio(viaggio_creato);
 		prenotazione.setNumero_persone(n_partecipanti);
 		prenotazione.setUtente(userMgr.getUserDTO());
 		prenotazione.setCosto(quotacomplessiva);

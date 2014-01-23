@@ -25,7 +25,7 @@
 				<p:inputText id="nome" value="#{PacketBean.packet.nome}" />
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
-				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" />
+				<h:outputText id="luogo" value="#{PacketBean.packet.destinazione}" editable="false"/>
 				
                   <h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
 				<p:calendar id="datei" binding="#{dates}" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />

@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import com.traveldream.autenticazione.ejb.UserDTO;
+import com.traveldream.gestionecomponente.ejb.ComponentManagerBean;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
+import com.traveldream.util.Converter;
+
 import model.EscursioneSalvata;
 import model.HotelSalvato;
 import model.Prenotazione;
@@ -30,21 +35,75 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	
 	@Resource
 	private EJBContext context;
+
 	
 	
-	public int saveViaggio(ViaggioDTO v)
+	public ViaggioDTO saveViaggio(ViaggioDTO v)
 	{
-		Viaggio travel = new Viaggio();
-		travel.setData_inizio(v.getData_inizio());
-		travel.setData_fine(v.getData_fine());
-		travel.setHotelSalvato(this.DTOtoEntityHotel(v.getHotel()));
-		travel.setVoloSalvato1(this.DTOtoEntityVolo(v.getVolo_andata()));
-		travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
-        em.persist(travel);	
-        em.flush();
         
+		ArrayList <Integer> id_escursioni = new ArrayList <Integer> ();
+		int id_e;
+		// salvo le copie degli elementi selezionati per la creazione del viaggio, controllando se esistono già
+		int id_h = this.cercaHotelSalvato(v.getHotel());
+		if(id_h == -1 )
+		   {
+			id_h  = this.saveHotelSalvato(v.getHotel()); //recupero gli id delle copie appena salvate
+		   }
+		int id_vsa = this.cercaVoloSalvato(v.getVolo_andata());
+		if(id_vsa == -1)
+		   {
+			id_vsa = this.saveVoloSalvato(v.getVolo_andata());
+		   }
+		int id_vsr = this.cercaVoloSalvato(v.getVolo_ritorno());
+		if(id_vsr == -1)
+		  {
+			id_vsr = this.saveVoloSalvato(v.getVolo_ritorno());
+		  }
 		
-	    return  em.find(Viaggio.class, travel.getId()).getId();
+		for(EscursioneDTO edto: v.getLista_escursioni())
+		   {
+			id_e = this.cercaEscursioneSalvata(edto);
+			if(id_e == -1 )
+			  {
+				id_e = this.saveEscursioneSalvata(edto);
+			  }
+			id_escursioni.add(id_e); // salvo tutti gli id delle escursioni in entrambi i casi ( salvate o no )
+		    edto.setId(id_e); // già che sto ciclando sulle selectedEsc metto a posto il DTO con il nuovo ID
+		   }
+		
+		 v.getHotel().setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono gia' a posto
+		 v.getVolo_andata().setId(id_vsa);  
+		 v.getVolo_ritorno().setId(id_vsr);
+		 //Gli id dei componenti ora sono id che si riferiscono alla tabella dei componenti salvati
+		 
+		 int id = this.cercaViaggio(v); // vado alla ricerca di possibili duplicati del viaggio appena creato
+		 if(id == -1 )
+		 {
+		   Viaggio travel = new Viaggio();
+		   travel.setData_inizio(v.getData_inizio());
+		   travel.setData_fine(v.getData_fine());
+		   travel.setHotelSalvato(this.DTOtoEntityHotel(v.getHotel()));
+		   travel.setVoloSalvato1(this.DTOtoEntityVolo(v.getVolo_andata()));
+		   travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
+		   em.persist(travel);	
+		   em.flush();
+		   return  ViaggioToDTO(em.find(Viaggio.class, travel.getId()));
+		 }
+		 else
+			 return ViaggioToDTO(em.find(Viaggio.class, id));
+         
+	}
+	
+	private ViaggioDTO ViaggioToDTO(Viaggio v)
+	{
+		ViaggioDTO vdto = new ViaggioDTO();
+		vdto.setData_fine(v.getData_fine());
+		vdto.setData_inizio(v.getData_inizio());
+		vdto.setHotel(Converter.HotelToDTOSimple(v.getHotelSalvato()));
+		vdto.setId(v.getId());
+		vdto.setVolo_andata(Converter.VoloToDTO((v.getVoloSalvato1())));
+		vdto.setVolo_ritorno(Converter.VoloToDTO((v.getVoloSalvato2())));
+		return vdto;
 	}
 	
 	public void updateViaggio(ViaggioDTO v)
@@ -107,12 +166,19 @@ public int cercaHotelSalvato(HotelDTO hdto)
 	
 	for(HotelSalvato hs : myList)
 	   {
-		if( (   hs.getCosto_giornaliero() == hdto.getCosto_giornaliero() ) 
-		     && hs.getData_fine().equals(hdto.getData_fine())
-			 && (hs.getData_inizio().equals(hdto.getData_inizio())) 
-			 && (hs.getLuogo().equals(hdto.getLuogo()))	
-			 && (hs.getNome().equals(hdto.getNome()))
-			 && (hs.getStelle() == hdto.getStelle()))
+		if( 
+			 (   hs.getCosto_giornaliero() == hdto.getCosto_giornaliero() ) 
+		     && 
+		     (   hs.getData_fine().equals(hdto.getData_fine()) )
+			 && 
+			 (   hs.getData_inizio().equals(hdto.getData_inizio()) ) 
+			 && 
+			 (   hs.getLuogo().equals(hdto.getLuogo())             )	
+			 && 
+			 (   hs.getNome().equals(hdto.getNome())               )
+			 //&& 
+			 //(   hs.getStelle() == hdto.getStelle()                )              
+		  )
 		    {
 			 return hs.getId();
 		    }
@@ -134,7 +200,7 @@ public int cercaVoloSalvato(VoloDTO vdto) {
 		     && vs.getData().equals(vdto.getData())
 			 && (vs.getLuogo_arrivo().equals(vdto.getLuogo_arrivo()))	
 			 &&  (vs.getLuogo_partenza().equals(vdto.getLuogo_partenza())) 
-			 && (vs.getCompagnia() == vdto.getCompagnia()))  
+			 && (vs.getCompagnia().equals(vdto.getCompagnia())))  
 		    {
 			 return vs.getId();
 		    }
@@ -207,20 +273,6 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 		return 1;
 		
 	}
-	
-	public int saveEscursioneSalvata(EscursioneDTO escursioneDTO)
-	{
-		EscursioneSalvata escursione = new EscursioneSalvata();
-		escursione.setNome(escursioneDTO.getNome());
-		escursione.setLuogo(escursioneDTO.getLuogo());
-		escursione.setImmagine(escursioneDTO.getImmagine());
-		escursione.setData(escursioneDTO.getData());
-		escursione.setCosto(escursioneDTO.getCosto());
-		
-		em.persist(escursione);
-		em.flush();
-		return em.find(EscursioneSalvata.class, escursione.getId()).getId();
-	}
 
 	public ArrayList <PrenotazioneDTO> cercaPrenotazione(UserDTO udto)
 	{
@@ -241,5 +293,38 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 		return myDTOList;
 		
 	}
+	
+	
+	public int saveHotelSalvato(HotelDTO hoteldto)
+	{
+		HotelSalvato hotel_s = new HotelSalvato(hoteldto);
+		em.persist(hotel_s);
+		em.flush();
+		return em.find(HotelSalvato.class, hotel_s.getId()).getId();
+	}
+	
+	public int saveEscursioneSalvata(EscursioneDTO escursioneDTO)
+	{
+		EscursioneSalvata escursione = new EscursioneSalvata();
+		escursione.setNome(escursioneDTO.getNome());
+		escursione.setLuogo(escursioneDTO.getLuogo());
+		escursione.setImmagine(escursioneDTO.getImmagine());
+		escursione.setData(escursioneDTO.getData());
+		escursione.setCosto(escursioneDTO.getCosto());
+		
+		em.persist(escursione);
+		em.flush();
+		return em.find(EscursioneSalvata.class, escursione.getId()).getId();
+	}
+	
+	public int saveVoloSalvato(VoloDTO volodto)
+	{
+		VoloSalvato volo = new VoloSalvato(volodto);
+		em.persist(volo);
+		em.flush();
+		return em.find(VoloSalvato.class, volo.getId()).getId();
+	}
+	
+	
 	
 }
