@@ -35,7 +35,6 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	public int saveViaggio(ViaggioDTO v)
 	{
 		Viaggio travel = new Viaggio();
-		Viaggio travel2 = new Viaggio();
 		travel.setData_inizio(v.getData_inizio());
 		travel.setData_fine(v.getData_fine());
 		travel.setHotelSalvato(this.DTOtoEntityHotel(v.getHotel()));

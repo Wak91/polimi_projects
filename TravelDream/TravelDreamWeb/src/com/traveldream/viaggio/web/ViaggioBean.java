@@ -382,13 +382,11 @@ public class ViaggioBean {
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
-		viaggio.setData_inizio(data_inizio);
-		viaggio.setData_fine(data_fine);
 		
 		InvitoDTO invito = new InvitoDTO();
 		invito.setViaggio(viaggio);
 		invito.setUtente(userMgr.getUserDTO());
-		invito.setId(2);
+		invito.setId(viaggio.getId());
 		FacesUtil.setSessionMapValue("InvDTO", invito);	
 		
 		//creazione entita invito
