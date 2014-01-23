@@ -57,8 +57,7 @@ public class PacketBean {
 	{
 
 	selectedHotels  = new ArrayList <HotelDTO>(); // questo per tenere traccia di quelli selezionati
-	// MAI METTERE CMB QUA DENTRO, NON E' ANCORA STATO CREATO E QUINDI QUALSIASI COSA
-	// FAI TI SBATTE UN SIMPATICO NULL POINTER IN FACCIA 
+	
 	}
 	
 	public void initBean()
@@ -199,6 +198,13 @@ public class PacketBean {
 	public void getPacchettoById(int id)
 	{	initBean();
 		this.packet = PMB.getPacchettoByID(id);
+		filtraHotel();
+		filtraVoli();
+		filtraEscursioni();
+		if ( packet == null)
+		   {
+			 //ERRORE, HA CAMBIATO LA URL OPPURE QUALCOSA DI MOLTO BRUTTO NEL DB
+		   }
 		this.selectedEsc = (ArrayList<EscursioneDTO>) packet.getLista_escursioni();
 		this.selectedHotels = (ArrayList<HotelDTO>) packet.getLista_hotel();
 		
@@ -210,16 +216,77 @@ public class PacketBean {
 		
 	}
 	
+	private void filtraHotel()
+	{
+		ArrayList <HotelDTO> hdtolist = new ArrayList <HotelDTO>();
+		for(HotelDTO hdto: CMB.getAllHotel()  )
+		   {
+			if(hdto.getLuogo().equals(packet.getDestinazione()))
+				hdtolist.add(hdto);
+		   }
+		 setHotelModels(new HotelDataModel(hdtolist));	
+	}
+	
+	private void filtraVoli()
+	{
+		ArrayList <VoloDTO> vdtolist = new ArrayList <VoloDTO>();
+		for(VoloDTO vdto: CMB.getAllVolo()  )
+		   {
+			if(
+			   ( vdto.getLuogo_partenza().equals(packet.getDestinazione()) || 
+			     vdto.getLuogo_arrivo().equals(packet.getDestinazione()) )   
+			   &&
+			    ( vdto.getData().after(packet.getData_inizio()) && vdto.getData().before(packet.getData_fine()) )
+			   
+			  )
+				vdtolist.add(vdto);
+		   }
+		 setVoloModels(new VoloDataModel(vdtolist));	
+		
+	}
+	
+	private void filtraEscursioni()
+	{
+		ArrayList <EscursioneDTO> edtolist = new ArrayList <EscursioneDTO>();
+		for(EscursioneDTO edto: CMB.getAllEscursione()  )
+		   {
+			if(edto.getLuogo().equals(packet.getDestinazione()) && 
+			   edto.getData().after(packet.getData_inizio()) && edto.getData().before(packet.getData_fine())
+			  )
+				edtolist.add(edto);
+		   }
+		 setEscModels(new EscDataModel(edtolist));
+		
+	}
 	
 	public String PrelevaSelezionatiECrea()
 	{
 		//check della destinazione perche ho dovuto togliere l'attributo not empty dal DTO e poi non c'e nessun controlo sugli hotel e vli
 				if(packet.getDestinazione()==null || packet.getDestinazione().isEmpty() || selectedVolo.isEmpty() || selectedHotels.isEmpty()){
 					System.out.println("stop packet");
-					FacesContext.getCurrentInstance().addMessage("luogo", new FacesMessage("La destinazione non può essere vuota"));
+					FacesContext.getCurrentInstance().addMessage("luogo", new FacesMessage("Errore nell'inserimento dei componenti"));
 					return null;
 
 				}
+				int andata=0, ritorno=0;
+
+				//almeno un volo di andata e uno di ritorno 
+				for(VoloDTO vdto : selectedVolo)
+				   {
+					
+					if(vdto.getLuogo_arrivo().equals(packet.getDestinazione()))
+						andata++;
+					else
+						if(vdto.getLuogo_partenza().equals(packet.getDestinazione()))
+							ritorno++;				
+				   }
+				if(andata<1 || ritorno <1)
+				   {
+					//MESSAGGIO DI ERRORE!!
+					FacesContext.getCurrentInstance().addMessage("multiVoli", new FacesMessage("Almeno un volo di andata e uno di ritorno"));
+				    return null;
+				   }
+		
 
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);
@@ -262,6 +329,37 @@ public class PacketBean {
 	}
 	
 	public String  modificaPacchetto(int id) {
+		
+
+		if(selectedHotels.isEmpty() || selectedVolo.isEmpty())
+		  {
+			//ERRORE, STAI IN PRATICA DISTRUGGENDO IL PACCHETTO
+			System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+			 return "imphome.xhtml?faces-redirect=true";
+		  }
+		
+		//Ora controllo che sia possibile creare almeno un viaggio con questo pack
+	    //Cioè che ci sia un volo di andata ed uno di ritorno per quella destinazione
+	    //Gli hotel inseriti sono per semplicità dati 
+				
+		int andata=0, ritorno=0;
+		for(VoloDTO vdto : selectedVolo)
+				   {
+					
+					
+					if(vdto.getLuogo_arrivo().equals(packet.getDestinazione()))
+						andata++;
+					if(vdto.getLuogo_partenza().equals(packet.getDestinazione()))
+						ritorno++;			
+				   }
+		if(andata == 0 || ritorno == 0)
+		   {
+			//MESSAGGIO DI ERRORE!!
+			System.out.println(""+andata+""+ritorno);
+			System.out.println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+         System.out.println(""+selectedVolo.size());
+			return "imphome.xhtml?faces-redirect=true";
+		   }	
 		
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);

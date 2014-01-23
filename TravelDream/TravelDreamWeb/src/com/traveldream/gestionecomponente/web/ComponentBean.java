@@ -262,7 +262,7 @@ public class ComponentBean {
   			//se c'è una situazione di incoerenza nelle date o nel luogo elimino l'hotel dal pacchetto, 
   			//controllo se nel pacchetto ci sono altre componenti e nel caso update o elimino pack
 
-  			if(hotel.getData_inizio().before(p.getData_inizio()) || hotel.getData_inizio().after(p.getData_fine()) || (hotel.getLuogo().equals(p.getDestinazione())==false))
+  			if(hotel.getData_inizio().after(p.getData_fine()) || (hotel.getLuogo().equals(p.getDestinazione())==false))
   			{
   				if(p.getLista_hotel().size()== 1)// se nel pacchetto c'è solo un hotel, in questo caso è proprio quello da eliminare, butto quindi il pacchetto
   				 {

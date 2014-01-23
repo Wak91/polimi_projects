@@ -70,19 +70,6 @@
                 <p:column headerText="Prezzo a persona" style="width:24%" sortBy="costo_giornaliero" filterBy="#{hotel.costo_giornaliero}" >  
                 #{hotel.costo_giornaliero}  
                 </p:column>  
-                
-                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}" filterMatchMode="contains">  
-                 <h:outputText value="#{hotel.data_inizio}">
-    				
-				</h:outputText>
-                  
-                </p:column>  
-                
-                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}" filterMatchMode="contains">  
-                 <h:outputText value="#{hotel.data_fine}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
-				</h:outputText>
-                </p:column>  
               </p:dataTable> 
 				
 				
