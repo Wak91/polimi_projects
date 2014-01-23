@@ -109,12 +109,19 @@ public int cercaHotelSalvato(HotelDTO hdto)
 	
 	for(HotelSalvato hs : myList)
 	   {
-		if( (   hs.getCosto_giornaliero() == hdto.getCosto_giornaliero() ) 
-		     && hs.getData_fine().equals(hdto.getData_fine())
-			 && (hs.getData_inizio().equals(hdto.getData_inizio())) 
-			 && (hs.getLuogo().equals(hdto.getLuogo()))	
-			 && (hs.getNome().equals(hdto.getNome()))
-			 && (hs.getStelle() == hdto.getStelle()))
+		if( 
+			 (   hs.getCosto_giornaliero() == hdto.getCosto_giornaliero() ) 
+		     && 
+		     (   hs.getData_fine().equals(hdto.getData_fine()) )
+			 && 
+			 (   hs.getData_inizio().equals(hdto.getData_inizio()) ) 
+			 && 
+			 (   hs.getLuogo().equals(hdto.getLuogo())             )	
+			 && 
+			 (   hs.getNome().equals(hdto.getNome())               )
+			 //&& 
+			 //(   hs.getStelle() == hdto.getStelle()                )              
+		  )
 		    {
 			 return hs.getId();
 		    }
@@ -136,7 +143,7 @@ public int cercaVoloSalvato(VoloDTO vdto) {
 		     && vs.getData().equals(vdto.getData())
 			 && (vs.getLuogo_arrivo().equals(vdto.getLuogo_arrivo()))	
 			 &&  (vs.getLuogo_partenza().equals(vdto.getLuogo_partenza())) 
-			 && (vs.getCompagnia() == vdto.getCompagnia()))  
+			 && (vs.getCompagnia().equals(vdto.getCompagnia())))  
 		    {
 			 return vs.getId();
 		    }
