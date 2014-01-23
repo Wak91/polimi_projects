@@ -14,7 +14,8 @@
      <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
      <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
      </p:tabMenu>  
-     	    <h:form id="myform">
+       
+       <h:form id="myform">
      
        #{ViaggioBean.getPrenotazioni()}
        PRENOTAZIONI CONFERMATE                   
@@ -42,9 +43,9 @@
                 </h:outputText>    
                 </p:column>  
                 
-                 <p:column headerText="Al" style="width:24%" >  
-                 <h:outputText value="#{pre.viaggio.data_fine}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
+                <p:column headerText="Al" style="width:24%" >  
+                <h:outputText value="#{pre.viaggio.data_fine}">
+    			<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
                   
                 </p:column>  
@@ -65,8 +66,157 @@
   
             <h:outputText value="Volo andata:" />  
             <h:outputText value="#{ViaggioBean.selectedVolo_a.data}" style="font-weight:bold"/>   
+            
         </h:panelGrid>  
-    </p:dialog> 
-    </h:form>
-       </ui:define>
+        </p:dialog> 
+        
+        <br></br>
+        <br></br>
+        
+       #{InvitoBean.getInviti()}
+ 
+   		<p:dataTable id="tab"    				 	
+	    var="invito" 	
+        value="#{InvitoBean.invmodels}" 
+   		paginator="true" 
+    	rows="10"   
+    	rowKey="${row.id}"
+        selectionMode="single">  
+                                       
+                <f:facet name="header">  
+                Condivisioniiii				 
+            	</f:facet>
+                        
+                <p:column headerText="Id" style="width:5%" sortBy="#{invito.id}">  
+        		<h:outputText value="#{invito.id}" />
+                </p:column> 
+                
+                <p:column headerText="Mail Amico" style="width:25%" sortBy="#{invito.amico}">  
+        		<h:outputText value="#{invito.amico}" />
+                </p:column> 
+  
+  				<p:column headerText="Status" style="width:25%" sortBy="#{invito.status}">  
+        		<h:outputText value="Confirmed" rendered="#{invito.status}"/>
+        		<h:outputText value="Pending" rendered="#{not invito.status}"/>        		
+                </p:column> 
+                
+                #{invito.status}
+                
+                <p:column headerText="Dal" style="width:24%" >  
+                <h:outputText value="#{invito.viaggio.data_inizio}">
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>    
+                </p:column>
+                
+                <p:column headerText="Al" style="width:24%" >  
+                <h:outputText value="#{invito.viaggio.data_fine}">
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>    
+                </p:column>    
+                
+                
+                <p:column headerText="Hotel" style="width:25%">  
+                <p:commandButton id="basicH" value="show hotel" onclick="PF('dlg3').show();" type="button" />             
+                <p:dialog id="dialogh" header="Hotel" widgetVar="dlg3" dynamic="true" resizable="true">                 
+                <p:dataTable id="Hotel1" var="hotel1" value="#{invito.viaggio.hotel}" scrollable="false">
+  
+            		       <p:column headerText="Nome" style="width:25%"> 
+            		       #{hotel1.nome}  
+  			               </p:column>  
+  
+                		    <p:column headerText="Da" style="width:25%">  
+                             <h:outputText value="#{hotel1.data_inizio}">
+    			        	<f:convertDateTime pattern="dd/MM/yyyy" />
+				            </h:outputText>
+               			    </p:column>
+               			    
+               			    <p:column headerText="A" style="width:25%">  
+                             <h:outputText value="#{hotel1.data_fine}">
+    			        	<f:convertDateTime pattern="dd/MM/yyyy" />
+				            </h:outputText>
+               			    </p:column>    
+                
+                  			<p:column headerText="Costo" style="width:24%">  
+                  			#{hotel1.costo_giornaliero}
+                            </p:column> 
+                            
+                            
+                     </p:dataTable>                
+                </p:dialog>       
+        </p:column>                          
+      
+                
+                
+                
+                
+                <p:column headerText="Volo Andata" style="width:25%" >  
+                <p:commandButton id="basicVA" value="show voli" onclick="PF('dlg1').show();" type="button" />                  
+                <p:dialog id="dialogva" header="Volo Andata" widgetVar="dlg1" dynamic="true" resizable="true">                
+                <p:dataTable id="VoliListA" var="volo2" value="#{invito.viaggio.volo_andata}" scrollable="false">
+  
+            		       <p:column headerText="Compagnia" style="width:25%"> 
+            		       #{volo2.compagnia}  
+  			               </p:column>  
+  
+                		    <p:column headerText="Data" style="width:25%">  
+                             <h:outputText value="#{volo2.data}">
+    			        	<f:convertDateTime pattern="dd/MM/yyyy" />
+				            </h:outputText>
+               			    </p:column>  
+                
+                  			<p:column headerText="Costo" style="width:24%">  
+                  			#{volo2.costo}
+                            </p:column> 
+                            
+                            <p:column headerText="Partenza da" style="width:24%">  
+                  			#{volo2.luogo_partenza}
+                            </p:column> 
+                            
+                            <p:column headerText="Arrivo a" style="width:24%">  
+                  			#{volo2.luogo_arrivo}
+                            </p:column> 
+                            
+                     </p:dataTable>                
+                </p:dialog> 
+                </p:column> 
+                
+                
+                
+                
+                <p:column headerText="Volo Ritorno" style="width:25%">  
+                <p:commandButton id="basicVR" value="show voli" onclick="PF('dlg2').show();" type="button" />             
+                <p:dialog id="dialogvr" header="Volo Ritorno" widgetVar="dlg2" dynamic="true" resizable="true">                 
+                <p:dataTable id="VoliListR" var="volo3" value="#{invito.viaggio.volo_ritorno}" scrollable="false">
+  
+            		       <p:column headerText="Compagnia" style="width:25%"> 
+            		       #{volo3.compagnia}  
+  			               </p:column>  
+  
+                		    <p:column headerText="Data" style="width:25%">  
+                             <h:outputText value="#{volo3.data}">
+    			        	<f:convertDateTime pattern="dd/MM/yyyy" />
+				            </h:outputText>
+               			    </p:column>  
+                
+                  			<p:column headerText="Costo" style="width:24%">  
+                  			#{volo3.costo}
+                            </p:column> 
+                            
+                            <p:column headerText="Partenza da" style="width:24%">  
+                  			#{volo3.luogo_partenza}
+                            </p:column> 
+                            
+                            <p:column headerText="Arrivo a" style="width:24%">  
+                  			#{volo3.luogo_arrivo}
+                            </p:column> 
+                       
+                     </p:dataTable>                
+                </p:dialog>       
+        </p:column>    
+        
+        </p:dataTable>                      
+             
+                    
+  </h:form>
+</ui:define>
 </ui:composition>

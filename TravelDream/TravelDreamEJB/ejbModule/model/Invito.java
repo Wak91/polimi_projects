@@ -23,7 +23,7 @@ public class Invito implements Serializable {
 
 	private String amico;
 
-	private byte status;
+	private boolean status;
 
 	//bi-directional many-to-one association to Utente
 	@ManyToOne
@@ -64,11 +64,11 @@ public class Invito implements Serializable {
 		this.amico = amico;
 	}
 
-	public byte getStatus() {
+	public boolean getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(byte status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 

@@ -8,7 +8,6 @@ import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.GiftListDTO;
 import com.traveldream.condivisione.ejb.InvitoDTO;
-import com.traveldream.condivisione.web.GiftListBean;
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
