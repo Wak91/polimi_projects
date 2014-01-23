@@ -47,7 +47,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		Gift_List gift_List = new Gift_List();
 		//crea viaggio
 		
-			Viaggio viaggio = em.find(Viaggio.class, BMG.saveViaggio(giftListDTO.getViaggio()));
+			Viaggio viaggio = em.find(Viaggio.class, BMG.saveViaggio(giftListDTO.getViaggio()).getId());
 			gift_List.setViaggio(viaggio);
 			gift_List.setHotelPag(false);
 			gift_List.setVoloAPag(false);
@@ -110,14 +110,14 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		for (EscursionePagata escursionePagata : gift_List.getEscursionePagatas()) {
 			giftListDTO.getEscursionePagata().add(EntitytoDTOEscuzionePagata(escursionePagata));
 		}
-		//giftListDTO.setViaggio(viaggio);
+		giftListDTO.setViaggio(Converter.ViaggioToDTO(gift_List.getViaggio()));
 		return giftListDTO;
 	}
 	
 	private EscursionePagataDTO EntitytoDTOEscuzionePagata(EscursionePagata escursionePagata) {
 		EscursionePagataDTO escursionePagataDTO = new EscursionePagataDTO();
 		escursionePagataDTO.setEscPagata(escursionePagata.getPagata());
-		escursionePagataDTO.setEscursione(Converter.EscursioneSalvataToDTO((escursionePagata.getEscursioneSalvata())));
+		escursionePagataDTO.setEscursione(Converter.EscursioneToDTO((escursionePagata.getEscursioneSalvata())));
 		return escursionePagataDTO;
 
 	}

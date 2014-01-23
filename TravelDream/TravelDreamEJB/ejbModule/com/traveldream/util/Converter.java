@@ -13,6 +13,7 @@ import model.EscursioneSalvata;
 import model.Hotel;
 import model.HotelSalvato;
 import model.Pacchetto;
+import model.Viaggio;
 import model.Volo;
 import model.VoloSalvato;
 
@@ -20,6 +21,7 @@ import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
 import com.traveldream.gestionepack.ejb.PacchettoDTO;
+import com.traveldream.gestioneprenotazione.ejb.ViaggioDTO;
 
 public class Converter {
 
@@ -135,6 +137,18 @@ public class Converter {
 			edto.setImmagine(e.getImmagine());
 			edto.setId(e.getId());
 			return edto;
+		}
+		
+		public static ViaggioDTO ViaggioToDTO(Viaggio v)
+		{
+			ViaggioDTO vdto = new ViaggioDTO();
+			vdto.setData_fine(v.getData_fine());
+			vdto.setData_inizio(v.getData_inizio());
+			vdto.setHotel(HotelToDTOSimple(v.getHotelSalvato()));
+			vdto.setId(v.getId());
+			vdto.setVolo_andata(VoloToDTO((v.getVoloSalvato1())));
+			vdto.setVolo_ritorno(VoloToDTO((v.getVoloSalvato2())));
+			return vdto;
 		}
 		
 	///------------------LIST ENTITY TO DTO CONVERTER-----------
