@@ -303,9 +303,9 @@ public class ViaggioBean {
 			return null;
 		  }
 		
-		int id_h  = CMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
-		int id_vsa = CMB.saveVoloSalvato(selectedVolo_a);
-		int id_vsr = CMB.saveVoloSalvato(selectedVolo_r);
+		int id_h  = BMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
+		int id_vsa = BMB.saveVoloSalvato(selectedVolo_a);
+		int id_vsr = BMB.saveVoloSalvato(selectedVolo_r);
 
 		
 		 selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perch�� gli altri campi sono gi�� a posto

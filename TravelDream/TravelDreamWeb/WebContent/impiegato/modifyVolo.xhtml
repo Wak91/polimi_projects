@@ -47,8 +47,8 @@
 				
 				 <h:outputLabel for="img">Immagine corrente</h:outputLabel>
 				
-			   <h:graphicImage value="../images/#{ComponentBean.volo.immagine}"/> 
-			   
+			   <h:graphicImage value="../images/#{ComponentBean.volo.immagine}" height="100" width="100"/> 
+			   <br></br>
 				 <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
 				<p:fileUpload value="#{ComponentBean.imgVolo}" mode="simple" />
 				 

@@ -117,7 +117,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 	private EscursionePagataDTO EntitytoDTOEscuzionePagata(EscursionePagata escursionePagata) {
 		EscursionePagataDTO escursionePagataDTO = new EscursionePagataDTO();
 		escursionePagataDTO.setEscPagata(escursionePagata.getPagata());
-		escursionePagataDTO.setEscursione(Converter.EscursioneSalvataToDTO((escursionePagata.getEscursioneSalvata())));
+		escursionePagataDTO.setEscursione(Converter.EscursioneToDTO((escursionePagata.getEscursioneSalvata())));
 		return escursionePagataDTO;
 
 	}

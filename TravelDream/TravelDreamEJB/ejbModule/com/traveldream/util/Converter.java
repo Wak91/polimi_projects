@@ -2,12 +2,6 @@ package com.traveldream.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Resource;
-import javax.ejb.EJBContext;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import model.Escursione;
 import model.EscursioneSalvata;
 import model.Hotel;

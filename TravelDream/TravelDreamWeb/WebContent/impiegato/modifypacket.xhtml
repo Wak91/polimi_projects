@@ -128,7 +128,7 @@
 
 			 <h:outputLabel for="img">Immagine corrente</h:outputLabel>
 				
-			   <h:graphicImage value="../images/#{PacketBean.packet.pathtoImage}"/> 
+			   <h:graphicImage value="../images/#{PacketBean.packet.pathtoImage}" height="300" width="300"/> 
 			   
 				 <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
 				<p:fileUpload value="#{PacketBean.imgPack}" mode="simple" />
