@@ -48,7 +48,7 @@ public class PacketBean {
     private VoloDataModel  voloModels;
     private EscDataModel escModels;
     private PacchettoDataModel packModels;
-	
+    	
     //---INIZIALIZZAZIONE BEAN---
     
    
@@ -262,6 +262,7 @@ public class PacketBean {
 	}
 	
 	public String  modificaPacchetto(int id) {
+		
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
@@ -313,4 +314,6 @@ public class PacketBean {
 	public void setImgPack(UploadedFile imgPack) {
 		this.imgPack = imgPack;
 	}
+	
+	
 }
