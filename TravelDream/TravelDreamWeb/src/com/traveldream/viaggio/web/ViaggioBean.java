@@ -275,16 +275,12 @@ public class ViaggioBean {
     	  costi_escursioni+=edto.getCosto();
          }
      this.setQuotapp(cg+costi_voli+costi_escursioni+hotel_stay);
-	 this.setQuotacomplessiva(this.getQuotapp());
-	}
-	
-	public void updatePrice()
-	{
-		this.setQuotacomplessiva(this.getN_partecipanti() * this.getQuotapp());
-	}
+     this.quotacomplessiva = this.getN_partecipanti() * this.getQuotapp();
+  	}
 	
 	public String creaPrenotazione()
 	{	
+		this.calcoloquota();
 	    ViaggioDTO viaggio_creato = BMB.saveViaggio(viaggio);	// salvo il viaggio se non esiste già
 	    
 		prenotazione.setViaggio(viaggio_creato);

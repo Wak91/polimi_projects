@@ -42,11 +42,11 @@
 				</p:column> 
 				
 				<p:column headerText="ListaVoli" style="width:25%" sortBy="luogo" >  
-                <p:commandButton id="basic" value="show voli" onclick="PF('dlg').show();" type="button" />  
+                <p:commandButton id="basic" value="show voli" action="#{PacketBean.caricaDialogVoli(pack.id)}" onclick="PF('dlg').show();" type="button" />  
                 
                 <p:dialog id="dialog" header="Voli" widgetVar="dlg" dynamic="true" resizable="false">  
                 
-                <p:dataTable id="VoliList" var="volo2" value="#{pack.lista_voli}" scrollable="true" scrollHeight="150">
+                <p:dataTable id="VoliList" var="volo2" value="#{PacketBean.lista_voli_dialog}" scrollable="true" scrollHeight="150">
   
             		       <p:column headerText="Compagnia" style="width:25%"> 
             		       #{volo2.compagnia}  

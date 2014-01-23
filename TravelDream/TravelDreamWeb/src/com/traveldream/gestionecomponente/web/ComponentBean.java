@@ -236,7 +236,8 @@ public class ComponentBean {
 	
 	public String modifyHotel()
 	{ 
-		  InputStream inputStr = null;
+		  if(!imgHotel.getFileName().equals(""))
+		  { InputStream inputStr = null;
 		    try {
 		        inputStr = imgHotel.getInputstream();
 		    } catch (IOException e) {
@@ -255,7 +256,7 @@ public class ComponentBean {
 		        //log error
 		    }
     hotel.setHotelImg(imgHotel.getFileName());
-    
+		  }
   //Prima di modificare con le nuove date controllo se ci sono pacchetti che hanno questo hotel dentro che potrebbero diventare incoerenti
   		for(PacchettoDTO p : CMB.getHotelById(hotel.getId()).getPacchettos())
   		   {
@@ -346,8 +347,9 @@ public class ComponentBean {
 	}
 	
 	public String modificaVolo()
-	{  
-	InputStream inputStr = null;
+	{     
+    if(!imgVolo.getFileName().equals(""))
+	{InputStream inputStr = null;
     try {
         inputStr = imgVolo.getInputstream();
     } catch (IOException e) {
@@ -366,7 +368,7 @@ public class ComponentBean {
         //log error
     }
     volo.setImmagine(imgVolo.getFileName());
-	
+	}
 		for(PacchettoDTO p : CMB.getVoloById(volo.getId()).getPacchettos())
 		   {
 			if(volo.getData().before(p.getData_inizio()) || (volo.getData().after(p.getData_fine()) || 
@@ -475,6 +477,7 @@ public class ComponentBean {
 	
 	public String modificaEscursione()
 	{ 
+		 if(!imgEscursione.getFileName().equals("")){
 		 InputStream inputStr = null;
 		    try {
 		        inputStr = imgEscursione.getInputstream();
@@ -494,6 +497,7 @@ public class ComponentBean {
 		        //log error
 		    }
  escursione.setImmagine(imgEscursione.getFileName());
+ }
  
 //Prima di modificare con le nuove date controllo se ci sono pacchetti che hanno questa esc dentro che potrebbero diventare incoerenti
 		for(PacchettoDTO p : CMB.getEscursioneById(escursione.getId()).getPacchettos())

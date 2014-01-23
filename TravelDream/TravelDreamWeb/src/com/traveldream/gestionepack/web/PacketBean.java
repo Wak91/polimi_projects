@@ -48,6 +48,9 @@ public class PacketBean {
     private VoloDataModel  voloModels;
     private EscDataModel escModels;
     private PacchettoDataModel packModels;
+    
+    private ArrayList <VoloDTO> lista_voli_dialog;
+    
     	
     //---INIZIALIZZAZIONE BEAN---
     
@@ -196,7 +199,8 @@ public class PacketBean {
 	
 	
 	public void getPacchettoById(int id)
-	{	initBean();
+	{	
+		initBean();
 		this.packet = PMB.getPacchettoByID(id);
 		filtraHotel();
 		filtraVoli();
@@ -365,6 +369,7 @@ public class PacketBean {
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
 		
+		 if(!imgPack.getFileName().equals("")){
 		InputStream inputStr = null;
 	    try {
 	        inputStr = imgPack.getInputstream();
@@ -384,6 +389,7 @@ public class PacketBean {
 	        //log error
 	    }
 	    packet.setPathtoImage(imgPack.getFileName());
+	    }
 		PMB.modifyPacchetto(packet);
 		return "impack.xhtml?faces-redirect=true";
 	}
@@ -413,5 +419,18 @@ public class PacketBean {
 		this.imgPack = imgPack;
 	}
 	
+    public void caricaDialogVoli(int id)
+    {
+    	PacchettoDTO packDTO = PMB.getPacchettoByID(id);
+    	this.setLista_voli_dialog((ArrayList<VoloDTO>) packDTO.getLista_voli());
+    }
+
+	public ArrayList <VoloDTO> getLista_voli_dialog() {
+		return lista_voli_dialog;
+	}
+
+	public void setLista_voli_dialog(ArrayList <VoloDTO>lista_voli_dialog) {
+		this.lista_voli_dialog = lista_voli_dialog;
+	}
 	
 }
