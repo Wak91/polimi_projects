@@ -1,7 +1,10 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -10,35 +13,44 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="`Gift List`")
-@NamedQuery(name="Gift_List.findAll", query="SELECT g FROM Gift_List g")
+@Table(name="GiftList")
+@NamedQueries ( 
+	       {
+	    	   @NamedQuery(name="Gift_List.findbyuser", query="SELECT g FROM Gift_List g WHERE g.utente  = :u"),
+	    	   @NamedQuery(name="Gift_List.findAll", query="SELECT g FROM Gift_List g")
+	       }
+	       )
 public class Gift_List implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
 
-	private byte hotelPag;
-
-	private byte voloAPag;
-
-	private byte voloRPag;
+	private boolean hotelPag;
+	
+	private boolean voloAPag;
+	
+	private boolean voloRPag;
 
 	//bi-directional many-to-one association to EscursionePagata
-	@OneToMany(mappedBy="giftList")
+	@OneToMany(mappedBy="giftList",cascade = {CascadeType.PERSIST,
+            CascadeType.MERGE})
 	private List<EscursionePagata> escursionePagatas;
 
 	//bi-directional many-to-many association to Amico
-	  @ManyToMany()
+	  @ManyToMany(cascade = {CascadeType.PERSIST,
+	            CascadeType.MERGE})
 	  @JoinTable(
-	      name="AmicoGift List"
+	      name="AmicoGiftList"
 	      , joinColumns={
-	        @JoinColumn(name="Gift List_ID")
+	        @JoinColumn(name="`GiftList_ID`")
 	        }
 	      , inverseJoinColumns={
 	        @JoinColumn(name="Amico_ID")
 	        }
-	      )	private List<Amico> amicos;
+	      )	
+	  private List<Amico> amicos;
 
 	//bi-directional many-to-one association to Utente
 	@ManyToOne
@@ -49,6 +61,7 @@ public class Gift_List implements Serializable {
 	private Viaggio viaggio;
 
 	public Gift_List() {
+		amicos = new ArrayList<Amico>();
 	}
 
 	public int getId() {
@@ -59,29 +72,6 @@ public class Gift_List implements Serializable {
 		this.id = id;
 	}
 
-	public byte getHotelPag() {
-		return this.hotelPag;
-	}
-
-	public void setHotelPag(byte hotelPag) {
-		this.hotelPag = hotelPag;
-	}
-
-	public byte getVoloAPag() {
-		return this.voloAPag;
-	}
-
-	public void setVoloAPag(byte voloAPag) {
-		this.voloAPag = voloAPag;
-	}
-
-	public byte getVoloRPag() {
-		return this.voloRPag;
-	}
-
-	public void setVoloRPag(byte voloRPag) {
-		this.voloRPag = voloRPag;
-	}
 
 	public List<EscursionePagata> getEscursionePagatas() {
 		return this.escursionePagatas;
@@ -128,5 +118,31 @@ public class Gift_List implements Serializable {
 	public void setViaggio(Viaggio viaggio) {
 		this.viaggio = viaggio;
 	}
+
+	public boolean isHotelPag() {
+		return hotelPag;
+	}
+
+	public void setHotelPag(boolean hotelPag) {
+		this.hotelPag = hotelPag;
+	}
+
+	public boolean isVoloAPag() {
+		return voloAPag;
+	}
+
+	public void setVoloAPag(boolean voloAPag) {
+		this.voloAPag = voloAPag;
+	}
+
+	public boolean isVoloRPag() {
+		return voloRPag;
+	}
+
+	public void setVoloRPag(boolean voloRPag) {
+		this.voloRPag = voloRPag;
+	}
+	
+	
 
 }

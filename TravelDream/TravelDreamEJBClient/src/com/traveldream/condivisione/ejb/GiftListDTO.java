@@ -18,14 +18,14 @@ public class GiftListDTO {
 	private int id;
 
 	@NotNull
-	private byte hotelPag;
+	private boolean hotelPag;
 
 	@NotNull
-	private byte voloAPag;
+	private boolean voloAPag;
 
 	
 	@NotNull
-	private byte voloRPag;
+	private boolean voloRPag;
 	
 	@NotEmpty
 	private List<EscursionePagataDTO> escursionePagata;
@@ -40,6 +40,7 @@ public class GiftListDTO {
 	
 	public GiftListDTO(){
 		amico =new ArrayList<String>();
+		escursionePagata = new ArrayList<EscursionePagataDTO>();
 	}
 	
 	public int getId() {
@@ -50,27 +51,27 @@ public class GiftListDTO {
 		this.id = id;
 	}
 
-	public byte getHotelPag() {
+	public boolean getHotelPag() {
 		return hotelPag;
 	}
 
-	public void setHotelPag(byte hotelPag) {
+	public void setHotelPag(boolean hotelPag) {
 		this.hotelPag = hotelPag;
 	}
 
-	public byte getVoloAPag() {
+	public boolean getVoloAPag() {
 		return voloAPag;
 	}
 
-	public void setVoloAPag(byte voloAPag) {
+	public void setVoloAPag(boolean voloAPag) {
 		this.voloAPag = voloAPag;
 	}
 
-	public byte getVoloRPag() {
+	public boolean getVoloRPag() {
 		return voloRPag;
 	}
 
-	public void setVoloRPag(byte voloRPag) {
+	public void setVoloRPag(boolean voloRPag) {
 		this.voloRPag = voloRPag;
 	}
 
