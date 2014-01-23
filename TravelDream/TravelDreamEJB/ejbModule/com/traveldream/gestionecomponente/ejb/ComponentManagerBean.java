@@ -43,28 +43,13 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		Hotel hotel = new Hotel(hoteldto);	//aggiungo alla tabella Utente una tupla utilizzanto il DTO
 		em.persist(hotel);	
 	}
-	
-	public int saveHotelSalvato(HotelDTO hoteldto)
-	{
-		HotelSalvato hotel_s = new HotelSalvato(hoteldto);
-		em.persist(hotel_s);
-		em.flush();
-		return em.find(HotelSalvato.class, hotel_s.getId()).getId();
-	}
+
 	
 	@Override
 	public void saveVolo(VoloDTO volodto) {
 		Volo volo = new Volo(volodto);
 		em.persist(volo);
 		
-	}
-	
-	public int saveVoloSalvato(VoloDTO volodto)
-	{
-		VoloSalvato volo = new VoloSalvato(volodto);
-		em.persist(volo);
-		em.flush();
-		return em.find(VoloSalvato.class, volo.getId()).getId();
 	}
 	
 	@Override
@@ -74,19 +59,7 @@ public class ComponentManagerBean implements ComponentManagerBeanLocal {
 		
 	}
 	
-	public int saveEscursioneSalvata(EscursioneDTO escursioneDTO)
-	{
-		EscursioneSalvata escursione = new EscursioneSalvata();
-		escursione.setNome(escursioneDTO.getNome());
-		escursione.setLuogo(escursioneDTO.getLuogo());
-		escursione.setImmagine(escursioneDTO.getImmagine());
-		escursione.setData(escursioneDTO.getData());
-		escursione.setCosto(escursioneDTO.getCosto());
-		
-		em.persist(escursione);
-		em.flush();
-		return em.find(EscursioneSalvata.class, escursione.getId()).getId();
-	}
+
     
 	//sfrutto la named query per ritornare tutti gli hotel dal DB
 	//convertendoli in DTO per il managed bean

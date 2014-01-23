@@ -18,15 +18,12 @@ public interface ComponentManagerBeanLocal {
 	public HotelDTO getHotelById(int id);
 	public void modificaHotel(HotelDTO h);
 	public void eliminaHotel(int id);
-	public int saveHotelSalvato(HotelDTO hoteldto);
 	
 	public VoloDTO getVoloById(int id);
 	public void modificaVolo(VoloDTO v);
 	public void eliminaVolo(int id);
-    public int saveVoloSalvato(VoloDTO volodto);
 	public EscursioneDTO getEscursioneById(int id);
 	public void modificaEscursione(EscursioneDTO v);
 	public void eliminaEscursione(int id);
-	public int saveEscursioneSalvata(EscursioneDTO escursioneDTO);
 	
 }

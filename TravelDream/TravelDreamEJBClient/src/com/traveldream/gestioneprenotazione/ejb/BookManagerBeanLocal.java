@@ -10,7 +10,7 @@ import com.traveldream.gestionecomponente.ejb.VoloDTO;
 public interface BookManagerBeanLocal {
 
 	
-	int saveViaggio(ViaggioDTO v);
+	ViaggioDTO saveViaggio(ViaggioDTO v);
 	int cercaViaggio(ViaggioDTO viaggiodto);
 	void savePrenotazione(PrenotazioneDTO pdto);
 	void updateViaggio(ViaggioDTO v);

@@ -9,9 +9,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import model.Escursione;
+import model.EscursioneSalvata;
 import model.Hotel;
+import model.HotelSalvato;
 import model.Pacchetto;
 import model.Volo;
+import model.VoloSalvato;
 
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
@@ -55,6 +58,20 @@ public class Converter {
 			return hdto;
 		}
 		
+		public static HotelDTO HotelToDTOSimple(HotelSalvato h) {
+			HotelDTO hdto = new HotelDTO();
+			hdto.setId(h.getId());
+			hdto.setCosto_giornaliero(h.getCosto_giornaliero());
+			hdto.setData_fine(h.getData_fine());
+			hdto.setData_inizio(h.getData_inizio());
+			hdto.setLuogo(h.getLuogo());
+			hdto.setNome(h.getNome());
+			hdto.setStelle(h.getStelle());
+			hdto.setHotelImg(h.getImmagine());
+			hdto.setId(h.getId());
+			return hdto;
+		}
+		
 		public static HotelDTO HotelToDTOExtended(Hotel h) {
 			HotelDTO hdto = new HotelDTO();
 			hdto.setId(h.getId());
@@ -83,7 +100,32 @@ public class Converter {
 			return vdto;
 		}
 		
+		public static VoloDTO VoloToDTO(VoloSalvato v) {
+			VoloDTO vdto = new VoloDTO();
+			vdto.setId(v.getId());
+			vdto.setCompagnia(v.getCompagnia());
+			vdto.setCosto(v.getCosto());
+			vdto.setData(v.getData());
+			vdto.setLuogo_arrivo(v.getLuogo_arrivo());
+			vdto.setLuogo_partenza(v.getLuogo_partenza());
+			vdto.setImmagine(v.getImmagine());
+			vdto.setId(v.getId());
+			return vdto;
+		}
+		
 		public static EscursioneDTO EscursioneToDTO(Escursione e) {
+			EscursioneDTO edto = new EscursioneDTO();
+			edto.setId(e.getId());
+			edto.setCosto(e.getCosto());
+			edto.setData(e.getData());
+			edto.setLuogo(e.getLuogo());
+			edto.setNome(e.getNome());
+			edto.setImmagine(e.getImmagine());
+			edto.setId(e.getId());
+			return edto;
+		}
+		
+		public static EscursioneDTO EscursioneToDTO(EscursioneSalvata e) {
 			EscursioneDTO edto = new EscursioneDTO();
 			edto.setId(e.getId());
 			edto.setCosto(e.getCosto());
