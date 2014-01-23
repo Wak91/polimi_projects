@@ -70,6 +70,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 				escursionePagatas.add(escursionePagata);
 			}
 			gift_List.setEscursionePagatas(escursionePagatas);
+
 	}
 	
 
@@ -91,6 +92,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		List<Gift_List> gift_Lists =em.createNamedQuery("Gift_List.findbyuser", Gift_List.class).setParameter("u", em.find(Utente.class, user.getUsername())).getResultList();
 		
 		for (Gift_List gift_List : gift_Lists) {
+			em.refresh(gift_List);
 			giftListDTOs.add(EntitytoDtoGift(gift_List));
 		}
 
@@ -108,6 +110,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 			giftListDTO.getAmico().add(amico.getAmico());
 		}
 		for (EscursionePagata escursionePagata : gift_List.getEscursionePagatas()) {
+			System.out.println("in coverter gift list"+giftListDTO.getId()+" escursione pagata id "+escursionePagata.getId()+"escursione salvata "+escursionePagata.getEscursioneSalvata().getId()+escursionePagata.getEscursioneSalvata().getNome());
 			giftListDTO.getEscursionePagata().add(EntitytoDTOEscuzionePagata(escursionePagata));
 		}
 		giftListDTO.setViaggio(Converter.ViaggioToDTO(gift_List.getViaggio()));

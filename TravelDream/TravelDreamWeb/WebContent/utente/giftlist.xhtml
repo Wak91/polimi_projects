@@ -20,7 +20,7 @@
       Gift List                 
    			
    			
-       <p:dataTable id="Gift" var="gift" value="#{GiftListBean.giftDataModel}" selectionMode="single" selection="#{GiftListBean.selectedGiftListDTO}" paginator="true" rows="25"
+       <p:dataTable id="Gift" var="gift" value="#{GiftListBean.giftDataModel}" selectionMode="single" selection="#{GiftListBean.selectedGiftListDTO}" paginator="true" rows="35"
        rowKey="#{gift.id}" filteredValue="#{GiftListBean.filteredGift}">  
                                 
                 <p:column headerText="Nome Viaggio" style="width:10%"  >  
@@ -50,6 +50,12 @@
                 
                 <p:column style="width:4%" headerText="Escursione Pagata">  
                 <p:commandButton id="selectButton" update=":form:display" oncomplete="PF('escDialog').show()" icon="ui-icon-search" title="View" action="#{GiftListBean.setupEscursioniPagatedialog()}">  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>  
+        		</p:column> 
+        		
+        		 <p:column style="width:4%" headerText="Lista Amici">  
+                <p:commandButton id="amiciButton" update=":form:displayamici" oncomplete="PF('amiciDialog').show()" icon="ui-icon-search" title="View" action="#{GiftListBean.setupamicidialog()}">  
                 <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
             	</p:commandButton>  
         		</p:column> 
@@ -144,7 +150,18 @@
   
 
         </h:panelGrid>  
-  
+    </p:dialog> 
+    
+    <p:dialog  header="Amici" widgetVar="amiciDialog" resizable="false" id="amiciDlg"  
+                showEffect="fade"  modal="true" style="width:25%">  
+                              
+                
+       	 		<p:dataTable id="displayamici" value="#{GiftListBean.amiciDatamodel}" var="amico" style="width:20%">
+       	 		<p:column headerText="Email" style="width:10%"  >  
+                  <h:outputText value="#{amico}" />  
+                </p:column>  
+
+        		</p:dataTable>
     </p:dialog> 
           
   

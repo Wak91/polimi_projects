@@ -35,12 +35,12 @@ public class Gift_List implements Serializable {
 
 	//bi-directional many-to-one association to EscursionePagata
 	@OneToMany(mappedBy="giftList",cascade = {CascadeType.PERSIST,
-            CascadeType.MERGE})
+            CascadeType.MERGE, CascadeType.REFRESH})
 	private List<EscursionePagata> escursionePagatas;
 
 	//bi-directional many-to-many association to Amico
 	  @ManyToMany(cascade = {CascadeType.PERSIST,
-	            CascadeType.MERGE})
+	            CascadeType.MERGE,CascadeType.REFRESH})
 	  @JoinTable(
 	      name="AmicoGiftList"
 	      , joinColumns={

@@ -29,6 +29,7 @@ public class GiftListBean {
 	GiftDataModel giftDataModel;
 	GiftListDTO selectedGiftListDTO;
 	
+	amiciDatamodel amiciDatamodel;
 	
 	EscursionePagataDatamodel escursionePagataDatamodel;
 	ArrayList<GiftListDTO> filteredGift;
@@ -89,6 +90,11 @@ public class GiftListBean {
 		}
 		
 	}
+	public void setupamicidialog() {
+		amiciDatamodel = new amiciDatamodel(selectedGiftListDTO.getAmico());
+
+	}
+	
 	public void setupEscursioniPagatedialog(){
 		System.out.println("ID selected"+selectedGiftListDTO.getId());
 		escursionePagataDatamodel= new EscursionePagataDatamodel(selectedGiftListDTO.getEscursionePagata());
@@ -131,6 +137,14 @@ public class GiftListBean {
 	public void setEscursionePagataDatamodel(
 			EscursionePagataDatamodel escursionePagataDatamodel) {
 		this.escursionePagataDatamodel = escursionePagataDatamodel;
+	}
+
+	public amiciDatamodel getAmiciDatamodel() {
+		return amiciDatamodel;
+	}
+
+	public void setAmiciDatamodel(amiciDatamodel amiciDatamodel) {
+		this.amiciDatamodel = amiciDatamodel;
 	}
 
 	
