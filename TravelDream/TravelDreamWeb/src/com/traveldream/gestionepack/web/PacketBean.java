@@ -13,6 +13,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -60,12 +61,13 @@ public class PacketBean {
 	{
 
 	selectedHotels  = new ArrayList <HotelDTO>(); // questo per tenere traccia di quelli selezionati
-	
+	selectedVolo = new ArrayList <VoloDTO>();
+	selectedEsc = new ArrayList <EscursioneDTO>();
 	}
 	
 	public void initBean()
 	{
-	     packet = new PacchettoDTO();
+		 packet = new PacchettoDTO();
 		 setHotelModels(new HotelDataModel(CMB.getAllHotel()));	
 		 setVoloModels(new VoloDataModel(CMB.getAllVolo()));
 		 setEscModels(new EscDataModel(CMB.getAllEscursione()));
@@ -94,6 +96,15 @@ public class PacketBean {
 	  public void setPacklist(ArrayList <PacchettoDTO> packlist) {
 			this.packlist = packlist;
 		}
+	  
+	  public UploadedFile getImgPack() {
+			return imgPack;
+		}
+
+		public void setImgPack(UploadedFile imgPack) {
+			this.imgPack = imgPack;
+		}
+		
 	
 	//---FUNZIONI PER I VOLI-----------------------------------------
 	
@@ -159,6 +170,9 @@ public class PacketBean {
 		this.escModels = escModels;
 	}
 	//---------------------------------------------------------------
+	//FILTRI
+	//---------------------------------------------------------------
+
 	public void filterComponents(){
 		
 	
@@ -197,79 +211,33 @@ public class PacketBean {
 		 setEscModels(new EscDataModel(filteredEscursiones));
 	}
 	
-	
-	public void getPacchettoById(int id)
-	{	
-		initBean();
-		this.packet = PMB.getPacchettoByID(id);
-		filtraHotel();
-		filtraVoli();
-		filtraEscursioni();
-		if ( packet == null)
-		   {
-			 //ERRORE, HA CAMBIATO LA URL OPPURE QUALCOSA DI MOLTO BRUTTO NEL DB
-		   }
-		this.selectedEsc = (ArrayList<EscursioneDTO>) packet.getLista_escursioni();
-		this.selectedHotels = (ArrayList<HotelDTO>) packet.getLista_hotel();
-		
-		for (HotelDTO hotelDTO : selectedHotels) {
-			System.out.println("Selezionato hotel" + hotelDTO.getNome());
-			
-		}
-		this.selectedVolo = (ArrayList<VoloDTO>) packet.getLista_voli();
-		
+	public ArrayList<EscursioneDTO> getFilteredEscursiones() {
+		return filteredEscursiones;
 	}
-	
-	private void filtraHotel()
-	{
-		ArrayList <HotelDTO> hdtolist = new ArrayList <HotelDTO>();
-		for(HotelDTO hdto: CMB.getAllHotel()  )
-		   {
-			if(hdto.getLuogo().equals(packet.getDestinazione()))
-				hdtolist.add(hdto);
-		   }
-		 setHotelModels(new HotelDataModel(hdtolist));	
+
+	public void setFilteredEscursiones(ArrayList<EscursioneDTO> filteredEscursiones) {
+		this.filteredEscursiones = filteredEscursiones;
 	}
-	
-	private void filtraVoli()
-	{
-		ArrayList <VoloDTO> vdtolist = new ArrayList <VoloDTO>();
-		for(VoloDTO vdto: CMB.getAllVolo()  )
-		   {
-			if(
-			   ( vdto.getLuogo_partenza().equals(packet.getDestinazione()) || 
-			     vdto.getLuogo_arrivo().equals(packet.getDestinazione()) )   
-			   &&
-			    ( vdto.getData().after(packet.getData_inizio()) && vdto.getData().before(packet.getData_fine()) )
-			   
-			  )
-				vdtolist.add(vdto);
-		   }
-		 setVoloModels(new VoloDataModel(vdtolist));	
-		
+
+	public ArrayList<VoloDTO> getFilteredVolos() {
+		return filteredVolos;
 	}
-	
-	private void filtraEscursioni()
-	{
-		ArrayList <EscursioneDTO> edtolist = new ArrayList <EscursioneDTO>();
-		for(EscursioneDTO edto: CMB.getAllEscursione()  )
-		   {
-			if(edto.getLuogo().equals(packet.getDestinazione()) && 
-			   edto.getData().after(packet.getData_inizio()) && edto.getData().before(packet.getData_fine())
-			  )
-				edtolist.add(edto);
-		   }
-		 setEscModels(new EscDataModel(edtolist));
-		
+
+	public void setFilteredVolos(ArrayList<VoloDTO> filteredVolos) {
+		this.filteredVolos = filteredVolos;
 	}
+	//---------------------------------------------------------------
+	//END FILTRI
+	//---------------------------------------------------------------
 	
+	//BEAN CORE
 	public String PrelevaSelezionatiECrea()
 	{
 		//check della destinazione perche ho dovuto togliere l'attributo not empty dal DTO e poi non c'e nessun controlo sugli hotel e vli
 				if(packet.getDestinazione()==null || packet.getDestinazione().isEmpty() || selectedVolo.isEmpty() || selectedHotels.isEmpty()){
 					System.out.println("stop packet");
 					FacesContext.getCurrentInstance().addMessage("luogo", new FacesMessage("Errore nell'inserimento dei componenti"));
-					return null;
+					return "addPacket.xhtml";
 
 				}
 				int andata=0, ritorno=0;
@@ -287,11 +255,37 @@ public class PacketBean {
 				if(andata<1 || ritorno <1)
 				   {
 					//MESSAGGIO DI ERRORE!!
-					FacesContext.getCurrentInstance().addMessage("multiVoli", new FacesMessage("Almeno un volo di andata e uno di ritorno"));
-				    return null;
+					FacesContext.getCurrentInstance().addMessage("myForm:newVoli", new FacesMessage("Deve esserci almeno un volo di andata e uno di ritorno"));				    
+					return "addPacket.xhtml";
 				   }
-		
+				//almeno un volo di andata prima di un volo di ritorno ( altrimenti è impossibile creare un viaggio )
+				int temporal=0;
+				for(VoloDTO vdto: selectedVolo) //gira come O(n^2)...
+				   {
+					if(vdto.getLuogo_arrivo().equals(packet.getDestinazione()))
+					  {
+						Date date_ref = vdto.getData(); 
+					    for(VoloDTO vdto2: selectedVolo)
+					      {
+						    if(vdto2.getLuogo_partenza().equals(packet.getDestinazione()))
+						      {
+						    	if(vdto2.getData().after(date_ref))
+						    	  {
+						    		temporal++;
+						    		break;
+						    	  }
+						      }
+					      }
+					
+				      }
+				   }
+				if(temporal<1)
+				   {
+					//MESSAGGIO DI ERRORE!!
+					FacesContext.getCurrentInstance().addMessage("multiVoli", new FacesMessage("Almeno un volo di andata precedente ai voli di ritorno"));					
+					return "addPacket.xhtml";
 
+				   }
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);
@@ -323,102 +317,24 @@ public class PacketBean {
 		    }
 		
 		PMB.createPacket(packet);
-		return "impadd.xhtml?faces-redirect=true";
+		
+		//---Se si vuole usare la post questo bean deve essere session scoped e questi 
+		//   valori vanno resettati quando si esce dalla creazione della pagina 
+		// vanno quindi messi anche in caso di errore altrimenti rimangono le cose filtrate prima
+		//----------------------------------------------------------------------
+		return "impack.xhtml?faces-redirect=true";
 		
 	}
 	
 	public void deletePacchetto(int id)
 	{ 	
 		PMB.deletePacchetto(id);
-	}
-	
-	public String  modificaPacchetto(int id) {
-		
+	}	
 
-		if(selectedHotels.isEmpty() || selectedVolo.isEmpty())
-		  {
-			//ERRORE, STAI IN PRATICA DISTRUGGENDO IL PACCHETTO
-			System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-			 return "imphome.xhtml?faces-redirect=true";
-		  }
-		
-		//Ora controllo che sia possibile creare almeno un viaggio con questo pack
-	    //Cioè che ci sia un volo di andata ed uno di ritorno per quella destinazione
-	    //Gli hotel inseriti sono per semplicità dati 
-				
-		int andata=0, ritorno=0;
-		for(VoloDTO vdto : selectedVolo)
-				   {
-					
-					
-					if(vdto.getLuogo_arrivo().equals(packet.getDestinazione()))
-						andata++;
-					if(vdto.getLuogo_partenza().equals(packet.getDestinazione()))
-						ritorno++;			
-				   }
-		if(andata == 0 || ritorno == 0)
-		   {
-			//MESSAGGIO DI ERRORE!!
-			System.out.println(""+andata+""+ritorno);
-			System.out.println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
-         System.out.println(""+selectedVolo.size());
-			return "imphome.xhtml?faces-redirect=true";
-		   }	
-		
-		packet.setLista_escursioni(selectedEsc);
-		packet.setLista_hotel(selectedHotels);
-		packet.setLista_voli(selectedVolo);
-		
-		 if(!imgPack.getFileName().equals("")){
-		InputStream inputStr = null;
-	    try {
-	        inputStr = imgPack.getInputstream();
-	    } catch (IOException e) {
-	        //log error
-	    }
+	//-------------------------------------------------------
+	//UTILITY PER DIALOG
+	//-------------------------------------------------------
 
-	    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-	    String directory = externalContext.getInitParameter("uploadDirectory");
-	    String filename = FilenameUtils.getName(imgPack.getFileName());
-	    File destFile = new File(directory, filename);
-
-	    //use org.apache.commons.io.FileUtils to copy the File
-	    try {
-	        FileUtils.copyInputStreamToFile(inputStr, destFile);
-	    } catch (IOException e) {
-	        //log error
-	    }
-	    packet.setPathtoImage(imgPack.getFileName());
-	    }
-		PMB.modifyPacchetto(packet);
-		return "impack.xhtml?faces-redirect=true";
-	}
-	
-
-	public ArrayList<EscursioneDTO> getFilteredEscursiones() {
-		return filteredEscursiones;
-	}
-
-	public void setFilteredEscursiones(ArrayList<EscursioneDTO> filteredEscursiones) {
-		this.filteredEscursiones = filteredEscursiones;
-	}
-
-	public ArrayList<VoloDTO> getFilteredVolos() {
-		return filteredVolos;
-	}
-
-	public void setFilteredVolos(ArrayList<VoloDTO> filteredVolos) {
-		this.filteredVolos = filteredVolos;
-	}
-
-	public UploadedFile getImgPack() {
-		return imgPack;
-	}
-
-	public void setImgPack(UploadedFile imgPack) {
-		this.imgPack = imgPack;
-	}
-	
     public void caricaDialogVoli(int id)
     {
     	PacchettoDTO packDTO = PMB.getPacchettoByID(id);

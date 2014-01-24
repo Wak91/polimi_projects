@@ -122,7 +122,7 @@ public class ComponentBean {
 		CMB.saveHotel(hotel);
 		FacesMessage msg = new FacesMessage("Hotel is added");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
-		return "impadd.xhtml?faces-redirect=true";
+		return "addHotel.xhtml?faces-redirect=true";
 	}
 		
 	public String createVolo(){
@@ -155,7 +155,7 @@ public class ComponentBean {
 			volo.setImmagine(imgVolo.getFileName());
 		    }
 		CMB.saveVolo(volo);
-		return "impadd.xhtml?faces-redirect=true";
+		return "addVolo.xhtml?faces-redirect=true";
 	}
 	
 	public String createEscursione(){
@@ -189,7 +189,7 @@ public class ComponentBean {
 
 		    }
 		CMB.saveEscursione(escursione);
-		return "impadd.xhtml?faces-redirect=true";
+		return "addEscursione.xhtml?faces-redirect=true";
 	}
 	
 //--------------------------GETTER_SETTER_HOTELS--------------------------------------

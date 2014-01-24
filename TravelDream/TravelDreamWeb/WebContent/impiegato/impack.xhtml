@@ -13,7 +13,7 @@
      <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
      <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
      <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
-     <p:menuitem value="Add" url="impadd.xhtml" icon="ui-icon-wrench"/>  
+     <p:menuitem value="Add" url="addHotel.xhtml" icon="ui-icon-wrench"/>  
      </p:tabMenu>
 	    #{PacketBean.initBean()}
 	    <h:form>
@@ -42,7 +42,7 @@
 				</p:column> 
 				
 				<p:column headerText="ListaVoli" style="width:25%" sortBy="luogo" >  
-                <p:commandButton id="basic" value="show voli" action="#{PacketBean.caricaDialogVoli(pack.id)}" onclick="PF('dlg').show();" type="button" />  
+                <p:commandButton id="basic" value="show voli" action="#{PacketBean.caricaDialogVoli(pack.id)}" oncomplete="PF('dlg').show();" type="button" />  
                 
                 <p:dialog id="dialog" header="Voli" widgetVar="dlg" dynamic="true" resizable="false">  
                 
@@ -84,7 +84,8 @@
                 </p:column>  
   
                  <p:column headerText="Modifica" style="width:24%" >  
-                <h:link outcome = "modifypacket?id=#{pack.id}"  value="Modifica"/>
+                    <h:commandLink value="Modifica" action="#{modPacketBean.outcome(pack.id)}" />
+                
 				</p:column> 
 				
                <p:column headerText="Elimina" style="width:24%" >

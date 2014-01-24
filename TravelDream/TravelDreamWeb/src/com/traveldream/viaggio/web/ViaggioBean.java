@@ -109,7 +109,9 @@ public class ViaggioBean {
 		 setHotelModels(new HotelDataModel(packet.getLista_hotel()));	
 		 setVoloModels_a(new VoloDataModel(packet.getLista_voli_andata()));
 		 setVoloModels_r(new VoloDataModel(packet.getLista_voli_ritorno()));
-		 setEscModels(new EscDataModel(packet.getLista_escursioni()));		
+		 setEscModels(new EscDataModel(packet.getLista_escursioni()));
+		 this.viaggio.setData_inizio(packet.getData_inizio());
+		 this.viaggio.setData_fine(packet.getData_fine());
 	}
 	
 	//Riempie la struttura premodels per permettere di visualizzare nella view tutte le prenotazioni di un utente
@@ -204,9 +206,10 @@ public class ViaggioBean {
 		
 	public String acquista_paga()
 	{
-		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null)
+		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null 
+			|| viaggio.getData_fine() == null || viaggio.getData_inizio() == null)
 		  {
-			return "userhome.xhtml?faces-redirect=true";
+			return "userhome.xhtml?faces-redirect=true"; 
 		  }
 		
 		viaggio.setHotel(selectedHotels);

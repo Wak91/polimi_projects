@@ -8,37 +8,41 @@
       template="Template.xhtml">
        
        <ui:define name="content">
-       #{PacketBean.getPacchettoById(param['id'])}
+       		
        <p:tabMenu activeIndex="2">  
         <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
         <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
         <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
-        <p:menuitem value="Add" url="impadd.xhtml" icon="ui-icon-wrench"/>  
-        </p:tabMenu>   
+        <p:menuitem value="Add" url="addHotel.xhtml" icon="ui-icon-wrench"/>  
+        </p:tabMenu>   		
 	    <h:form enctype="multipart/form-data">
-	    
-		<p:panel header="Packet modification">
+	    <p:panel header="Packet modification">
 			
+	    #{modPacketBean.getPacchettoById()}
+		
 			<h:panelGrid columns="2" id="regGrid">
 			
 				<h:outputLabel for="nome">Nome:</h:outputLabel>
-				<p:inputText id="nome" value="#{PacketBean.packet.nome}" />
+				<p:inputText id="nome" value="#{modPacketBean.packet.nome}" />
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
-				<h:outputText id="luogo" value="#{PacketBean.packet.destinazione}" editable="false"/>
+				<h:outputText id="luogo" value="#{modPacketBean.packet.destinazione}" editable="false"/>
 				
-                  <h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
-				  <h:outputText id="datei" value="#{PacketBean.packet.data_inizio}"  pattern="dd/MM/yyyy"/>  
-
+                 <h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
+				 <h:outputText id="datei" value="#{modPacketBean.packet.data_inizio}"  pattern="dd/MM/yyyy">  
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
 				<h:outputLabel for="datef">Data Fine Validità</h:outputLabel>
-				<h:outputText id="datef" value="#{PacketBean.packet.data_fine}"  pattern="dd/MM/yyyy"/>  
+				<h:outputText id="datef" value="#{modPacketBean.packet.data_fine}"  pattern="dd/MM/yyyy">  
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
 				<br></br>
 				</h:panelGrid>
 				
 				INSERIMENTO HOTEL   
 				 
-				<p:dataTable id="multiHotels" dynamic="true" var="hotel" value="#{PacketBean.hotelModels}" paginator="true" rows="25"  
-                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}" >  
+				<p:dataTable id="multiHotels" dynamic="true" var="hotel" value="#{modPacketBean.hotelModels}" paginator="true" rows="25"  
+                 selection="#{modPacketBean.selectedHotels}" filteredValue="#{modPacketBean.filteredHotels}" >  
                 <p:column selectionMode="multiple" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
@@ -59,9 +63,8 @@
                 
                  <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_inizio}">
-    				
-				</h:outputText>
-                  
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>                  
                 </p:column>  
                 
                  <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}" filterMatchMode="contains">  
@@ -74,8 +77,8 @@
 				
 		        INSERIMENTO VOLI   
 		
-				<p:dataTable id="multiVoli" var="volo" value="#{PacketBean.voloModels}" paginator="true" rows="5"  
-                 selection="#{PacketBean.selectedVolo}">  
+				<p:dataTable id="multiVoli" var="volo" value="#{modPacketBean.voloModels}" paginator="true" rows="5"  
+                 selection="#{modPacketBean.selectedVolo}">  
                 
                 <p:column selectionMode="multiple" style="width:2%" />  
   
@@ -84,7 +87,9 @@
                 </p:column>  
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
-                #{volo.data}  
+                  <h:outputText value="#{volo.data}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText> 
                 </p:column>  
   
                 <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{volo.costo}">  
@@ -102,8 +107,8 @@
               
               INSERIMENTO ESCURSIONI   
 			  	
-				<p:dataTable id="multiEscursioni" var="esc" value="#{PacketBean.escModels}" paginator="true" rows="5"  
-                 selection="#{PacketBean.selectedEsc}">  
+				<p:dataTable id="multiEscursioni" var="esc" value="#{modPacketBean.escModels}" paginator="true" rows="5"  
+                 selection="#{modPacketBean.selectedEsc}">  
                 
                 <p:column selectionMode="multiple" style="width:2%" />  
   
@@ -112,7 +117,9 @@
                 </p:column>  
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{esc.data}">  
-                #{esc.data}  
+                <h:outputText value="#{esc.data}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>   
                 </p:column>  
   
                 <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{esc.costo}">  
@@ -128,13 +135,13 @@
 
 			 <h:outputLabel for="img">Immagine corrente</h:outputLabel>
 				
-			   <h:graphicImage value="../images/#{PacketBean.packet.pathtoImage}" height="300" width="300"/> 
+			   <h:graphicImage value="../images/#{modPacketBean.packet.pathtoImage}" height="300" width="300"/> 
 			   
 				 <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
-				<p:fileUpload value="#{PacketBean.imgPack}" mode="simple" />
+				<p:fileUpload value="#{modPacketBean.imgPack}" mode="simple" />
 
                 <h:commandButton value="Modifica Pacchetto" update="regGrid"
-				action="#{PacketBean.modificaPacchetto(pack.id)}" icon="ui-icon-script"/>
+				action="#{modPacketBean.modificaPacchetto(pack.id)}" icon="ui-icon-script"/>
      
 		</p:panel>
 	   
