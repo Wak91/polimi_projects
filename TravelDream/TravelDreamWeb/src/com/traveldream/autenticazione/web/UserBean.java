@@ -102,29 +102,29 @@ public class UserBean {
 	
 	public String modificaUtente(){
 		userMgr.modifyUser(user);
-		return "adminlist?faces-redirect=true";
+		return "/admin/adminlist?faces-redirect=true";
 	}
 	
 	public String register(){
 		userMgr.saveUser(user);
-		return "adminlist?faces-redirect=true";
+		return "/utente/userhome?faces-redirect=true";
 	}
 	
 	public String addImpiegato(){
 		userMgr.saveImpiegato(user);
-		return "adminlist?faces-redirect=true";
+		return "/admin/adminlist?faces-redirect=true";
 	}
 	
 
 	public String logout() {
 	    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-	    return "homepage?faces-redirect=true";
+	    return "/homepage?faces-redirect=true";
 	  }
 	
 	
 	public String deleteImp(String username){
 		userMgr.unregister(userMgr.findImp(username));
-		return "adminlist?faces-redirect=true";		
+		return "/admin/adminlist?faces-redirect=true";		
 	}
 	
 	//TOGLIEREEEEEEE

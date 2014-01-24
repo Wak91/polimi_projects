@@ -14,7 +14,10 @@ import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
  * 
  */
 @Entity
-@NamedQuery(name="Invito.findAll", query="SELECT i FROM Invito i")
+@NamedQueries({
+	@NamedQuery(name="Invito.findAll", query="SELECT i FROM Invito i"),
+	@NamedQuery(name="Invito.findById", query="SELECT i FROM Invito i WHERE i.id = :id"),
+})
 public class Invito implements Serializable {
 	private static final long serialVersionUID = 1L;
 

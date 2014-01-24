@@ -12,11 +12,15 @@ import model.Escursione;
 import model.EscursioneSalvata;
 import model.Hotel;
 import model.HotelSalvato;
+import model.Invito;
 import model.Pacchetto;
+import model.Utente;
 import model.Viaggio;
 import model.Volo;
 import model.VoloSalvato;
 
+import com.traveldream.autenticazione.ejb.UserDTO;
+import com.traveldream.condivisione.ejb.InvitoDTO;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
@@ -201,8 +205,26 @@ public class Converter {
 				return vdto;
 			}
 		  
+		  public static InvitoDTO InvitoToDTO(Invito i){
+			  InvitoDTO idto = new InvitoDTO();
+			  idto.setId(i.getId());
+			  idto.setStatus(i.getStatus());
+			  idto.setUtente(UserToDTO(i.getUtenteBean()));
+			  idto.setViaggio(ViaggioToDTO(i.getViaggioBean()));
+			  idto.setAmico(i.getAmico());
+			return idto;
+		  }
 		  
-
+		 //------------------------------ Utente -------------------------------- 
+		  private static UserDTO UserToDTO(Utente user) {
+				UserDTO udto = new UserDTO();
+				udto.setUsername(user.getUsername());
+				udto.setFirstName(user.getNome());
+				udto.setLastName(user.getCognome());
+				udto.setEmail(user.getEmail());
+				udto.setData(user.getData_di_nascita());
+				return udto;
+			}
 		
 
 	}

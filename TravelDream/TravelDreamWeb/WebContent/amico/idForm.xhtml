@@ -13,12 +13,15 @@
 		<p:panel header="ID">
 			<h:panelGrid columns="3" id="regGrid">
 				
-				<h:outputLabel for="idv">Inserisci qui l'ID ricevuto: </h:outputLabel>
-				<p:inputText id="idv" value="#{invitoBean}"/>
+				<h:outputLabel for="idv" value="Inserisci qui l'ID ricevuto: "/> 
+				<h:messages globalOnly="true" />
+            	<p:inputText id="idv" value="#{InvitoBean.id_amico}" label="Idv"/>  
+            	<p:message for="idv"/>  
 				
-				</h:panelGrid>
-				<p:commandButton value="Send" update="regGrid"
-				action="#{invitoBean.register()}" />
+			</h:panelGrid>
+				
+				<p:commandButton value="Send" update="regGrid" icon="ui-icon-check" validateClient="true"
+				action="#{InvitoBean.searchInv()}" />
 
 		</p:panel>
 	</h:form>
