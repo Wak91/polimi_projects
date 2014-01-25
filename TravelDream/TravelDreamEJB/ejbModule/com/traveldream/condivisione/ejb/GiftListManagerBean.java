@@ -56,8 +56,9 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 			gift_List.setVoloRPag(false);
 			gift_List.setUtente(em.find(Utente.class, giftListDTO.getUtente().getUsername()));
 			gift_List.setAmicos(saveEntityAmico(giftListDTO.getAmico()));
+			gift_List.setNpersone(giftListDTO.getNpersone());
 			System.out.println("id gift list +"+gift_List.getId());
-			gift_List.setHash(DigestUtils.sha512Hex((int)Math.random()*10000000+gift_List.getViaggio().getId()+gift_List.getUtente().getUsername()+gift_List.getViaggio().getHotelSalvato().getNome()));
+			gift_List.setHash(DigestUtils.md5Hex((int)Math.random()*10000000+gift_List.getViaggio().getId()+gift_List.getUtente().getUsername()+gift_List.getViaggio().getHotelSalvato().getNome()));
 
 			em.persist(gift_List);
 			em.flush();
@@ -112,6 +113,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		giftListDTO.setVoloAPag(gift_List.isVoloAPag());
 		giftListDTO.setVoloRPag(gift_List.isVoloRPag());
 		giftListDTO.setHash(gift_List.getHash());
+		giftListDTO.setNpersone(gift_List.getNpersone());
 		for (Amico amico : gift_List.getAmicos()) {
 			giftListDTO.getAmico().add(amico.getAmico());
 		}
@@ -127,6 +129,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		EscursionePagataDTO escursionePagataDTO = new EscursionePagataDTO();
 		escursionePagataDTO.setEscPagata(escursionePagata.getPagata());
 		escursionePagataDTO.setEscursione(Converter.EscursioneToDTO((escursionePagata.getEscursioneSalvata())));
+		escursionePagataDTO.setId(escursionePagata.getId());
 		return escursionePagataDTO;
 
 	}

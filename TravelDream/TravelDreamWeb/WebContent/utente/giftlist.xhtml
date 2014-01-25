@@ -60,6 +60,12 @@
             	</p:commandButton>  
         		</p:column> 
         		
+        		<p:column style="width:4%" headerText="Codice Gift">  
+                <p:commandButton id="codiceButton" update=":form:displaycodice" oncomplete="PF('codiceDialog').show()" icon="ui-icon-search" title="View">  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>  
+        		</p:column> 
+        		
         		<p:column style="width:4%">
         			<p:commandButton id="Elimina" update=":form:Gift" process="@this" action="#{GiftListBean.eliminaGift()}" icon="ui-icon-close">
                     <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
@@ -174,6 +180,21 @@
         </h:panelGrid> 
           
   </p:dialog>
+  
+  
+       <p:dialog header="Codice Detail" widgetVar="codiceDialog" resizable="false" id="codiceDlg"  
+                showEffect="fade"  modal="true">  
+  
+        <h:panelGrid id="displaycodice" columns="2" cellpadding="4" style="margin:0 auto;">  
+  
+            <h:outputText value="Codice" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.hash}" style="font-weight:bold"/>  
+  
+           
+
+        </h:panelGrid>  
+  
+    </p:dialog> 
     </h:form>
        </ui:define>
 </ui:composition>

@@ -9,37 +9,53 @@
       
        <ui:define name="content">
        #{GiftListBean.loadGiftFromHash(param['id'])}
+       
         <p:panel header="Gift List">
            <h:form>
+                  <p:growl id="msg" />  
+           
            	    <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5">  
            	
+           	
 	           		<h:outputText value="Hotel" />
-
 	           		<h:outputText value="#{GiftListBean.giftListDTOAmicoDto.viaggio.hotel.nome}" />
-	           		<p:selectBooleanCheckbox value="#{GiftListBean.giftListDTOAmicoDto.hotelPag}" /> 
+	           		<h:outputText value="#{GiftListBean.calcolaCostoHotel()}" />
+	           		<p:selectBooleanCheckbox value="#{GiftListBean.currentHotelPag}" rendered="#{GiftListBean.giftListDTOAmicoDto.hotelPag==false}"> 
+	           		</p:selectBooleanCheckbox> 
+	           		<h:outputLabel rendered="#{GiftListBean.giftListDTOAmicoDto.hotelPag==true}" value="Già pagata" />
 	           		
 	           		<h:outputText value="Volo Andata" />
 	           		<h:outputText value="#{GiftListBean.giftListDTOAmicoDto.viaggio.volo_andata.compagnia}" />
-	           		<p:selectBooleanCheckbox value="#{GiftListBean.giftListDTOAmicoDto.voloAPag}" /> 
+	           		<h:outputText value="#{GiftListBean.giftListDTOAmicoDto.viaggio.volo_andata.costo*GiftListBean.giftListDTOAmicoDto.npersone}€" />
+	           		<p:selectBooleanCheckbox value="#{GiftListBean.currentVoloaPag}" rendered="#{GiftListBean.giftListDTOAmicoDto.voloAPag==false}" > 
+	           		</p:selectBooleanCheckbox> 
+	           		<h:outputLabel rendered="#{GiftListBean.giftListDTOAmicoDto.voloAPag==true}" value="Già pagata" />
 	           		
 	           		<p:outputLabel value= "Volo Ritorno"/>
 	           		<h:outputText value="#{GiftListBean.giftListDTOAmicoDto.viaggio.volo_ritorno.compagnia}" />
-	           		<p:selectBooleanCheckbox value="#{GiftListBean.giftListDTOAmicoDto.voloRPag}" rendered="#{GiftListBean.giftListDTOAmicoDto.voloRPag==false}"/> 
+	           		<h:outputText value="#{GiftListBean.giftListDTOAmicoDto.viaggio.volo_ritorno.costo*GiftListBean.giftListDTOAmicoDto.npersone}€" />
+	           		<p:selectBooleanCheckbox value="#{GiftListBean.currentVolorPag}" rendered="#{GiftListBean.giftListDTOAmicoDto.voloRPag==false}"> 
+	           		</p:selectBooleanCheckbox> 
            			<h:outputLabel rendered="#{GiftListBean.giftListDTOAmicoDto.voloRPag==true}" value="Già pagata" />
            
            </h:panelGrid>
-           <h:dataTable var="escursionepag" value="#{GiftListBean.giftListDTOAmicoDto.escursionePagata}" style="margin-bottom:10px" cellpadding="5">
+           <h:dataTable var="escursionepag" value="#{GiftListBean.currentEscPag}" style="margin-bottom:10px" cellpadding="5">
            	  <h:column >
         		<h:outputText value="Escursione"/>
     		</h:column>
            	 <h:column >
         		<h:outputText value="#{escursionepag.escursione.nome}"/>
     		</h:column>
+    			 <h:column >
+        		<h:outputText value="#{escursionepag.escursione.costo*GiftListBean.giftListDTOAmicoDto.npersone}"/>
+    		</h:column>
     		<h:column >
-    			<p:selectBooleanCheckbox value="#{escursionepag.escPagata}" rendered="#{escursionepag.escPagata==false}"/> 
+    			<p:selectBooleanCheckbox value="#{escursionepag.escPagata}" rendered="#{GiftListBean.renderEsc(escursionepag.id)}"> 
+	           		</p:selectBooleanCheckbox> 
            		<h:outputLabel rendered="#{escursionepag.escPagata==true}" value="Già pagata" />
     		</h:column>
            </h:dataTable>
+           <p:commandButton value="Paga" action="#{GiftListBean.paga}"></p:commandButton>
            </h:form>
            
 		</p:panel>

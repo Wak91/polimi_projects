@@ -25,6 +25,8 @@ public class GiftListDTO {
 
 	private String hash;
 	
+	private int npersone;
+	
 	@NotNull
 	private boolean voloRPag;
 	
@@ -52,7 +54,9 @@ public class GiftListDTO {
 		this.id = id;
 	}
 
-	public boolean getHotelPag() {
+	
+
+	public boolean isHotelPag() {
 		return hotelPag;
 	}
 
@@ -60,7 +64,7 @@ public class GiftListDTO {
 		this.hotelPag = hotelPag;
 	}
 
-	public boolean getVoloAPag() {
+	public boolean isVoloAPag() {
 		return voloAPag;
 	}
 
@@ -68,7 +72,7 @@ public class GiftListDTO {
 		this.voloAPag = voloAPag;
 	}
 
-	public boolean getVoloRPag() {
+	public boolean isVoloRPag() {
 		return voloRPag;
 	}
 
@@ -114,6 +118,14 @@ public class GiftListDTO {
 
 	public void setHash(String hash) {
 		this.hash = hash;
+	}
+
+	public int getNpersone() {
+		return npersone;
+	}
+
+	public void setNpersone(int npersone) {
+		this.npersone = npersone;
 	}
 
 	

@@ -17,9 +17,15 @@
 			<h:form id="form">  
   
     <p:growl id="msgs" value="Inserisci valida email"/>  
+    
+   
   
     <p:panel header="Aggiungi un nuovo amico">  
         <h:panelGrid columns="2" id="grid">  
+        <h:outputLabel value="Numero Persone" for="numpers"></h:outputLabel>  
+         <p:spinner id="minmax"   
+            value="#{GiftListBean.giftListDTO.npersone}" min="1" max="15">         
+     	</p:spinner> 
             <h:outputLabel value="Email Amico a" for="email"></h:outputLabel>  
             <p:inputText id="email"   value="#{GiftListBean.amico}" >  
                <f:validateRegex pattern="(^$|^.*@.*\..*$)" />
@@ -63,6 +69,8 @@
               
   
 </h:form> 
+
+ 
        
        </ui:define>
       

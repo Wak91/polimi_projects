@@ -35,6 +35,8 @@ public class Gift_List implements Serializable {
 	private boolean voloRPag;
 	
 	private String hash;
+	
+	private int npersone;
 
 	//bi-directional many-to-one association to EscursionePagata
 	@OneToMany(mappedBy="giftList",cascade = {CascadeType.PERSIST,
@@ -152,6 +154,14 @@ public class Gift_List implements Serializable {
 
 	public void setHash(String hash) {
 		this.hash = hash;
+	}
+
+	public int getNpersone() {
+		return npersone;
+	}
+
+	public void setNpersone(int npersone) {
+		this.npersone = npersone;
 	}
 	
 	
