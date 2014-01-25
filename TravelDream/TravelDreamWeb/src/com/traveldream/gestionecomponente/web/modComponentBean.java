@@ -238,65 +238,73 @@ public class modComponentBean {
     if(!voli_packet_list.isEmpty()){
 		for(PacchettoDTO p : voli_packet_list)
 		   {
+			 ArrayList <VoloDTO> pvdto = (ArrayList<VoloDTO>) p.getLista_voli();
+			 ArrayList <VoloDTO> new_pvdto = new ArrayList <VoloDTO>();
 			if(volo.getData().before(p.getData_inizio()) || (volo.getData().after(p.getData_fine()) || 
 			 (  (volo.getLuogo_arrivo().equals(p.getDestinazione())==false) && (volo.getLuogo_partenza().equals(p.getDestinazione())==false))))
 			{   
-				       { // se i voli erano di più, rimuovo dalla lista del pacchetto e update pacchetto
-					    ArrayList <VoloDTO> pvdto = (ArrayList<VoloDTO>) p.getLista_voli();
-					    ArrayList <VoloDTO> new_pvdto = new ArrayList <VoloDTO>();
+				       // se i voli erano di più, rimuovo dalla lista del pacchetto e update pacchetto
+					   
 					    for(VoloDTO vdto: pvdto)
 					    {
 						 if(vdto.getId() != volo.getId())
-							 new_pvdto.add(vdto); //new_pvdto è la nuova list voli del pack
- 					    }	
-					    int andata=0,ritorno=0; //controllo nella lista nuova se esiste almeno un volo di andata e uno di ritorno
-					    for(VoloDTO vdto2 : new_pvdto)
-					       {
-					    	if(vdto2.getLuogo_partenza().equals(p.getDestinazione()))
-					    		andata++;
-					    	else
-					    		if(vdto2.getLuogo_arrivo().equals(p.getDestinazione()))
-					    			ritorno++;
-					       }
-					    int temporal=0; //Controllo che ci sia ancora un volo di andata prima di uno di ritorno nel pacchetto
-					    for(VoloDTO vdto: new_pvdto) //gira come O(n^2)...
-						   {
-							if(vdto.getLuogo_arrivo().equals(p.getDestinazione()))
-							  {
-								Date date_ref = vdto.getData(); 
-							    for(VoloDTO vdto2: new_pvdto)
-							      {
-								    if(vdto2.getLuogo_partenza().equals(p.getDestinazione()))
-								      {
-								    	if(vdto2.getData().after(date_ref))
-								    	  {
-								    		temporal++;
-								    		break;
-								    	  }
-								      }
-							      }
-							
-						      }
-						   }
-					    if(andata>=1 && ritorno>=1 &&temporal>=1) // se ho ancora abbastanza voli salvo la nuova lista e aggiorno il pack
-					    {
-					      p.setLista_voli(new_pvdto); 
-						  PMB.modifyPacchetto(p);
-					    }
-					    else
-					    	PMB.deletePacchetto(p.getId());
-				       }
+						 new_pvdto.add(vdto); //new_pvdto è la nuova list voli del pack
+					    }	
+					  
 			 }
-		   }
-    }
+			
+			  int temporal=0; //Controllo che ci sia ancora un volo di andata prima di uno di ritorno nel pacchetto
+			    for(VoloDTO vdto: new_pvdto) 
+				   {
+					if(vdto.getLuogo_arrivo().equals(p.getDestinazione()))
+					  {
+						Date date_ref = vdto.getData(); 
+					    for(VoloDTO vdto2: new_pvdto)
+					      {
+						    if(vdto2.getLuogo_partenza().equals(p.getDestinazione()))
+						      {
+						    	if(vdto2.getData().after(date_ref))
+						    	  {
+						    		temporal++;
+						    		break;
+						    	  }
+						      }
+					      }
+					
+				      }
+				   }
+			    
+			    int andata=0,ritorno=0; //controllo nella lista nuova se esiste almeno un volo di andata e uno di ritorno
+			    for(VoloDTO vdto2 : new_pvdto)
+			       {
+			    	if(vdto2.getLuogo_partenza().equals(p.getDestinazione()))
+			    		andata++;
+			    	else
+			    		if(vdto2.getLuogo_arrivo().equals(p.getDestinazione()))
+			    			ritorno++;
+			       }
+			  
+			    if(andata>=1 && ritorno>=1 &&temporal>=1) // se ho ancora abbastanza voli salvo la nuova lista e aggiorno il pack
+			    {
+			      p.setLista_voli(new_pvdto); 
+				  PMB.modifyPacchetto(p);
+			    }
+			    else
+			    	PMB.deletePacchetto(p.getId());
+		    } // fine controllo per tutti i pacchetti
+			
+		   } //fine if di volo contenuto in nessun pacchetto
     
 	CMB.modificaVolo(volo);
 
 	
 	return "toVolo.xhtml?faces-redirect=true";
+    }
+    
+
 
 	
-	}
+	
 	
 //-------------------------GETTER_SETTER_ESCURSIONE--------------------------------
 

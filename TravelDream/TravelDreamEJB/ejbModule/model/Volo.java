@@ -31,7 +31,7 @@ public class Volo implements Serializable {
 
 	private int costo;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date data;
 
 	private String immagine;

@@ -15,7 +15,9 @@
         <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
         <p:menuitem value="Add" url="addHotel.xhtml" icon="ui-icon-wrench"/>  
         </p:tabMenu>   		
-	    <h:form enctype="multipart/form-data">
+	    <h:form id="myform2" enctype="multipart/form-data">
+	    <p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />  
+	    
 	    <p:panel header="Packet modification">
 			
 	    #{modPacketBean.getPacchettoById()}
@@ -29,12 +31,12 @@
 				<h:outputText id="luogo" value="#{modPacketBean.packet.destinazione}" editable="false"/>
 				
                  <h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
-				 <h:outputText id="datei" value="#{modPacketBean.packet.data_inizio}"  pattern="dd/MM/yyyy" timeZone="GMT+3">  
-				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date"/>
+				 <h:outputText id="datei" value="#{modPacketBean.packet.data_inizio}"  pattern="dd/MM/yyyy">  
+				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 				<h:outputLabel for="datef">Data Fine Validità</h:outputLabel>
-				<h:outputText id="datef" value="#{modPacketBean.packet.data_fine}"  pattern="dd/MM/yyyy" timeZone="GMT+3">  
-				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
+				<h:outputText id="datef" value="#{modPacketBean.packet.data_fine}"  pattern="dd/MM/yyyy">  
+				<f:convertDateTime pattern="dd/MM/yyyy"  />
 				</h:outputText>
 				<br></br>
 				</h:panelGrid>
@@ -63,13 +65,13 @@
                 
                  <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_inizio}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>                  
                 </p:column>  
                 
                  <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_fine}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
                 </p:column>  
               </p:dataTable> 
@@ -88,7 +90,7 @@
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
                   <h:outputText value="#{volo.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText> 
                 </p:column>  
   
@@ -118,7 +120,7 @@
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{esc.data}">  
                 <h:outputText value="#{esc.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date"/>
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>   
                 </p:column>  
   

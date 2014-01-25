@@ -22,7 +22,7 @@
 			<h:panelGrid columns="0" id="regGrid">
 			
 			   	
-			   	<h:graphicImage value="../images/#{ViaggioBean.packet.pathtoImage}" width="400" height="400"/> 
+			   	<h:graphicImage value="../images/#{ViaggioBean.packet.pathtoImage}" width="100%" height="200"/> 
 			    <br></br>
 			
 				<h:outputLabel for="nome">Nome:</h:outputLabel>
@@ -33,20 +33,20 @@
 				
 				<h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
 				<h:outputText id="datei" value="#{ViaggioBean.packet.data_inizio}" >
-				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
+				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 				
 				<h:outputLabel for="datef">Data Fine Validità</h:outputLabel>
 				<h:outputText id="datef" value="#{ViaggioBean.packet.data_fine}">				
-			 	<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
+			 	<f:convertDateTime pattern="dd/MM/yyyy" />
 			 	</h:outputText>
 			    	
 			    <h:outputLabel for="datef">Quando vuoi partire?</h:outputLabel>
-				<p:calendar id="datei2" value="#{ViaggioBean.viaggio.data_inizio}" pattern="dd/MM/yyyy"  timeZone="UTC" type="date" navigator="true" display="inline" >
+				<p:calendar id="datei2" value="#{ViaggioBean.viaggio.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" >
 				</p:calendar>
 				
 				<h:outputLabel for="datef">Quando vuoi rientrare?</h:outputLabel>
-				<p:calendar id="datef2" value="#{ViaggioBean.viaggio.data_fine}" pattern="dd/MM/yyyy" timeZone="UTC" type="date" navigator="true" display="inline" >
+				<p:calendar id="datef2" value="#{ViaggioBean.viaggio.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline" >
 				</p:calendar>
 				
 				
@@ -88,9 +88,9 @@
                  #{volo.compagnia}
                 </p:column>  
   
-                <p:column headerText="data" style="width:25%" sortBy="data" pattern="dd/MM/yyyy" timeZone="GMT+3" filterBy="#{volo.data}">  
+                <p:column headerText="data" style="width:25%" sortBy="data" pattern="dd/MM/yyyy" filterBy="#{volo.data}">  
                 <h:outputText value="#{volo.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>   
                 </p:column>  
   
@@ -120,7 +120,7 @@
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
                 <h:outputText value="#{volo2.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText> 
                 </p:column>  
   
@@ -150,7 +150,7 @@
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{esc.data}" >  
                  <h:outputText value="#{esc.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
                 </p:column>  
   

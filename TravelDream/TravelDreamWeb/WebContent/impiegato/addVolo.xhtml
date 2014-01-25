@@ -38,7 +38,7 @@
 				<p:message for="luogoa" />
 				
 			    <h:outputLabel for="data">Data del volo:</h:outputLabel>
-			    <p:calendar id="data" value="#{ComponentBean.volo.data}" pattern="MM/dd/yyyy" navigator="true" />  
+			    <p:calendar id="data" value="#{ComponentBean.volo.data}" pattern="dd/MM/yyyy" navigator="true" display="inline" required="true" />  
                 <p:message for="data" />
              
                    
@@ -46,6 +46,7 @@
 				<p:inputText id="costo" value="#{ComponentBean.volo.costo}" />
 				<p:message for="costo" />
 				
+				<h:outputLabel for="costo">Immagine:</h:outputLabel>
 				<p:fileUpload value="#{ComponentBean.imgVolo}" mode="simple" />
 				<br></br>
                 <h:commandButton value="Crea Volo" update="regGrid"

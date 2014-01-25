@@ -3,8 +3,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -268,8 +270,8 @@ public class modPacketBean {
 		
 		if(selectedHotels.isEmpty() || selectedVolo.isEmpty())
 		  {
-			//ERRORE, STAI IN PRATICA DISTRUGGENDO IL PACCHETTO
-			 return "modifypacket.xhtml?faces-redirect=true";
+	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Non puoi togliere tutti gli hotel/voli dal pack"));  	
+			 return "modifypacket.xhtml";
 		  }
 		
 		//Ora controllo che sia possibile creare almeno un viaggio con questo pack
@@ -288,9 +290,36 @@ public class modPacketBean {
 				   }
 		if(andata == 0 || ritorno == 0)
 		   {
+	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Non esiste più un volo di andata/ritorno per questo pack"));  	
+			return "modifypacket.xhtml";
+		   }
+		
+		int temporal=0;
+		for(VoloDTO vdto: selectedVolo) 
+		   {
+			if(vdto.getLuogo_arrivo().equals(packet.getDestinazione()))
+			  {
+				Date date_ref = vdto.getData(); 
+			    for(VoloDTO vdto2: selectedVolo)
+			      {
+				    if(vdto2.getLuogo_partenza().equals(packet.getDestinazione()))
+				      {
+				    	if(vdto2.getData().after(date_ref))
+				    	  {
+				    		temporal++;
+				    		break;
+				    	  }
+				      }
+			      }
+			
+		      }
+		   }
+		if(temporal<1)
+		   {
 			//MESSAGGIO DI ERRORE!!
-			return "modifypacket.xhtml?faces-redirect=true";
-		   }	
+	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Deve esserci almeno un volo di andata precedente ad uno di ritorno"));  	
+	            return "modifiypacket.xhtml";
+		   }
 		
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);

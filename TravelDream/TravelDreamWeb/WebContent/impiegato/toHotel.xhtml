@@ -42,14 +42,14 @@
                 
                  <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}">  
                  <h:outputText value="#{hotel.data_inizio}">
-    				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy"  />
 				</h:outputText>
                   
                 </p:column>  
                 
                  <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}">  
                  <h:outputText value="#{hotel.data_fine}">
-    				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 				</p:column>  
                 

@@ -240,9 +240,8 @@ public class PacketBean {
 		//check della destinazione perche ho dovuto togliere l'attributo not empty dal DTO e poi non c'e nessun controlo sugli hotel e vli
 				if(packet.getDestinazione()==null || packet.getDestinazione().isEmpty() || selectedVolo.isEmpty() || selectedHotels.isEmpty()){
 					System.out.println("stop packet");
-				     FacesMessage message = new FacesMessage("Qualcosa di sbagliato nei dati");
-			            FacesContext context = FacesContext.getCurrentInstance();
-			            context.addMessage(null, message);					
+			        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Qualche campo è rimasto vuoto..."));  	
+			        return "addPacket.xhtml";
 
 				}
 				int andata=0, ritorno=0;
@@ -260,10 +259,9 @@ public class PacketBean {
 				if(andata<1 || ritorno <1)
 				   {
 					//MESSAGGIO DI ERRORE!!
-					 FacesMessage message = new FacesMessage("Qualcosa di sbagliato nei dati");
-			            FacesContext context = FacesContext.getCurrentInstance();
-			            context.addMessage(null, message);	
-			            }
+			        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Deve esserci almeno un volo di andata e uno di ritorno"));  	
+			        return "addPacket.xhtml";
+				   }
 				//almeno un volo di andata prima di un volo di ritorno ( altrimenti è impossibile creare un viaggio )
 				int temporal=0;
 				for(VoloDTO vdto: selectedVolo) //gira come O(n^2)...
@@ -288,11 +286,15 @@ public class PacketBean {
 				if(temporal<1)
 				   {
 					//MESSAGGIO DI ERRORE!!
-					 FacesMessage message = new FacesMessage("Qualcosa di sbagliato nei dati");
-			            FacesContext context = FacesContext.getCurrentInstance();
-			            context.addMessage(null, message);	
+			        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Deve esserci almeno un volo di andata precedente ad uno di ritorno"));  	
 			            return "addPacket.xhtml";
 				   }
+				
+				if(packet.getData_inizio().after(packet.getData_fine()) || packet.getData_inizio().equals(packet.getData_fine()) )
+				{
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "La data di inizio deve essere prima di quella di fine!"));  	
+		            return "addPacket.xhtml";
+				}
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);
 		packet.setLista_voli(selectedVolo);

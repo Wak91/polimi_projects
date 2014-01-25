@@ -21,13 +21,15 @@
      <p:menuitem value="addPacchetto" url="addPacket.xhtml" icon="ui-icon-wrench"/>  
      </p:tabMenu>
 	   <h:form id="myform" enctype="multipart/form-data"> 
+	   	        <p:messages id="messages" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />  
+	   
 	          #{PacketBean.initBean()}  
         <p:panel header="add pack">
 			<h:panelGrid columns="4" id="regGrid">
 				
 				<h:outputLabel for="nome">Nome:</h:outputLabel>
 				<p:inputText id="nome" value="#{PacketBean.packet.nome}" required="true"  requiredMessage="Inserisci un nome" />
-				<p:message for="nome"  />
+				<p:message for="nome"  closable="true" />
 				<br></br>
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
@@ -36,21 +38,21 @@
 
 				<p:ajax event="keyup" listener="#{PacketBean.filterComponents}" update="multiVoli,multiHotels,multiEscursioni" />  
 				</p:inputText>
-				<p:message for="luogo"   />
+				<p:message for="luogo"   closable="true" />
 				<br></br>
 				
                 <h:outputLabel for="datei">Data Inizio validità
                 </h:outputLabel>
-				<p:calendar id="datei" required="true" requiredMessage="Inserisci data inizio validità" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy"  timeZone="GMT+3" navigator="true" display="inline">
+				<p:calendar id="datei" required="true" requiredMessage="Inserisci data inizio validità" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy"  navigator="true" display="inline">
 			    <p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}"  update="multiVoli,multiHotels,multiEscursioni" />  
-				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date" />
+				<f:convertDateTime pattern="dd/MM/yyyy"  />
 				</p:calendar>
-				<p:message for="datei" />
+				<p:message for="datei"  closable="true" />
 				<br></br>
 				<h:outputLabel for="datef">Data Fine validità</h:outputLabel>
-				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" required="true" requiredMessage="Inserisci data fine validità" pattern="dd/MM/yyyy" timeZone="GMT+3" navigator="true" display="inline">
+				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" required="true" requiredMessage="Inserisci data fine validità" pattern="dd/MM/yyyy"  navigator="true" display="inline">
 				<p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}"   update="multiVoli,multiHotels,multiEscursioni" />  
-				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date" />
+				<f:convertDateTime pattern="dd/MM/yyyy"  closable="true" />
 				</p:calendar>
 				<p:message for="datef"  />
 				<br></br>
@@ -85,14 +87,14 @@
                 
                  <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_inizio}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
                   
                 </p:column>  
                 
                  <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_fine}">
-    				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date"/>
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
                 </p:column>  
               </p:dataTable> 
@@ -110,7 +112,7 @@
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
                 <h:outputText value="#{volo.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date"/>
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>  
                 </p:column>  
   
@@ -139,7 +141,7 @@
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{esc.data}">  
                 <h:outputText value="#{esc.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
+    				<f:convertDateTime pattern="dd/MM/yyyy"  />
 				</h:outputText>  
                 </p:column>  
   

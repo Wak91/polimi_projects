@@ -38,12 +38,12 @@
 				<p:inputText id="costogg" value="#{modComponentBean.hotel.costo_giornaliero}" />
 				
                   <h:outputLabel for="datei">Data Inizio</h:outputLabel>
-				<p:calendar id="datei" binding="#{dates}" required="true" value="#{modComponentBean.hotel.data_inizio}" pattern="dd/MM/yyyy" timeZone="UTC" type="date" navigator="true" display="inline" />
+				<p:calendar id="datei" binding="#{dates}" required="true" value="#{modComponentBean.hotel.data_inizio}" pattern="dd/MM/yyyy"  navigator="true" display="inline" />
 				<p:message for="datef"/>
 				<p></p>
 
 				<h:outputLabel for="datef">Data Fine</h:outputLabel>
-				<p:calendar id="datef" required="true" value="#{modComponentBean.hotel.data_fine}" pattern="dd/MM/yyyy"  timeZone="GMT+3" navigator="true" display="inline"
+				<p:calendar id="datef" required="true" value="#{modComponentBean.hotel.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline"
 								validator="#{modComponentBean.validate_Date}" >
 				<f:attribute name="dates" value="#{dates}" />
 				</p:calendar>
