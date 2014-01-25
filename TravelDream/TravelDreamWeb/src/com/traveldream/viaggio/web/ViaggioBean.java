@@ -316,7 +316,8 @@ public class ViaggioBean {
 		GiftListDTO gift= new GiftListDTO();
 		gift.setViaggio(viaggio);
 		gift.setUtente(userMgr.getUserDTO());
-		FacesUtil.setSessionMapValue("GiftDTO", gift);		
+		FacesUtil.setSessionMapValue("GiftDTO", gift);	
+		
 		//creazione entita gift
 		
 		
