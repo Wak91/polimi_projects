@@ -71,7 +71,13 @@
                     <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
         			</p:commandButton>
         		</p:column>
+        		
 
+				<p:column style="width:4%">
+        			<p:commandLink id="Conferma" value ="Conferma" action="#{GiftListBean.confermaGift()}"  ajax="false" immediate="true" process="@this" >
+                    <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+        			</p:commandLink>
+        		</p:column>
               </p:dataTable>
              
              

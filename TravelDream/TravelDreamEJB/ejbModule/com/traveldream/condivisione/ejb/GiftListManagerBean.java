@@ -114,6 +114,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		giftListDTO.setVoloRPag(gift_List.isVoloRPag());
 		giftListDTO.setHash(gift_List.getHash());
 		giftListDTO.setNpersone(gift_List.getNpersone());
+		giftListDTO.setUtente(Converter.UserToDTO(gift_List.getUtente()));
 		for (Amico amico : gift_List.getAmicos()) {
 			giftListDTO.getAmico().add(amico.getAmico());
 		}
@@ -153,5 +154,23 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 			return EntitytoDtoGift(gift_List.get(0));
 		}
 	}
+
+
+	@Override
+	public void aggiornaGift(GiftListDTO giftListDTO) {
+		Gift_List gift_List=em.find(Gift_List.class, giftListDTO.getId());
+		gift_List.setHotelPag(giftListDTO.isHotelPag());
+		gift_List.setVoloAPag(giftListDTO.isVoloAPag());
+		gift_List.setVoloRPag(giftListDTO.isVoloRPag());
+		for (EscursionePagataDTO escursionePagataDTO : giftListDTO.getEscursionePagata()) {
+			EscursionePagata escursionePagata =em.find(EscursionePagata.class, escursionePagataDTO.getId());
+			escursionePagata.setPagata(escursionePagataDTO.getEscPagata());
+			
+		}
+			
+		em.merge(gift_List);
+		
+	}
+
 	
 }

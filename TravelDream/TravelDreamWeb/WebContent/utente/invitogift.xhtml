@@ -22,9 +22,8 @@
   
     <p:panel header="Aggiungi un nuovo amico">  
         <h:panelGrid columns="2" id="grid">  
-        <h:outputLabel value="Numero Persone" for="numpers"></h:outputLabel>  
-         <p:spinner id="minmax"   
-            value="#{GiftListBean.giftListDTO.npersone}" min="1" max="15">         
+        <h:outputLabel value="Numero Persone" ></h:outputLabel>  
+         <p:spinner id="numpers"   value="#{GiftListBean.giftListDTO.npersone}" min="1" max="15">         
      	</p:spinner> 
             <h:outputLabel value="Email Amico a" for="email"></h:outputLabel>  
             <p:inputText id="email"   value="#{GiftListBean.amico}" >  

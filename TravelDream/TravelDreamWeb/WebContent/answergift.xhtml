@@ -19,7 +19,7 @@
            	
 	           		<h:outputText value="Hotel" />
 	           		<h:outputText value="#{GiftListBean.giftListDTOAmicoDto.viaggio.hotel.nome}" />
-	           		<h:outputText value="#{GiftListBean.calcolaCostoHotel()}" />
+	           		<h:outputText value="#{GiftListBean.calcolaCostoHotel(GiftListBean.giftListDTOAmicoDto)}" />
 	           		<p:selectBooleanCheckbox value="#{GiftListBean.currentHotelPag}" rendered="#{GiftListBean.giftListDTOAmicoDto.hotelPag==false}"> 
 	           		</p:selectBooleanCheckbox> 
 	           		<h:outputLabel rendered="#{GiftListBean.giftListDTOAmicoDto.hotelPag==true}" value="Già pagata" />
@@ -52,7 +52,7 @@
     		<h:column >
     			<p:selectBooleanCheckbox value="#{escursionepag.escPagata}" rendered="#{GiftListBean.renderEsc(escursionepag.id)}"> 
 	           		</p:selectBooleanCheckbox> 
-           		<h:outputLabel rendered="#{escursionepag.escPagata==true}" value="Già pagata" />
+           		<h:outputLabel rendered="#{GiftListBean.renderEsc(escursionepag.id)==false}" value="Già pagata" />
     		</h:column>
            </h:dataTable>
            <p:commandButton value="Paga" action="#{GiftListBean.paga}"></p:commandButton>

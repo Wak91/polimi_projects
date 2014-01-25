@@ -18,6 +18,8 @@ import com.traveldream.condivisione.ejb.EscursionePagataDTO;
 import com.traveldream.condivisione.ejb.GiftListDTO;
 import com.traveldream.condivisione.ejb.GiftListManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
+import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
+import com.traveldream.gestioneprenotazione.ejb.PrenotazioneDTO;
 import com.traveldream.util.web.FacesUtil;
 import com.traveldream.viaggio.web.PreDataModel;
 
@@ -27,28 +29,31 @@ import com.traveldream.viaggio.web.PreDataModel;
 @SessionScoped
 public class GiftListBean {
 
-	String amico;
-	amiciDatamodel amiciDatamodel;
+	private String amico;
+	private amiciDatamodel amiciDatamodel;
 
 	
-	GiftDataModel giftDataModel;
-	GiftListDTO selectedGiftListDTO;	//gift list per la visualizzazione
+	private GiftDataModel giftDataModel;
+	private GiftListDTO selectedGiftListDTO;	//gift list per la visualizzazione
 	
 	
-	EscursionePagataDatamodel escursionePagataDatamodel;
-	ArrayList<GiftListDTO> filteredGift;
+	private EscursionePagataDatamodel escursionePagataDatamodel;
+	private ArrayList<GiftListDTO> filteredGift;
 	
-	String codiceGift;
-	
-	@EJB
-	UserMgr userMgr;
+	private String codiceGift;
 	
 	@EJB
-	GiftListManagerBeanLocal GLM;
+	private UserMgr userMgr;
+	
+	@EJB
+	private BookManagerBeanLocal BMB; 
+	
+	@EJB
+	private GiftListManagerBeanLocal GLM;
 
-	GiftListDTO giftListDTO; //gift list per la creazione
+	private GiftListDTO giftListDTO; //gift list per la creazione
 	
-	GiftListDTO giftListDTOAmicoDto; //gift list vista dall'amico
+	private GiftListDTO giftListDTOAmicoDto; //gift list vista dall'amico
 	
 	boolean currentHotelPag;
 	boolean currentVoloaPag;
@@ -178,10 +183,10 @@ public class GiftListBean {
 	
 	//calcolo costi
 	
-	public int calcolaCostoHotel(){
-		int costoGiornaliero =giftListDTOAmicoDto.getViaggio().getHotel().getCosto_giornaliero();
-		int duration = (int) (( giftListDTOAmicoDto.getViaggio().getHotel().getData_fine().getTime() - giftListDTOAmicoDto.getViaggio().getHotel().getData_inizio().getTime() ) / (1000 * 60 * 60 * 24));
-		int numPers =giftListDTOAmicoDto.getNpersone();
+	public int calcolaCostoHotel(GiftListDTO giftListDTO){
+		int costoGiornaliero =giftListDTO.getViaggio().getHotel().getCosto_giornaliero();
+		int duration = (int) (( giftListDTO.getViaggio().getHotel().getData_fine().getTime() - giftListDTO.getViaggio().getHotel().getData_inizio().getTime() ) / (1000 * 60 * 60 * 24));
+		int numPers =giftListDTO.getNpersone();
 		return numPers*duration*costoGiornaliero;
 	}
 
@@ -191,7 +196,7 @@ public class GiftListBean {
 	public String paga(){
 		costocomplessivo=0;
 		if (currentHotelPag){
-			costocomplessivo+=calcolaCostoHotel();
+			costocomplessivo+=calcolaCostoHotel(giftListDTOAmicoDto);
 		}
 		if (currentVoloaPag) {
 			costocomplessivo+=giftListDTOAmicoDto.getViaggio().getVolo_andata().getCosto()*giftListDTOAmicoDto.getNpersone();
@@ -210,6 +215,9 @@ public class GiftListBean {
 	}
 
 	public void salvaPagamentoGift(){
+
+		
+
 		if(giftListDTOAmicoDto.isHotelPag()==false){	//se l'hotel non è stato ancora pagato lo aggiorno con il valore della scelta attuale se è false rimane uguale altrimenti significa che è stato pagato
 		giftListDTOAmicoDto.setHotelPag(currentHotelPag);
 		}
@@ -226,6 +234,40 @@ public class GiftListBean {
 				}
 			}
 		}
+		GLM.aggiornaGift(giftListDTOAmicoDto);
+		
+	}
+	
+	
+	public String confermaGift(){
+		costocomplessivo=0;
+		if (selectedGiftListDTO.isHotelPag()==false){
+			costocomplessivo+=calcolaCostoHotel(selectedGiftListDTO);
+		}
+		if (selectedGiftListDTO.isVoloAPag()==false) {
+			costocomplessivo+=selectedGiftListDTO.getViaggio().getVolo_andata().getCosto()*selectedGiftListDTO.getNpersone();
+		}
+		if (selectedGiftListDTO.isVoloRPag()==false) {
+			costocomplessivo+=selectedGiftListDTO.getViaggio().getVolo_ritorno().getCosto()*selectedGiftListDTO.getNpersone();
+		}
+		for (EscursionePagataDTO escursionePagataDTO : selectedGiftListDTO.getEscursionePagata()) {
+			if (escursionePagataDTO.getEscPagata()==false) {
+				costocomplessivo+=escursionePagataDTO.getEscursione().getCosto();
+			}
+		}
+		return "pagamentogift.xhtml?faces-redirect=true";
+	}
+	
+	public String AcquistaGift(){
+		PrenotazioneDTO prenotazione = new PrenotazioneDTO();
+		prenotazione.setCosto(costocomplessivo);
+		prenotazione.setNumero_persone(selectedGiftListDTO.getNpersone());
+		prenotazione.setUtente(selectedGiftListDTO.getUtente());
+		prenotazione.setViaggio(selectedGiftListDTO.getViaggio());
+		BMB.savePrenotazione(prenotazione);
+		
+		GLM.removeFromGift(selectedGiftListDTO);
+		return "imieiviaggi.xhtml?faces-redirect=true";
 	}
 	
 	

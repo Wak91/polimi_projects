@@ -44,6 +44,7 @@ public class GiftListDTO {
 	public GiftListDTO(){
 		amico =new ArrayList<String>();
 		escursionePagata = new ArrayList<EscursionePagataDTO>();
+		npersone=1;
 	}
 	
 	public int getId() {
