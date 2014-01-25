@@ -1,8 +1,5 @@
 package com.traveldream.gestionecomponente.web;
 
-
-
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,14 +9,13 @@ import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import javax.servlet.http.Part;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -36,9 +32,9 @@ import com.traveldream.gestionepack.web.EscDataModel;
 import com.traveldream.gestionepack.web.HotelDataModel;
 import com.traveldream.gestionepack.web.VoloDataModel;
 
-@ManagedBean(name="ComponentBean") 
-@ViewScoped
-public class ComponentBean {
+@ManagedBean(name="modComponentBean") 
+@SessionScoped
+public class modComponentBean {
 
 	@EJB
 	private ComponentManagerBeanLocal CMB;
@@ -62,23 +58,18 @@ public class ComponentBean {
     private UploadedFile imgHotel;
     private UploadedFile imgVolo;
     private UploadedFile imgEscursione;
+
+	private int hid_target;
+	private int vid_target;
+	private int eid_target;
     
     
     
-	public ComponentBean() {
+	public modComponentBean() {
 		hotel = new HotelDTO();
 		volo  = new VoloDTO();
 		escursione = new EscursioneDTO();
 	}
-
-	public void initBean()
-	{
-		setHotelModels(new HotelDataModel(CMB.getAllHotel()));	
-		setVoloModels(new VoloDataModel(CMB.getAllVolo()));
-		setEscModels(new EscDataModel(CMB.getAllEscursione()));
-	}
-
-
 	
 	public void validate_Date(FacesContext context,UIComponent component,Object value) throws ValidatorException{
 		UIInput datainizio = (UIInput)component.getAttributes().get("dates");
@@ -87,108 +78,6 @@ public class ComponentBean {
 		if (dataFine.before(dataInizio)){
                 throw new ValidatorException(new FacesMessage("La data di fine validita' deve essere successiva a quella di inizio"));
         }
-	}
-	
-//-------------------------CREAZIONE COMPONENTI------------------------------
-	public String createHotel() throws IOException{
-		
-		  String filename = FilenameUtils.getName(imgHotel.getFileName());
-		  if(filename.equals(""))
-		    {
-			 hotel.setHotelImg("Hdefault.jpeg");}
-		  else
-		    {
-		  InputStream inputStr = null;
-		    try {
-		        inputStr = imgHotel.getInputstream();
-		    } catch (IOException e) {
-		        //log error
-		    }
-		    
-
-		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		    String directory = externalContext.getInitParameter("uploadDirectory");
-		    File destFile = new File(directory, filename);
-
-		    //use org.apache.commons.io.FileUtils to copy the File
-		    try {
-		        FileUtils.copyInputStreamToFile(inputStr, destFile);
-		    } catch (IOException e) {
-		        //log error
-		    }
-		hotel.setHotelImg(imgHotel.getFileName());
-		    }
-		CMB.saveHotel(hotel);
-		FacesMessage msg = new FacesMessage("Hotel is added");
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-		return "addHotel.xhtml?faces-redirect=true";
-	}
-		
-	public String createVolo(){
-		
-		String filename = FilenameUtils.getName(imgVolo.getFileName());
-		  
-		 if(filename.equals(""))
-		    {
-		  volo.setImmagine("Vdefault.jpg");
-		    }
-		 else
-		 {
-		  InputStream inputStr = null;
-		    try {
-		        inputStr = imgVolo.getInputstream();
-		    } catch (IOException e) {
-		        //log error
-		    }
-
-		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		    String directory = externalContext.getInitParameter("uploadDirectory");
-		    File destFile = new File(directory, filename);
-
-		    //use org.apache.commons.io.FileUtils to copy the File
-		    try {
-		        FileUtils.copyInputStreamToFile(inputStr, destFile);
-		    } catch (IOException e) {
-		        //log error
-		    }
-			volo.setImmagine(imgVolo.getFileName());
-		    }
-		CMB.saveVolo(volo);
-		return "addVolo.xhtml?faces-redirect=true";
-	}
-	
-	public String createEscursione(){
-		 
-		String filename = FilenameUtils.getName(imgEscursione.getFileName());
-		  
-		 if(filename.equals(""))
-		    {
-		 escursione.setImmagine("Edefault.jpg");
-		    }
-		 else
-		 {
-		  InputStream inputStr = null;
-		    try {
-		        inputStr = imgEscursione.getInputstream();
-		    } catch (IOException e) {
-		        //log error
-		    }
-
-		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		    String directory = externalContext.getInitParameter("uploadDirectory");
-		    File destFile = new File(directory, filename);
-
-		    //use org.apache.commons.io.FileUtils to copy the File
-		    try {
-		        FileUtils.copyInputStreamToFile(inputStr, destFile);
-		    } catch (IOException e) {
-		        //log error
-		    }
-			escursione.setImmagine(imgEscursione.getFileName());
-
-		    }
-		CMB.saveEscursione(escursione);
-		return "addEscursione.xhtml?faces-redirect=true";
 	}
 	
 //--------------------------GETTER_SETTER_HOTELS--------------------------------------
@@ -226,11 +115,9 @@ public class ComponentBean {
 		this.filteredHotels = filteredHotels;
 	}
 	
-	public void getHotelById(int id)
+	public void getHotelById()
 	{   
-		System.out.println("refreshing hotel");
-		this.hotel = CMB.getHotelById(id);
-	
+		this.hotel = CMB.getHotelById(this.hid_target);
 	}
 	
 	public String modifyHotel()
@@ -292,33 +179,6 @@ public class ComponentBean {
 	return "toHotel.xhtml?faces-redirect=true";
 	}
 	
-	public String deleteHotel(int id)
-	{ 
-		ArrayList <PacchettoDTO> h_pack_list = CMB.getHotelById(id).getPacchettos();
-		if(!h_pack_list.isEmpty()){
-		for(PacchettoDTO p : h_pack_list )
-		   {
-				if(p.getLista_hotel().size()== 1)// se nel pacchetto c'è solo un hotel, in questo caso è proprio quello da eliminare
-				 {
-					PMB.deletePacchetto(p.getId());
-				 }
-				else
-				   { // se non era l'unico hotel, rimuovo dalla lista del pacchetto e elimina pacchetto
-					 ArrayList <HotelDTO> phdto = (ArrayList<HotelDTO>) p.getLista_hotel();
-					 ArrayList <HotelDTO> new_phdto = new ArrayList <HotelDTO>();
-					 for(HotelDTO hdto: phdto)
-					    {
-						 if(hdto.getId() != id)
-						  new_phdto.add(hdto);
-					    }
-					 p.setLista_hotel(new_phdto); // modifico la lista degli hotel al pacchetto corrente
-					 PMB.modifyPacchetto(p);
-				   }
-			 }
-		}
-		CMB.eliminaHotel(id);
-	return "toHotel.xhtml?faces-redirect=true";
-	}
 //------------------------GETTER_SETTER_VOLO------------------------------------
 	
 	public VoloDTO getVolo() {
@@ -345,9 +205,9 @@ public class ComponentBean {
 		this.filteredVoli = filteredVoli;
 	}
 	
-	public void getVoloById(int id)
+	public void getVoloById()
 	{   
-		this.volo = CMB.getVoloById(id);
+		this.volo = CMB.getVoloById(this.vid_target);
 	
 	}
 	
@@ -438,41 +298,6 @@ public class ComponentBean {
 	
 	}
 	
-	public String eliminaVolo(int id)
-	{ 
-		ArrayList<PacchettoDTO> volo_pack_list =  CMB.getVoloById(id).getPacchettos(); 
-		if(!volo_pack_list.isEmpty()){
-		for(PacchettoDTO p : volo_pack_list)
-		   {
-			  ArrayList <VoloDTO> pvdto = (ArrayList<VoloDTO>) p.getLista_voli();
-			    ArrayList <VoloDTO> new_pvdto = new ArrayList <VoloDTO>();
-			    for(VoloDTO vdto: pvdto)
-			    {
-				 if(vdto.getId() != id)
-					 new_pvdto.add(vdto); //new_pvdto è la nuova list voli del pack
-			    }	
-			    int andata=0,ritorno=0; //controllo nella lista nuova se esiste almeno un volo di andata e uno di ritorno
-			    for(VoloDTO vdto2 : new_pvdto)
-			       {
-			    	if(vdto2.getLuogo_partenza().equals(p.getDestinazione()))
-			    		andata++;
-			    	else
-			    		if(vdto2.getLuogo_arrivo().equals(p.getDestinazione()))
-			    			ritorno++;
-			       }
-			    if(andata>=1 && ritorno>=1) // se ho ancora abbastanza voli salvo la nuova lista e aggiorno il pack
-			    {
-			      p.setLista_voli(new_pvdto); 
-				  PMB.modifyPacchetto(p);
-			    }
-			    else
-			    	PMB.deletePacchetto(p.getId());
-		       }
-		}
-		CMB.eliminaVolo(id);
-	  return "toVolo.xhtml?faces-redirect=true";
-	}
-	
 //-------------------------GETTER_SETTER_ESCURSIONE--------------------------------
 
 
@@ -500,9 +325,9 @@ public class ComponentBean {
 		this.filteredEscursioni = filteredEscursioni;
 	}
 	
-	public void getEscursioneById(int id)
+	public void getEscursioneById()
 	{   
-		this.escursione = CMB.getEscursioneById(id);
+		this.escursione = CMB.getEscursioneById(this.eid_target);
 	
 	}
 	
@@ -558,33 +383,6 @@ public class ComponentBean {
 	return "toEscursione.xhtml?faces-redirect=true";
 
 	}
-	
-	
-	public String eliminaEscursione(int id)
-	{ 
-		ArrayList <PacchettoDTO> esc_pack_list = CMB.getEscursioneById(id).getPacchettos();
-		if(!esc_pack_list.isEmpty()){
-		for(PacchettoDTO p : esc_pack_list)
-		   {
-					ArrayList <EscursioneDTO> pedto = (ArrayList<EscursioneDTO>) p.getLista_escursioni();
-					if(!pedto.isEmpty()) 
-					  {
-					   for(EscursioneDTO edto: pedto)
-					    {
-						 if(edto.getId() == id)
-						  pedto.remove(edto);
-					    }
-
-					    p.setLista_escursioni(pedto); // modifico la lista degli hotel al pacchetto corrente
-					    PMB.modifyPacchetto(p);
-					  }
-		   }
-		}
-			 	   
-      CMB.eliminaEscursione(id);
-	  return "toEscursione.xhtml?faces-redirect=true";
-	}
-
 
 	public UploadedFile getImgHotel() {
 		return imgHotel;
@@ -600,6 +398,53 @@ public class ComponentBean {
 
 	public void setImgEscursione(UploadedFile imgEscursione) {
 		this.imgEscursione = imgEscursione;
+	}
+	
+	
+	//----Passing POST
+	public String houtcome(int id)
+	{
+		this.setHid_target(id);
+		return "modifyHotel.xhtml";
+		
+	}
+	
+	public String voutcome(int id)
+	{
+		this.setVid_target(id);
+		return "modifyVolo.xhtml";
+		
+	}
+	
+	public String eoutcome(int id)
+	{
+		this.setEid_target(id);
+		return "modifyEscursione.xhtml";
+		
+	}
+
+	public int getHid_target() {
+		return hid_target;
+	}
+
+	public void setHid_target(int hid_target) {
+		this.hid_target = hid_target;
+	}
+
+	public int getVid_target() {
+		return vid_target;
+	}
+
+	public void setVid_target(int vid_target) {
+		this.vid_target = vid_target;
+	}
+
+	public int getEid_target() {
+		return eid_target;
+	}
+
+	public void setEid_target(int eid_target) {
+		this.eid_target = eid_target;
 	}
 
 }

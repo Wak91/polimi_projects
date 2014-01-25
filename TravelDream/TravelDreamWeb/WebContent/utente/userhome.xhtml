@@ -34,11 +34,11 @@
             <h:outputText value="#{pack.destinazione}" />  
         </p:column> 
   
-        <p:column headerText="Data inizio" sortBy="data_inizio" filterBy="#{pack.data_inizio}" id="datainizio">  
+        <p:column headerText="Data inizio" sortBy="data_inizio" pattern="dd/MM/yyyy" timeZone="GMT+3" filterBy="#{pack.data_inizio}" id="datainizio">  
             <h:outputText value="#{pack.data_inizio}" />  
         </p:column>  
   
-        <p:column headerText="Data fine" sortBy="data_fine" filterBy="#{pack.data_fine}" id="datafine">  
+        <p:column headerText="Data fine" sortBy="data_fine"  pattern="dd/MM/yyyy" timeZone="GMT+3" filterBy="#{pack.data_fine}" id="datafine">  
             <h:outputText value="#{pack.data_fine}" />  
         </p:column>   
         

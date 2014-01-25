@@ -22,42 +22,49 @@
      </p:tabMenu>
 	   <h:form id="myform" enctype="multipart/form-data"> 
 	          #{PacketBean.initBean()}  
-	    
         <p:panel header="add pack">
-			<h:panelGrid columns="3" id="regGrid">
+			<h:panelGrid columns="4" id="regGrid">
 				
 				<h:outputLabel for="nome">Nome:</h:outputLabel>
-				<p:inputText id="nome" value="#{PacketBean.packet.nome}" required="true" />
+				<p:inputText id="nome" value="#{PacketBean.packet.nome}" required="true"  requiredMessage="Inserisci un nome" />
 				<p:message for="nome"  />
+				<br></br>
 				
 				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
-				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" >
+				<p:inputText id="luogo" value="#{PacketBean.packet.destinazione}" required="true" requiredMessage="Inserisci una destinazione">
        			
 
 				<p:ajax event="keyup" listener="#{PacketBean.filterComponents}" update="multiVoli,multiHotels,multiEscursioni" />  
 				</p:inputText>
 				<p:message for="luogo"   />
+				<br></br>
 				
-                <h:outputLabel for="datei">Data Inizio validità</h:outputLabel>
-				<p:calendar id="datei" required="true" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+                <h:outputLabel for="datei">Data Inizio validità
+                </h:outputLabel>
+				<p:calendar id="datei" required="true" requiredMessage="Inserisci data inizio validità" value="#{PacketBean.packet.data_inizio}" pattern="dd/MM/yyyy"  timeZone="GMT+3" navigator="true" display="inline">
 			    <p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}"  update="multiVoli,multiHotels,multiEscursioni" />  
+				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date" />
 				</p:calendar>
+				<p:message for="datei" />
 				<br></br>
 				<h:outputLabel for="datef">Data Fine validità</h:outputLabel>
-				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline">
+				<p:calendar id="datef" value="#{PacketBean.packet.data_fine}" required="true" requiredMessage="Inserisci data fine validità" pattern="dd/MM/yyyy" timeZone="GMT+3" navigator="true" display="inline">
 				<p:ajax event="dateSelect" listener="#{PacketBean.filterComponents}"   update="multiVoli,multiHotels,multiEscursioni" />  
+				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date" />
 				</p:calendar>
 				<p:message for="datef"  />
-				
+				<br></br>
 				<h:outputLabel for="immagine">Immagine</h:outputLabel>
 				<p:fileUpload value="#{PacketBean.imgPack}" mode="simple" />
 				<br></br>
 		  </h:panelGrid>
+		  
+		  
 		  <br/>		
-				INSERIMENTO HOTEL   
-				 
+				<h:outputLabel for="hotel_l">INSERIMENTO HOTEL</h:outputLabel>
+				
 				<p:dataTable id="multiHotels" var="hotel" value="#{PacketBean.hotelModels}" paginator="true" rows="5"  
-                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}"  >  
+                 selection="#{PacketBean.selectedHotels}" filteredValue="#{PacketBean.filteredHotels}">  
                 <p:column selectionMode="multiple" style="width:2%" />  
   
                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
@@ -78,19 +85,19 @@
                 
                  <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{hotel.data_inizio}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_inizio}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
 				</h:outputText>
                   
                 </p:column>  
                 
                  <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{hotel.data_fine}" filterMatchMode="contains">  
                  <h:outputText value="#{hotel.data_fine}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date"/>
 				</h:outputText>
                 </p:column>  
               </p:dataTable> 
 		
-		        INSERIMENTO VOLI   
+				<h:outputLabel for="voli_l">INSERIMENTO VOLI</h:outputLabel>
 		
 				<p:dataTable id="multiVoli" var="volo" value="#{PacketBean.voloModels}" paginator="true" rows="5"  
                  selection="#{PacketBean.selectedVolo}" filteredValue="#{PacketBean.filteredVolos}">  
@@ -103,7 +110,7 @@
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
                 <h:outputText value="#{volo.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date"/>
 				</h:outputText>  
                 </p:column>  
   
@@ -118,9 +125,8 @@
                  <p:column headerText="arrivo" style="width:24%" sortBy="luogo_arrivo" filterBy="#{volo.luogo_arrivo}">  
                 #{volo.luogo_arrivo}  
                 </p:column>  
-                 <h:message class="error" for="multiVoli" id="multiVoliError" />              
-              </p:dataTable> 
-              INSERIMENTO ESCURSIONI   
+                </p:dataTable> 
+				<h:outputLabel for="esc_l">INSERIMENTO ESCURSIONI</h:outputLabel>
 			  	
 				<p:dataTable id="multiEscursioni" var="esc"  value="#{PacketBean.escModels}" paginator="true" rows="5"  
                  selection="#{PacketBean.selectedEsc}" filteredValue="#{PacketBean.filteredEscursiones}">  
@@ -133,7 +139,7 @@
   
                 <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{esc.data}">  
                 <h:outputText value="#{esc.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
 				</h:outputText>  
                 </p:column>  
   

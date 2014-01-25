@@ -30,14 +30,14 @@
                 
                  <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{pack.data_inizio}">  
                  <h:outputText value="#{pack.data_inizio}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="UTC" type="date"/>
 				</h:outputText>
                   
                 </p:column>  
                 
                  <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{pack.data_fine}">  
                  <h:outputText value="#{pack.data_fine}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="UTC" type="date" />
 				</h:outputText>
 				</p:column> 
 				

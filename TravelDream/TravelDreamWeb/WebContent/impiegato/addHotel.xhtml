@@ -33,9 +33,9 @@
 				<p:message for="luogo" />
 				
 				<h:outputLabel for="stars"> Stars:</h:outputLabel>  
-                <p:rating id="stars" value="#{ComponentBean.hotel.stelle}" stars="5" cancel="false" />  
-                <p:dialog widgetVar="dlg" showEffect="fade" hideEffect="fade"/>  
-             
+                <p:rating id="stars" value="#{ComponentBean.hotel.stelle}" stars="5" cancel="false" required="true"/>  
+                <p:message for="stars" />
+                
                    
 				<h:outputLabel for="costogg">Costo giornaliero per persona:</h:outputLabel>
 				<p:inputText id="costogg" value="#{ComponentBean.hotel.costo_giornaliero}" />
@@ -43,12 +43,12 @@
 				
 
                 <h:outputLabel for="datei">Data Inizio</h:outputLabel>
-				<p:calendar id="datei" binding="#{dates}" required="true" value="#{ComponentBean.hotel.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
+				<p:calendar id="datei" binding="#{dates}" required="true" timeZone="UTC" type="date" value="#{ComponentBean.hotel.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
 				<p:message for="datef"/>
 				
 
 				<h:outputLabel for="datef">Data Fine</h:outputLabel>
-				<p:calendar id="datef" required="true" value="#{ComponentBean.hotel.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline"
+				<p:calendar id="datef" required="true" value="#{ComponentBean.hotel.data_fine}" timeZone="UTC" type="date" pattern="dd/MM/yyyy" navigator="true" display="inline"
 								validator="#{ComponentBean.validate_Date}" >
 				<f:attribute name="dates" value="#{dates}" />
 				</p:calendar>
@@ -57,7 +57,7 @@
 				<h:outputLabel for="immagine">Immagine</h:outputLabel>
 				<p:fileUpload value="#{ComponentBean.imgHotel}" mode="simple" />
 				<br></br>
-				
+				<br></br>
                 <h:commandButton value="Crea Hotel" update="regGrid"
 				action="#{ComponentBean.createHotel()}" />
 			

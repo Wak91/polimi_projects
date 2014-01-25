@@ -8,7 +8,7 @@
       template="Template.xhtml">
        
        <ui:define name="content">
-       #{ComponentBean.getEscursioneById(param['id'])}
+       #{modComponentBean.getEscursioneById()}
 	    <h:form enctype="multipart/form-data">
 	    <p:tabMenu activeIndex="1">  
      <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
@@ -26,26 +26,26 @@
 			<h:panelGrid columns="2" id="regGrid">
 			
 				<h:outputLabel for="nome">Nome escursione:</h:outputLabel>
-				<p:inputText id="nome" value="#{ComponentBean.escursione.nome}" />
+				<p:inputText id="nome" value="#{modComponentBean.escursione.nome}" />
 				
 				<h:outputLabel for="luogo">Luogo:</h:outputLabel>
-				<p:inputText id="luogo" value="#{ComponentBean.escursione.luogo}" />
+				<p:inputText id="luogo" value="#{modComponentBean.escursione.luogo}" />
 				
 				<h:outputLabel for="costo">Costo per persona:</h:outputLabel>
-				<p:inputText id="costo" value="#{ComponentBean.escursione.costo}" />
+				<p:inputText id="costo" value="#{modComponentBean.escursione.costo}" />
 				
                 <h:outputLabel for="datei">Data partenza</h:outputLabel>
-				<p:calendar id="datei" required="true" value="#{ComponentBean.escursione.data}" pattern="dd/MM/yyyy" navigator="true" display="inline" />
+				<p:calendar id="datei" required="true"  value="#{modComponentBean.escursione.data}" pattern="dd/MM/yyyy" timeZone="UTC" type="date" navigator="true" display="inline" />
 				
 				<h:outputLabel for="img">Immagine corrente</h:outputLabel>
-			   <h:graphicImage value="../images/#{ComponentBean.escursione.immagine}" height="100" width="100"/>   		
+			   <h:graphicImage value="../images/#{modComponentBean.escursione.immagine}" height="100" width="100"/>   		
 			   <br></br>	<br></br>	
 			   <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
-				<p:fileUpload value="#{ComponentBean.imgEscursione}" mode="simple" />
+				<p:fileUpload value="#{modComponentBean.imgEscursione}" mode="simple" />
 				</h:panelGrid>
 				 
                 <h:commandButton value="Modifica Escursione" update="regGrid"
-				action="#{ComponentBean.modificaEscursione()}" icon="ui-icon-script"/>
+				action="#{modComponentBean.modificaEscursione()}" icon="ui-icon-script"/>
      
 		</p:panel>
 	   

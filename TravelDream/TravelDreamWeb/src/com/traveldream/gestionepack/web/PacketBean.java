@@ -11,6 +11,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -51,7 +52,7 @@ public class PacketBean {
     private PacchettoDataModel packModels;
     
     private ArrayList <VoloDTO> lista_voli_dialog;
-    
+   
     	
     //---INIZIALIZZAZIONE BEAN---
     
@@ -72,6 +73,9 @@ public class PacketBean {
 		 setVoloModels(new VoloDataModel(CMB.getAllVolo()));
 		 setEscModels(new EscDataModel(CMB.getAllEscursione()));
 		 setPackModels(new PacchettoDataModel(PMB.getAllPack()));
+		 selectedHotels.clear();
+		 selectedVolo.clear();
+		 selectedEsc.clear();
 		 packlist = PMB.getAllPack();
 	}
 	//---FUNZIONI PER PACCHETTI---------------------
@@ -236,8 +240,9 @@ public class PacketBean {
 		//check della destinazione perche ho dovuto togliere l'attributo not empty dal DTO e poi non c'e nessun controlo sugli hotel e vli
 				if(packet.getDestinazione()==null || packet.getDestinazione().isEmpty() || selectedVolo.isEmpty() || selectedHotels.isEmpty()){
 					System.out.println("stop packet");
-					FacesContext.getCurrentInstance().addMessage("luogo", new FacesMessage("Errore nell'inserimento dei componenti"));
-					return "addPacket.xhtml";
+				     FacesMessage message = new FacesMessage("Qualcosa di sbagliato nei dati");
+			            FacesContext context = FacesContext.getCurrentInstance();
+			            context.addMessage(null, message);					
 
 				}
 				int andata=0, ritorno=0;
@@ -255,9 +260,10 @@ public class PacketBean {
 				if(andata<1 || ritorno <1)
 				   {
 					//MESSAGGIO DI ERRORE!!
-					FacesContext.getCurrentInstance().addMessage("myForm:newVoli", new FacesMessage("Deve esserci almeno un volo di andata e uno di ritorno"));				    
-					return "addPacket.xhtml";
-				   }
+					 FacesMessage message = new FacesMessage("Qualcosa di sbagliato nei dati");
+			            FacesContext context = FacesContext.getCurrentInstance();
+			            context.addMessage(null, message);	
+			            }
 				//almeno un volo di andata prima di un volo di ritorno ( altrimenti è impossibile creare un viaggio )
 				int temporal=0;
 				for(VoloDTO vdto: selectedVolo) //gira come O(n^2)...
@@ -282,9 +288,10 @@ public class PacketBean {
 				if(temporal<1)
 				   {
 					//MESSAGGIO DI ERRORE!!
-					FacesContext.getCurrentInstance().addMessage("multiVoli", new FacesMessage("Almeno un volo di andata precedente ai voli di ritorno"));					
-					return "addPacket.xhtml";
-
+					 FacesMessage message = new FacesMessage("Qualcosa di sbagliato nei dati");
+			            FacesContext context = FacesContext.getCurrentInstance();
+			            context.addMessage(null, message);	
+			            return "addPacket.xhtml";
 				   }
 		packet.setLista_escursioni(selectedEsc);
 		packet.setLista_hotel(selectedHotels);

@@ -1,9 +1,13 @@
 package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
+import sun.util.calendar.LocalGregorianCalendar.Date;
+
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.GiftListDTO;
@@ -226,8 +230,7 @@ public class ViaggioBean {
 		// del viaggio, DA METTERE A POSTO!!!
 		//Possibili errori durante la creazione---------------------------------
 		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
-		   selectedVolo_a.getData().equals(viaggio.getData_inizio())==false  ||
-		   selectedVolo_r.getData().equals(viaggio.getData_fine())==false || 
+		   check_giorni_coperti()== 0  ||
 		   escOutOfData() == 1 ||
 		   viaggio.getData_inizio().before(packet.getData_inizio()) || 
 		   viaggio.getData_fine().after(packet.getData_fine())
@@ -235,17 +238,44 @@ public class ViaggioBean {
 		{  
 			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
 			//DEBUG
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
+			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 			return "userhome.xhtml?faces-redirect=true";
 
 		}
 		
 		return "pagamento.xhtml?faces-redirect=true"; 	
+	}
+	
+	@SuppressWarnings("deprecation")
+	private int check_giorni_coperti()
+	{
+		java.util.Date andata_volo = selectedVolo_a.getData();
+		java.util.Date ritorno_volo = selectedVolo_r.getData();
+		java.util.Date inizio_viaggio = viaggio.getData_inizio();
+		java.util.Date fine_viaggio = viaggio.getData_fine();
+		
+		if(
+		   andata_volo.getDate() == inizio_viaggio.getDate()   && 
+		   andata_volo.getMonth() == inizio_viaggio.getMonth() &&
+		   andata_volo.getYear() == inizio_viaggio.getYear() &&
+		   
+		   ritorno_volo.getDate() == fine_viaggio.getDate()   && 
+		   ritorno_volo.getMonth() == fine_viaggio.getMonth() &&
+		   ritorno_volo.getYear() == fine_viaggio.getYear()
+		   
+		   )
+		  {
+			return 1;
+		  }
+		else
+			return 0;
+		
+		
 	}
 	
 	private int escOutOfData()

@@ -269,7 +269,7 @@ public class modPacketBean {
 		if(selectedHotels.isEmpty() || selectedVolo.isEmpty())
 		  {
 			//ERRORE, STAI IN PRATICA DISTRUGGENDO IL PACCHETTO
-			 return "imphome.xhtml?faces-redirect=true";
+			 return "modifypacket.xhtml?faces-redirect=true";
 		  }
 		
 		//Ora controllo che sia possibile creare almeno un viaggio con questo pack
@@ -289,7 +289,7 @@ public class modPacketBean {
 		if(andata == 0 || ritorno == 0)
 		   {
 			//MESSAGGIO DI ERRORE!!
-			return "imphome.xhtml?faces-redirect=true";
+			return "modifypacket.xhtml?faces-redirect=true";
 		   }	
 		
 		packet.setLista_escursioni(selectedEsc);
