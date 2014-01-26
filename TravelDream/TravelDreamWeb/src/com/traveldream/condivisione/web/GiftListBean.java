@@ -70,6 +70,7 @@ public class GiftListBean {
     }  
 		
 	public String creaGift(){
+		
 		giftListDTO.setVoloAPag(false);
 		giftListDTO.setVoloRPag(false);
 		giftListDTO.setHotelPag(false);
