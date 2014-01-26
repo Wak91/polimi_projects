@@ -5,10 +5,13 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"> 
 
 <h:head>
+	<h:outputStylesheet library="css" name="main2.css"  />
 </h:head> 
 <h:body>
+<div class="container">
+	<section id="content">
 	   <h1>Welcome to traveldream</h1> <br></br>
-	   <h:link outcome = "utente/userhome?user=true"  value="Entra in TravelDream!"/>
+	   <h:link outcome = "utente/userhome?user=true"  value="COMINCIA L'AVVENTURA!"/>
 	   <br></br>
 	   	   <br></br>
 	   
@@ -16,14 +19,14 @@
 	   
 	   	   <br></br>
 	   
-	   
-	   <h:link outcome = "admin/adminhome" value="admin login"/>
+	   <br></br>
+	   <!--  <h:link outcome = "admin/adminhome" value="admin login"/>
 	   <br></br>
 	   <h:link outcome = "impiegato/imphome" value="impiegato login"/>
-	   <br></br>
-	   <h:link outcome = "utente/userhome?user=true"  value="To user login"/>
-	   <br/>
+	   <br></br> -->
+	  
 	   <h:link outcome = "amico/idForm" value="Hai ricevuto un id viaggio da un amico? CLICCAMI :)"/>
-	   
+	   </section>
+	   </div>
 </h:body>
 </html>
