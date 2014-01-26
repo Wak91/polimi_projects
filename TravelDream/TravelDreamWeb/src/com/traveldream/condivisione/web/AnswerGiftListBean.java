@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import com.traveldream.condivisione.ejb.EscursionePagataDTO;
 import com.traveldream.condivisione.ejb.GiftListDTO;
 import com.traveldream.condivisione.ejb.GiftListManagerBeanLocal;
+import com.traveldream.util.web.Pagamento;
 
 @ManagedBean(name="answerGift") 
 @SessionScoped
@@ -58,16 +59,19 @@ private GiftListDTO giftListDTOAmicoDto; //gift list vista dall'amico
 			EscursionePagataDTO escPagata =new EscursionePagataDTO();
 			escPagata.setId(escursionePagataDTO.getId());
 			escPagata.setEscursione(escursionePagataDTO.getEscursione());
-			escPagata.setEscPagata(false);
+			escPagata.setEscPagata(escursionePagataDTO.getEscPagata());
 			currentEscPag.add(escPagata);
 		}
+		currentHotelPag=gift.isHotelPag();
+		currentVoloaPag=gift.isVoloAPag();
+		currentVolorPag=gift.isVoloRPag();
 
 		
 	}
 	
 	
 	public boolean renderEsc(int id){
-		for (EscursionePagataDTO escursionePagataDTO : giftListDTOAmicoDto.getEscursionePagata()) {
+		for (EscursionePagataDTO escursionePagataDTO : currentEscPag) {
 			System.out.println("escursioni in esc amico"+escursionePagataDTO.getId()+escursionePagataDTO.getEscursione().getNome());
 			if (escursionePagataDTO.getId()==id & escursionePagataDTO.getEscPagata()) {
 				System.out.println("id esc"+escursionePagataDTO.getId()+" pagata? "+escursionePagataDTO.getEscPagata());
@@ -77,57 +81,46 @@ private GiftListDTO giftListDTOAmicoDto; //gift list vista dall'amico
 		return true;
 	}
 	
-	public int calcolaCostoHotel(GiftListDTO giftListDTO){
-		int costoGiornaliero =giftListDTO.getViaggio().getHotel().getCosto_giornaliero();
-		int duration = (int) (( giftListDTO.getViaggio().getHotel().getData_fine().getTime() - giftListDTO.getViaggio().getHotel().getData_inizio().getTime() ) / (1000 * 60 * 60 * 24));
-		int numPers =giftListDTO.getNpersone();
-		return numPers*duration*costoGiornaliero;
+	public int calcolaCostoHotel(){
+		return Pagamento.calcolaCostoHotel(giftListDTOAmicoDto);
+	}
+	public int  calcolaCostoVoloA() {
+		return Pagamento.calcolaCostoVoloA(giftListDTOAmicoDto);
+	}
+	public int  calcolaCostoVoloR() {
+		return Pagamento.calcolaCostoVoloR(giftListDTOAmicoDto);
 	}
 
 	
 	
 	
 public String paga(){
+	
 	costocomplessivo=0;
-	if (currentHotelPag){
-		costocomplessivo+=calcolaCostoHotel(giftListDTOAmicoDto);
+	if (!currentHotelPag & giftListDTOAmicoDto.isHotelPag()){
+		costocomplessivo+=calcolaCostoHotel();
 	}
-	if (currentVoloaPag) {
-		costocomplessivo+=giftListDTOAmicoDto.getViaggio().getVolo_andata().getCosto()*giftListDTOAmicoDto.getNpersone();
+	if (!currentVoloaPag & giftListDTOAmicoDto.isVoloAPag()) {
+		costocomplessivo+=calcolaCostoVoloA();
 	}
-	if (currentVolorPag) {
-		costocomplessivo+=giftListDTOAmicoDto.getViaggio().getVolo_ritorno().getCosto()*giftListDTOAmicoDto.getNpersone();
+	if (!currentVolorPag & giftListDTOAmicoDto.isVoloRPag()) {
+		costocomplessivo+=calcolaCostoVoloR();
 	}
 	for (EscursionePagataDTO escursionePagataDTO : currentEscPag) {
-		if (escursionePagataDTO.getEscPagata()) {
-			costocomplessivo+=escursionePagataDTO.getEscursione().getCosto()*giftListDTOAmicoDto.getNpersone();
+		for (EscursionePagataDTO escInGift : giftListDTOAmicoDto.getEscursionePagata()) {
+			if (!escursionePagataDTO.getEscPagata() & escInGift.getId()==escursionePagataDTO.getId() & escInGift.getEscPagata()) {
+				costocomplessivo+=escursionePagataDTO.getEscursione().getCosto()*giftListDTOAmicoDto.getNpersone();
+			}
 		}
 	}
+	
 	System.out.println("hotel "+currentHotelPag+"volo a"+currentVoloaPag+"volo r "+currentVolorPag);
 	System.out.println("costo comp"+costocomplessivo);
 	return "pagamentogift.xhtml?faces-redirect=true";
 }
 	
 	public String salvaPagamentoGift(){
-	
-		
-	
-		if(giftListDTOAmicoDto.isHotelPag()==false){	//se l'hotel non e stato ancora pagato lo aggiorno con il valore della scelta attuale se �� false rimane uguale altrimenti significa che �� stato pagato
-		giftListDTOAmicoDto.setHotelPag(currentHotelPag);
-		}
-		if(giftListDTOAmicoDto.isVoloAPag()==false){	//come per hotel
-			giftListDTOAmicoDto.setVoloAPag(currentVoloaPag);
-			}
-		if(giftListDTOAmicoDto.isVoloRPag()==false){	//come per hotel
-			giftListDTOAmicoDto.setVoloRPag(currentVolorPag);
-			}
-		for (EscursionePagataDTO escursionePagataDTO : giftListDTOAmicoDto.getEscursionePagata()) {
-			for (EscursionePagataDTO currentEsc : currentEscPag) {
-				if (escursionePagataDTO.getId()==currentEsc.getId() & escursionePagataDTO.getEscPagata()==false){
-					escursionePagataDTO.setEscPagata(currentEsc.getEscPagata());
-				}
-			}
-		}
+
 		GLM.aggiornaGift(giftListDTOAmicoDto);
 		return "login.xhtml?faces-redirect=true&user=true";
 	}

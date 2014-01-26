@@ -21,6 +21,7 @@ import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
 import com.traveldream.gestioneprenotazione.ejb.PrenotazioneDTO;
 import com.traveldream.util.web.FacesUtil;
+import com.traveldream.util.web.Pagamento;
 import com.traveldream.viaggio.web.PreDataModel;
 
 
@@ -53,10 +54,9 @@ public class GiftListBean {
 
 	private GiftListDTO giftListDTO; //gift list per la creazione
 	
-	
+
 	int costocomplessivo;
 	String password;
-
 	
     public void init() {
 		giftListDTO = (GiftListDTO)FacesUtil.getSessionMapValue("GiftDTO");
@@ -114,42 +114,9 @@ public class GiftListBean {
 	}
 
 	//parte answer gift list
-
-	
-
-	
-	
-	//calcolo costi
-	
-
-
-	
-	public int calcolaCostoHotel(GiftListDTO giftListDTO){
-		int costoGiornaliero =giftListDTO.getViaggio().getHotel().getCosto_giornaliero();
-		int duration = (int) (( giftListDTO.getViaggio().getHotel().getData_fine().getTime() - giftListDTO.getViaggio().getHotel().getData_inizio().getTime() ) / (1000 * 60 * 60 * 24));
-		int numPers =giftListDTO.getNpersone();
-		return numPers*duration*costoGiornaliero;
-	}
-
-
-	
-	
+		
 	public String confermaGift(){
-		costocomplessivo=0;
-		if (selectedGiftListDTO.isHotelPag()==false){
-			costocomplessivo+=calcolaCostoHotel(selectedGiftListDTO);
-		}
-		if (selectedGiftListDTO.isVoloAPag()==false) {
-			costocomplessivo+=selectedGiftListDTO.getViaggio().getVolo_andata().getCosto()*selectedGiftListDTO.getNpersone();
-		}
-		if (selectedGiftListDTO.isVoloRPag()==false) {
-			costocomplessivo+=selectedGiftListDTO.getViaggio().getVolo_ritorno().getCosto()*selectedGiftListDTO.getNpersone();
-		}
-		for (EscursionePagataDTO escursionePagataDTO : selectedGiftListDTO.getEscursionePagata()) {
-			if (escursionePagataDTO.getEscPagata()==false) {
-				costocomplessivo+=escursionePagataDTO.getEscursione().getCosto()*selectedGiftListDTO.getNpersone();
-			}
-		}
+		costocomplessivo = Pagamento.CalcolaCostoUtenteGift(selectedGiftListDTO);
 		return "pagamentogift.xhtml?faces-redirect=true";
 	}
 	
