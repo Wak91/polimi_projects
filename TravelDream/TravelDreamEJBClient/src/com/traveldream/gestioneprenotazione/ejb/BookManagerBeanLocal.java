@@ -23,6 +23,7 @@ public interface BookManagerBeanLocal {
 	int cercaEscursioneSalvata(EscursioneDTO edto);
 	int saveEscursioneSalvata(EscursioneDTO escursioneDTO);
 	ArrayList <PrenotazioneDTO> cercaPrenotazione(UserDTO udto);
+	ViaggioDTO cercaViaggioById(int id);
 
 	
 }

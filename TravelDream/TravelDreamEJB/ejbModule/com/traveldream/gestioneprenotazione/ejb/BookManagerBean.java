@@ -8,9 +8,11 @@ import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
+import com.traveldream.condivisione.ejb.InvitoDTO;
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBean;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
@@ -19,6 +21,7 @@ import com.traveldream.util.Converter;
 
 import model.EscursioneSalvata;
 import model.HotelSalvato;
+import model.Invito;
 import model.Prenotazione;
 import model.Utente;
 import model.Viaggio;
@@ -323,6 +326,20 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 		em.persist(volo);
 		em.flush();
 		return em.find(VoloSalvato.class, volo.getId()).getId();
+	}
+
+	@Override
+	public ViaggioDTO cercaViaggioById(int id) {
+			try { Viaggio viaggio = em.createNamedQuery("Viaggio.findById", Viaggio.class)
+						.setParameter("id", id)
+						.getSingleResult();
+				return Converter.ViaggioToDTO(viaggio);
+			} catch (NoResultException e1){
+		        return null;
+			} catch (NullPointerException e2){
+				return null;
+			}
+		
 	}
 	
 	

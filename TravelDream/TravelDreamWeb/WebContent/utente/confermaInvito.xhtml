@@ -49,10 +49,10 @@
   	<br></br>
   	
         <h:panelGrid columns="3" id="grid">  
-            <p:button
-            	 value="Login or Register to Confirm" id="tohome" 
-                 outcome="/homepage.xhtml?faces-redirect=true" update="grid" icon="ui-icon-check">   
-            </p:button>
+            <p:commandButton
+            	 value="Partecipa" id="tohome" 
+                 action="#{InvitoBean.partecipa()}" update="grid" icon="ui-icon-check">   
+            </p:commandButton>
             <p:commandButton value="Annulla" icon="ui-icon-cancel"/>                                 
         </h:panelGrid> 
          

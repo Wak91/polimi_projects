@@ -8,6 +8,7 @@
       template="Template.xhtml">
       
        <ui:define name="content">
+       #{InvitoBean.searchInvById(param['id'])}
 	   <h:form id="form">  
   
     <p:growl id="msgs" />  
@@ -17,8 +18,7 @@
     <p:accordionPanel multiple="true"> 
     
     <p:tab title="Periodo">
-    <h:panelGrid columns="2" cellpadding="10"> 
-    <h:outputText value="#{InvitoBean.invito.viaggio.data_inizio}"/> 
+    <h:panelGrid columns="2" cellpadding="10">  
     </h:panelGrid>       	
     </p:tab>
     
@@ -30,7 +30,7 @@
         </h:panelGrid>  
 		<h:panelGrid columns="2" id="località" cellpadding="10">  
         	<h:outputLabel value="Località:" for="località"></h:outputLabel>
-    		<h:outputText value="#{InvitoBean.invito.viaggio.hotel.luogo}"></h:outputText>     
+    		<h:outputText value="#{InvitoBean.getInvito().getViaggio().getHotel().getLuogo()}"></h:outputText>     
         </h:panelGrid>               
     </p:tab>  
     
@@ -41,21 +41,24 @@
     	</h:panelGrid>
     </p:tab>  
     
-     
+    <p:tab title="Escursioni">  
+    <h:panelGrid columns="2" cellpadding="10">  
+    </h:panelGrid>     
+    </p:tab>  
 	</p:accordionPanel>  
   
   	</p:panel>
   	
   	<br></br>
   	
+    <p:panel header="Condividi">  
         <h:panelGrid columns="3" id="grid">  
-            <p:button
-            	 value="Login or Register to Confirm" id="tohome" 
-                 outcome="/homepage.xhtml?faces-redirect=true" update="grid" icon="ui-icon-check">   
-            </p:button>
-            <p:commandButton value="Annulla" icon="ui-icon-cancel"/>                                 
-        </h:panelGrid> 
-         
+            <h:outputLabel value="Email" for="email"></h:outputLabel>  
+            <p:inputText id="email" value="#{InvitoBean.amico}"/>   
+            <f:param name="email" value="#{email}"/>	  				
+            <p:commandButton value="Condividi" action="#{InvitoBean.submit()}"/>                      
+        </h:panelGrid>  
+    </p:panel>  
       
     
 	</h:form> 

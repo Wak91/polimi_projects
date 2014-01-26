@@ -214,6 +214,18 @@
                 </p:dialog>       
         </p:column>    
         
+        <p:column headerText="Buy">
+        <p:button id="acq" outcome="pagamentoDaMieiViaggi" icon="ui-icon-cart">
+        <f:param name="trv" value="#{invito.viaggio.id}"/>	
+        </p:button>
+        </p:column>
+        
+        <p:column headerText="Share">
+        <p:button id="share" outcome="shareInvito" icon="ui-icon-extlink">
+  		<f:param name="id" value="#{invito.id}"/>	
+  		</p:button>
+        </p:column>
+        
         </p:dataTable>                      
              
                     

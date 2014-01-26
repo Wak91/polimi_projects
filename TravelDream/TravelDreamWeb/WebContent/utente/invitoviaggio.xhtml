@@ -25,24 +25,23 @@
     <p:tab title="Hotel">  
         <h:panelGrid columns="2" id="hotel" cellpadding="10">  
         	<h:outputLabel value="Hotel:" for="hotel"></h:outputLabel>
-    		<h:outputText value="#{InvitoBean.getInvitoDTO().getViaggio().getHotel().getNome()}"></h:outputText>     
+    		<h:outputText value="#{InvitoBean.invito.viaggio.hotel.nome}"></h:outputText>     
         </h:panelGrid>  
 		<h:panelGrid columns="2" id="località" cellpadding="10">  
         	<h:outputLabel value="Località:" for="località"></h:outputLabel>
-    		<h:outputText value="#{InvitoBean.getInvitoDTO().getViaggio().getHotel().getLuogo()}"></h:outputText>     
+    		<h:outputText value="#{InvitoBean.getInvito().getViaggio().getHotel().getLuogo()}"></h:outputText>     
         </h:panelGrid>               
     </p:tab>  
     
     <p:tab title="Volo">  
         <h:panelGrid columns="2" id="voloa" cellpadding="10">  
            <h:outputLabel value="Volo Andata:" for="voloa"></h:outputLabel>
-    	   <h:outputText value="#{InvitoBean.getInvitoDTO().getViaggio().getVolo_andata().getCompagnia()}"></h:outputText>
+    	   <h:outputText value="#{InvitoBean.getInvito().getViaggio().getVolo_andata().getCompagnia()}"></h:outputText>
     	</h:panelGrid>
     </p:tab>  
     
     <p:tab title="Escursioni">  
     <h:panelGrid columns="2" cellpadding="10">  
-    	   <h:outputText value="#{InvitoBean.getInvitoDTO().getViaggio().getLista_escursioni().get(0)}"></h:outputText>
     </h:panelGrid>     
     </p:tab>  
 	</p:accordionPanel>  

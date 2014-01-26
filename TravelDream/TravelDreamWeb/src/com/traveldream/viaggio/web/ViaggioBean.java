@@ -1,13 +1,18 @@
 package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
+
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.GiftListDTO;
 import com.traveldream.condivisione.ejb.InvitoDTO;
+import com.traveldream.condivisione.ejb.InvitoManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
@@ -40,6 +45,9 @@ public class ViaggioBean {
 	private ComponentManagerBeanLocal CMB;
 	
 	@EJB
+	private InvitoManagerBeanLocal IMB;
+	
+	@EJB
 	private UserMgr userMgr;
 	
 	private HotelDTO selectedHotels;
@@ -64,6 +72,7 @@ public class ViaggioBean {
 
     private ViaggioDTO viaggio;
     private PrenotazioneDTO prenotazione;
+    private InvitoDTO invito;
     
     private int n_partecipanti;
     private int quotacomplessiva;
@@ -77,6 +86,7 @@ public class ViaggioBean {
 		 packet = new PacchettoDTO();
 		 viaggio = new ViaggioDTO();
 		 prenotazione = new PrenotazioneDTO();
+		 invito = new InvitoDTO();
 	}
 
 	public HotelDataModel getHotelModels() {
@@ -242,7 +252,7 @@ public class ViaggioBean {
 			return "userhome.xhtml?faces-redirect=true";
 
 		}
-		
+		System.out.println("ok");
 		return "pagamento.xhtml?faces-redirect=true"; 	
 	}
 	
@@ -311,6 +321,7 @@ public class ViaggioBean {
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
+
 		
 		
 		GiftListDTO gift= new GiftListDTO();
@@ -338,8 +349,8 @@ public class ViaggioBean {
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
 		
-		InvitoDTO invito = new InvitoDTO();
 		invito.setViaggio(viaggio);
+		invito.setStatus(false);
 		invito.setUtente(userMgr.getUserDTO());
 		invito.setId(viaggio.getId());
 		FacesUtil.setSessionMapValue("InvDTO", invito);	
@@ -347,7 +358,7 @@ public class ViaggioBean {
 		//creazione entita invito
 		
 		
-		return "invitoviaggio.xhtml?faces-redirect=true";
+		return "/utente/invitoviaggio.xhtml?faces-redirect=true";
 		
 		
 	}
@@ -407,6 +418,19 @@ public class ViaggioBean {
 
 		public void setSelectedpre(PrenotazioneDTO selectedpre) {
 			this.selectedpre = selectedpre;
+		}
+		
+		public String searchViaggioById(int id){
+			try {
+				ViaggioDTO viaggio_dto = BMB.cercaViaggioById(id);
+				setViaggio(viaggio_dto);
+				return "/utente/pagamentoDaMieiViaggi.xhtml?faces-redirect=true";
+			} catch (NullPointerException e){
+				System.out.println("null");
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity.");
+		        FacesContext.getCurrentInstance().addMessage("null", message);
+				return "/utente/imieiviaggi.xhtml?faces-redirect=true";
+			}	
 		}
 			
 	/*
