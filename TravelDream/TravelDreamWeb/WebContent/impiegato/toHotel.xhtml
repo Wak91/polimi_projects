@@ -9,7 +9,7 @@
       <ui:composition template="Template.xhtml">
       <ui:define name="content">
          #{ComponentBean.initBean()} 
-	    <h:form id="myform">
+	    
 	 <p:tabMenu activeIndex="1">  
      <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
      <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
@@ -21,6 +21,8 @@
     <p:menuitem value="Cerca e modifica Volo" url="toVolo.xhtml" icon="ui-icon-search" />  
     <p:menuitem value="Cerca e modifica Escursione" url="toEscursione.xhtml" icon="ui-icon-search"/>  
     </p:tabMenu>  
+      <h:form id="myform">
+	  <p:messages id="messages" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />
 		<p:dataTable id="multiHotels" var="hotel" value="#{ComponentBean.hotelModels}" paginator="true" rows="5"  
                      filteredValue="#{ComponentBean.filteredHotels}" selectionMode="single">  
                         
@@ -59,7 +61,7 @@
 				</p:column> 
               
                <p:column headerText="Elimina" style="width:24%" >  
-                <p:commandLink action= "#{ComponentBean.deleteHotel(hotel.id)}" value="Elimina" />
+                <p:commandLink action= "#{ComponentBean.deleteHotel(hotel.id)}" value="Elimina" update="multiHotels" />
 				</p:column> 
               
               </p:dataTable>

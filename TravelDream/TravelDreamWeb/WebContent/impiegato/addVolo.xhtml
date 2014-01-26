@@ -22,7 +22,9 @@
      <p:menuitem value="addPacchetto" url="addPacket.xhtml" icon="ui-icon-wrench"/>  
      </p:tabMenu>
 	 <h:form id="my_form2" enctype="multipart/form-data">
-		<p:panel header="Volo creation">
+		 	    	
+	 <p:messages id="messages" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />
+        	<p:panel header="Volo creation">
 			<h:panelGrid columns="3" id="regGrid">
 				
 				<h:outputLabel for="company">Compagnia:</h:outputLabel>

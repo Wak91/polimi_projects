@@ -145,7 +145,8 @@ public class modComponentBean {
 		  }
   //Prima di modificare con le nuove date controllo se ci sono pacchetti che hanno questo hotel dentro che potrebbero diventare incoerenti
   		ArrayList <PacchettoDTO> hotel_pack_list = CMB.getHotelById(hotel.getId()).getPacchettos();
-		if(!hotel_pack_list.isEmpty()){  
+		int pack_removed=0;
+  		if(!hotel_pack_list.isEmpty()){  
   		for(PacchettoDTO p : hotel_pack_list)
   		   {
   			//se c'è una situazione di incoerenza nelle date o nel luogo elimino l'hotel dal pacchetto, 
@@ -156,6 +157,7 @@ public class modComponentBean {
   				if(p.getLista_hotel().size()== 1)// se nel pacchetto c'è solo un hotel, in questo caso è proprio quello da eliminare, butto quindi il pacchetto
   				 {
   					PMB.deletePacchetto(p.getId());
+  					pack_removed++;
   				 }
   				else
   				   { // se non era l'unico hotel, rimuovo dalla lista del pacchetto e update pacchetto
@@ -174,9 +176,14 @@ public class modComponentBean {
   		   }
 		}
     
+	if(pack_removed>=1)
+	   {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Con questa modifica " +pack_removed+" pacchetto/i sono stati eliminati per incompatibilità" ));  	
+	   }
+    
     CMB.modificaHotel(hotel);
 
-	return "toHotel.xhtml?faces-redirect=true";
+	return "toHotel.xhtml";
 	}
 	
 //------------------------GETTER_SETTER_VOLO------------------------------------
@@ -235,6 +242,7 @@ public class modComponentBean {
     volo.setImmagine(imgVolo.getFileName());
 	}
     ArrayList <PacchettoDTO> voli_packet_list = CMB.getVoloById(volo.getId()).getPacchettos(); //safety
+    int pr=0;
     if(!voli_packet_list.isEmpty()){
 		for(PacchettoDTO p : voli_packet_list)
 		   {
@@ -290,15 +298,20 @@ public class modComponentBean {
 				  PMB.modifyPacchetto(p);
 			    }
 			    else
-			    	PMB.deletePacchetto(p.getId());
+			    	{PMB.deletePacchetto(p.getId()); pr++;}
 		    } // fine controllo per tutti i pacchetti
 			
 		   } //fine if di volo contenuto in nessun pacchetto
     
+    if(pr>=1)
+    {        
+    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Con questa modifica " +pr+" pacchetto/i sono stati eliminati per incompatibilità" ));  	
+    }
+    
 	CMB.modificaVolo(volo);
 
 	
-	return "toVolo.xhtml?faces-redirect=true";
+	return "toVolo.xhtml";
     }
     
 
@@ -386,6 +399,8 @@ public class modComponentBean {
 			 }
 		   }
 		 }
+		 
+		 
 		CMB.modificaEscursione(escursione);
 
 	return "toEscursione.xhtml?faces-redirect=true";
