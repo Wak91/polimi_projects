@@ -1,3 +1,4 @@
+@CHARSET "UTF-8";
 
 
 html, body, div, span, applet, object, iframe,
@@ -18,7 +19,11 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 	background: transparent;
 }
 body {
-	background: #DCDDDF url(http://cssdeck.com/uploads/media/items/7/7AF2Qzt.png);
+	background: url(http://thrills2chillstravel.com/wp-content/uploads/2013/01/beach-background.jpg) no-repeat center center fixed;
+	 -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
 	color: #000;
 	font: 14px Arial;
 	margin: 0 auto;

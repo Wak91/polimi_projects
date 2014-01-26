@@ -7,16 +7,14 @@
 
 <h:head>
 	<title>Login</title>
-	<h:outputStylesheet library="css" name="main.css"  />
+	<h:outputStylesheet library="css" name="main2.css"  />
 	
 </h:head>
 <h:body>
 <div class="container">
 	<section id="content">
 
-		<h:form id="login"
-			onsubmit="action='j_security_check';"
-			prependId="false">
+		<form id="login" action='j_security_check'>
 				<h1>Login Form</h1>
 				<div>
 					<input type="text" id="j_username"  name="j_username" />
@@ -25,13 +23,13 @@
 				   	<input type="password"  id="j_password" name="j_password" />
 				</div>
 				<div>
-					<input type="submit" value="Log in" />
+					<input type="submit" value="Login" />
 					<a href="#">Register</a>
 				</div>
 				
-		</h:form>
+		</form>
 		<h:form rendered="#{param['user']}">
-			<h:link value="Registero" outcome="register" />
+			<h:link value="Register" outcome="register" />
        </h:form>      
        	<h:link value="Inserisci Codice Gift" outcome="verifycodegift"/>
 
