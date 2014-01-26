@@ -18,7 +18,13 @@ import java.util.List;
  */
 @Entity
 @Table(name="Utente")
-@NamedQuery(name="Utente.findAll", query="SELECT u FROM Utente u")
+@NamedQueries
+			(
+				{	
+					@NamedQuery(name="Utente.findAll", query="SELECT u FROM Utente u"),
+					@NamedQuery(name="Utente.findImp", query="SELECT u FROM Utente u WHERE u.username = :username")
+				}
+			)
 public class Utente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -50,7 +56,7 @@ public class Utente implements Serializable {
 	private List<Prenotazione> prenotaziones;
 
 	//bi-directional many-to-one association to UtenteGruppo
-	@OneToMany(mappedBy="utente")
+	@OneToMany(mappedBy="utente", cascade = CascadeType.REMOVE)
 	private List<UtenteGruppo> utenteGruppos;
 
 	public Utente() {
@@ -110,7 +116,7 @@ public class Utente implements Serializable {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = DigestUtils.sha512Hex(password);
 	}
 
 	public List<Gift_List> getGiftLists() {

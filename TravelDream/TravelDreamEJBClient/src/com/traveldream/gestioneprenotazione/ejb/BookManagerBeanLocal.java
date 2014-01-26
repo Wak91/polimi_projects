@@ -1,5 +1,8 @@
 package com.traveldream.gestioneprenotazione.ejb;
 
+import javax.ejb.Local;
+
+
 import java.util.ArrayList;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
@@ -7,6 +10,7 @@ import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
 
+@Local
 public interface BookManagerBeanLocal {
 
 	
@@ -21,6 +25,7 @@ public interface BookManagerBeanLocal {
 	ArrayList <PrenotazioneDTO> cercaPrenotazione(UserDTO udto);
 	int saveHotelSalvato(HotelDTO hoteldto); 
     int saveVoloSalvato(VoloDTO volodto);
+	ViaggioDTO cercaViaggioById(int id);
 
 	
 }

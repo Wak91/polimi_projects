@@ -8,6 +8,7 @@
       template="Template.xhtml">
       
        <ui:define name="content">
+       #{InvitoBean.searchInvById(param['id'])}
 	   <h:form id="form">  
   
     <p:growl id="msgs" />  

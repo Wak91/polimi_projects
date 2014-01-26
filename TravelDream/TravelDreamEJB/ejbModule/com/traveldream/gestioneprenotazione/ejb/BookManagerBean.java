@@ -8,9 +8,11 @@ import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
+import com.traveldream.condivisione.ejb.InvitoDTO;
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBean;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
@@ -19,6 +21,7 @@ import com.traveldream.util.Converter;
 
 import model.EscursioneSalvata;
 import model.HotelSalvato;
+import model.Invito;
 import model.Prenotazione;
 import model.Utente;
 import model.Viaggio;
@@ -40,6 +43,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	
 	public ViaggioDTO saveViaggio(ViaggioDTO v)
 	{
+        
 		ArrayList <Integer> id_escursioni = new ArrayList <Integer> ();
 		int id_e;
 		// salvo le copie degli elementi selezionati per la creazione del viaggio, controllando se esistono già
@@ -120,8 +124,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	 private Viaggio DTOtoEntityViaggio(ViaggioDTO viaggio) {
 		return em.find(Viaggio.class, viaggio.getId());
 	}
-
-
+	 
 	private Utente DTOtoEntityUtente(UserDTO utente) {
 		return em.find(Utente.class, utente.getUsername());
 	}
@@ -312,6 +315,20 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 		em.persist(volo);
 		em.flush();
 		return em.find(VoloSalvato.class, volo.getId()).getId();
+	}
+
+	@Override
+	public ViaggioDTO cercaViaggioById(int id) {
+			try { Viaggio viaggio = em.createNamedQuery("Viaggio.findById", Viaggio.class)
+						.setParameter("id", id)
+						.getSingleResult();
+				return Converter.ViaggioToDTO(viaggio);
+			} catch (NoResultException e1){
+		        return null;
+			} catch (NullPointerException e2){
+				return null;
+			}
+		
 	}
 	
 	
