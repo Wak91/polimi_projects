@@ -23,6 +23,9 @@ public class GiftListDTO {
 	@NotNull
 	private boolean voloAPag;
 
+	private String hash;
+	
+	private int npersone;
 	
 	@NotNull
 	private boolean voloRPag;
@@ -41,6 +44,7 @@ public class GiftListDTO {
 	public GiftListDTO(){
 		amico =new ArrayList<String>();
 		escursionePagata = new ArrayList<EscursionePagataDTO>();
+		npersone=1;
 	}
 	
 	public int getId() {
@@ -51,7 +55,9 @@ public class GiftListDTO {
 		this.id = id;
 	}
 
-	public boolean getHotelPag() {
+	
+
+	public boolean isHotelPag() {
 		return hotelPag;
 	}
 
@@ -59,7 +65,7 @@ public class GiftListDTO {
 		this.hotelPag = hotelPag;
 	}
 
-	public boolean getVoloAPag() {
+	public boolean isVoloAPag() {
 		return voloAPag;
 	}
 
@@ -67,7 +73,7 @@ public class GiftListDTO {
 		this.voloAPag = voloAPag;
 	}
 
-	public boolean getVoloRPag() {
+	public boolean isVoloRPag() {
 		return voloRPag;
 	}
 
@@ -105,6 +111,22 @@ public class GiftListDTO {
 
 	public void setViaggio(ViaggioDTO viaggio) {
 		this.viaggio = viaggio;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+
+	public int getNpersone() {
+		return npersone;
+	}
+
+	public void setNpersone(int npersone) {
+		this.npersone = npersone;
 	}
 
 	

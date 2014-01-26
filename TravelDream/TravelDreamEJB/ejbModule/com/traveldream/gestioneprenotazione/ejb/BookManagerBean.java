@@ -86,24 +86,14 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		   travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
 		   em.persist(travel);	
 		   em.flush();
-		   return  ViaggioToDTO(em.find(Viaggio.class, travel.getId()));
+		   return  Converter.ViaggioToDTO(em.find(Viaggio.class, travel.getId()));
 		 }
 		 else
-			 return ViaggioToDTO(em.find(Viaggio.class, id));
+			 return Converter.ViaggioToDTO(em.find(Viaggio.class, id));
          
 	}
 	
-	private ViaggioDTO ViaggioToDTO(Viaggio v)
-	{
-		ViaggioDTO vdto = new ViaggioDTO();
-		vdto.setData_fine(v.getData_fine());
-		vdto.setData_inizio(v.getData_inizio());
-		vdto.setHotel(Converter.HotelToDTOSimple(v.getHotelSalvato()));
-		vdto.setId(v.getId());
-		vdto.setVolo_andata(Converter.VoloToDTO((v.getVoloSalvato1())));
-		vdto.setVolo_ritorno(Converter.VoloToDTO((v.getVoloSalvato2())));
-		return vdto;
-	}
+
 	
 	public void updateViaggio(ViaggioDTO v)
 	{

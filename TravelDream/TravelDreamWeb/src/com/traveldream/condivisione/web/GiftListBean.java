@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
@@ -15,60 +18,62 @@ import com.traveldream.condivisione.ejb.EscursionePagataDTO;
 import com.traveldream.condivisione.ejb.GiftListDTO;
 import com.traveldream.condivisione.ejb.GiftListManagerBeanLocal;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
+import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
+import com.traveldream.gestioneprenotazione.ejb.PrenotazioneDTO;
 import com.traveldream.util.web.FacesUtil;
+import com.traveldream.util.web.Pagamento;
 import com.traveldream.viaggio.web.PreDataModel;
 
 
 
 @ManagedBean(name="GiftListBean") 
-@ViewScoped
+@SessionScoped
 public class GiftListBean {
 
-	String amico;
+	private String amico;
+	private amiciDatamodel amiciDatamodel;
+
 	
-	GiftDataModel giftDataModel;
-	GiftListDTO selectedGiftListDTO;
+	private GiftDataModel giftDataModel;
+	private GiftListDTO selectedGiftListDTO;	//gift list per la visualizzazione
 	
 	
-	EscursionePagataDatamodel escursionePagataDatamodel;
-	ArrayList<GiftListDTO> filteredGift;
+	private EscursionePagataDatamodel escursionePagataDatamodel;
+	private ArrayList<GiftListDTO> filteredGift;
 	
+	private String codiceGift;
 	
 	@EJB
-	UserMgr userMgr;
+	private UserMgr userMgr;
 	
 	@EJB
-	GiftListManagerBeanLocal GLM;
+	private BookManagerBeanLocal BMB; 
+	
+	@EJB
+	private GiftListManagerBeanLocal GLM;
 
-	GiftListDTO giftListDTO;
+	private GiftListDTO giftListDTO; //gift list per la creazione
 	
 
-	@PostConstruct
+	int costocomplessivo;
+	String password;
+	
     public void init() {
 		giftListDTO = (GiftListDTO)FacesUtil.getSessionMapValue("GiftDTO");
+		System.out.println("Username utente"+giftListDTO.getUtente().getUsername());
+
     }
 	
 	public String reinit() {  
         amico = new String();           
         return null;  
     }  
-	
-	public String getAmico() {
-		return amico;
-	}
-	public void setAmico(String amico) {
-		this.amico = amico;
-	}
-
-	public GiftListDTO getGiftListDTO() {
-		return giftListDTO;
-	}
-
-	public void setGiftListDTO(GiftListDTO giftListDTO) {
-		this.giftListDTO = giftListDTO;
-	}
-	
-	public void submit(){
+		
+	public String creaGift(){
+		giftListDTO.getAmico().remove("");
+		if (giftListDTO.getAmico().isEmpty()) {
+			return null;
+		}
 		giftListDTO.setVoloAPag(false);
 		giftListDTO.setVoloRPag(false);
 		giftListDTO.setHotelPag(false);
@@ -85,10 +90,23 @@ public class GiftListBean {
 		GLM.addToGiftList(giftListDTO);
 		for (String string : getGiftListDTO().getAmico() ) {
 			System.out.println("gift "+string);
-
-		}
-		
+		}	
+		return "giftlist.xhtml?faces-redirect=true";
 	}
+	
+	public void eliminaGift() {
+		GLM.removeFromGift(selectedGiftListDTO);
+		UserDTO current_user = userMgr.getUserDTO();
+
+		setGiftDataModel(new GiftDataModel(GLM.getGiftListDTO(current_user)));
+
+
+	}
+	public void setupamicidialog() {
+		amiciDatamodel = new amiciDatamodel(selectedGiftListDTO.getAmico());
+
+	}
+	
 	public void setupEscursioniPagatedialog(){
 		System.out.println("ID selected"+selectedGiftListDTO.getId());
 		escursionePagataDatamodel= new EscursionePagataDatamodel(selectedGiftListDTO.getEscursionePagata());
@@ -98,7 +116,44 @@ public class GiftListBean {
 		UserDTO current_user = userMgr.getUserDTO();
 		setGiftDataModel(new GiftDataModel(GLM.getGiftListDTO(current_user)));
 	}
-
+	//calcolo dei cost da visualizzare dialog
+	public int calcolaCostoHotel(){
+		if (selectedGiftListDTO!=null){
+		return Pagamento.calcolaCostoHotel(selectedGiftListDTO);
+		}
+		return 0;
+	}
+	public int  calcolaCostoVoloA() {
+		if (selectedGiftListDTO!=null){
+			return Pagamento.calcolaCostoVoloA(selectedGiftListDTO);
+		}
+		return 0;
+	}
+	public int  calcolaCostoVoloR() {
+		if (selectedGiftListDTO!=null){
+		return Pagamento.calcolaCostoVoloR(selectedGiftListDTO);
+		}
+		return 0;
+	}
+		
+	public String confermaGift(){
+		costocomplessivo = Pagamento.CalcolaCostoUtenteGift(selectedGiftListDTO);
+		return "pagamentogift.xhtml?faces-redirect=true";
+	}
+	
+	public String AcquistaGift(){
+		PrenotazioneDTO prenotazione = new PrenotazioneDTO();
+		prenotazione.setCosto(costocomplessivo);
+		prenotazione.setNumero_persone(selectedGiftListDTO.getNpersone());
+		prenotazione.setUtente(selectedGiftListDTO.getUtente());
+		prenotazione.setViaggio(selectedGiftListDTO.getViaggio());
+		BMB.savePrenotazione(prenotazione);
+		
+		GLM.removeFromGift(selectedGiftListDTO);
+		return "imieiviaggi.xhtml?faces-redirect=true";
+	}
+	
+	
 	public GiftDataModel getGiftDataModel() {
 		return giftDataModel;
 	}
@@ -133,6 +188,53 @@ public class GiftListBean {
 		this.escursionePagataDatamodel = escursionePagataDatamodel;
 	}
 
+	public amiciDatamodel getAmiciDatamodel() {
+		return amiciDatamodel;
+	}
+
+	public void setAmiciDatamodel(amiciDatamodel amiciDatamodel) {
+		this.amiciDatamodel = amiciDatamodel;
+	}
+
+	public String getCodiceGift() {
+		return codiceGift;
+	}
+
+	public void setCodiceGift(String codiceGift) {
+		this.codiceGift = codiceGift;
+	}
+
+	public String getAmico() {
+		return amico;
+	}
+	public void setAmico(String amico) {
+		this.amico = amico;
+	}
+
+	public GiftListDTO getGiftListDTO() {
+		return giftListDTO;
+	}
+
+	public void setGiftListDTO(GiftListDTO giftListDTO) {
+		this.giftListDTO = giftListDTO;
+	}
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public int getCostocomplessivo() {
+		return costocomplessivo;
+	}
+
+	public void setCostocomplessivo(int costocomplessivo) {
+		this.costocomplessivo = costocomplessivo;
+	}
+
+	
 	
 	
 	

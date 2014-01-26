@@ -20,7 +20,7 @@
       Gift List                 
    			
    			
-       <p:dataTable id="Gift" var="gift" value="#{GiftListBean.giftDataModel}" selectionMode="single" selection="#{GiftListBean.selectedGiftListDTO}" paginator="true" rows="25"
+       <p:dataTable id="Gift" var="gift" value="#{GiftListBean.giftDataModel}" selectionMode="single" selection="#{GiftListBean.selectedGiftListDTO}" paginator="true" rows="35"
        rowKey="#{gift.id}" filteredValue="#{GiftListBean.filteredGift}">  
                                 
                 <p:column headerText="Nome Viaggio" style="width:10%"  >  
@@ -53,8 +53,36 @@
                 <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
             	</p:commandButton>  
         		</p:column> 
+        		
+        		 <p:column style="width:4%" headerText="Lista Amici">  
+                <p:commandButton id="amiciButton" update=":form:displayamici" oncomplete="PF('amiciDialog').show()" icon="ui-icon-search" title="View" >  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>  
+        		</p:column> 
+        		
+        		<p:column style="width:4%" headerText="Codice Gift">  
+                <p:commandButton id="codiceButton" update=":form:displaycodice" oncomplete="PF('codiceDialog').show()" icon="ui-icon-search" title="View">  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>  
+        		</p:column> 
+        		
+        		<p:column style="width:4%" headerText="Elimina">
+        			<p:commandButton id="Elimina" update=":form:Gift" process="@this" action="#{GiftListBean.eliminaGift()}" icon="ui-icon-close">
+                    <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+        			</p:commandButton>
+        		</p:column>
+        		
 
+				<p:column style="width:4%" headerText="Conferma">
+        			<p:commandLink id="Conferma" value ="Conferma" action="#{GiftListBean.confermaGift()}"  ajax="false" immediate="true" process="@this" >
+                    <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+        			</p:commandLink>
+        		</p:column>
               </p:dataTable>
+             
+             
+             
+             
               <p:dialog  header="Escursioni" widgetVar="escDialog" resizable="false" id="escDlg"  
                 showEffect="fade" hideEffect="explode" modal="true">  
                               
@@ -67,9 +95,15 @@
                 <p:column headerText="Pagata" style="width:10%">  
                 <h:outputText value="#{escpag.escPagata ==false? 'No' :'Si'}" />  
                 </p:column>  
+                
+                <p:column headerText="Costo" style="width:10%">  
+                <h:outputText value="#{escpag.escursione.costo}€" />  
+                </p:column>  
         
         		</p:dataTable>
+
                </p:dialog>  
+
               
                <p:dialog header="Hotel Detail" widgetVar="hotelDialog" resizable="false" id="hotelDlg"  
                 showEffect="fade"  modal="true">  
@@ -83,8 +117,11 @@
             <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.hotel.stelle}" style="font-weight:bold"/>  
   
   
-            <h:outputText value="Costo" />  
-            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.hotel.costo_giornaliero}" style="font-weight:bold"/>  
+            <h:outputText value="Costo Giornaliero a testa" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.hotel.costo_giornaliero}€" style="font-weight:bold"/>  
+            
+            <h:outputText value="Costo complessivo" />  
+            <h:outputText value="#{GiftListBean.calcolaCostoHotel()}€" style="font-weight:bold"/>  
   
 
         </h:panelGrid>  
@@ -115,7 +152,13 @@
   			<h:outputText value="Compagnia" />  
             <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.compagnia}" style="font-weight:bold"/>  
   
-
+  			<h:outputText value="Costo a testa" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.costo}€" style="font-weight:bold"/>  
+  
+			<h:outputText value="Costo complessivo" />  
+            <h:outputText value="#{GiftListBean.calcolaCostoVoloA()}" style="font-weight:bold"/>  
+  
+			
         </h:panelGrid>  
   
     </p:dialog> 
@@ -142,12 +185,43 @@
   			<h:outputText value="Compagnia" />  
             <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.compagnia}" style="font-weight:bold"/>  
   
+  			<h:outputText value="Costo a testa" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.costo}€" style="font-weight:bold"/>  
+  
+			<h:outputText value="Costo complessivo" />  
+            <h:outputText value="#{GiftListBean.calcolaCostoVoloR()}" style="font-weight:bold"/>  
+  
+
+        </h:panelGrid>  
+    </p:dialog> 
+    
+    <p:dialog  header="Amici" widgetVar="amiciDialog" resizable="false" id="amiciDlg"  
+                showEffect="fade"  modal="true" style="width:25%">  
+                              
+                
+       	 		 <h:panelGrid id="displayamici" columns="2" cellpadding="4" style="margin:0 auto;">  
+  			<ui:repeat var="mailamico" value="#{GiftListBean.selectedGiftListDTO.amico}">
+            	<h:outputText value="Amico: " /> 
+            	<h:outputText value="#{mailamico}" style="font-weight:bold"/> <br/>
+  			</ui:repeat>
+        </h:panelGrid> 
+          
+  </p:dialog>
+  
+  
+       <p:dialog header="Codice Detail" widgetVar="codiceDialog" resizable="false" id="codiceDlg"  
+                showEffect="fade"  modal="true">  
+  
+        <h:panelGrid id="displaycodice" columns="2" cellpadding="4" style="margin:0 auto;">  
+  
+            <h:outputText value="Codice" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.hash}" style="font-weight:bold"/>  
+  
+           
 
         </h:panelGrid>  
   
     </p:dialog> 
-          
-  
     </h:form>
        </ui:define>
 </ui:composition>

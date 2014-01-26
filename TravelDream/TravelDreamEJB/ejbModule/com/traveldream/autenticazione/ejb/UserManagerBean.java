@@ -71,6 +71,9 @@ public class UserManagerBean implements UserMgr {
 		udto.setLastName(user.getCognome());
 		udto.setEmail(user.getEmail());
 		return udto;
+			
+		
+		
 	}
 
 	//---Per la ricerca---

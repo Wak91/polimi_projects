@@ -8,6 +8,7 @@
       template="Template.xhtml">
       
        <ui:define name="content">
+       #{GiftListBean.init()}
             <p:tabMenu activeIndex="2">  
      <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
      <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
@@ -17,9 +18,14 @@
 			<h:form id="form">  
   
     <p:growl id="msgs" value="Inserisci valida email"/>  
+    
+   
   
     <p:panel header="Aggiungi un nuovo amico">  
         <h:panelGrid columns="2" id="grid">  
+        <h:outputLabel value="Numero Persone" ></h:outputLabel>  
+         <p:spinner id="numpers"   value="#{GiftListBean.giftListDTO.npersone}" min="1" max="15">         
+     	</p:spinner> 
             <h:outputLabel value="Email Amico a" for="email"></h:outputLabel>  
             <p:inputText id="email"   value="#{GiftListBean.amico}" >  
                <f:validateRegex pattern="(^$|^.*@.*\..*$)" />
@@ -59,10 +65,12 @@
   
         </p:dataTable>  
     </p:outputPanel>  
-              <p:commandButton value="Create Gift List" action="#{GiftListBean.submit()}" update="emails msgs @parent" />  
+              <p:commandButton value="Create Gift List" action="#{GiftListBean.creaGift()}" update="emails msgs @parent" />  
               
   
 </h:form> 
+
+ 
        
        </ui:define>
       
