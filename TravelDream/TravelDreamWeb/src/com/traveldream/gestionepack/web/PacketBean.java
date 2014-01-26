@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.primefaces.event.CloseEvent;
 import org.primefaces.model.UploadedFile;
 
 import com.traveldream.gestionecomponente.ejb.*;
@@ -52,6 +53,9 @@ public class PacketBean {
     private PacchettoDataModel packModels;
     
     private ArrayList <VoloDTO> lista_voli_dialog;
+    
+    private PacchettoDTO selectedPackDTO;
+    
    
     	
     //---INIZIALIZZAZIONE BEAN---
@@ -344,10 +348,22 @@ public class PacketBean {
 	//UTILITY PER DIALOG
 	//-------------------------------------------------------
 
-    public void caricaDialogVoli(int id)
+    public void caricaDialogVoli()
     {
-    	PacchettoDTO packDTO = PMB.getPacchettoByID(id);
-    	this.setLista_voli_dialog((ArrayList<VoloDTO>) packDTO.getLista_voli());
+    	setVoloModels(new VoloDataModel(selectedPackDTO.getLista_voli()));
+      
+    }
+    
+    public void caricaDialogHotel()
+    {
+    	setHotelModels(new HotelDataModel(selectedPackDTO.getLista_hotel()));
+      
+    }
+    
+    public void caricaDialogEsc()
+    {
+    	setEscModels(new EscDataModel(selectedPackDTO.getLista_escursioni()));
+      
     }
 
 	public ArrayList <VoloDTO> getLista_voli_dialog() {
@@ -357,5 +373,12 @@ public class PacketBean {
 	public void setLista_voli_dialog(ArrayList <VoloDTO>lista_voli_dialog) {
 		this.lista_voli_dialog = lista_voli_dialog;
 	}
-	
+
+	public PacchettoDTO getSelectedPackDTO() {
+		return selectedPackDTO;
+	}
+
+	public void setSelectedPackDTO(PacchettoDTO selectedPackDTO) {
+		this.selectedPackDTO = selectedPackDTO;
+	}
 }
