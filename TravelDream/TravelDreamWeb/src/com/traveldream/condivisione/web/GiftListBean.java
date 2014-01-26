@@ -147,7 +147,7 @@ public class GiftListBean {
 		}
 		for (EscursionePagataDTO escursionePagataDTO : selectedGiftListDTO.getEscursionePagata()) {
 			if (escursionePagataDTO.getEscPagata()==false) {
-				costocomplessivo+=escursionePagataDTO.getEscursione().getCosto();
+				costocomplessivo+=escursionePagataDTO.getEscursione().getCosto()*selectedGiftListDTO.getNpersone();
 			}
 		}
 		return "pagamentogift.xhtml?faces-redirect=true";

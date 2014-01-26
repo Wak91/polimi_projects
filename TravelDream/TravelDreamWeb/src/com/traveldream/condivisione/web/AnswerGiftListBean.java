@@ -100,7 +100,7 @@ public String paga(){
 	}
 	for (EscursionePagataDTO escursionePagataDTO : currentEscPag) {
 		if (escursionePagataDTO.getEscPagata()) {
-			costocomplessivo+=escursionePagataDTO.getEscursione().getCosto();
+			costocomplessivo+=escursionePagataDTO.getEscursione().getCosto()*giftListDTOAmicoDto.getNpersone();
 		}
 	}
 	System.out.println("hotel "+currentHotelPag+"volo a"+currentVoloaPag+"volo r "+currentVolorPag);
@@ -112,7 +112,7 @@ public String paga(){
 	
 		
 	
-		if(giftListDTOAmicoDto.isHotelPag()==false){	//se l'hotel non e stato ancora pagato lo aggiorno con il valore della scelta attuale se è false rimane uguale altrimenti significa che è stato pagato
+		if(giftListDTOAmicoDto.isHotelPag()==false){	//se l'hotel non e stato ancora pagato lo aggiorno con il valore della scelta attuale se �� false rimane uguale altrimenti significa che �� stato pagato
 		giftListDTOAmicoDto.setHotelPag(currentHotelPag);
 		}
 		if(giftListDTOAmicoDto.isVoloAPag()==false){	//come per hotel
