@@ -118,10 +118,16 @@ public class ComponentBean {
 		    }
 		hotel.setHotelImg(imgHotel.getFileName());
 		    }
+		
+		if(hotel.getCosto_giornaliero()<=0)
+		  {
+	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Il costo giornaliero deve essere > 0" ));  	
+			return "addHotel.xhtml";
+		  }
+		  
 		CMB.saveHotel(hotel);
-		FacesMessage msg = new FacesMessage("Hotel is added");
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-		return "addHotel.xhtml?faces-redirect=true";
+    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Hotel aggiunto!" ));  	
+		return "addHotel.xhtml";
 	}
 		
 	public String createVolo(){
@@ -153,8 +159,16 @@ public class ComponentBean {
 		    }
 			volo.setImmagine(imgVolo.getFileName());
 		    }
+		 
+			if(volo.getCosto()<=0)
+			  {
+		    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Il costo giornaliero deve essere > 0" ));  	
+				return "addVolo.xhtml";
+			  }
+			  
 		CMB.saveVolo(volo);
-		return "addVolo.xhtml?faces-redirect=true";
+    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Volo aggiunto!" ));  	
+		return "addVolo.xhtml";
 	}
 	
 	public String createEscursione(){
@@ -187,8 +201,15 @@ public class ComponentBean {
 			escursione.setImmagine(imgEscursione.getFileName());
 
 		    }
+			if(escursione.getCosto()<=0)
+			  {
+		    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Il costo giornaliero deve essere > 0" ));  	
+				return "addEscursione.xhtml";
+			  }
+			  
 		CMB.saveEscursione(escursione);
-		return "addEscursione.xhtml?faces-redirect=true";
+    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Escursione aggiunta!" ));  	
+		return "addEscursione.xhtml";
 	}
 	
 //--------------------------GETTER_SETTER_HOTELS--------------------------------------

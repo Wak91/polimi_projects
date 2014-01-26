@@ -335,7 +335,8 @@ public class PacketBean {
 		//   valori vanno resettati quando si esce dalla creazione della pagina 
 		// vanno quindi messi anche in caso di errore altrimenti rimangono le cose filtrate prima
 		//----------------------------------------------------------------------
-		return "impack.xhtml?faces-redirect=true";
+    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Pacchetto aggiunto!" ));  	
+		return "impack.xhtml";
 		
 	}
 	

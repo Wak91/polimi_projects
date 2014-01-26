@@ -17,6 +17,7 @@
      </p:tabMenu>
 	    #{PacketBean.initBean()}
 	    <h:form id="form">
+	    	   	        <p:messages id="messages" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />  
      	<p:dataTable id="PackList" var="pack" value="#{PacketBean.packModels}" paginator="true" rows="5"  
                       selectionMode="single"  selection="#{PacketBean.selectedPackDTO}" 
                       rowKey="#{pack.id}">
