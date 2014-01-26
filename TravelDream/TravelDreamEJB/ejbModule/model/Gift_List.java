@@ -16,6 +16,7 @@ import java.util.List;
 @Table(name="GiftList")
 @NamedQueries ( 
 	       {
+	    	   @NamedQuery(name="Gift_List.findbyhash", query="SELECT g FROM Gift_List g WHERE g.hash  = :h"),
 	    	   @NamedQuery(name="Gift_List.findbyuser", query="SELECT g FROM Gift_List g WHERE g.utente  = :u"),
 	    	   @NamedQuery(name="Gift_List.findAll", query="SELECT g FROM Gift_List g")
 	       }
@@ -32,15 +33,19 @@ public class Gift_List implements Serializable {
 	private boolean voloAPag;
 	
 	private boolean voloRPag;
+	
+	private String hash;
+	
+	private int npersone;
 
 	//bi-directional many-to-one association to EscursionePagata
 	@OneToMany(mappedBy="giftList",cascade = {CascadeType.PERSIST,
-            CascadeType.MERGE})
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
 	private List<EscursionePagata> escursionePagatas;
 
 	//bi-directional many-to-many association to Amico
 	  @ManyToMany(cascade = {CascadeType.PERSIST,
-	            CascadeType.MERGE})
+	            CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE})
 	  @JoinTable(
 	      name="AmicoGiftList"
 	      , joinColumns={
@@ -141,6 +146,22 @@ public class Gift_List implements Serializable {
 
 	public void setVoloRPag(boolean voloRPag) {
 		this.voloRPag = voloRPag;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+
+	public int getNpersone() {
+		return npersone;
+	}
+
+	public void setNpersone(int npersone) {
+		this.npersone = npersone;
 	}
 	
 	

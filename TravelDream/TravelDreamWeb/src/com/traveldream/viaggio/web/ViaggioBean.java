@@ -297,21 +297,13 @@ public class ViaggioBean {
 	//---QUESTI VANNO NEL BEAN GESTIONE GIFT LIST E GESTIONE INVITO 
 	public String aggiungi_gift()
 	{
-
-		if(selectedHotels == null || selectedVolo_a == null || selectedVolo_r == null)
+		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null)
 		  {
-			return null;
+			System.out.println("dentro if");
+			return "userhome.xhtml?faces-redirect=true";
 		  }
 		
-		int id_h  = BMB.saveHotelSalvato(selectedHotels); //recupero gli id delle copie appena salvate
-		int id_vsa = BMB.saveVoloSalvato(selectedVolo_a);
-		int id_vsr = BMB.saveVoloSalvato(selectedVolo_r);
 
-		
-		 selectedHotels.setId(id_h); //aggiorno gli id dei DTO, solo quelli perch�� gli altri campi sono gi�� a posto
-		 selectedVolo_a.setId(id_vsa);
-		 selectedVolo_r.setId(id_vsr);
-		
          viaggio.setHotel(selectedHotels);
          viaggio.setVolo_andata(selectedVolo_a);
          viaggio.setVolo_ritorno(selectedVolo_r);
@@ -320,7 +312,8 @@ public class ViaggioBean {
 		GiftListDTO gift= new GiftListDTO();
 		gift.setViaggio(viaggio);
 		gift.setUtente(userMgr.getUserDTO());
-		FacesUtil.setSessionMapValue("GiftDTO", gift);		
+		FacesUtil.setSessionMapValue("GiftDTO", gift);	
+		
 		//creazione entita gift
 		
 		

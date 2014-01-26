@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      template="Template.xhtml"
+      
+>
+ <ui:define name="content">
+	 <h:form id="my_form">
+
+		<p:panel header="Pagamento">
+
+			<h:panelGrid columns="3" id="regGrid">
+			
+
+           
+			<h:outputLabel for="costogg">Quota per persona</h:outputLabel>
+			<h:outputText id="qpp"  value="#{GiftListBean.costocomplessivo}"></h:outputText> 
+			<br></br>
+            
+			
+			<h:outputLabel for="cartacredito">Codice carta di credito</h:outputLabel>
+            <p:password id="pwd1" value="#{GiftListBean.password}" match="pwd2" label="Password 1" required="true"/>  
+            <br></br>
+            
+            <h:outputLabel for="cartacredito">Conferma codice carta di credito</h:outputLabel>
+            <p:password id="pwd2" value="#{GiftListBean.password}" label="Password 2" required="true"/> 
+				
+            <h:commandButton value="Acquista Gift!" update="regGrid"
+			action="#{GiftListBean.AcquistaGift()}" />
+			
+        	</h:panelGrid>
+		</p:panel>  
+     </h:form>   
+  
+	
+	
+	
+	
+	</ui:define>
+	</ui:composition>

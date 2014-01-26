@@ -20,7 +20,7 @@
       Gift List                 
    			
    			
-       <p:dataTable id="Gift" var="gift" value="#{GiftListBean.giftDataModel}" selectionMode="single" selection="#{GiftListBean.selectedGiftListDTO}" paginator="true" rows="25"
+       <p:dataTable id="Gift" var="gift" value="#{GiftListBean.giftDataModel}" selectionMode="single" selection="#{GiftListBean.selectedGiftListDTO}" paginator="true" rows="35"
        rowKey="#{gift.id}" filteredValue="#{GiftListBean.filteredGift}">  
                                 
                 <p:column headerText="Nome Viaggio" style="width:10%"  >  
@@ -53,8 +53,36 @@
                 <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
             	</p:commandButton>  
         		</p:column> 
+        		
+        		 <p:column style="width:4%" headerText="Lista Amici">  
+                <p:commandButton id="amiciButton" update=":form:displayamici" oncomplete="PF('amiciDialog').show()" icon="ui-icon-search" title="View" >  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>  
+        		</p:column> 
+        		
+        		<p:column style="width:4%" headerText="Codice Gift">  
+                <p:commandButton id="codiceButton" update=":form:displaycodice" oncomplete="PF('codiceDialog').show()" icon="ui-icon-search" title="View">  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>  
+        		</p:column> 
+        		
+        		<p:column style="width:4%">
+        			<p:commandButton id="Elimina" update=":form:Gift" process="@this" action="#{GiftListBean.eliminaGift()}" icon="ui-icon-close">
+                    <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+        			</p:commandButton>
+        		</p:column>
+        		
 
+				<p:column style="width:4%">
+        			<p:commandLink id="Conferma" value ="Conferma" action="#{GiftListBean.confermaGift()}"  ajax="false" immediate="true" process="@this" >
+                    <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+        			</p:commandLink>
+        		</p:column>
               </p:dataTable>
+             
+             
+             
+             
               <p:dialog  header="Escursioni" widgetVar="escDialog" resizable="false" id="escDlg"  
                 showEffect="fade" hideEffect="explode" modal="true">  
                               
@@ -69,7 +97,7 @@
                 </p:column>  
         
         		</p:dataTable>
-    </p:dialog>  
+    			</p:dialog>  
               
                <p:dialog header="Hotel Detail" widgetVar="hotelDialog" resizable="false" id="hotelDlg"  
                 showEffect="fade"  modal="true">  
@@ -144,10 +172,35 @@
   
 
         </h:panelGrid>  
+    </p:dialog> 
+    
+    <p:dialog  header="Amici" widgetVar="amiciDialog" resizable="false" id="amiciDlg"  
+                showEffect="fade"  modal="true" style="width:25%">  
+                              
+                
+       	 		 <h:panelGrid id="displayamici" columns="2" cellpadding="4" style="margin:0 auto;">  
+  			<ui:repeat var="mailamico" value="#{GiftListBean.selectedGiftListDTO.amico}">
+            	<h:outputText value="Amico: " /> <br/>
+            	<h:outputText value="#{mailamico}" style="font-weight:bold"/>  
+  			</ui:repeat>
+        </h:panelGrid> 
+          
+  </p:dialog>
+  
+  
+       <p:dialog header="Codice Detail" widgetVar="codiceDialog" resizable="false" id="codiceDlg"  
+                showEffect="fade"  modal="true">  
+  
+        <h:panelGrid id="displaycodice" columns="2" cellpadding="4" style="margin:0 auto;">  
+  
+            <h:outputText value="Codice" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.hash}" style="font-weight:bold"/>  
+  
+           
+
+        </h:panelGrid>  
   
     </p:dialog> 
-          
-  
     </h:form>
        </ui:define>
 </ui:composition>
