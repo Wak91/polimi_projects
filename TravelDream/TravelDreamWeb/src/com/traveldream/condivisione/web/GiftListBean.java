@@ -70,7 +70,10 @@ public class GiftListBean {
     }  
 		
 	public String creaGift(){
-		
+		giftListDTO.getAmico().remove("");
+		if (giftListDTO.getAmico().isEmpty()) {
+			return null;
+		}
 		giftListDTO.setVoloAPag(false);
 		giftListDTO.setVoloRPag(false);
 		giftListDTO.setHotelPag(false);
