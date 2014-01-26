@@ -10,7 +10,12 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="UtenteGruppo")
-@NamedQuery(name="UtenteGruppo.findAll", query="SELECT u FROM UtenteGruppo u")
+@NamedQueries(
+				{
+				 @NamedQuery(name="UtenteGruppo.findAll", query="SELECT u FROM UtenteGruppo u"),
+				 @NamedQuery(name="UtenteGruppo.findbyId", query="SELECT u from UtenteGruppo u WHERE u.id = :d")
+				}
+			 )
 public class UtenteGruppo implements Serializable {
 	private static final long serialVersionUID = 1L;
 

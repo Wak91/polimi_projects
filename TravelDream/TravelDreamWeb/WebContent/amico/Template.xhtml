@@ -14,26 +14,13 @@
 
 <div id="header">
     <ui:insert name="header">
-
-    
-    <p:button outcome="adminhome.xhtml" value="Account"> 
-	</p:button> 
-	<p:button outcome="adminlist.xhtml" value="Lista"> 
-	</p:button>        
-	<p:button outcome="addImpiegato.xhtml" value="Add"> 
-	</p:button> 
-	
-	</ui:insert>
-
-        <h:form>
-			<p:commandButton action="#{userBean.logout}" value="Logout" />
-		</h:form>
+      
+    </ui:insert>
 </div>
 
 
 <div id="content">
   <ui:insert name="content">
-    	Qua la pagina vera e propria 
     	<!--  include your content file or uncomment the include below and create content.xhtml in this directory -->
 	  	<!-- <div> -->
     	<!-- <ui:include src="content.xhtml"/> -->  
@@ -43,10 +30,11 @@
 
 <div id="footer">
   <ui:insert name="footer">
-    	<div>Questo e il footer per l'admin</div>
+    	<div>TravelDream All right reserved</div>
   </ui:insert>
 </div>
 
 </h:body>
 
 </html>
+

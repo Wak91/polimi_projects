@@ -1,7 +1,12 @@
 package model;
 
 import java.io.Serializable;
+
+import javax.ejb.EJB;
 import javax.persistence.*;
+
+import com.traveldream.condivisione.ejb.InvitoDTO;
+import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
 
 
 /**
@@ -9,7 +14,12 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@NamedQuery(name="Invito.findAll", query="SELECT i FROM Invito i")
+@NamedQueries({
+	@NamedQuery(name="Invito.findAll", query="SELECT i FROM Invito i"),
+	@NamedQuery(name="Invito.findByIdMail", query="SELECT i FROM Invito i WHERE i.id = :id AND i.amico = :amico"),
+	@NamedQuery(name="Invito.findById", query="SELECT i FROM Invito i WHERE i.id = :id"),
+
+})
 public class Invito implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -18,7 +28,7 @@ public class Invito implements Serializable {
 
 	private String amico;
 
-	private byte status;
+	private boolean status;
 
 	//bi-directional many-to-one association to Utente
 	@ManyToOne
@@ -29,8 +39,18 @@ public class Invito implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="Viaggio")
 	private Viaggio viaggioBean;
+	
 
 	public Invito() {
+		super();
+	}
+	
+	public Invito(InvitoDTO invito, Utente utente, Viaggio viaggio){
+		this.id = invito.getId();
+		this.amico = invito.getAmico();
+		this.status = invito.getStatus();
+		this.utenteBean = utente;
+		this.viaggioBean = viaggio;
 	}
 
 	public int getId() {
@@ -49,11 +69,11 @@ public class Invito implements Serializable {
 		this.amico = amico;
 	}
 
-	public byte getStatus() {
+	public boolean getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(byte status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 

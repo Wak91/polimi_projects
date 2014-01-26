@@ -6,6 +6,7 @@ import model.Escursione;
 import model.EscursioneSalvata;
 import model.Hotel;
 import model.HotelSalvato;
+import model.Invito;
 import model.Pacchetto;
 import model.Utente;
 import model.Viaggio;
@@ -13,6 +14,7 @@ import model.Volo;
 import model.VoloSalvato;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
+import com.traveldream.condivisione.ejb.InvitoDTO;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
 import com.traveldream.gestionecomponente.ejb.HotelDTO;
 import com.traveldream.gestionecomponente.ejb.VoloDTO;
@@ -135,29 +137,7 @@ public class Converter {
 			return edto;
 		}
 		
-		public static ViaggioDTO ViaggioToDTO(Viaggio v)
-		{
-			ViaggioDTO vdto = new ViaggioDTO();
-			vdto.setData_fine(v.getData_fine());
-			vdto.setData_inizio(v.getData_inizio());
-			vdto.setHotel(HotelToDTOSimple(v.getHotelSalvato()));
-			vdto.setId(v.getId());
-			vdto.setVolo_andata(VoloToDTO((v.getVoloSalvato1())));
-			vdto.setVolo_ritorno(VoloToDTO((v.getVoloSalvato2())));
-			return vdto;
-		}
 		
-		public static UserDTO UserToDTO(Utente user) {
-			UserDTO udto = new UserDTO();
-			udto.setUsername(user.getUsername());
-			udto.setFirstName(user.getNome());
-			udto.setLastName(user.getCognome());
-			udto.setEmail(user.getEmail());
-			return udto;
-				
-			
-			
-		}
 		
 	///------------------LIST ENTITY TO DTO CONVERTER-----------
 		public static ArrayList<PacchettoDTO> EntitytoDTOPacchetto(List<Pacchetto> pacchettos){
@@ -178,6 +158,15 @@ public class Converter {
 	          return listaHotel;
 	  }
 		  
+		public static ArrayList<EscursioneDTO> EntitytoDTOEscursioneS(List<EscursioneSalvata> list){
+	          ArrayList<EscursioneDTO> listaesc = new ArrayList<EscursioneDTO>();
+	          for(EscursioneSalvata e:list){
+	                  EscursioneDTO nuovo = EscursioneToDTO(e);
+	                  listaesc.add(nuovo);
+	          }
+	          return listaesc;
+	  }
+		  
 		public static ArrayList<EscursioneDTO> EntitytoDTOEscursione(List<Escursione> escursioni){
 	          ArrayList<EscursioneDTO> listaesc = new ArrayList<EscursioneDTO>();
 	          for(Escursione e:escursioni){
@@ -186,7 +175,7 @@ public class Converter {
 	          }
 	          return listaesc;
 	  }
-		  
+		
 		  public static ArrayList<VoloDTO> EntitytoDTOVolo(List<Volo> voli){
 	          ArrayList<VoloDTO> listavolo = new ArrayList<VoloDTO>();
 	          for(Volo v:voli){
@@ -195,7 +184,43 @@ public class Converter {
 	          }
 	          return listavolo;
 	  }
+		  
+		 // ------------------------------------- Viaggio -----------------------------------------------
+		  
+		  public static ViaggioDTO ViaggioToDTO(Viaggio v)
+			{
+				ViaggioDTO vdto = new ViaggioDTO();
+				vdto.setId(v.getId());	
+				vdto.setData_fine(v.getData_fine());
+				vdto.setData_inizio(v.getData_inizio());
+				vdto.setHotel(HotelToDTOSimple(v.getHotelSalvato()));
+				vdto.setVolo_andata(VoloToDTO(v.getVoloSalvato1()));
+				vdto.setVolo_ritorno(VoloToDTO(v.getVoloSalvato2()));
+				vdto.setLista_escursioni(EntitytoDTOEscursioneS(v.getEscursioneSalvatas()));
 
+				return vdto;
+			}
+		  
+		  public static InvitoDTO InvitoToDTO(Invito i){
+			  InvitoDTO idto = new InvitoDTO();
+			  idto.setId(i.getId());
+			  idto.setStatus(i.getStatus());
+			  idto.setUtente(UserToDTO(i.getUtenteBean()));
+			  idto.setViaggio(ViaggioToDTO(i.getViaggioBean()));
+			  idto.setAmico(i.getAmico());
+			return idto;
+		  }
+		  
+		 //------------------------------ Utente -------------------------------- 
+		  public static UserDTO UserToDTO(Utente user) {
+				UserDTO udto = new UserDTO();
+				udto.setUsername(user.getUsername());
+				udto.setFirstName(user.getNome());
+				udto.setLastName(user.getCognome());
+				udto.setEmail(user.getEmail());
+				udto.setData(user.getData_di_nascita());
+				return udto;
+			}
 		
 
 	}
