@@ -2,11 +2,19 @@ package com.traveldream.condivisione.ejb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -76,6 +84,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 			}
 
 			gift_List.setEscursionePagatas(escursionePagatas);
+			inviaEmail(gift_List);
 
 	}
 	
@@ -171,6 +180,45 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		em.merge(gift_List);
 		
 	}
+	
+    private void inviaEmail(Gift_List gift){
+    	  final Properties props = new Properties();
+          props.setProperty ("mail.host", "smtp.gmail.com");
+          props.setProperty("mail.smtp.auth", "true");
+          props.setProperty("mail.smtp.port", "" + 587);
+          props.setProperty("mail.smtp.starttls.enable", "true");
+          props.setProperty ("mail.transport.protocol", "smtp");
+          
+          
+        Session mailSession = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+            		return new PasswordAuthentication("traveldream.vacanze@gmail.com", "ingsoftware2");
+            }
+        });
+        for (Amico mailAmico : gift.getAmicos()) {
+	        try {
+	            Transport transport = mailSession.getTransport ();
+	
+	            MimeMessage message = new MimeMessage (mailSession);
+	
+	            message.setSubject ("Gift List Invito");
+	            message.setFrom (new InternetAddress ("traveldream.com"));
+	            message.setContent ("Ciao "+userMgr.getUserDTO().getUsername()+" ti ha invitato a partecipare alla sua gift list clicca su questo link "
+	            		+"http://localhost:8080/TravelDreamWeb/answergift.xhtml?id="+gift.getHash()+" oppure inserisci questo codice direttamente sul sito "
+	            		+gift.getHash(), "text/html");
+	            message.addRecipient (Message.RecipientType.TO, new InternetAddress (mailAmico.getAmico()));
+	
+	            transport.connect ();
+	            transport.sendMessage (message, message.getRecipients (Message.RecipientType.TO));  
+	        }
+	        catch (MessagingException e) {
+	            System.err.println("Cannot Send email");
+	            e.printStackTrace();
+	        }
+	        }
+	    }
+       
+
 
 	
 }

@@ -112,8 +112,25 @@ public class GiftListBean {
 		UserDTO current_user = userMgr.getUserDTO();
 		setGiftDataModel(new GiftDataModel(GLM.getGiftListDTO(current_user)));
 	}
-
-	//parte answer gift list
+	//calcolo dei cost da visualizzare dialog
+	public int calcolaCostoHotel(){
+		if (selectedGiftListDTO!=null){
+		return Pagamento.calcolaCostoHotel(selectedGiftListDTO);
+		}
+		return 0;
+	}
+	public int  calcolaCostoVoloA() {
+		if (selectedGiftListDTO!=null){
+			return Pagamento.calcolaCostoVoloA(selectedGiftListDTO);
+		}
+		return 0;
+	}
+	public int  calcolaCostoVoloR() {
+		if (selectedGiftListDTO!=null){
+		return Pagamento.calcolaCostoVoloR(selectedGiftListDTO);
+		}
+		return 0;
+	}
 		
 	public String confermaGift(){
 		costocomplessivo = Pagamento.CalcolaCostoUtenteGift(selectedGiftListDTO);
