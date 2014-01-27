@@ -10,9 +10,7 @@
 	<ui:define name="content">
 			<div class="header">
 				<div class="wrap">
-				<h:form>
-						<p:commandLink action="#{userBean.logout}" value="Logout" />
-			    </h:form>
+				
 				<div class="logo">
 					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
 				</div>
@@ -23,6 +21,9 @@
 						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
 						<li><a href="giftlist.xhtml">GiftList</a></li>
 						<li><a href="contact.html">Contact</a></li>
+					    <li><h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			    </h:form></li>
 						
 					</ul>
 				</div>
