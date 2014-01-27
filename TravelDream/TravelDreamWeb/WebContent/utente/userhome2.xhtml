@@ -10,6 +10,9 @@
 	<ui:define name="content">
 			<div class="header">
 				<div class="wrap">
+				<h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			    </h:form>
 				<div class="logo">
 					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
 				</div>
@@ -20,6 +23,7 @@
 						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
 						<li><a href="giftlist.xhtml">GiftList</a></li>
 						<li><a href="contact.html">Contact</a></li>
+						
 					</ul>
 				</div>
 				<div class="clear"> </div>
@@ -36,6 +40,7 @@
 					      </li>
 					    </ul>
 					</div>
+					
 		<div class="clear"> </div>
 		<div class="content">
 			<div class="wrap">
@@ -89,15 +94,6 @@
 			</div>
 			</div>	
 			<div class="clear"> </div>
-			<div class="testmonials">
-				<div class="wrap">
-					<div class="testmonial-grid">
-						<h3>TESTIMONIALS :</h3>
-						<p>&#34; Lorem ipsum dolor sit amet, consectetur adipiscing elit. In volutpat luctus eros ac placerat. Quisque erat metus, facilisis non felis eu, aliquam hendrrit quam. Donec ut lectus vel dolor adipiscing tincidunt. Ut auctor diam at est iaculis, vitae interdum magna sagittis.&#34;</p>
-						<a href="#"> - Lorem ipsum</a>
-					</div>
-				</div>
-			</div>
 		</div>
 		<div class="clear"> </div>
 		<div class="footer">
@@ -127,11 +123,11 @@
 				</div>
 				<div class="footer-grid footer-lastgrid">
 					<h3>CONTACT US</h3>
-					<p>Pelleesque conquat dignissim lacus quis altrcies.</p>
+					<p>Per informazioni contattaci</p>
 					<div class="footer-grid-address">
-						<p>Tel.800-255-9999</p>
-						<p>Fax: 1234 568</p>
-						<p>Email:<a class="email-link" href="#">Eaxmplesite@Demo.com</a></p>
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> rikimotta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
 					</div>
 				</div>
 				<div class="clear"> </div>
@@ -139,6 +135,9 @@
 			</div>
 		</div>
 		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
 		</ui:define>
 		</ui:composition>
 </html>
