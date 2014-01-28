@@ -19,11 +19,13 @@
 			
 			<h:panelGrid columns="2" id="regGrid">
 			
-				<h:outputLabel for="username">Username</h:outputLabel>
-				<p:inputText id="username" value="#{userBean.user.username}" />
 				
-				<h:outputLabel for="password">Password</h:outputLabel>
-				<p:password id="password" value="#{userBean.user.password}" />
+				<h:outputLabel for="password">Password:</h:outputLabel>
+				<p:password id="password" value="#{userBean.user.password}"
+					feedback="true" match="pwd2" label="Password"/>
+					
+				<h:outputLabel for="pwd2">Conferma Password:</h:outputLabel>
+				<p:password id="pwd2" label="Confirm Password" value="#{userBean.user.password}"/>
 				
 				<h:outputLabel for="nome"> Nome</h:outputLabel>  
 				<p:inputText id="nome" value="#{userBean.user.firstName}" />
@@ -39,7 +41,7 @@
 
 				</h:panelGrid>
 				<p:commandButton value="Modifica" update="regGrid"
-				action="#{userBean.modificaUtente()}" />
+				action="#{userBean.modificaUser()}" />
      
 		</p:panel>
 	   

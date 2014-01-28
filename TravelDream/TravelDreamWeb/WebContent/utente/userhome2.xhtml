@@ -8,6 +8,7 @@
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
+	#{PacketBean.initBean()}
 			<div class="header">
 				<div class="wrap">
 				
@@ -63,18 +64,27 @@
 		<div class="content">
 			<div class="wrap">
 			<div class="content-grids">
+				<ui:repeat var="pacchetto" value="#{PacketBean.packlist}">
+				
 				<div class="grid">
-					<a href="#"><img src="../images/grids-img1.jpg" title="image-name" /></a>
-					<h3>DESTINATIONS</h3>
-					<p>Lorem ipsum dolor sit amet consectetur adiing elit. In volutpat luctus eros ac placerat. Quisque erat metus facilisis non feu,aliquam hendrerit quam. Donec ut lectus vel dolor adipiscing tincnt.</p>
-					<a class="button" href="#">More</a>
+					<h:link outcome = "creaviaggio?id=#{pacchetto.id}" >
+					 <h:graphicImage  value="../images/#{pacchetto.pathtoImage}" height="200" width="300"/> 
+                     </h:link>
+					<h3>#{pacchetto.nome}</h3>
+					<h4>#{pacchetto.destinazione}</h4>
+					<p>#{pacchetto.data_inizio}</p>
+					<p>#{pacchetto.data_fine}</p>
+					<h:link class="button" value="Esplora" outcome = "creaviaggio?id=#{pacchetto.id}" ></h:link>
 				</div>
+				</ui:repeat>
+				
 				<div class="grid">
 					<a href="#"><img src="../images/grids-img2.jpg" title="image-name" /></a>
 					<h3>NEWS - EVENTS</h3>
 					<p>Lorem ipsum dolor sit amet consectetur adiing elit. In volutpat luctus eros ac placerat. Quisque erat metus facilisis non feu,aliquam hendrerit quam. Donec ut lectus vel dolor adipiscing tincnt.</p>
 					<a class="button" href="#">More</a>
 				</div>
+				
 				<div class="grid last-grid">
 					<a href="#"><img src="../images/grids-img3.jpg" title="image-name" /></a>
 					<h3>SUPPORT</h3>

@@ -84,9 +84,14 @@ img{max-width:100%;}
 .content-grids {
 	padding: 60px 0;
 }
-.grid{
+.grid img{
+
 	float: left;
-	width: 29%;
+}
+.grid{
+	padding: 10px;
+	float: left;
+	width: 100%;
 	box-shadow: 2px 3px 3px #ccc;
 	background: #fff;
 	border: 1px solid #d5d5d5;
@@ -96,15 +101,30 @@ img{max-width:100%;}
 	margin-right: 2%;
 }
 .grid h3{
+
+    margin-right: 1em;
+	margin-left: 8px;	
+	float: left;
 	text-transform: uppercase;
 	padding: 8px 0;
 	margin-bottom: 8px;
 	font-size: 1.6em;
 	color: #289cd8;
-	border-bottom: 1px solid #dedede;
 	font-family: 'PT Sans Narrow', sans-serif;
 }
-.grid p{
+.grid h4{
+	float: left;
+	text-transform: uppercase;
+	padding: 8px 0;
+	margin-left: 8px;	
+	margin-bottom: 8px;
+	font-size: 1.4em;
+	color: #00CF00;
+	font-family: 'PT Sans Narrow', sans-serif;
+}
+.grid p{	
+	float: left;
+	margin-left: 8px;	
 	font-size: 0.875em;
 	color: rgba(148, 145, 145, 0.84);
 	font-family: Arial, Helvetica, sans-serif;
