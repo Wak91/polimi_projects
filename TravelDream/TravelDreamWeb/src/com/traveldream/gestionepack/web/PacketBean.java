@@ -198,7 +198,7 @@ public class PacketBean {
 		}
 		if (data_fine_pacchetto!=null && data_inizio_pacchetto!=null && data_inizio_pacchetto.after(data_fine_pacchetto)){
 			  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "La data di fine deve essere successiva a quella di inizio"));  	
-				
+			  packlist = new ArrayList<PacchettoDTO>();
 		}
 		else{
 		packlist=PMB.getFilteredPacchetti(destinazione_pacchetto,data_inizio_pacchetto,data_fine_pacchetto);
