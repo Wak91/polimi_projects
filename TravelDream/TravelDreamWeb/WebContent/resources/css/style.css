@@ -98,13 +98,14 @@ img{max-width:100%;}
 	padding: 19px 18px 25px;
 	color: #7e7e7e;
 	text-align: center;
+	 margin: 3px;
 
 }
 
 .grid:hover {
 	
 		box-shadow: 35px 37px 37px #ccc;
-	    border: 1px solid  #d6d6d6;
+        background:#CCFFFF
 	    
 }
 .grid h3{
