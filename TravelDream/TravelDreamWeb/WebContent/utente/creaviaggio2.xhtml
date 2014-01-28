@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<ui:composition template="Template.xhtml">
+
+	<ui:define name="content">
+       #{ViaggioBean.getPacchettoById(param['id'])}
+			<div class="header">
+				<div class="wrap">
+				
+				<div class="logo">
+					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li class="active"><a href="userhome2.xhtml">Home</a></li>
+						<li><a href="personaldata2.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+					    <li><h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			    </h:form></li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>
+		<br></br>
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>#{ViaggioBean.packet.nome}</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+			<div class="clear"> </div>
+			<br></br>
+			<center> 
+				<h:outputText id="datei" value="#{ViaggioBean.packet.data_inizio}" >
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				&nbsp;
+				<h:outputLabel for="datef">-</h:outputLabel>
+				&nbsp;
+				<h:outputText id="datef" value="#{ViaggioBean.packet.data_fine}" >
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</center>
+			<center>
+			<img src="../images/#{ViaggioBean.packet.pathtoImage}" width="1080px" height="450px" />
+			</center>
+					
+		<div class="clear"> </div>
+		       <div class="searchbar"> 
+		       	 <h:form>   
+		           <section id="bar">
+		           <img src="../images/lente.png" width="40px" height="40px" />				
+				   &nbsp; &nbsp; &nbsp;
+				    <h:outputLabel>NOME?:</h:outputLabel>
+		           <p:inputText id="where" />
+				   &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel for="starts">STELLE?:</h:outputLabel>
+				   <p:inputText id="stars" />
+		           &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel>COSTO?:</h:outputLabel>
+				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
+    		       &nbsp; &nbsp; &nbsp; 
+    		   	   <a class="button" href="#">Cerca</a>
+				   </section>
+				   </h:form>
+		       </div>
+		       <br></br>
+		       		<div class="content">
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="hotel" value="#{ViaggioBean.packet.lista_hotel}">
+				
+				<div class="grid">
+					 <h:graphicImage  value="../images/#{hotel.hotelImg}" height="200" width="300" /> 
+                     <br></br>
+					#{hotel.nome}
+					<br></br>
+					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
+					 #{hotel.costo_giornaliero}<br></br>
+				    <br></br>
+				    <h:outputLabel for="username">Stelle</h:outputLabel> &nbsp; 
+					 #{hotel.stelle} 
+				    <br></br>
+				   
+				    <br></br>
+				</div>
+				
+				</ui:repeat>
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+		      
+		       <div class="searchbar"> 
+		       	 <h:form>   
+		           <section id="bar">
+		           <img src="../images/lente.png" width="40px" height="40px" />				
+				   &nbsp; &nbsp; &nbsp;
+				    <h:outputLabel>PARTENZA DA?:</h:outputLabel>
+		           <p:inputText id="where" />
+				   &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel for="starts">COSTO?:</h:outputLabel>
+				   <p:inputText id="stars" />
+		           &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel>QUANDO?:</h:outputLabel>
+				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
+    		       &nbsp; &nbsp; &nbsp;
+    		   	   <a class="button" href="#">Cerca</a>
+				   </section>
+				   </h:form>
+		       </div>
+		       <br></br>
+		       		<div class="content">
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="volo" value="#{ViaggioBean.packet.lista_voli_andata}">
+				
+				<div class="grid">
+					 <h:graphicImage  value="../images/#{volo.immagine}" height="200" width="300" /> 
+                     <br></br>
+					#{volo.compagnia}
+					<br></br>
+					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
+					 #{volo.costo}<br></br>
+				    <br></br>
+				    <h:outputLabel for="username">Data</h:outputLabel> &nbsp; 
+					 #{volo.data} 
+				    <br></br>
+				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
+					 #{volo.luogo_partenza} 
+				    <br></br>
+				   
+				</div>
+				
+				</ui:repeat>
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+			
+			 <div class="searchbar"> 
+		       	 <h:form>   
+		           <section id="bar">
+		           <img src="../images/lente.png" width="40px" height="40px" />				
+				   &nbsp; &nbsp; &nbsp;
+				    <h:outputLabel>PARTENZA DA?:</h:outputLabel>
+		           <p:inputText id="where" />
+				   &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel for="starts">COSTO?:</h:outputLabel>
+				   <p:inputText id="stars" />
+		           &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel>QUANDO?:</h:outputLabel>
+				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
+    		       &nbsp; &nbsp; &nbsp;
+    		   	   <a class="button" href="#">Cerca</a>
+				   </section>
+				   </h:form>
+		       </div>
+		       <br></br>
+		       		<div class="content">
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="volo" value="#{ViaggioBean.packet.lista_voli_ritorno}">
+				
+				<div class="grid">
+					 <h:graphicImage  value="../images/#{volo.immagine}" height="200" width="300" /> 
+                     <br></br>
+					#{volo.compagnia}
+					<br></br>
+					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
+					 #{volo.costo}<br></br>
+				    <br></br>
+				    <h:outputLabel for="username">Data</h:outputLabel> &nbsp; 
+					 #{volo.data} 
+				    <br></br>
+				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
+					 #{volo.luogo_partenza} 
+				    <br></br>
+				   
+				</div>
+				
+				</ui:repeat>
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+			
+			<div class="searchbar"> 
+		       	 <h:form>   
+		           <section id="bar">
+		           <img src="../images/lente.png" width="40px" height="40px" />				
+				   &nbsp; &nbsp; &nbsp;
+				    <h:outputLabel>NOME?:</h:outputLabel>
+		           <p:inputText id="where" />
+				   &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel for="starts">COSTO?:</h:outputLabel>
+				   <p:inputText id="stars" />
+		           &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel>QUANDO?:</h:outputLabel>
+				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
+    		       &nbsp; &nbsp; &nbsp;
+    		   	   <a class="button" href="#">Cerca</a>
+				   </section>
+				   </h:form>
+		       </div>
+		       <br></br>
+		       		<div class="content">
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="esc" value="#{ViaggioBean.packet.lista_escursioni}">
+				
+				<div class="grid">
+					 <h:graphicImage  value="../images/#{esc.immagine}" height="200" width="300" /> 
+                     <br></br>
+					#{esc.nome}
+					<br></br>
+					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
+					 #{esc.costo}<br></br>
+				    <br></br>
+				    <h:outputLabel for="username">Data</h:outputLabel> &nbsp; 
+					 #{esc.data} 
+				    <br></br>
+				   
+				</div>
+				
+				</ui:repeat>
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+		
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Conferma il tuo viaggio!</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+			<div class="clear"> </div>
+			<center>
+		<h:commandButton value="Acquista viaggio" styleClass="button" 
+				action="#{ViaggioBean.acquista_paga()}" icon="ui-icon-script"/>
+				
+		<h:commandButton value="Aggiungi alla gift list" styleClass="button" 
+				action="#{ViaggioBean.aggiungi_gift()}" icon="ui-icon-script"/>
+				
+		<h:commandButton value="Invita a partecipare" styleClass="button" 
+				action="#{ViaggioBean.invita()}" icon="ui-icon-script"/>
+		   </center>   
+		      
+		<div class="clear"> </div>
+		<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>Ut rutrum neque a mollis laoreet diam enim feuiat dui nec ulacoper quam felis id diam. Nunc ut tortor ligula eu petiu risus. Pelleesque conquat dignissim lacus quis altrcies.</p>
+				</div>
+				<div class="footer-grid">
+					<h3>RECENT POSTS</h3>
+					<ul>
+						<li><a href="#">Vestibulum felis</a></li>
+						<li><a href="#">Mauris at tellus</a></li>
+						<li><a href="#">Donec ut lectus</a></li>
+						<li><a href="#">vitae interdum</a></li>
+					</ul>
+				</div>
+				<div class="footer-grid">
+					<h3>USEFUL INFO</h3>
+					<ul>
+						<li><a href="#">Hendrerit quam</a></li>
+						<li><a href="#">Amet consectetur </a></li>
+						<li><a href="#">Iquam hendrerit</a></li>
+						<li><a href="#">Donec ut lectus </a></li>
+					</ul>
+				</div>
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> rikimotta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+		</ui:define>
+		</ui:composition>
+</html>
+
