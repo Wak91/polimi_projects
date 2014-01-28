@@ -56,6 +56,27 @@ img{max-width:100%;}
 	background: #289cd8;
 	color:#FFF;
 }
+
+.searchbar {
+	align:center;
+		color:#FFF;
+		
+}
+
+#bar {
+	font-family: 'Roboto', sans-serif;
+	background:#012231;
+	padding: 40px 25px;
+	display: block;
+
+	font-size: 0.975em;
+}
+
+#bar outputLabel { 	
+	         color: #FFF; }
+
+#bar img {   border: 1px solid #012231;
+ }
 /*---start-content----*/
 .content {
 	background:url(../images/content-bg.png);
@@ -437,6 +458,19 @@ img{max-width:100%;}
 	text-transform: uppercase;
 }
 .contact-form input[type="text"],.contact-form textarea{
+		   padding: 8px;
+			display: block;
+			width: 98%;
+			border: none;
+			outline: none;
+			color: #464646;
+			font-size: 0.8125em;
+			font-family: Arial, Helvetica, sans-serif;
+			border: 1px solid rgba(85, 85, 85, 0.19);
+			-webkit-appearance:none;
+}
+
+.contact-form input[type="password"],.contact-form textarea{
 		   padding: 8px;
 			display: block;
 			width: 98%;

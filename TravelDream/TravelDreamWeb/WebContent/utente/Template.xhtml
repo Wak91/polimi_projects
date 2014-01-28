@@ -9,9 +9,10 @@
   <title><ui:insert name="title">Default title</ui:insert></title>
       <h:outputStylesheet library="css" name="responsiveslides.css"  />
       <h:outputStylesheet library="css" name="style.css"  />
-      
-      	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+      <h:outputScript library="js" name="bootstrap.min.js"  />
+           <h:outputScript library="js" name="jquery.min.js"  />      	
 		<script src="../resources/responsiveslides.min.js"></script>
+		<script> $jQuery.noConflict()</script>
 		  <script>
 		    // You can also use "$(window).load(function() {"
 			    $(function () {
@@ -21,6 +22,7 @@
 			        speed: 600
 			      });
 			});
+			
 		  </script>
 </h:head>
 

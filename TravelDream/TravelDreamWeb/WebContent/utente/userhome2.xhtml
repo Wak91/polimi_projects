@@ -17,10 +17,9 @@
 				<div class="top-nav">
 					<ul>
 						<li class="active"><a href="userhome2.xhtml">Home</a></li>
-						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="personaldata2.xhtml">MyAccount</a></li>
 						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
 						<li><a href="giftlist.xhtml">GiftList</a></li>
-						<li><a href="contact.html">Contact</a></li>
 					    <li><h:form>
 						<p:commandLink action="#{userBean.logout}" value="Logout" />
 			    </h:form></li>
@@ -32,17 +31,36 @@
 		</div>
 					<div class="image-slider">
 					    <ul class="rslides" id="slider1">
-					      <li>
-					      	<img src="../images/slider1.jpg" alt=""/>	
-					      </li>
+					     
 					      <li><img src="../images/slider2.jpg" alt=""/>
 					      </li>
 					      <li><img src="../images/slider3.jpg" alt=""/>
+					      </li>
+					       <li><img src="../images/slider4.jpg" alt=""/>
 					      </li>
 					    </ul>
 					</div>
 					
 		<div class="clear"> </div>
+		       <div class="searchbar"> 
+		       	 <h:form>
+		       
+		           <section id="bar">
+		           <img src="../images/lente.png" width="40px" height="40px" />				
+				   &nbsp; &nbsp; &nbsp;
+				   <h:outputLabel for="where">DOVE?:</h:outputLabel>
+		           <p:inputText id="where" />
+		           &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel>DA QUANDO?:</h:outputLabel>
+				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
+    		       &nbsp; &nbsp; &nbsp; 
+    		       <h:outputLabel>A QUANDO?:</h:outputLabel>
+				   <p:calendar id="date2" value="#{userBean.user.data}" navigator="true" display="inline"/>  
+				   &nbsp; &nbsp; &nbsp;
+				   <a class="button" href="#">Cerca</a>
+				   </section>
+				   </h:form>
+		       </div>
 		<div class="content">
 			<div class="wrap">
 			<div class="content-grids">
