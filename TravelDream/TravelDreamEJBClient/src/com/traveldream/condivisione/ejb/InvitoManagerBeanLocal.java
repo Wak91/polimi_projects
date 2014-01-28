@@ -19,4 +19,6 @@ public interface InvitoManagerBeanLocal {
 
 	InvitoDTO cercaInvitoById(int id);
 
+	void eliminaInvito(int id);
+
 }

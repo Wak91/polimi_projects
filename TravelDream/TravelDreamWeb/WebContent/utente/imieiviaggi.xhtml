@@ -22,7 +22,7 @@
    				 <p:contextMenu for="Prenotazioni">  
         		 <p:menuitem value="View" update="display" icon="ui-icon-search" oncomplete="PF('preDialog').show()"/>  
     			</p:contextMenu>  
-       <p:dataTable id="Prenotazioni" var="pre" value="#{ViaggioBean.premodels}" selectionMode="single" selection="#{tableBean.selectedpre}" paginator="true" rows="5"
+       <p:dataTable id="Prenotazioni" var="pre" value="#{ViaggioBean.premodels}" selectionMode="single" paginator="true" rows="5"
        rowKey="#{pre.id}">  
                                 
                 <p:column headerText="Codice prenotazione" style="width:25%"  >  
@@ -225,6 +225,10 @@
   		<f:param name="id" value="#{invito.id}"/>	
   		</p:button>
         </p:column>
+        
+        <p:column headerText="Elimina" style="width:24%" >  			
+   		<h:commandButton value="Elimina" onclick="return confirm('Are you sure?')" update="regGrid" action="#{InvitoBean.deleteInvito(invito.id)}"/>
+		</p:column>
         
         </p:dataTable>                      
              
