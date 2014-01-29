@@ -83,6 +83,7 @@ public class ViaggioBean {
     
     private ArrayList <PrenotazioneDTO> lista_prenotazioni;
    
+    int last_id;
     //filtri
     String destinazione;
     String partenza;
@@ -128,6 +129,10 @@ public class ViaggioBean {
 		return filtered;
 	}
 	
+	public void selezionaHotel(){
+		System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmhotelModels sel"+selectedHotels.getNome());
+	}
+	
 	public HotelDataModel getHotelModels() {
 		return hotelModels;
 	}
@@ -154,8 +159,16 @@ public class ViaggioBean {
 	
 
 	public void getPacchettoById(int id)
-	{	 
+	{	 if (last_id==0) {
+		last_id=id;
+	}
+	try {
 		 this.packet = PMB.getPacchettoByID(id);
+
+	} catch (Exception e) {
+		 this.packet = PMB.getPacchettoByID(last_id);
+
+	}
 		 filteredHotels=(ArrayList<HotelDTO>)packet.getLista_hotel();	
 		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
 		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	

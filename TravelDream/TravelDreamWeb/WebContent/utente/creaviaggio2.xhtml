@@ -7,8 +7,10 @@
 
 <ui:composition template="Template.xhtml">
 
+
 	<ui:define name="content">
        #{ViaggioBean.getPacchettoById(param['id'])}
+
 			<div class="header">
 				<div class="wrap">
 				
@@ -78,7 +80,8 @@
 		       
 		       <div class="wrap">
 			<div class="content-grids">
-				<ui:repeat var="hotel" value="#{ViaggioBean.packet.lista_hotel}">
+			<h:form id="hotelform">
+				<ui:repeat var="hotel" value="#{ViaggioBean.packet.lista_hotel}" id="hotelrepeat">
 				
 		    
 				<div class="grid2">
@@ -90,11 +93,15 @@
 					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; &nbsp; 
 					 #{hotel.costo_giornaliero}<br></br>
 				    <p:rating id="stars" value="#{hotel.stelle}" stars="5" cancel="false" readonly="true"/>  
+				    <p:commandButton id="hotelbutton" value="Seleziona" action="#{ViaggioBean.selezionaHotel}" onclick="$(this).parent().css( 'background-color', 'red' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.selectedHotels}" value="#{hotel}"/>
+       				 </p:commandButton>
 					 </div>
 				</div>
 				
 				
 				</ui:repeat>
+				</h:form>
 				<div class="clear"> </div>
 				</div>
 				<div class="clear"> </div>
