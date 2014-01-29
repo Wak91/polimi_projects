@@ -299,7 +299,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		Root<Pacchetto> pacchetto = c.from(Pacchetto.class);
 	   List<Predicate> predicates = new ArrayList<Predicate>(); 
 	    if (destinazione != null && !destinazione.isEmpty()) {
-	    	Predicate LuogoOK = qb.equal(pacchetto.get("destinazione"), destinazione);
+	    	Predicate LuogoOK = qb.like(pacchetto.<String>get("destinazione"), destinazione+"%");
 
 	        predicates.add(LuogoOK);
 	    }
