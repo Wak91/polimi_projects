@@ -103,6 +103,23 @@ img{max-width:100%;}
 
 }
 
+.grid2{
+	
+	padding: 10px;
+	float: left;
+	width: 100%;
+	height:30%
+	box-shadow: 2px 3px 3px #ccc;
+	background: #fff;
+	border: 1px solid #d5d5d5;
+	padding: 10px 15px 16px;
+	color: #7e7e7e;
+	text-align: center;
+	 margin: 3px;
+	
+	
+}
+
 .grid:hover {
 	
 		box-shadow: 35px 37px 37px #ccc;

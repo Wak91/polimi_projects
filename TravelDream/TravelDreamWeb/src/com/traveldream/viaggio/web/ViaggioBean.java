@@ -77,6 +77,8 @@ public class ViaggioBean {
     private int n_partecipanti;
     private int quotacomplessiva;
     private int quotapp;
+    
+    private ArrayList <PrenotazioneDTO> lista_prenotazioni;
    
 
 	private String password1;
@@ -129,7 +131,7 @@ public class ViaggioBean {
 	public void getPrenotazioni()
 	{
 		UserDTO current_user = userMgr.getUserDTO();
-		setPremodels(new PreDataModel(BMB.cercaPrenotazione(current_user)));
+		this.setLista_prenotazioni(BMB.cercaPrenotazione(current_user));
 	}
 	
 	public VoloDTO getSelectedVolo_a() {
@@ -457,6 +459,14 @@ public class ViaggioBean {
 		        FacesContext.getCurrentInstance().addMessage("null", message);
 				return "/utente/imieiviaggi.xhtml?faces-redirect=true";
 			}	
+		}
+
+		public ArrayList <PrenotazioneDTO> getLista_prenotazioni() {
+			return lista_prenotazioni;
+		}
+
+		public void setLista_prenotazioni(ArrayList <PrenotazioneDTO> lista_prenotazioni) {
+			this.lista_prenotazioni = lista_prenotazioni;
 		}
 			
 	/*

@@ -17,7 +17,7 @@
 				<div class="top-nav">
 					<ul>
 						<li ><a href="userhome2.xhtml">Home</a></li>
-						<li class="active"><a href="personaldata.xhtml">MyAccount</a></li>
+						<li class="active"><a href="personaldata2.xhtml">MyAccount</a></li>
 						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
 						<li><a href="giftlist.xhtml">GiftList</a></li>
 					    <li><h:form>
@@ -33,14 +33,15 @@
 			<div class="col span_2_of_3">
 				  <div class="contact-form">
 				  	<h3>Personal info</h3>
-					    <h:form>
+					    <form>
 					    	<div>
-						    	<h:outputLabel for="username">Username</h:outputLabel>
-				                <p:inputText id="username" value="#{userBean.user.username}" />
+						    	<h:outputLabel for="password">Password:</h:outputLabel>
+								<p:password id="password" value="#{userBean.user.password}"
+								feedback="true" match="pwd2" label="Password"/>
 						    </div>
 						    <div>
-						    	<h:outputLabel for="password">Password</h:outputLabel>
-								<p:password id="password" value="#{userBean.user.password}" />
+						    	<h:outputLabel for="pwd2">Conferma Password:</h:outputLabel>
+								<p:password id="pwd2" label="Confirm Password" value="#{userBean.user.password}"/>
 						    </div>
 						    
 						    <div>
@@ -58,10 +59,10 @@
 								<p:calendar id="date" value="#{userBean.user.data}" pattern="dd/MM/yyyy" navigator="true" display="inline"/>  
 						    </div>
 						   <div>
-						   			<p:commandButton value="Modifica" 
-									action="#{userBean.modificaUtente()}" />
+						   			<h:commandButton value="Modifica" 
+									action="#{userBean.modificaUser()}" />
 						  </div>
-					    </h:form>
+					    </form>
 
 				    </div>
   				</div>	  				
