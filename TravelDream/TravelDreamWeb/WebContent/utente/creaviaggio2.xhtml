@@ -80,15 +80,19 @@
 			<div class="content-grids">
 				<ui:repeat var="hotel" value="#{ViaggioBean.packet.lista_hotel}">
 				
+		    
 				<div class="grid2">
-					 <h:graphicImage  value="../images/#{hotel.hotelImg}" height="40" width="40" /> 
-                     <br></br>
-					#{hotel.nome}
-					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
-					 #{hotel.costo_giornaliero}<br></br>
-				    <h:outputLabel for="username">Stelle</h:outputLabel> &nbsp; 
-					 #{hotel.stelle} 
+				 <div class="left">
+					 <h:graphicImage  value="../images/#{hotel.hotelImg}" height="90" width="90" /> 
 				</div>
+                     <div class="right">
+					#{hotel.nome}<br></br>
+					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; &nbsp; 
+					 #{hotel.costo_giornaliero}<br></br>
+				    <p:rating id="stars" value="#{hotel.stelle}" stars="5" cancel="false" readonly="true"/>  
+					 </div>
+				</div>
+				
 				
 				</ui:repeat>
 				<div class="clear"> </div>
@@ -125,8 +129,11 @@
 				<ui:repeat var="volo" value="#{ViaggioBean.packet.lista_voli_andata}">
 				
 				<div class="grid2">
-					 <h:graphicImage  value="../images/#{volo.immagine}" height="40px" width="40px" /> 
-                     <br></br>
+				<div class="left">
+					 <h:graphicImage  value="../images/#{volo.immagine}" height="90" width="90" /> 
+			    </div>
+			   <div class="right">
+			    
 					#{volo.compagnia}
 					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
 					 #{volo.costo}
@@ -134,6 +141,7 @@
 					 #{volo.data} 
 				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
 					 #{volo.luogo_partenza} 
+					 </div>
 				   
 				</div>
 				
@@ -172,8 +180,10 @@
 				<ui:repeat var="volo" value="#{ViaggioBean.packet.lista_voli_ritorno}">
 				
 				<div class="grid2">
-					 <h:graphicImage  value="../images/#{volo.immagine}" height="40px" width="40px" />
-				     <br></br>  
+				<div class="left">
+					 <h:graphicImage  value="../images/#{volo.immagine}" height="90" width="90" />
+				</div>
+				<div class="right">
 					#{volo.compagnia}
 					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
 					 #{volo.costo}
@@ -184,7 +194,7 @@
 					 #{volo.data} 
 				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
 					 #{volo.luogo_partenza} 
-				   
+				   </div>
 				</div>
 				
 				</ui:repeat>
@@ -222,8 +232,10 @@
 				<ui:repeat var="esc" value="#{ViaggioBean.packet.lista_escursioni}">
 				
 				<div class="grid2">
+				 <div class="left">
 					 <h:graphicImage  value="../images/#{esc.immagine}" height="40" width="40" /> 
-  					<br></br>				
+  				 </div>		
+  				  <div class="right">		
 					#{esc.nome}
 					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
 					 #{esc.costo}
@@ -231,7 +243,7 @@
 				    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				    </h:outputLabel> &nbsp; 
 					 #{esc.data} 
-				   
+				   </div>
 				</div>
 				
 				</ui:repeat>
