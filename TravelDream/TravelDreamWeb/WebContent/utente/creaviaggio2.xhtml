@@ -50,29 +50,37 @@
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 			</center>
-			<center>
-			<img src="../images/#{ViaggioBean.packet.pathtoImage}" width="1080px" height="450px" />
-			</center>
+			
+				<div class="grid4">
+				  <div class="left">
+				     <div class="searchbar"> 
+		       	      <h:form>   
+		              <section id="bar2">
+				      <h:outputLabel>DA QUANDO?:</h:outputLabel>
+				      <p:calendar id="datei" value="#{ViaggioBean.viaggio.data_inizio}" navigator="true" display="inline"/>  
+    		          &nbsp; &nbsp; &nbsp; 
+    		          <h:outputLabel>A QUANDO?:</h:outputLabel>
+				      <p:calendar id="datef" value="#{ViaggioBean.viaggio.data_fine}" navigator="true" display="inline"/>  
+    		          &nbsp; &nbsp; &nbsp;
+				      <h:outputLabel>PARTENZA DA?:</h:outputLabel><br></br>
+		              <p:inputText id="where" />
+				      &nbsp; &nbsp; &nbsp; 
+				      <h:outputLabel for="starts">STELLE?:</h:outputLabel><br></br>
+				      <p:inputText id="stars" />
+		              &nbsp; &nbsp; &nbsp; 
+				      </section>
+				     </h:form>
+		       	   </div>
+		       	   <div class="left">
+				   <h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="150" width="150"/> 
+				   </div>
+				 </div>
+				 
+				
+				</div>
 					
 		<div class="clear"> </div>
-		       <div class="searchbar"> 
-		       	 <h:form>   
-		           <section id="bar">
-		           <img src="../images/lente.png" width="40px" height="40px" />				
-				   &nbsp; &nbsp; &nbsp;
-				    <h:outputLabel>NOME?:</h:outputLabel>
-		           <p:inputText id="where" />
-				   &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel for="starts">STELLE?:</h:outputLabel>
-				   <p:inputText id="stars" />
-		           &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel>COSTO?:</h:outputLabel>
-				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
-    		       &nbsp; &nbsp; &nbsp; 
-    		   	   <a class="button" href="#">Cerca</a>
-				   </section>
-				   </h:form>
-		       </div>
+		       
 		       <br></br>
 		       		<div class="content">
 		       
@@ -102,25 +110,6 @@
 				
 				<div class="clear"> </div>
 			</div>
-		      
-		       <div class="searchbar"> 
-		       	 <h:form>   
-		           <section id="bar">
-		           <img src="../images/lente.png" width="40px" height="40px" />				
-				   &nbsp; &nbsp; &nbsp;
-				    <h:outputLabel>PARTENZA DA?:</h:outputLabel>
-		           <p:inputText id="where" />
-				   &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel for="starts">COSTO?:</h:outputLabel>
-				   <p:inputText id="stars" />
-		           &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel>QUANDO?:</h:outputLabel>
-				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
-    		       &nbsp; &nbsp; &nbsp;
-    		   	   <a class="button" href="#">Cerca</a>
-				   </section>
-				   </h:form>
-		       </div>
 		       <br></br>
 		       		<div class="content">
 		       
@@ -156,25 +145,6 @@
 				
 				<div class="clear"> </div>
 			</div>
-			
-			 <div class="searchbar"> 
-		       	 <h:form>   
-		           <section id="bar">
-		           <img src="../images/lente.png" width="40px" height="40px" />				
-				   &nbsp; &nbsp; &nbsp;
-				    <h:outputLabel>PARTENZA DA?:</h:outputLabel>
-		           <p:inputText id="where" />
-				   &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel for="starts">COSTO?:</h:outputLabel>
-				   <p:inputText id="stars" />
-		           &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel>QUANDO?:</h:outputLabel>
-				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
-    		       &nbsp; &nbsp; &nbsp;
-    		   	   <a class="button" href="#">Cerca</a>
-				   </section>
-				   </h:form>
-		       </div>
 		       <br></br>
 		       		<div class="content">
 		       
@@ -210,25 +180,7 @@
 				
 				<div class="clear"> </div>
 			</div>
-			
-			<div class="searchbar"> 
-		       	 <h:form>   
-		           <section id="bar">
-		           <img src="../images/lente.png" width="40px" height="40px" />				
-				   &nbsp; &nbsp; &nbsp;
-				    <h:outputLabel>NOME?:</h:outputLabel>
-		           <p:inputText id="where" />
-				   &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel for="starts">COSTO?:</h:outputLabel>
-				   <p:inputText id="stars" />
-		           &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel>QUANDO?:</h:outputLabel>
-				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
-    		       &nbsp; &nbsp; &nbsp;
-    		   	   <a class="button" href="#">Cerca</a>
-				   </section>
-				   </h:form>
-		       </div>
+
 		       <br></br>
 		       		<div class="content">
 		       

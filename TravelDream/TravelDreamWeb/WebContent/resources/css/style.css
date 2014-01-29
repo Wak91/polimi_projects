@@ -73,6 +73,30 @@ img{max-width:100%;}
 
 }
 
+.searchbar2 {
+	align:left;
+    color:#FFF;
+		
+}
+
+#bar2{
+	
+    background: none repeat scroll 0 0 #012231;
+    display: block;
+    border: 10px solid #CCFFFF;
+    font-family: 'Roboto',sans-serif;
+    font-size: 0.975em;
+    margin: -34px 0 0 -13px;
+    padding: 5px 39px;
+    width: 26%;
+}
+
+#bar2 outputLabel { 	
+	         color: #FFF; }
+
+#bar2 img {   border: 1px solid #012231;
+ }
+
 #bar outputLabel { 	
 	         color: #FFF; }
 
@@ -140,9 +164,20 @@ img{max-width:100%;}
     text-align: right;
     width: 95%;
 }
-	
-	
+
+.grid4 {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #D5D5D5;
+    box-shadow: 2px 3px 3px #CCCCCC;
+    color: #7E7E7E;
+    float: left;
+    height: 60%;
+    width: 100%;
+    margin: 20px 30px -10px 35px;
+    padding: 40px 8px 6px 16px;
+    text-align: right;
 }
+
 
 .50percent{
 	
