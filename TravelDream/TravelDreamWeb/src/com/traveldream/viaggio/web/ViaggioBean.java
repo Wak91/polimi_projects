@@ -80,6 +80,8 @@ public class ViaggioBean {
     private int n_partecipanti;
     private int quotacomplessiva;
     private int quotapp;
+    
+    private ArrayList <PrenotazioneDTO> lista_prenotazioni;
    
     //filtri
     String destinazione;
@@ -166,7 +168,7 @@ public class ViaggioBean {
 	public void getPrenotazioni()
 	{
 		UserDTO current_user = userMgr.getUserDTO();
-		setPremodels(new PreDataModel(BMB.cercaPrenotazione(current_user)));
+		this.setLista_prenotazioni(BMB.cercaPrenotazione(current_user));
 	}
 	
 	public VoloDTO getSelectedVolo_a() {
@@ -555,6 +557,14 @@ public class ViaggioBean {
 
 		public void setStelle(Integer stelle) {
 			this.stelle = stelle;
+		}
+
+		public ArrayList <PrenotazioneDTO> getLista_prenotazioni() {
+			return lista_prenotazioni;
+		}
+
+		public void setLista_prenotazioni(ArrayList <PrenotazioneDTO> lista_prenotazioni) {
+			this.lista_prenotazioni = lista_prenotazioni;
 		}
 			
 	/*

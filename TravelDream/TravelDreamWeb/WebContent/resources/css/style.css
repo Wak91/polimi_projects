@@ -64,12 +64,13 @@ img{max-width:100%;}
 }
 
 #bar {
-	font-family: 'Roboto', sans-serif;
-	background:#012231;
-	padding: 40px 25px;
-	display: block;
+	 
+    background: none repeat scroll 0 0 #012231;
+    display: block;
+    font-family: 'Roboto',sans-serif;
+    font-size: 0.975em;
+    padding: 2px 35px;
 
-	font-size: 0.975em;
 }
 
 #bar outputLabel { 	
@@ -101,6 +102,63 @@ img{max-width:100%;}
 	text-align: center;
 	 margin: 3px;
 
+}
+
+.grid2{
+	
+	
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #D5D5D5;
+    box-shadow: 2px 3px 3px #CCCCCC;
+    color: #7E7E7E;
+    float: left;
+    height: 30%;
+    margin: 18px 60px -10px 35px;
+    padding: 8px 8px 6px 16px;
+    text-align: right;
+    width: 40%;
+
+}
+
+.grid2:hover{
+	
+	
+    box-shadow: 35px 37px 37px #ccc;
+    background:#CCFFFF
+
+}
+
+.grid3 {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #D5D5D5;
+    box-shadow: 2px 3px 3px #CCCCCC;
+    color: #7E7E7E;
+    float: left;
+    height: 60%;
+    margin: 20px 30px -10px 35px;
+    padding: 40px 8px 6px 16px;
+    text-align: right;
+    width: 95%;
+}
+	
+	
+}
+
+.50percent{
+	
+	float: left;
+	width: 50%;
+}
+
+.right{
+	
+	float:right;
+	font-size: 1em;
+}
+
+.left {
+	
+	float: left;
 }
 
 .grid:hover {
