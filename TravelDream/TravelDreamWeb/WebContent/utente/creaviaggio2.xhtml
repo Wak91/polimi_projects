@@ -50,39 +50,52 @@
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 			</center>
-			
-				<div class="grid4">
-				  <div class="left">
-				     <div class="searchbar"> 
+			<br></br>
+			<table  bgcolor= "#012231" width="100%" align="center">
+                <tr>
+                    <td width="30%" ><div class="searchbar"> 
 		       	      <h:form>   
 		              <section id="bar2">
-				      <h:outputLabel>DA QUANDO?:</h:outputLabel>
+		              <h:outputLabel>FILTRA LA TUA RICERCA!:</h:outputLabel><br></br>
+		              <hr></hr>
+				      <h:outputLabel>DA QUANDO?:</h:outputLabel><br></br>
 				      <p:calendar id="datei" value="#{ViaggioBean.viaggio.data_inizio}" navigator="true" display="inline"/>  
-    		          &nbsp; &nbsp; &nbsp; 
-    		          <h:outputLabel>A QUANDO?:</h:outputLabel>
+    		          <br></br>
+    		          <h:outputLabel>A QUANDO?:</h:outputLabel><br></br>
 				      <p:calendar id="datef" value="#{ViaggioBean.viaggio.data_fine}" navigator="true" display="inline"/>  
-    		          &nbsp; &nbsp; &nbsp;
+				      <br></br>
 				      <h:outputLabel>PARTENZA DA?:</h:outputLabel><br></br>
 		              <p:inputText id="where" />
-				      &nbsp; &nbsp; &nbsp; 
+    		          <br></br> 
 				      <h:outputLabel for="starts">STELLE?:</h:outputLabel><br></br>
 				      <p:inputText id="stars" />
-		              &nbsp; &nbsp; &nbsp; 
+    		          <br></br> 
 				      </section>
-				     </h:form>
-		       	   </div>
-		       	   <div class="left">
-				   <h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="150" width="150"/> 
-				   </div>
-				 </div>
-				 
-				
-				</div>
+				     </h:form>	
+		             </div></td>
+                    <td width="70%">
+                    <div class ="ttext">Scegli tra la vasta gamma di proposte disponibili nel 
+                    pacchetto un hotel, un volo di andata, uno di ritorno e delle escursioni!
+                    Completa il tuo viaggio acquistando con carta di credito, oppure condividendolo
+                    con i tuoi amici! 
+					</div>
+					</td>
+                </tr>
+			</table>
+				     
 					
 		<div class="clear"> </div>
 		       
 		       <br></br>
 		       		<div class="content">
+		       
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Hotel disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+		       
 		       
 		       <div class="wrap">
 			<div class="content-grids">
@@ -112,6 +125,13 @@
 			</div>
 		       <br></br>
 		       		<div class="content">
+		       		
+		       		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli andata disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 		       
 		       <div class="wrap">
 			<div class="content-grids">
@@ -148,6 +168,13 @@
 		       <br></br>
 		       		<div class="content">
 		       
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli ritorno disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+		       
 		       <div class="wrap">
 			<div class="content-grids">
 				<ui:repeat var="volo" value="#{ViaggioBean.packet.lista_voli_ritorno}">
@@ -183,6 +210,13 @@
 
 		       <br></br>
 		       		<div class="content">
+		       
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Escursioni disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 		       
 		       <div class="wrap">
 			<div class="content-grids">

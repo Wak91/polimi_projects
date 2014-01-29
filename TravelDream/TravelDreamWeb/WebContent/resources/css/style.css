@@ -74,21 +74,27 @@ img{max-width:100%;}
 }
 
 .searchbar2 {
-	align:left;
     color:#FFF;
 		
+}
+
+.ttext{
+	
+     background: none repeat scroll 0 0 #012231;
+    color: #FFFFFF;
+    font-family: 'Roboto',sans-serif;
+    font-size: 1.2em;
+    margin: 0 0 0 12px;
 }
 
 #bar2{
 	
     background: none repeat scroll 0 0 #012231;
     display: block;
-    border: 10px solid #CCFFFF;
+    border: 1px solid #CCFFFF;
     font-family: 'Roboto',sans-serif;
     font-size: 0.975em;
-    margin: -34px 0 0 -13px;
     padding: 5px 39px;
-    width: 26%;
 }
 
 #bar2 outputLabel { 	
