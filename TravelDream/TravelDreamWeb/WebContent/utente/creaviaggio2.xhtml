@@ -135,10 +135,13 @@
 			   <div class="right">
 			    
 					#{volo.compagnia}
+					<br></br>
 					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
 					 #{volo.costo}
+					 <br></br>
 				    <h:outputLabel for="username">Data</h:outputLabel> &nbsp; 
 					 #{volo.data} 
+					 <br></br>
 				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
 					 #{volo.luogo_partenza} 
 					 </div>
@@ -185,13 +188,15 @@
 				</div>
 				<div class="right">
 					#{volo.compagnia}
+					<br></br>
 					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
 					 #{volo.costo}
 				    <br></br>
-				    <h:outputLabel for="username">Data
+				    <h:outputLabel for="username">Data 
 					<f:convertDateTime pattern="dd/MM/yyyy" />
 				    </h:outputLabel> &nbsp; 
 					 #{volo.data} 
+					 <br></br>
 				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
 					 #{volo.luogo_partenza} 
 				   </div>
@@ -233,12 +238,14 @@
 				
 				<div class="grid2">
 				 <div class="left">
-					 <h:graphicImage  value="../images/#{esc.immagine}" height="40" width="40" /> 
+					 <h:graphicImage  value="../images/#{esc.immagine}" height="90" width="90" /> 
   				 </div>		
   				  <div class="right">		
 					#{esc.nome}
+					<br></br>
 					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
 					 #{esc.costo}
+					 <br></br>
 				    <h:outputLabel for="username">Data
 				    				<f:convertDateTime pattern="dd/MM/yyyy" />
 				    </h:outputLabel> &nbsp; 

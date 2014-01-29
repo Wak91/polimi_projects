@@ -44,10 +44,10 @@
 			<div class="wrap">
 			<div class="content-grids">
 			<h:panelGroup id="prelist">
-				<ui:repeat var="gift" value="#{ViaggioBean.lista_prenotazioni}">
+				<ui:repeat var="gift" value="#{GiftListBean.list_gift}">
 				
 				<div class="grid2">
-					#{pre.id}
+					#{gift.id}
 					<h:outputLabel for="np">Numero partecipanti</h:outputLabel> &nbsp; 
 					 #{pre.numero_persone}
 					 <h:outputLabel for="costo">Costo totale</h:outputLabel> &nbsp; 
