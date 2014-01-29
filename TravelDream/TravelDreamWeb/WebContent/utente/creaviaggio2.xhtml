@@ -52,31 +52,52 @@
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 			</center>
-			<center>
-			<img src="../images/#{ViaggioBean.packet.pathtoImage}" width="1080px" height="450px" />
-			</center>
+			<br></br>
+			<table  bgcolor= "#012231" width="100%" align="center">
+                <tr>
+                    <td width="30%" ><div class="searchbar"> 
+		       	      <h:form>   
+		              <section id="bar2">
+		              <h:outputLabel>FILTRA LA TUA RICERCA!:</h:outputLabel><br></br>
+		              <hr></hr>
+				      <h:outputLabel>DA QUANDO?:</h:outputLabel><br></br>
+				      <p:calendar id="datei" value="#{ViaggioBean.viaggio.data_inizio}" navigator="true" display="inline"/>  
+    		          <br></br>
+    		          <h:outputLabel>A QUANDO?:</h:outputLabel><br></br>
+				      <p:calendar id="datef" value="#{ViaggioBean.viaggio.data_fine}" navigator="true" display="inline"/>  
+				      <br></br>
+				      <h:outputLabel>PARTENZA DA?:</h:outputLabel><br></br>
+		              <p:inputText id="where" />
+    		          <br></br> 
+				      <h:outputLabel for="starts">STELLE?:</h:outputLabel><br></br>
+				      <p:inputText id="stars" />
+    		          <br></br> 
+				      </section>
+				     </h:form>	
+		             </div></td>
+                    <td width="70%">
+                    <div class ="ttext">Scegli tra la vasta gamma di proposte disponibili nel 
+                    pacchetto un hotel, un volo di andata, uno di ritorno e delle escursioni!
+                    Completa il tuo viaggio acquistando con carta di credito, oppure condividendolo
+                    con i tuoi amici! 
+					</div>
+					</td>
+                </tr>
+			</table>
+				     
 					
 		<div class="clear"> </div>
-		       <div class="searchbar"> 
-		       	 <h:form>   
-		           <section id="bar">
-		           <img src="../images/lente.png" width="40px" height="40px" />				
-				   &nbsp; &nbsp; &nbsp;
-				    <h:outputLabel>NOME?:</h:outputLabel>
-		           <p:inputText id="where" />
-				   &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel for="starts">STELLE?:</h:outputLabel>
-				   <p:inputText id="stars" />
-		           &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel>COSTO?:</h:outputLabel>
-				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
-    		       &nbsp; &nbsp; &nbsp; 
-    		   	   <a class="button" href="#">Cerca</a>
-				   </section>
-				   </h:form>
-		       </div>
+		       
 		       <br></br>
 		       		<div class="content">
+		       
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Hotel disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+		       
 		       
 		       <div class="wrap">
 			<div class="content-grids">
@@ -109,27 +130,15 @@
 				
 				<div class="clear"> </div>
 			</div>
-		      
-		       <div class="searchbar"> 
-		       	 <h:form>   
-		           <section id="bar">
-		           <img src="../images/lente.png" width="40px" height="40px" />				
-				   &nbsp; &nbsp; &nbsp;
-				    <h:outputLabel>PARTENZA DA?:</h:outputLabel>
-		           <p:inputText id="where" />
-				   &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel for="starts">COSTO?:</h:outputLabel>
-				   <p:inputText id="stars" />
-		           &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel>QUANDO?:</h:outputLabel>
-				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
-    		       &nbsp; &nbsp; &nbsp;
-    		   	   <a class="button" href="#">Cerca</a>
-				   </section>
-				   </h:form>
-		       </div>
 		       <br></br>
 		       		<div class="content">
+		       		
+		       		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli andata disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 		       
 		       <div class="wrap">
 			<div class="content-grids">
@@ -163,27 +172,15 @@
 				
 				<div class="clear"> </div>
 			</div>
-			
-			 <div class="searchbar"> 
-		       	 <h:form>   
-		           <section id="bar">
-		           <img src="../images/lente.png" width="40px" height="40px" />				
-				   &nbsp; &nbsp; &nbsp;
-				    <h:outputLabel>PARTENZA DA?:</h:outputLabel>
-		           <p:inputText id="where" />
-				   &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel for="starts">COSTO?:</h:outputLabel>
-				   <p:inputText id="stars" />
-		           &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel>QUANDO?:</h:outputLabel>
-				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
-    		       &nbsp; &nbsp; &nbsp;
-    		   	   <a class="button" href="#">Cerca</a>
-				   </section>
-				   </h:form>
-		       </div>
 		       <br></br>
 		       		<div class="content">
+		       
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli ritorno disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 		       
 		       <div class="wrap">
 			<div class="content-grids">
@@ -217,27 +214,16 @@
 				
 				<div class="clear"> </div>
 			</div>
-			
-			<div class="searchbar"> 
-		       	 <h:form>   
-		           <section id="bar">
-		           <img src="../images/lente.png" width="40px" height="40px" />				
-				   &nbsp; &nbsp; &nbsp;
-				    <h:outputLabel>NOME?:</h:outputLabel>
-		           <p:inputText id="where" />
-				   &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel for="starts">COSTO?:</h:outputLabel>
-				   <p:inputText id="stars" />
-		           &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel>QUANDO?:</h:outputLabel>
-				   <p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/>  
-    		       &nbsp; &nbsp; &nbsp;
-    		   	   <a class="button" href="#">Cerca</a>
-				   </section>
-				   </h:form>
-		       </div>
+
 		       <br></br>
 		       		<div class="content">
+		       
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Escursioni disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 		       
 		       <div class="wrap">
 			<div class="content-grids">
