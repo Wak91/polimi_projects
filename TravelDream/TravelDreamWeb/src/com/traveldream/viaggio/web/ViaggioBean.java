@@ -1,13 +1,14 @@
 package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import sun.util.calendar.LocalGregorianCalendar.Date;
 import javax.faces.context.FacesContext;
+
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.GiftListDTO;
@@ -67,6 +68,8 @@ public class ViaggioBean {
 	private ArrayList<HotelDTO> filteredHotels;
 	private ArrayList<EscursioneDTO> filteredEscursiones;
 	private ArrayList<VoloDTO> filteredVolos;
+	private ArrayList<VoloDTO> filteredVolosRitorno;
+	
     
 	private PacchettoDTO packet;
 
@@ -78,6 +81,15 @@ public class ViaggioBean {
     private int quotacomplessiva;
     private int quotapp;
    
+    //filtri
+    String destinazione;
+    String partenza;
+    Date data_partenza; 
+    Date data_arrivo; 
+    Integer stelle;
+
+
+    
 
 	private String password1;
 	
@@ -89,6 +101,31 @@ public class ViaggioBean {
 		 invito = new InvitoDTO();
 	}
 
+	
+	public void filterViaggio(){
+		filteredHotels=filterHotels(packet);
+		filteredEscursiones=filterEscursioni(packet);
+		
+	}
+	public ArrayList<EscursioneDTO> filterEscursioni(PacchettoDTO pacchettoDTO){
+		ArrayList<EscursioneDTO> filtered = new ArrayList<EscursioneDTO>();
+		for (EscursioneDTO escursioneDTO : pacchettoDTO.getLista_escursioni()) {
+			if(data_arrivo==null || (escursioneDTO.getData().after(data_arrivo)&&escursioneDTO.getData().before(data_partenza))){
+				filtered.add(escursioneDTO);
+			}
+		}
+		return filtered;
+	}
+	public ArrayList<HotelDTO> filterHotels(PacchettoDTO packeDto){
+		ArrayList<HotelDTO> filtered=new ArrayList<HotelDTO>();
+		for (HotelDTO hotelDTO : packeDto.getLista_hotel()) {
+			if (hotelDTO.getStelle() == stelle){
+				filtered.add(hotelDTO);
+			}
+		}
+		return filtered;
+	}
+	
 	public HotelDataModel getHotelModels() {
 		return hotelModels;
 	}
@@ -117,10 +154,10 @@ public class ViaggioBean {
 	public void getPacchettoById(int id)
 	{	 
 		 this.packet = PMB.getPacchettoByID(id);
-		 setHotelModels(new HotelDataModel(packet.getLista_hotel()));	
-		 setVoloModels_a(new VoloDataModel(packet.getLista_voli_andata()));
-		 setVoloModels_r(new VoloDataModel(packet.getLista_voli_ritorno()));
-		 setEscModels(new EscDataModel(packet.getLista_escursioni()));
+		 filteredHotels=(ArrayList<HotelDTO>)packet.getLista_hotel();	
+		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
+		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	
+		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
 		 this.viaggio.setData_inizio(packet.getData_inizio());
 		 this.viaggio.setData_fine(packet.getData_fine());
 	}
@@ -214,7 +251,18 @@ public class ViaggioBean {
 			this.premodels = premodels;
 		}
 
+    
 		
+	public ArrayList<VoloDTO> getFilteredVolosRitorno() {
+		return filteredVolosRitorno;
+	}
+
+
+	public void setFilteredVolosRitorno(ArrayList<VoloDTO> filteredVolosRitorno) {
+		this.filteredVolosRitorno = filteredVolosRitorno;
+	}
+
+
 	public String acquista_paga()
 	{
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null 
@@ -458,6 +506,56 @@ public class ViaggioBean {
 				return "/utente/imieiviaggi.xhtml?faces-redirect=true";
 			}	
 		}
+
+
+		public String getDestinazione() {
+			return destinazione;
+		}
+
+
+		public void setDestinazione(String destinazione) {
+			this.destinazione = destinazione;
+		}
+
+
+		public String getPartenza() {
+			return partenza;
+		}
+
+
+		public void setPartenza(String partenza) {
+			this.partenza = partenza;
+		}
+
+
+		public Date getData_partenza() {
+			return data_partenza;
+		}
+
+
+		public void setData_partenza(Date data_partenza) {
+			this.data_partenza = data_partenza;
+		}
+
+
+		public Date getData_arrivo() {
+			return data_arrivo;
+		}
+
+
+		public void setData_arrivo(Date data_arrivo) {
+			this.data_arrivo = data_arrivo;
+		}
+
+
+		public Integer getStelle() {
+			return stelle;
+		}
+
+
+		public void setStelle(Integer stelle) {
+			this.stelle = stelle;
+		}
 			
 	/*
 	 * dovrebbe servire per filtrare i risultati in base alle date di inzio e fine del viaggio ( TODO )
@@ -484,4 +582,7 @@ public class ViaggioBean {
 		 setEscModels(new EscDataModel(filteredEscursiones));
 	}
 	*/
+		
+		
+		
 }

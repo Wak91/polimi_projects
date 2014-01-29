@@ -60,11 +60,14 @@ public class PacketBean {
     private PacchettoDTO selectedPackDTO;
     
     
-    //Utilizzati per ricerca
-   
+    //Utilizzati per ricerca 
+  
     Date data_inizio_pacchetto;
 	Date data_fine_pacchetto;
 	String destinazione_pacchetto;
+	
+	String partenza;
+	int stelle;
 	
     	
     //---INIZIALIZZAZIONE BEAN---
@@ -78,6 +81,7 @@ public class PacketBean {
 	selectedVolo = new ArrayList <VoloDTO>();
 	selectedEsc = new ArrayList <EscursioneDTO>();
 	}
+	
 	
 	public void initBean()
 	{
@@ -204,6 +208,7 @@ public class PacketBean {
 		packlist=PMB.getFilteredPacchetti(destinazione_pacchetto,data_inizio_pacchetto,data_fine_pacchetto);
 		}
 	}
+	
 	
 	
 	public void filterComponents(){
