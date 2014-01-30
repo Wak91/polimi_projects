@@ -1,14 +1,12 @@
 package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
-import sun.util.calendar.LocalGregorianCalendar.Date;
-
 import javax.faces.context.FacesContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
@@ -115,6 +113,7 @@ public class ViaggioBean {
 		filteredVolosRitorno=filterVoliR(packet);
 		filteredHotels=filterHotels(packet);
 		filteredEscursiones=filterEscursioni(packet);
+		restoreSelected();
 		
 	}
 	
@@ -139,10 +138,18 @@ public class ViaggioBean {
 		}
 		return voli;
 	}
+	private boolean after_equal(Date date1,Date date2) {
+		return (date1.after(date2) || date1.equals(date2));
+	}
+	private boolean before_equal(Date date1,Date date2) {
+		return (date1.before(date2) || date1.equals(date2));
+	}
+	
 	public ArrayList<EscursioneDTO> filterEscursioni(PacchettoDTO pacchettoDTO){
 		ArrayList<EscursioneDTO> filtered = new ArrayList<EscursioneDTO>();
 		for (EscursioneDTO escursioneDTO : pacchettoDTO.getLista_escursioni()) {
-			if(viaggio.getData_inizio()==null || viaggio.getData_fine()==null || (escursioneDTO.getData().after(viaggio.getData_fine())&&escursioneDTO.getData().before(viaggio.getData_inizio()))){
+			if(viaggio.getData_inizio()==null || viaggio.getData_fine()==null || 
+			(after_equal(escursioneDTO.getData(), viaggio.getData_inizio()) && before_equal(escursioneDTO.getData(), viaggio.getData_fine()))){
 				filtered.add(escursioneDTO);
 			}
 		}
@@ -164,6 +171,7 @@ public class ViaggioBean {
 		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
 		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	
 		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
+		 restoreSelected();
 	}
 	
 
@@ -180,6 +188,17 @@ public class ViaggioBean {
 		if (selectedEsc.contains(esc)){
 		selectedEsc.remove(esc);
 		}
+	}
+	
+	private void restoreSelected(){
+		 selectedEsc=new ArrayList<EscursioneDTO>();
+		 selectedHotels=null;
+		 selectedVolo_a=null;
+		 selectedVolo_r=null;
+		 viaggio.setData_inizio(null);
+		 viaggio.setData_fine(null);
+		 
+
 	}
 
 	
@@ -223,8 +242,7 @@ public class ViaggioBean {
 		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
 		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	
 		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
-		 this.viaggio.setData_inizio(packet.getData_inizio());
-		 this.viaggio.setData_fine(packet.getData_fine());
+
 	}
 	
 	//Riempie la struttura premodels per permettere di visualizzare nella view tutte le prenotazioni di un utente
@@ -334,6 +352,7 @@ public class ViaggioBean {
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setLista_escursioni(selectedEsc);
+		restoreSelected()
 		//Controllo che le date dei voli scelti, e delle escursioni siano a posto.
 		// Gli hotel vengono filtrati in base alla disponibilità, si da per scontato
 		//per semplicità che l'hotel sia sempre disponibile nelle date scelte del viaggio
@@ -446,14 +465,20 @@ public class ViaggioBean {
 			System.out.println("dentro if");
 			return "userhome.xhtml?faces-redirect=true";
 		  }
-
+		for (EscursioneDTO escursioneDTO : selectedEsc) {
+			System.out.println("njknkjnk esc"+escursioneDTO.getNome());
+		}
+		//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
 		
+		System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOvolo r " +selectedVolo_r.getCompagnia());
+		System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOvolo a" +selectedVolo_a.getCompagnia());
+		System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOhotels " +selectedHotels.getNome());
 
          viaggio.setHotel(selectedHotels);
          viaggio.setVolo_andata(selectedVolo_a);
          viaggio.setVolo_ritorno(selectedVolo_r);
 		 viaggio.setLista_escursioni(selectedEsc);
-		
+		 restoreSelected();
 		GiftListDTO gift= new GiftListDTO();
 		gift.setViaggio(viaggio);
 		gift.setUtente(userMgr.getUserDTO());
@@ -478,7 +503,7 @@ public class ViaggioBean {
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
-		
+		restoreSelected();
 		invito.setViaggio(viaggio);
 		invito.setStatus(false);
 		invito.setUtente(userMgr.getUserDTO());

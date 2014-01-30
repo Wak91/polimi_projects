@@ -59,7 +59,7 @@
 			<table  bgcolor= "#012231" width="100%" align="center">
                 <tr>
                     <td width="30%" ><div class="searchbar"> 
-		       	      <h:form>   
+		       	      <h:form id="filterform">   
 						<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
 		       	      
 		              <section id="bar2">
@@ -88,7 +88,7 @@
 				      </p:inputText>
 				      
     		          <br></br> 
-    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update="@([id$=viaggioitems])"/>
+    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update="@([id$=viaggioitems]) @([id$=filterform])"/>
     		           <br></br> 
 				      </section>
 				     </h:form>	

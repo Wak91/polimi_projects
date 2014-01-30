@@ -43,7 +43,7 @@
 		<div class="content">
 			<div class="wrap">
 			<div class="content-grids">
-			<h:panelGroup id="prelist">
+			<h:form id="form">
 				 <p:dataTable id="Gift" var="gift" value="#{GiftListBean.giftDataModel}" selectionMode="single" selection="#{GiftListBean.selectedGiftListDTO}" paginator="true" rows="35"
        				rowKey="#{gift.id}" filteredValue="#{GiftListBean.filteredGift}">  
                                 
@@ -244,7 +244,7 @@
   
     </p:dialog> 
              
-			</h:panelGroup>
+			</h:form>
 				
 				<div class="clear"> </div>
 			</div>
