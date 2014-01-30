@@ -259,7 +259,7 @@ public class ViaggioBean {
 			return "userhome.xhtml?faces-redirect=true";
 
 		}
-		return "pagamento2.xhtml"; 	
+		return "pagamento.xhtml"; 	
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -474,6 +474,6 @@ public class ViaggioBean {
        public String poutcome(int id)
        {
   		 this.packet = PMB.getPacchettoByID(id);
-  		 return "creaviaggio2.xhtml";
+  		 return "creaviaggio.xhtml";
        }
 }
