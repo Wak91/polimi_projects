@@ -178,9 +178,9 @@
 					 #{volo.data} 
 					 <br></br>
 				     <h:outputLabel for="part">Luogo partenza</h:outputLabel> &nbsp; 
-					 #{volo.luogo_partenza} 
+					 #{volo.luogo_partenza} <br></br>
 					 <h:outputLabel for="arr">Luogo arrivo</h:outputLabel> &nbsp; 
-					 #{volo.luogo_arrivo} 
+					 #{volo.luogo_arrivo} <br></br>
 					  <p:commandButton id="voloabutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_a}" value="#{volo}"/>
        				</p:commandButton>
@@ -227,10 +227,9 @@
 					 #{volo.data} 
 					 <br></br>
 				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
-					 #{volo.luogo_partenza} 
+					 #{volo.luogo_partenza} <br></br>
 					 <h:outputLabel for="username">Luogo arrivo</h:outputLabel> &nbsp; 
-					 #{volo.luogo_arrivo} 
-					 
+					 #{volo.luogo_arrivo} <br></br>					 
 					 <p:commandButton id="volorbutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_r}" value="#{volo}"/>
        				 </p:commandButton>
@@ -272,10 +271,10 @@
 					 #{esc.costo}
 					 <br></br>
 				    <h:outputLabel for="username">Data
-				    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				    <f:convertDateTime pattern="dd/MM/yyyy" />
 				    </h:outputLabel> &nbsp; 
 					 #{esc.data} 
-					 
+					 <br></br>
 					 <p:commandButton id="escbutton" value="Aggiungi" action="#{ViaggioBean.selezionaEsc}" onclick="$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.esc}" value="#{esc}"/>
        				 </p:commandButton>

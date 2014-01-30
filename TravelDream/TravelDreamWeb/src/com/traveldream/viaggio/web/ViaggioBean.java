@@ -348,21 +348,22 @@ public class ViaggioBean {
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null 
 			|| viaggio.getData_fine() == null || viaggio.getData_inizio() == null)
 		  {
-			return "userhome.xhtml?faces-redirect=true"; 
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+			return "creaviaggio.xhtml?id=last_id";
 		  }
 		
 		viaggio.setHotel(selectedHotels);
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setLista_escursioni(selectedEsc);
-		restoreSelected()
+		restoreSelected();
 		//Controllo che le date dei voli scelti, e delle escursioni siano a posto.
 		// Gli hotel vengono filtrati in base alla disponibilità, si da per scontato
 		//per semplicità che l'hotel sia sempre disponibile nelle date scelte del viaggio
 		//Controllo anche che le date del viaggio non sparino fuori dalla disponibilità del pack
 		
 		//Possibili errori durante la creazione---------------------------------
-;
+
 		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
 		   check_giorni_coperti()== 0  ||
 		   escOutOfData() == 1 ||
@@ -378,7 +379,8 @@ public class ViaggioBean {
 			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
 			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
 			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
-			return "userhome.xhtml?faces-redirect=true";
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+			return "creaviaggio.xhtml?id=last_id";
 
 		}
 		return "pagamento.xhtml?faces-redirect=true"; 	
