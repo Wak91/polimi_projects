@@ -245,6 +245,8 @@ public class ViaggioBean {
 		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
 		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	
 		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
+		 viaggio.setData_inizio(null);
+		 viaggio.setData_fine(null);
 
 	}
 	
@@ -355,7 +357,6 @@ public class ViaggioBean {
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setLista_escursioni(selectedEsc);
-		restoreSelected()
 		//Controllo che le date dei voli scelti, e delle escursioni siano a posto.
 		// Gli hotel vengono filtrati in base alla disponibilità, si da per scontato
 		//per semplicità che l'hotel sia sempre disponibile nelle date scelte del viaggio
@@ -370,6 +371,8 @@ public class ViaggioBean {
 		   viaggio.getData_fine().after(packet.getData_fine())
 		   )
 		{  
+			restoreSelected();
+
 			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
 			//DEBUG
 			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
