@@ -280,6 +280,7 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 				p1.setCosto(p.getCosto());
 				p1.setId(p.getId());
 				p1.setNumero_persone(p.getNumero_persone());
+				p1.setViaggio(Converter.ViaggioToDTO(p.getViaggioBean()));
 				myDTOList.add(p1);
 			  }
 		   }

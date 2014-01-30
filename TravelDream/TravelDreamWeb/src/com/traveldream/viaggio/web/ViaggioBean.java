@@ -643,8 +643,5 @@ public class ViaggioBean {
 			this.esc = esc;
 		}
 		
-		public void caricaDialogViaggio()
-		{
-	       
-		}
+		
 }

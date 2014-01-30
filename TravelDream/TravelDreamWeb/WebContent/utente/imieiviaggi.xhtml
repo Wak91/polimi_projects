@@ -44,6 +44,8 @@
 		<div class="content">
 			<div class="wrap">
 			<div class="content-grids">
+			<h:form id="form">
+			  
 			<p:dataTable id="Prenotazioni" var="pre" value="#{ViaggioBean.premodels}" 
 			 selectionMode="single" selection="#{ViaggioBean.selectedpre}" paginator="true" rows="5"
       		 rowKey="#{pre.id}">  
@@ -61,7 +63,7 @@
                 </p:column> 
                 
               <p:column headerText="Dettagli" style="width:25%" >  
-              <p:commandButton id="basic" update=":detv:showDet"  value="show dettagli" oncomplete="PF('dlgdet').show();">  
+              <p:commandButton id="basic" update=":form:showDet" process="@this"  value="show dettagli" oncomplete="PF('dlgdet').show();">  
                  <f:setPropertyActionListener value="#{pre}" target="#{ViaggioBean.selectedpre}" />
                </p:commandButton>               
                 </p:column>  
@@ -70,12 +72,11 @@
                
               </p:dataTable>
               
-              <h:form id="detv">
                     
                     <p:dialog id="showDet" header="Dettagli" widgetVar="dlgdet" resizable="true" >  
   					 <h:panelGrid id="displayv" columns="2" cellpadding="4" style="margin:0 auto;">  
   
- 			           <h:outputText value="Nome" />  
+ 			           <h:outputText value="Nome:  " />  
             		   <h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.nome}" style="font-weight:bold"/>  
        	     		 </h:panelGrid>                           
                     </p:dialog> 
