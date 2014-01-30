@@ -337,9 +337,6 @@ public class ViaggioBean {
 		//per semplicità che l'hotel sia sempre disponibile nelle date scelte del viaggio
 		//Controllo anche che le date del viaggio non sparino fuori dalla disponibilità del pack
 		
-		
-		//Occhio che qua controlla anche che l'ora del volo combaci con l'ora di partenza
-		// del viaggio, DA METTERE A POSTO!!!
 		//Possibili errori durante la creazione---------------------------------
 		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
 		   check_giorni_coperti()== 0  ||
