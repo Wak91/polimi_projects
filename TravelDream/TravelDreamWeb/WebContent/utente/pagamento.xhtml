@@ -18,12 +18,12 @@
 				<div class="top-nav">
 					<ul>
 						<li><a href="userhome.xhtml">Home</a></li>
-						<li><a href="personaldata2.xhtml">MyAccount</a></li>
-						<li><a href="imieiviaggi2.xhtml">ImieiViaggi</a></li>
-						<li><a href="giftlist2.xhtml">GiftList</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
 					    <li><h:form>
 						<p:commandLink action="#{userBean.logout}" value="Logout" />
-			    </h:form></li>
+			                </h:form></li>
 						
 					</ul>
 				</div>
@@ -37,10 +37,8 @@
 				  	<h3>Pagamento</h3>
 					    <form>
 					    	<div>
-						    	<h:outputLabel for="np">Numero partecipanti</h:outputLabel>
-								    <p:spinner id="minmax"   
-            						  value="#{ViaggioBean.n_partecipanti}" min="1" max="15">         
-            						</p:spinner> 
+						    	<h:outputLabel for="np"> Numero partecipanti</h:outputLabel>  
+							    <p:inputText id="np" value="#{ViaggioBean.n_partecipanti}" />
 						    </div>
 						    <div>
 						    	<h:outputLabel for="costogg">Quota per persona</h:outputLabel>
@@ -57,13 +55,11 @@
 						    </div>
 						    	<h:outputLabel for="cartacredito">Conferma codice carta di credito</h:outputLabel>
             					<p:password id="pwd2" value="#{ViaggioBean.password1}" label="Password 2" required="true"/> 
-						     <div>
-						    	<h:outputLabel for="date">Data di nascita:</h:outputLabel>
-								<p:calendar id="date" value="#{userBean.user.data}" pattern="dd/MM/yyyy" navigator="true" display="inline"/>  
-						    </div>
 						   <div>
-						   			 <h:commandButton value="Prenota ora!" update="regGrid"
+						   <h:form>
+						   			 <h:commandButton value="Prenota ora!" 
 			                         action="#{ViaggioBean.creaPrenotazione}" />
+			               </h:form>
 						  </div>
 					    </form>
 
