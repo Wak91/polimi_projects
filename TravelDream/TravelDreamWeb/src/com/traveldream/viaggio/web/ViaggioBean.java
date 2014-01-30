@@ -9,8 +9,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import sun.util.calendar.LocalGregorianCalendar.Date;
-
 import javax.faces.context.FacesContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
@@ -176,6 +174,8 @@ public class ViaggioBean {
 		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	
 		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
 		 restoreSelected();
+		 viaggio.setData_inizio(null);
+		 viaggio.setData_fine(null);
 	}
 	
 
@@ -199,8 +199,7 @@ public class ViaggioBean {
 		 selectedHotels=null;
 		 selectedVolo_a=null;
 		 selectedVolo_r=null;
-		 viaggio.setData_inizio(null);
-		 viaggio.setData_fine(null);
+		 
 		 
 
 	}
