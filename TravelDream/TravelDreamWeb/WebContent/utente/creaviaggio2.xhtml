@@ -127,10 +127,10 @@ alert("cdscds");
 				</div>
                      <div class="right">
 					#{hotel.nome}<br></br>
-					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; &nbsp; 
+					<h:outputLabel for="costo">Costo</h:outputLabel> &nbsp; &nbsp; 
 					 #{hotel.costo_giornaliero}<br></br>
 				    <p:rating id="stars" value="#{hotel.stelle}" stars="5" cancel="false" readonly="true"/>  
-				    <p:commandButton id="hotelbutton" value="Seleziona" action="#{ViaggioBean.selezionaHotel}" onclick="selectItem(this)">
+				    <p:commandButton id="hotelbutton" value="Seleziona" onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.selectedHotels}" value="#{hotel}"/>
        				 </p:commandButton>
 					 </div>
@@ -167,17 +167,17 @@ alert("cdscds");
 			    
 					#{volo.compagnia}
 					<br></br>
-					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
+					<h:outputLabel for="costo">Costo</h:outputLabel> &nbsp; 
 					 #{volo.costo}
 					 <br></br>
-				    <h:outputLabel for="username">Data</h:outputLabel> &nbsp; 
+				    <h:outputLabel for="data">Data</h:outputLabel> &nbsp; 
 					 #{volo.data} 
 					 <br></br>
-				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
+				     <h:outputLabel for="part">Luogo partenza</h:outputLabel> &nbsp; 
 					 #{volo.luogo_partenza} 
-					 <h:outputLabel for="username">Luogo arrivo</h:outputLabel> &nbsp; 
+					 <h:outputLabel for="arr">Luogo arrivo</h:outputLabel> &nbsp; 
 					 #{volo.luogo_arrivo} 
-					  <p:commandButton id="voloabutton" value="Seleziona" action="#{ViaggioBean.selezionaVoloA}" onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+					  <p:commandButton id="voloabutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_a}" value="#{volo}"/>
        				</p:commandButton>
 					 
@@ -227,7 +227,7 @@ alert("cdscds");
 					 <h:outputLabel for="username">Luogo arrivo</h:outputLabel> &nbsp; 
 					 #{volo.luogo_arrivo} 
 					 
-					 <p:commandButton id="volorbutton" value="Seleziona" action="#{ViaggioBean.selezionaVoloR}" onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+					 <p:commandButton id="volorbutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_r}" value="#{volo}"/>
        				 </p:commandButton>
 					 
@@ -272,7 +272,10 @@ alert("cdscds");
 				    </h:outputLabel> &nbsp; 
 					 #{esc.data} 
 					 
-					 <p:commandButton id="volorbutton" value="Seleziona" action="#{ViaggioBean.selezionaEsc}" onclick="$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+					 <p:commandButton id="escbutton" value="Aggiungi" action="#{ViaggioBean.selezionaEsc}" onclick="$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.esc}" value="#{esc}"/>
+       				 </p:commandButton>
+       				 <p:commandButton id="escdeselect" value="Elimina" action="#{ViaggioBean.deselezionaEsc}" onclick="$(this).parent().parent().css( 'background-color', '#FFFFFF' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.esc}" value="#{esc}"/>
        				 </p:commandButton>
 				   </div>

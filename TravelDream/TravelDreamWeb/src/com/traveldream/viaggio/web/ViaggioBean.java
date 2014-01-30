@@ -102,6 +102,7 @@ public class ViaggioBean {
 		 viaggio = new ViaggioDTO();
 		 prenotazione = new PrenotazioneDTO();
 		 invito = new InvitoDTO();
+		 selectedEsc=new ArrayList<EscursioneDTO>();
 	}
 
 	
@@ -158,24 +159,23 @@ public class ViaggioBean {
 		return filtered;
 	}
 	
-	public void selezionaHotel(){
-		System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmhotelModels sel"+selectedHotels.getNome());
+	
+
+	public void selezionaEsc(){
+		if(!selectedEsc.contains(esc)){
+		selectedEsc.add(esc);
+		}
+		for (EscursioneDTO escursioneDTO : selectedEsc) {
+			System.out.println("esc"+escursioneDTO.getNome());
+		}
 	}
 	
-	public void deselezionaVoloA() {
-		selectedVolo_a = null;
+	public void deselezionaEsc() {
+		if (selectedEsc.contains(esc)){
+		selectedEsc.remove(esc);
+		}
 	}
-	public void selezionaEsc(){
-		
-	}
-	public void selezionaVoloA(){
-		System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmhotelModels sel"+selectedVolo_a.getCompagnia());
 
-		
-	}public void selezionaVoloR(){
-		System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmhotelModels sel"+selectedVolo_r.getCompagnia());
-
-	}
 	
 	public HotelDataModel getHotelModels() {
 		return hotelModels;
