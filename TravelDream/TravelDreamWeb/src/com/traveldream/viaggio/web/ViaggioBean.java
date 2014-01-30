@@ -154,6 +154,7 @@ public class ViaggioBean {
 				filtered.add(hotelDTO);
 			}
 		}
+		
 		return filtered;
 	}
 	
