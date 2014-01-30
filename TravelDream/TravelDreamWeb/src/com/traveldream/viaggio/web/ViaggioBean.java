@@ -2,11 +2,15 @@ package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
+import sun.util.calendar.LocalGregorianCalendar.Date;
+
 import javax.faces.context.FacesContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
@@ -635,5 +639,10 @@ public class ViaggioBean {
 
 		public void setEsc(EscursioneDTO esc) {
 			this.esc = esc;
+		}
+		
+		public void caricaDialogViaggio()
+		{
+	       
 		}
 }
