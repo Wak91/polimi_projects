@@ -479,11 +479,32 @@ public class ViaggioBean {
 			return "creaviaggio.xhtml?id=last_id";
 		  }
 		
+
+		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
+		   check_giorni_coperti()== 0  ||
+		   escOutOfData() == 1 ||
+		   viaggio.getData_inizio().before(packet.getData_inizio()) || 
+		   viaggio.getData_fine().after(packet.getData_fine())
+		   )
+		{  
+			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
+			//DEBUG
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
+			restoreSelected();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+			return "creaviaggio.xhtml?id=last_id";
+
+		}
+		
          viaggio.setHotel(selectedHotels);
          viaggio.setVolo_andata(selectedVolo_a);
          viaggio.setVolo_ritorno(selectedVolo_r);
 		 viaggio.setLista_escursioni(selectedEsc);
-		 restoreSelected();
 		GiftListDTO gift= new GiftListDTO();
 		gift.setViaggio(viaggio);
 		gift.setUtente(userMgr.getUserDTO());
@@ -491,7 +512,8 @@ public class ViaggioBean {
 		
 		//creazione entita gift
 		
-		
+		 restoreSelected();
+
 		return "invitogift.xhtml?faces-redirect=true";
 	
 	}
@@ -504,22 +526,44 @@ public class ViaggioBean {
 		  {
 			restoreSelected();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+
 			return "creaviaggio.xhtml?id=last_id";
 		  }
+		
+
+		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
+		   check_giorni_coperti()== 0  ||
+		   escOutOfData() == 1 ||
+		   viaggio.getData_inizio().before(packet.getData_inizio()) || 
+		   viaggio.getData_fine().after(packet.getData_fine())
+		   )
+		{  
+			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
+			//DEBUG
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
+			restoreSelected();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+			return "creaviaggio.xhtml?id=last_id";
+
+		}
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
-		restoreSelected();
 		invito.setViaggio(viaggio);
 		invito.setStatus(false);
 		invito.setUtente(userMgr.getUserDTO());
 		invito.setId(viaggio.getId());
 		FacesUtil.setSessionMapValue("InvDTO", invito);	
 		
+		restoreSelected();
+
 		//creazione entita invito
-		
-		
 		return "/utente/invitoviaggio.xhtml?faces-redirect=true";
 		
 		

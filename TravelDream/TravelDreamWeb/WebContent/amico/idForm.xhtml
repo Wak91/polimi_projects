@@ -12,11 +12,12 @@
 <h:body>
  <div class="container">
 	<section id="content">
+	
 	<h:form>
-		<p:panel header="ID">
+		<p:panel>
 			<h:panelGrid columns="2" id="regGrid">
 				
-				<h:outputLabel for="idv" value="Inserisci qui l'ID ricevuto: "/> 
+	<center>    <h:outputLabel for="idv" value="Inserisci qui l'ID ricevuto: "/> 
 				<h:messages globalOnly="true" />
             	<p:inputText id="idv" value="#{InvitoBean.id_amico}" label="Idv"/>  
             	<p:message for="idv"/>  
@@ -25,7 +26,7 @@
             	<h:messages globalOnly="true"/>
             	<p:inputText id="mailv" value="#{InvitoBean.mail}" label="Mailv"/>
             	<p:message for="mailv"/>
-				
+	</center>				
 			</h:panelGrid>
 				
 				<p:commandButton value="Send" update="regGrid" icon="ui-icon-check" validateClient="true"

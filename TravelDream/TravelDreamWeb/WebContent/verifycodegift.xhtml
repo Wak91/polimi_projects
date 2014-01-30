@@ -19,8 +19,9 @@
 				<p:outputLabel for="codice" value="Codice Gift" />
 				<p:inputText id="codice" name="codice" binding="#{cod}"/>
 				<p:message for="codice"/>
-				<p:commandButton value="Submit" action="#{answerGift.verifyCode(cod.value)}" >
-				</p:commandButton>
+				<h:form>
+				<p:commandButton value="Submit" action="#{answerGift.verifyCode(cod.value)}" />
+				</h:form>
 			</h:panelGrid>
 		</form>
 		</section>

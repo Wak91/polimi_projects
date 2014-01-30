@@ -181,7 +181,6 @@ public int cercaHotelSalvato(HotelDTO hdto)
 }
 
 
-@Override
 public int cercaVoloSalvato(VoloDTO vdto) {
 	
 	List<VoloSalvato> myList;
@@ -202,7 +201,6 @@ public int cercaVoloSalvato(VoloDTO vdto) {
 	
 }
 
-@Override
 public int cercaEscursioneSalvata(EscursioneDTO edto) {
 	
 	List<EscursioneSalvata> myList;
