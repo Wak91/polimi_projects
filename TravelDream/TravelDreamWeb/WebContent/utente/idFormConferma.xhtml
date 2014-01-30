@@ -32,9 +32,10 @@
 			</div>
 		</div>  		
 	<h:form>
-		<p:panel header="ID">
+		<p:panel>
 			<h:panelGrid columns="2" id="regGrid">
-				
+			
+				<h:outputLabel for="idv" value="Conferma l'invito ricevuto da un amico!"/><br></br> 
 				<h:outputLabel for="idv" value="Inserisci qui l'ID ricevuto: "/> 
 				<h:messages globalOnly="true" />
             	<p:inputText id="idv" value="#{InvitoBean.id_amico}" label="Idv"/>  
