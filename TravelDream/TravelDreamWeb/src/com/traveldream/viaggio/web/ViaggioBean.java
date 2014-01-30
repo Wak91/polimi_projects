@@ -70,6 +70,7 @@ public class ViaggioBean {
 	private ArrayList<HotelDTO> filteredHotels;
 	private ArrayList<EscursioneDTO> filteredEscursiones;
 	private ArrayList<VoloDTO> filteredVolos;
+	private ArrayList <VoloDTO> filteredVolosRitorno;
     
 	private PacchettoDTO packet;
 
@@ -80,6 +81,7 @@ public class ViaggioBean {
     private int n_partecipanti;
     private int quotacomplessiva;
     private int quotapp;
+    private int last_id;
     
     private ArrayList <PrenotazioneDTO> lista_prenotazioni;
    
@@ -120,12 +122,20 @@ public class ViaggioBean {
 	
 
 	public void getPacchettoById(int id)
-	{	 
+	{	 if (last_id==0) {
+		last_id=id;
+	}
+	try {
  		 this.packet = PMB.getPacchettoByID(id);
-		 setHotelModels(new HotelDataModel(packet.getLista_hotel()));	
-		 setVoloModels_a(new VoloDataModel(packet.getLista_voli_andata()));
-		 setVoloModels_r(new VoloDataModel(packet.getLista_voli_ritorno()));
-		 setEscModels(new EscDataModel(packet.getLista_escursioni()));
+
+	} catch (Exception e) {
+		 this.packet = PMB.getPacchettoByID(last_id);
+
+	}
+		 filteredHotels=(ArrayList<HotelDTO>)packet.getLista_hotel();	
+		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
+		 setFilteredVolosRitorno((ArrayList<VoloDTO>)packet.getLista_voli_ritorno());	
+		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
 		 this.viaggio.setData_inizio(packet.getData_inizio());
 		 this.viaggio.setData_fine(packet.getData_fine());
 	}
@@ -476,4 +486,12 @@ public class ViaggioBean {
   		 this.packet = PMB.getPacchettoByID(id);
   		 return "creaviaggio.xhtml";
        }
+
+	public ArrayList <VoloDTO> getFilteredVolosRitorno() {
+		return filteredVolosRitorno;
+	}
+
+	public void setFilteredVolosRitorno(ArrayList <VoloDTO> filteredVolosRitorno) {
+		this.filteredVolosRitorno = filteredVolosRitorno;
+	}
 }
