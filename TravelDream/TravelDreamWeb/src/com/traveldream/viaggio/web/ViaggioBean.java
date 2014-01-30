@@ -329,6 +329,8 @@ public class ViaggioBean {
 
 	public String acquista_paga()
 	{
+		
+
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null 
 			|| viaggio.getData_fine() == null || viaggio.getData_inizio() == null)
 		  {
@@ -348,6 +350,7 @@ public class ViaggioBean {
 		//Occhio che qua controlla anche che l'ora del volo combaci con l'ora di partenza
 		// del viaggio, DA METTERE A POSTO!!!
 		//Possibili errori durante la creazione---------------------------------
+;
 		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
 		   check_giorni_coperti()== 0  ||
 		   escOutOfData() == 1 ||
