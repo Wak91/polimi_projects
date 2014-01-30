@@ -116,7 +116,7 @@ public class GiftListBean {
 	
 	public void getGiftList() {
 		UserDTO current_user = userMgr.getUserDTO();
-		this.list_gift = GLM.getGiftListDTO(current_user);
+		setGiftDataModel(new GiftDataModel(GLM.getGiftListDTO(current_user)));
 	}
 	//calcolo dei cost da visualizzare dialog
 	public int calcolaCostoHotel(){

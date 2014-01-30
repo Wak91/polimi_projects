@@ -106,7 +106,7 @@ public class InvitoBean {
 		UserDTO current_user = userMgr.getUserDTO();
 		System.out.println("Current:" +current_user.getUsername());
 		
-		this.lista_inviti = IMB.cercaInvito(current_user);
+		setInvmodels(new InvDataModel ( IMB.cercaInvito(current_user) ));
 	}
 	
     public InvDataModel getInvmodels() {

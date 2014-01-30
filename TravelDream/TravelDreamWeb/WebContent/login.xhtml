@@ -24,15 +24,18 @@
 				</div>
 				<div>
 					<input type="submit" value="Login" />
-					<a href="#">Register</a>
+						    <h:link value="Register" outcome="register" />
+					
 				</div>
 				
 		</form>
 		<h:form rendered="#{param['user']}">
-			<h:link value="Register" outcome="register" />
-       </h:form>      
-       	<h:link value="Inserisci Codice Gift" outcome="verifycodegift"/>
-
+			<br></br>
+		<h:link value="Inserisci Codice Gift" outcome="verifycodegift"/>
+		<br></br>
+        <h:link outcome = "amico/idForm" value="Hai ricevuto un id viaggio da un amico?"/>
+        <br></br>
+       </h:form> 
 	</section>
 </div>
 
