@@ -73,12 +73,48 @@
               </p:dataTable>
               
                     
-                    <p:dialog id="showDet" header="Dettagli" widgetVar="dlgdet" resizable="true" >  
-  					 <h:panelGrid id="displayv" columns="2" cellpadding="4" style="margin:0 auto;">  
-  
- 			           <h:outputText value="Nome:  " />  
-            		   <h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.nome}" style="font-weight:bold"/>  
-       	     		 </h:panelGrid>                           
+                    <p:dialog id="showDet" header="Dettagli" widgetVar="dlgdet" resizable="true" > 
+                      
+ 			           <h:outputText value="Destinazione e periodo:  "  style="font-weight:bold" />  <br></br>
+            		   <h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.luogo}"/>
+            		   <br></br>            		   
+            		   <h:outputText value="Dal" />  &nbsp;
+                       <h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.data}" />  
+       	     		   <br></br>
+       	     		   <h:outputText value="Al" />  &nbsp;
+                       <h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.data}"/>  
+       	     		   <br></br>
+       	     		   
+       	     		   <h:outputText value="--Hotel--" style="font-weight:bold"/><br></br>
+       	     		   Nome &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.nome}" />  <br></br>     	     		   
+       	     		   Stelle &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.stelle}"/> <br></br>
+       	     		   Costo al giorno &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.costo_giornaliero}"/><br></br>
+       	     		   <br></br>
+       	     		   <h:outputText value="--Volo andata--" style="font-weight:bold"/><br></br>
+       	     		   Compagnia &nbsp; <h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.compagnia}"/> <br></br>       	     		   
+       	     		   Data &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.data}"/> <br></br>  	     		   
+       	     		   Luogo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.luogo_partenza}" />  <br></br> 
+       	     		   Costo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.costo}" />  <br></br> 
+       	     		   <h:outputText value="--Volo ritorno--" style="font-weight:bold"/><br></br>
+       	     		   Compagnia &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.compagnia}" /> <br></br>       	     		   
+       	     		   Data &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.data}"/> <br></br>  	     		   
+       	     		   Luogo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.luogo_partenza}" />  <br></br> 
+       	     		   Costo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.costo}" />  <br></br> 
+       	     		   
+       	     		   <h:outputText value="--Escursioni--" style="font-weight:bold"/><br></br>    	 
+  					   <ui:repeat var="esc" value="#{ViaggioBean.selectedpre.viaggio.lista_escursioni}">
+	   				    Nome:&nbsp;<h:outputText value="#{esc.nome}"> </h:outputText> <br></br>
+	                    Costo:&nbsp;<h:outputText value="#{esc.costo}"> &nbsp; € </h:outputText> <br></br>
+	                    Data:&nbsp;<h:outputText value="#{esc.data}">     			        	
+	                    <f:convertDateTime pattern="dd/MM/yyyy" />
+	                   </h:outputText> 
+	                   <br></br>
+    				   </ui:repeat>       	     		       	 
+       	     		        		   
+       	     		   
+       	     		 
+       	     		 
+       	     		 
                     </p:dialog> 
               </h:form>
                        

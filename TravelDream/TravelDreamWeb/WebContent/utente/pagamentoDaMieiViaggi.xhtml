@@ -18,7 +18,7 @@
 				</div>
 				<div class="top-nav">
 					<ul>
-						<li class="active"><a href="userhome.xhtml">Home</a></li>
+						<li><a href="userhome.xhtml">Home</a></li>
 						<li><a href="personaldata.xhtml">MyAccount</a></li>
 						<li class="active"><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
 						<li><a href="giftlist.xhtml">GiftList</a></li>
@@ -51,11 +51,7 @@
             					<p:password id="pwd1" value="#{ViaggioBean.password1}" match="pwd2" label="Password 1" required="true"/>  
 						    	
 						    	<h:outputLabel for="cartacredito">Conferma codice carta di credito</h:outputLabel>
-            					<p:password id="pwd2" value="#{ViaggioBean.password1}" label="Password 2" required="true"/> 
-						   
-						   
-						    	<h:outputLabel for="date">Data di nascita:</h:outputLabel>
-								<p:calendar id="date" value="#{userBean.user.data}" pattern="dd/MM/yyyy" navigator="true" display="inline"/>  
+            					<p:password id="pwd2" value="#{ViaggioBean.password1}" label="Password 2" required="true"/> 						   
 						   <div>
 						   			 <h:commandButton value="Prenota ora!" update="regGrid"
 			                         action="#{ViaggioBean.creaPrenotazione}" />

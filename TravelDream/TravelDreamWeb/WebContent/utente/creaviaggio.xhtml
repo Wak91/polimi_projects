@@ -56,14 +56,12 @@
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 				<br></br>
-			<h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="300" width="1080"/> 
 			</center>
 			<br></br>
-			<table  bgcolor= "#012231" width="100%" align="center">
+			<table width="100%" align="center">
                 <tr>
                     <td width="30%" ><div class="searchbar"> 
 		       	      <h:form id="filterform">   
-						<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
 		       	      
 		              <section id="bar2">
 		              <h:outputLabel>DATE DEL VIAGGIO?*:</h:outputLabel><br></br>
@@ -99,12 +97,9 @@
 				     </h:form>	
 		             </div></td>
                     <td width="70%">
-                    <div class ="ttext">Scegli tra la vasta gamma di proposte disponibili nel 
-                    pacchetto un hotel, un volo di andata, uno di ritorno e delle escursioni!
-                    Completa il tuo viaggio acquistando con carta di credito, oppure condividendolo
-                    con i tuoi amici! 
+                       <h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="315" width="1051"/> 
+                  
                    
-					</div>
 					</td>
                 </tr>
 			</table>
@@ -114,6 +109,7 @@
 		       
 		       <br></br>
 		       		<div class="content">
+		<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
 		       
 		<div class="specials">
 					<div class="specials-heading">

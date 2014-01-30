@@ -78,6 +78,16 @@ img{max-width:100%;}
 		
 }
 
+.emphasis{
+	
+	    color: #FFA500;
+	        font-family: 'Roboto',sans-serif;
+	            font-size: 1.5em;
+	        
+	    
+	
+}
+
 .ttext{
 	
      background: none repeat scroll 0 0 #012231;
@@ -89,12 +99,14 @@ img{max-width:100%;}
 
 #bar2{
 	
+   
     background: none repeat scroll 0 0 #012231;
-    display: block;
-    border: 0px solid #CCFFFF;
+    border: 0 solid #CCFFFF;
+    display: table-caption;
     font-family: 'Roboto',sans-serif;
     font-size: 0.975em;
-    padding: 5px 39px;
+    padding: 5px 30px;
+
 }
 
 #bar2 outputLabel { 	
