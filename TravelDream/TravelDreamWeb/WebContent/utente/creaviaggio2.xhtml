@@ -52,6 +52,8 @@
 				<h:outputText id="datef" value="#{ViaggioBean.packet.data_fine}" >
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
+				<br></br>
+			<h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="400" width="1280"/> 
 			</center>
 			<br></br>
 			<table  bgcolor= "#012231" width="100%" align="center">
@@ -297,6 +299,7 @@
 		</div>
 			<div class="clear"> </div>
 			<center>
+			<br></br><br></br>
 		<h:commandButton value="Acquista viaggio" styleClass="button" 
 				action="#{ViaggioBean.acquista_paga()}" icon="ui-icon-script"/>
 				
