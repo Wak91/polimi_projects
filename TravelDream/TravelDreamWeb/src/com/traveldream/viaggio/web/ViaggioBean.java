@@ -426,6 +426,9 @@ public class ViaggioBean {
 		return 0;
 		
 	}
+	public void updateQuotaComp(){
+		quotacomplessiva = n_partecipanti*quotapp;
+	}
 	
 	public void calcoloquota()
 	{
