@@ -18,10 +18,11 @@
 				</div>
 				<div class="top-nav">
 					<ul>
-						<li class="active"><a href="userhome.xhtml">Home</a></li>
-						<li><a href="personaldata2.xhtml">MyAccount</a></li>
-						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li class="active"><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
 						<li><a href="giftlist.xhtml">GiftList</a></li>
+						<li><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
 					    <li><h:form>
 						<p:commandLink action="#{userBean.logout}" value="Logout" />
 			    </h:form></li>
@@ -43,8 +44,9 @@
 		<div class="content">
 			<div class="wrap">
 			<div class="content-grids">
-			<p:dataTable id="Prenotazioni" var="pre" value="#{ViaggioBean.premodels}" selectionMode="single" selection="#{tableBean.selectedpre}" paginator="true" rows="5"
-       rowKey="#{pre.id}">  
+			<p:dataTable id="Prenotazioni" var="pre" value="#{ViaggioBean.premodels}" 
+			 selectionMode="single" selection="#{ViaggioBean.selectedpre}" paginator="true" rows="5"
+      		 rowKey="#{pre.id}">  
                                 
                 <p:column headerText="Codice prenotazione" style="width:25%"  >  
                   <h:outputText value="#{pre.id}" />  
@@ -56,9 +58,29 @@
   
                 <p:column headerText="Prezzo totale" style="width:24%" >  
                 <h:outputText value="#{pre.costo}" />    
-                </p:column>                  
+                </p:column> 
+                
+              <p:column headerText="Dettagli" style="width:25%" >  
+              <p:commandButton id="basic" update=":detv:showDet"  value="show dettagli" oncomplete="PF('dlgdet').show();">  
+                 <f:setPropertyActionListener value="#{pre}" target="#{ViaggioBean.selectedpre}" />
+               </p:commandButton>               
+                </p:column>  
+               
+               
                
               </p:dataTable>
+              
+              <h:form id="detv">
+                    
+                    <p:dialog id="showDet" header="Dettagli" widgetVar="dlgdet" resizable="true" >  
+  					 <h:panelGrid id="displayv" columns="2" cellpadding="4" style="margin:0 auto;">  
+  
+ 			           <h:outputText value="Nome" />  
+            		   <h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.nome}" style="font-weight:bold"/>  
+       	     		 </h:panelGrid>                           
+                    </p:dialog> 
+              </h:form>
+                       
 				
 				<div class="clear"> </div>
 			</div>
@@ -221,6 +243,7 @@
         
         </p:dataTable>                      
              
+             
                      
 			</h:panelGroup>
 			
@@ -236,26 +259,9 @@
 			<div class="footer-grids">
 				<div class="footer-grid">
 					<h3>EXTRAS</h3>
-					<p>Ut rutrum neque a mollis laoreet diam enim feuiat dui nec ulacoper quam felis id diam. Nunc ut tortor ligula eu petiu risus. Pelleesque conquat dignissim lacus quis altrcies.</p>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
 				</div>
-				<div class="footer-grid">
-					<h3>RECENT POSTS</h3>
-					<ul>
-						<li><a href="#">Vestibulum felis</a></li>
-						<li><a href="#">Mauris at tellus</a></li>
-						<li><a href="#">Donec ut lectus</a></li>
-						<li><a href="#">vitae interdum</a></li>
-					</ul>
-				</div>
-				<div class="footer-grid">
-					<h3>USEFUL INFO</h3>
-					<ul>
-						<li><a href="#">Hendrerit quam</a></li>
-						<li><a href="#">Amet consectetur </a></li>
-						<li><a href="#">Iquam hendrerit</a></li>
-						<li><a href="#">Donec ut lectus </a></li>
-					</ul>
-				</div>
+			
 				<div class="footer-grid footer-lastgrid">
 					<h3>CONTACT US</h3>
 					<p>Per informazioni contattaci</p>

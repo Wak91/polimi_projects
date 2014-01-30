@@ -1,6 +1,7 @@
 package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -607,5 +608,10 @@ public class ViaggioBean {
 
 		public void setEsc(EscursioneDTO esc) {
 			this.esc = esc;
+		}
+		
+		public void caricaDialogViaggio()
+		{
+	       
 		}
 }
