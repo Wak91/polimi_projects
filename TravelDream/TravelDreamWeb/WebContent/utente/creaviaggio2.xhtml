@@ -10,12 +10,7 @@
 
 	<ui:define name="content">
        #{ViaggioBean.getPacchettoById(param['id'])}
-       <script type="javascript">
-			function selectItem(param){
-alert("cdscds");
-				param.parent().parent().css( 'background-color', '#FFFFCC' );
-				}
-		</script>
+
 
 			<div class="header">
 				<div class="wrap">
@@ -69,13 +64,13 @@ alert("cdscds");
 		              <h:outputLabel>FILTRA LA TUA RICERCA!:</h:outputLabel><br></br>
 		              <hr></hr>
 				      <h:outputLabel>DA QUANDO?:</h:outputLabel><br></br>
-				      <p:calendar id="datei" value="#{ViaggioBean.data_arrivo}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
+				      <p:calendar id="datei" value="#{ViaggioBean.viaggio.data_inizio}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
 				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
 				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
 				      </p:calendar>  
     		          <br></br>
     		          <h:outputLabel>A QUANDO?:</h:outputLabel><br></br>
-				      <p:calendar id="datef" value="#{ViaggioBean.data_partenza}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
+				      <p:calendar id="datef" value="#{ViaggioBean.viaggio.data_fine}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
 				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
 				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
 				      </p:calendar>  
@@ -89,7 +84,10 @@ alert("cdscds");
 				      <p:inputText id="stars" value="#{ViaggioBean.stelle}">
 				    	<p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" />
 				      </p:inputText>
+				      
     		          <br></br> 
+    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update="@([id$=viaggioitems])"/>
+    		           <br></br> 
 				      </section>
 				     </h:form>	
 		             </div></td>

@@ -87,8 +87,7 @@ public class ViaggioBean {
     int last_id;
     //filtri
     String partenza;
-    Date data_partenza; 
-    Date data_arrivo; 
+ 
     Integer stelle;
 
 
@@ -107,7 +106,7 @@ public class ViaggioBean {
 
 	
 	public void filterViaggio(){
-		if (data_partenza!=null &&data_arrivo!=null &&data_partenza.after(data_arrivo)){
+		if (viaggio.getData_inizio()!=null &&viaggio.getData_fine()!=null &&viaggio.getData_inizio().after(viaggio.getData_fine())){
 			  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "La data di fine deve essere successiva a quella di inizio"));  	
 
 		}
@@ -121,7 +120,7 @@ public class ViaggioBean {
 	public ArrayList<VoloDTO> filterVoliA(PacchettoDTO packet) {
 		ArrayList<VoloDTO> voli =new ArrayList<VoloDTO>();
 		for (VoloDTO voloDTO : packet.getLista_voli_andata()) {
-			if((data_arrivo==null || voloDTO.getData().equals(data_arrivo)) &&
+			if((viaggio.getData_inizio()==null || voloDTO.getData().equals(viaggio.getData_inizio())) &&
 					(partenza==null || partenza.equals("") || partenza.equals(voloDTO.getLuogo_partenza()))){
 				voli.add(voloDTO);
 			}
@@ -131,8 +130,7 @@ public class ViaggioBean {
 	public ArrayList<VoloDTO> filterVoliR(PacchettoDTO packet) {
 		ArrayList<VoloDTO> voli =new ArrayList<VoloDTO>();
 		for (VoloDTO voloDTO : packet.getLista_voli_ritorno()) {
-			System.out.println("volo arrrico "+voloDTO.getLuogo_arrivo());
-			if((data_partenza==null || voloDTO.getData().equals(data_partenza)) &&
+			if((viaggio.getData_fine()==null || voloDTO.getData().equals(viaggio.getData_fine())) &&
 					(partenza==null || partenza.equals(voloDTO.getLuogo_arrivo()) ||  partenza.equals("")) ){
 				voli.add(voloDTO);
 			}
@@ -143,7 +141,7 @@ public class ViaggioBean {
 	public ArrayList<EscursioneDTO> filterEscursioni(PacchettoDTO pacchettoDTO){
 		ArrayList<EscursioneDTO> filtered = new ArrayList<EscursioneDTO>();
 		for (EscursioneDTO escursioneDTO : pacchettoDTO.getLista_escursioni()) {
-			if(data_arrivo==null || data_partenza==null || (escursioneDTO.getData().after(data_arrivo)&&escursioneDTO.getData().before(data_partenza))){
+			if(viaggio.getData_inizio()==null || viaggio.getData_fine()==null || (escursioneDTO.getData().after(viaggio.getData_fine())&&escursioneDTO.getData().before(viaggio.getData_inizio()))){
 				filtered.add(escursioneDTO);
 			}
 		}
@@ -159,6 +157,12 @@ public class ViaggioBean {
 		return filtered;
 	}
 	
+	public void showAll(){
+		 filteredHotels=(ArrayList<HotelDTO>)packet.getLista_hotel();	
+		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
+		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	
+		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
+	}
 	
 
 	public void selezionaEsc(){
@@ -577,24 +581,6 @@ public class ViaggioBean {
 		}
 
 
-		public Date getData_partenza() {
-			return data_partenza;
-		}
-
-
-		public void setData_partenza(Date data_partenza) {
-			this.data_partenza = data_partenza;
-		}
-
-
-		public Date getData_arrivo() {
-			return data_arrivo;
-		}
-
-
-		public void setData_arrivo(Date data_arrivo) {
-			this.data_arrivo = data_arrivo;
-		}
 
 
 		public Integer getStelle() {
