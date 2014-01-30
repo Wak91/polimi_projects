@@ -1,28 +1,49 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<ui:composition  
-      xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      template="Template.xhtml"
->
-       <ui:define name="content">
-      <p:tabMenu activeIndex="2">  
-     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
-     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
-     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
-     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
-     </p:tabMenu>  
-       
-       <h:form id="myform">
-     
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<ui:composition template="Template.xhtml">
+
+	<ui:define name="content">
        #{ViaggioBean.getPrenotazioni()}
-       PRENOTAZIONI CONFERMATE                   
-   				 <p:contextMenu for="Prenotazioni">  
-        		 <p:menuitem value="View" update="display" icon="ui-icon-search" oncomplete="PF('preDialog').show()"/>  
-    			</p:contextMenu>  
-       <p:dataTable id="Prenotazioni" var="pre" value="#{ViaggioBean.premodels}" selectionMode="single" selection="#{tableBean.selectedpre}" paginator="true" rows="5"
+       #{InvitoBean.getInviti()}
+			<div class="header">
+				<div class="wrap">
+				
+				<div class="logo">
+					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li class="active"><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata2.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+					    <li><h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			    </h:form></li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>
+										
+		<div class="clear"> </div>
+		       <br></br>
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Le tue prenotazioni</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+					</div>
+		<div class="content">
+			<div class="wrap">
+			<div class="content-grids">
+			<p:dataTable id="Prenotazioni" var="pre" value="#{ViaggioBean.premodels}" selectionMode="single" selection="#{tableBean.selectedpre}" paginator="true" rows="5"
        rowKey="#{pre.id}">  
                                 
                 <p:column headerText="Codice prenotazione" style="width:25%"  >  
@@ -35,47 +56,23 @@
   
                 <p:column headerText="Prezzo totale" style="width:24%" >  
                 <h:outputText value="#{pre.costo}" />    
-                </p:column>  
-  
-                <p:column headerText="Dal" style="width:24%" >  
-                <h:outputText value="#{pre.viaggio.data_inizio}">
-                <f:convertDateTime pattern="dd/MM/yyyy" />
-                </h:outputText>    
-                </p:column>  
-                
-                <p:column headerText="Al" style="width:24%" >  
-                <h:outputText value="#{pre.viaggio.data_fine}">
-    			<f:convertDateTime pattern="dd/MM/yyyy" />
-				</h:outputText>
-                  
-                </p:column>  
+                </p:column>                  
                
               </p:dataTable>
-              
-               <p:dialog header="Dettagli prenotazione" widgetVar="preDialog" resizable="false"  
-              width="200" showEffect="clip" hideEffect="fold" id="dialog">  
-  
-        <h:panelGrid id="display" columns="2" cellpadding="4">  
-  
-  
-  	        <h:outputText value="Destinazione" />  
-            <h:outputText value="#{ViaggioBean}" style="font-weight:bold"/>  
- 
-            <h:outputText value="Hotel" />  
-            <h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.nome}" style="font-weight:bold"/>  
-  
-            <h:outputText value="Volo andata:" />  
-            <h:outputText value="#{ViaggioBean.selectedVolo_a.data}" style="font-weight:bold"/>   
-            
-        </h:panelGrid>  
-        </p:dialog> 
-        
-        <br></br>
-        <br></br>
-        
-       #{InvitoBean.getInviti()}
- 
-   		<p:dataTable id="tab"    				 	
+				
+				<div class="clear"> </div>
+			</div>
+			<div class="clear"> </div>
+			<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Stato inviti</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+					<div class="clear"> </div>
+					
+					<h:panelGroup id="inlist">
+				
+<p:dataTable id="tab"    				 	
 	    var="invito" 	
         value="#{InvitoBean.invmodels}" 
    		paginator="true" 
@@ -141,15 +138,11 @@
                             </p:column> 
                             
                             
-                     </p:dataTable>                
-                </p:dialog>       
-        </p:column>                          
-      
-                
-                
-                
-                
-                <p:column headerText="Volo Andata" style="width:25%" >  
+                     </p:dataTable>
+                     </p:dialog>
+                     </p:column>
+                     
+                      <p:column headerText="Volo Andata" style="width:25%" >  
                 <p:commandButton id="basicVA" value="show voli" onclick="PF('dlg1').show();" type="button" />                  
                 <p:dialog id="dialogva" header="Volo Andata" widgetVar="dlg1" dynamic="true" resizable="true">                
                 <p:dataTable id="VoliListA" var="volo2" value="#{invito.viaggio.volo_andata}" scrollable="false">
@@ -228,7 +221,59 @@
         
         </p:dataTable>                      
              
-                    
-  </h:form>
-</ui:define>
-</ui:composition>
+                     
+			</h:panelGroup>
+			
+					
+					<div class="clear"> </div>
+			</div>
+			</div>	
+			<div class="clear"> </div>
+		</div>
+		<div class="clear"> </div>
+		<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>Ut rutrum neque a mollis laoreet diam enim feuiat dui nec ulacoper quam felis id diam. Nunc ut tortor ligula eu petiu risus. Pelleesque conquat dignissim lacus quis altrcies.</p>
+				</div>
+				<div class="footer-grid">
+					<h3>RECENT POSTS</h3>
+					<ul>
+						<li><a href="#">Vestibulum felis</a></li>
+						<li><a href="#">Mauris at tellus</a></li>
+						<li><a href="#">Donec ut lectus</a></li>
+						<li><a href="#">vitae interdum</a></li>
+					</ul>
+				</div>
+				<div class="footer-grid">
+					<h3>USEFUL INFO</h3>
+					<ul>
+						<li><a href="#">Hendrerit quam</a></li>
+						<li><a href="#">Amet consectetur </a></li>
+						<li><a href="#">Iquam hendrerit</a></li>
+						<li><a href="#">Donec ut lectus </a></li>
+					</ul>
+				</div>
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> rikimotta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+		</ui:define>
+		</ui:composition>
+</html>
+

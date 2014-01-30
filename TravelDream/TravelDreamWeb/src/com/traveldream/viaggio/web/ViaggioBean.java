@@ -1,12 +1,14 @@
 package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
+import sun.util.calendar.LocalGregorianCalendar.Date;
+
 import javax.faces.context.FacesContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
@@ -69,8 +71,7 @@ public class ViaggioBean {
 	private ArrayList<HotelDTO> filteredHotels;
 	private ArrayList<EscursioneDTO> filteredEscursiones;
 	private ArrayList<VoloDTO> filteredVolos;
-	private ArrayList<VoloDTO> filteredVolosRitorno;
-	
+	private ArrayList <VoloDTO> filteredVolosRitorno;
     
 	private PacchettoDTO packet;
 
@@ -81,10 +82,10 @@ public class ViaggioBean {
     private int n_partecipanti;
     private int quotacomplessiva;
     private int quotapp;
+    private int last_id;
     
     private ArrayList <PrenotazioneDTO> lista_prenotazioni;
    
-    int last_id;
     //filtri
     String partenza;
  
@@ -212,7 +213,7 @@ public class ViaggioBean {
 		last_id=id;
 	}
 	try {
-		 this.packet = PMB.getPacchettoByID(id);
+ 		 this.packet = PMB.getPacchettoByID(id);
 
 	} catch (Exception e) {
 		 this.packet = PMB.getPacchettoByID(last_id);
@@ -230,7 +231,7 @@ public class ViaggioBean {
 	public void getPrenotazioni()
 	{
 		UserDTO current_user = userMgr.getUserDTO();
-		this.setLista_prenotazioni(BMB.cercaPrenotazione(current_user));
+	    setPremodels(new PreDataModel(BMB.cercaPrenotazione(current_user)));
 	}
 	
 	public VoloDTO getSelectedVolo_a() {
@@ -315,16 +316,8 @@ public class ViaggioBean {
 			this.premodels = premodels;
 		}
 
-    
 		
-	public ArrayList<VoloDTO> getFilteredVolosRitorno() {
-		return filteredVolosRitorno;
-	}
-
-
-	public void setFilteredVolosRitorno(ArrayList<VoloDTO> filteredVolosRitorno) {
-		this.filteredVolosRitorno = filteredVolosRitorno;
-	}
+	
 
 
 	public String acquista_paga()
@@ -346,9 +339,6 @@ public class ViaggioBean {
 		//per semplicità che l'hotel sia sempre disponibile nelle date scelte del viaggio
 		//Controllo anche che le date del viaggio non sparino fuori dalla disponibilità del pack
 		
-		
-		//Occhio che qua controlla anche che l'ora del volo combaci con l'ora di partenza
-		// del viaggio, DA METTERE A POSTO!!!
 		//Possibili errori durante la creazione---------------------------------
 ;
 		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
@@ -360,16 +350,15 @@ public class ViaggioBean {
 		{  
 			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
 			//DEBUG
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 			return "userhome.xhtml?faces-redirect=true";
 
 		}
-		System.out.println("ok");
 		return "pagamento.xhtml?faces-redirect=true"; 	
 	}
 	
@@ -603,7 +592,16 @@ public class ViaggioBean {
 		public void setLista_prenotazioni(ArrayList <PrenotazioneDTO> lista_prenotazioni) {
 			this.lista_prenotazioni = lista_prenotazioni;
 		}
+			
+       public String poutcome(int id)
+       {
+  		 this.packet = PMB.getPacchettoByID(id);
+  		 return "creaviaggio.xhtml";
+       }
 
+	public ArrayList <VoloDTO> getFilteredVolosRitorno() {
+		return filteredVolosRitorno;
+	}
 
 		public EscursioneDTO getEsc() {
 			return esc;
@@ -613,33 +611,4 @@ public class ViaggioBean {
 		public void setEsc(EscursioneDTO esc) {
 			this.esc = esc;
 		}
-			
-	/*
-	 * dovrebbe servire per filtrare i risultati in base alle date di inzio e fine del viaggio ( TODO )
-	public void filterComponents(){
-		
-		 filteredEscursiones = PMB.getListaEscursioniCompatibili(packet.getDestinazione(), this.data_inizio, this.data_fine);
-		 filteredHotels = PMB.getListaHotelCompatibili(packet.getDestinazione(), this.data_inizio, this.data_fine);
-		 
-		 filteredVolos = PMB.getListaVoliCompatibili(packet.getDestinazione(), this.data_inizio, this.data_fine);
-		
-		 ArrayList <VoloDTO> filteredVolo_a = new ArrayList <VoloDTO>();
-		 ArrayList <VoloDTO> filteredVolo_r = new ArrayList <VoloDTO> ();
-		 
-		 for(VoloDTO v: filteredVolos)
-		    {
-			 if(v.getLuogo_partenza().equals(this.packet.getDestinazione()))
-				 filteredVolo_a.add(v);
-			 else
-				 
-		    }
-		 
-		 setHotelModels(new HotelDataModel(filteredHotels));	
-		 setVoloModels(new VoloDataModel(filteredVolos));
-		 setEscModels(new EscDataModel(filteredEscursiones));
-	}
-	*/
-		
-		
-		
 }

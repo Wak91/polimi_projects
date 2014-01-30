@@ -1,181 +1,364 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<ui:composition  
-      xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      template="Template.xhtml">
-       
-       <ui:define name="content">
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<ui:composition template="Template.xhtml">
+
+
+	<ui:define name="content">
        #{ViaggioBean.getPacchettoById(param['id'])}
-	    <h:form enctype="multipart/form-data">
-	    <p:tabMenu activeIndex="0">  
-     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
-     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
-     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
-     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
-     </p:tabMenu>   
-     
-		<p:panel header="Packet exploration">
-			
-			<h:panelGrid columns="0" id="regGrid">
-			
-			   	
-			   	<h:graphicImage value="../images/#{ViaggioBean.packet.pathtoImage}" width="100%" height="200"/> 
-			    <br></br>
-			
-				<h:outputLabel for="nome">Nomedew:</h:outputLabel>
-				<h:outputText id="nome" value="#{ViaggioBean.packet.nome}" />
+
+
+			<div class="header">
+				<div class="wrap">
 				
-				<h:outputLabel for="luogo">Destinazione:</h:outputLabel>
-				<h:outputText id="luogo" value="#{ViaggioBean.packet.destinazione}" />
-				
-				<h:outputLabel for="datei">Data Inizio Validità</h:outputLabel>
+				<div class="logo">
+					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li class="active"><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+					    <li><h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			    </h:form></li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>
+		<br></br>
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>#{ViaggioBean.packet.nome}</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+			<div class="clear"> </div>
+			<br></br>
+			<center> 
 				<h:outputText id="datei" value="#{ViaggioBean.packet.data_inizio}" >
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
-				
-				<h:outputLabel for="datef">Data Fine Validità</h:outputLabel>
-				<h:outputText id="datef" value="#{ViaggioBean.packet.data_fine}">				
-			 	<f:convertDateTime pattern="dd/MM/yyyy" />
-			 	</h:outputText>
-			    	
-			    <h:outputLabel for="datef">Quando vuoi partire?</h:outputLabel>
-				<p:calendar id="datei2" value="#{ViaggioBean.viaggio.data_inizio}" pattern="dd/MM/yyyy" navigator="true" display="inline" >
-				</p:calendar>
-				
-				<h:outputLabel for="datef">Quando vuoi rientrare?</h:outputLabel>
-				<p:calendar id="datef2" value="#{ViaggioBean.viaggio.data_fine}" pattern="dd/MM/yyyy" navigator="true" display="inline" >
-				</p:calendar>
-				
-				
-				<br></br>
-				</h:panelGrid>
-				
-				ELENCO HOTEL   
-				 
-				<p:dataTable id="multiHotels" dynamic="true" var="hotel" value="#{ViaggioBean.hotelModels}" paginator="true" rows="25"  
-                 selection="#{ViaggioBean.selectedHotels}" >  
-                <p:column selectionMode="single" style="width:2%" />  
-  
-                <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{hotel.nome}">  
-                 #{hotel.nome}
-                </p:column>  
-  
-                <p:column headerText="Luogo" style="width:25%" sortBy="luogo" filterBy="#{hotel.luogo}">  
-                #{hotel.luogo}  
-                </p:column>  
-  
-                <p:column headerText="Stelle" style="width:24%" sortBy="stelle" filterBy="#{hotel.stelle}">  
-                #{hotel.stelle}  
-                </p:column>  
-  
-                <p:column headerText="Prezzo a persona" style="width:24%" sortBy="costo_giornaliero" filterBy="#{hotel.costo_giornaliero}" >  
-                #{hotel.costo_giornaliero}  
-                </p:column>  
-              </p:dataTable> 
-				
-				
-		        SCELTA VOLO ANDATA
-		
-				<p:dataTable id="multiVoli" var="volo" value="#{ViaggioBean.voloModels_a}" paginator="true" rows="5"  
-                 selection="#{ViaggioBean.selectedVolo_a}">  
-                
-                <p:column selectionMode="single" style="width:2%" />  
-  
-                <p:column headerText="compagnia" style="width:25%" sortBy="compagnia" filterBy="#{volo.compagnia}">  
-                 #{volo.compagnia}
-                </p:column>  
-  
-                <p:column headerText="data" style="width:25%" sortBy="data" pattern="dd/MM/yyyy" filterBy="#{volo.data}">  
-                <h:outputText value="#{volo.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
-				</h:outputText>   
-                </p:column>  
-  
-                <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{volo.costo}">  
-                #{volo.costo}  
-                </p:column>  
-  
-                <p:column headerText="partenza" style="width:24%" sortBy="luogo_partenza" filterBy="#{volo.luogo_partenza}">  
-                #{volo.luogo_partenza}  
-                </p:column>  
-                
-                 <p:column headerText="arrivo" style="width:24%" sortBy="luogo_arrivo" filterBy="#{volo.luogo_arrivo}">  
-                #{volo.luogo_arrivo}  
-                </p:column>  
-              </p:dataTable> 
-              
-                SCELTA VOLO RITORNO
-		
-				<p:dataTable id="multiVoli_2" var="volo2" value="#{ViaggioBean.voloModels_r}" paginator="true" rows="5"  
-                 selection="#{ViaggioBean.selectedVolo_r}">  
-                
-                <p:column selectionMode="single" style="width:2%" />  
-  
-                <p:column headerText="compagnia" style="width:25%" sortBy="compagnia" filterBy="#{volo.compagnia}">  
-                 #{volo2.compagnia}
-                </p:column>  
-  
-                <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{volo.data}">  
-                <h:outputText value="#{volo2.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy" />
-				</h:outputText> 
-                </p:column>  
-  
-                <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{volo.costo}">  
-                #{volo2.costo}  
-                </p:column>  
-  
-                <p:column headerText="partenza" style="width:24%" sortBy="luogo_partenza" filterBy="#{volo.luogo_partenza}">  
-                #{volo2.luogo_partenza}  
-                </p:column>  
-                
-                 <p:column headerText="arrivo" style="width:24%" sortBy="luogo_arrivo" filterBy="#{volo.luogo_arrivo}">  
-                #{volo2.luogo_arrivo}  
-                </p:column>  
-              </p:dataTable> 
-              
-              SCELTA ESCURSIONI   
-			  	
-				<p:dataTable id="multiEscursioni" var="esc" value="#{ViaggioBean.escModels}" paginator="true" rows="5"  
-                 selection="#{ViaggioBean.selectedEsc}">  
-                
-                <p:column selectionMode="multiple" style="width:2%" />  
-  
-                <p:column headerText="nome" style="width:25%" sortBy="nome" filterBy="#{esc.nome}" >  
-                 #{esc.nome}
-                </p:column>  
-  
-                <p:column headerText="data" style="width:25%" sortBy="data" filterBy="#{esc.data}" >  
-                 <h:outputText value="#{esc.data}">
-    				<f:convertDateTime pattern="dd/MM/yyyy"/>
+				&nbsp;
+				<h:outputLabel for="datef">-</h:outputLabel>
+				&nbsp;
+				<h:outputText id="datef" value="#{ViaggioBean.packet.data_fine}" >
+				<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
-                </p:column>  
-  
-                <p:column headerText="costo" style="width:24%" sortBy="costo" filterBy="#{esc.costo}">  
-                #{esc.costo}  
-                </p:column>  
-  
-                <p:column headerText="luogo" style="width:24%" sortBy="luogo" filterBy="#{esc.luogo}">  
-                #{esc.luogo}  
-                </p:column>  
-                
-              </p:dataTable> 
-								
-                <h:commandButton value="Acquista viaggio" 
-				action="#{ViaggioBean.acquista_paga()}" icon="ui-icon-script"/>
+				<br></br>
+			<h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="300" width="1080"/> 
+			</center>
+			<br></br>
+			<table  bgcolor= "#012231" width="100%" align="center">
+                <tr>
+                    <td width="30%" ><div class="searchbar"> 
+		       	      <h:form>   
+						<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
+		       	      
+		              <section id="bar2">
+		              <h:outputLabel>FILTRA LA TUA RICERCA!:</h:outputLabel><br></br>
+		              <hr></hr>
+				      <h:outputLabel>DA QUANDO?:</h:outputLabel><br></br>
+				      <p:calendar id="datei" value="#{ViaggioBean.viaggio.data_inizio}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
+				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
+				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
+				      </p:calendar>  
+    		          <br></br>
+    		          <h:outputLabel>A QUANDO?:</h:outputLabel><br></br>
+				      <p:calendar id="datef" value="#{ViaggioBean.viaggio.data_fine}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
+				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
+				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
+				      </p:calendar>  
+				      <br></br>
+				      <h:outputLabel>PARTENZA DA?:</h:outputLabel><br></br>
+		              <p:inputText id="where" value="#{ViaggioBean.partenza}">
+		              <p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" /> 
+		              </p:inputText>
+    		          <br></br> 
+				      <h:outputLabel for="starts" >STELLE?:</h:outputLabel><br></br>
+				      <p:inputText id="stars" value="#{ViaggioBean.stelle}">
+				    	<p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" />
+				      </p:inputText>
+				      
+    		          <br></br> 
+    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update="@([id$=viaggioitems])"/>
+    		           <br></br> 
+				      </section>
+				     </h:form>	
+		             </div></td>
+                    <td width="70%">
+                    <div class ="ttext">Scegli tra la vasta gamma di proposte disponibili nel 
+                    pacchetto un hotel, un volo di andata, uno di ritorno e delle escursioni!
+                    Completa il tuo viaggio acquistando con carta di credito, oppure condividendolo
+                    con i tuoi amici! 
+                   
+					</div>
+					</td>
+                </tr>
+			</table>
+				     
+		<h:panelGroup id="viaggioitems">			
+		<div class="clear"> </div>
+		       
+		       <br></br>
+		       		<div class="content">
+		       
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Hotel disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="hotel" value="#{ViaggioBean.filteredHotels}" id="hotelrepeat">
 				
-				<h:commandButton value="Aggiungi alla gift list" update="regGrid"
+		    
+				<div class="grid2">
+				 <div class="left">
+					 <h:graphicImage  value="../images/#{hotel.hotelImg}" height="90" width="90" /> 
+				</div>
+                     <div class="right">
+					#{hotel.nome}<br></br>
+					<h:outputLabel for="costo">Costo</h:outputLabel> &nbsp; &nbsp; 
+					 #{hotel.costo_giornaliero}<br></br>
+				    <p:rating id="stars" value="#{hotel.stelle}" stars="5" cancel="false" readonly="true"/>  
+				    <p:commandButton id="hotelbutton" value="Seleziona" onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.selectedHotels}" value="#{hotel}"/>
+       				 </p:commandButton>
+					 </div>
+				</div>
+				
+				
+				</ui:repeat>
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+		       <br></br>
+		       		<div class="content">
+		       		
+		       		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli andata disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="volo" value="#{ViaggioBean.filteredVolos}">
+				
+				<div class="grid2">
+				<div class="left">
+					 <h:graphicImage  value="../images/#{volo.immagine}" height="90" width="90" /> 
+			    </div>
+			   <div class="right">
+			    
+					#{volo.compagnia}
+					<br></br>
+					<h:outputLabel for="costo">Costo</h:outputLabel> &nbsp; 
+					 #{volo.costo}
+					 <br></br>
+				    <h:outputLabel for="data">Data</h:outputLabel> &nbsp; 
+					 #{volo.data} 
+					 <br></br>
+				     <h:outputLabel for="part">Luogo partenza</h:outputLabel> &nbsp; 
+					 #{volo.luogo_partenza} 
+					 <h:outputLabel for="arr">Luogo arrivo</h:outputLabel> &nbsp; 
+					 #{volo.luogo_arrivo} 
+					  <p:commandButton id="voloabutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_a}" value="#{volo}"/>
+       				</p:commandButton>
+					 
+					 </div>
+				   
+				</div>
+				
+				</ui:repeat>
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+		       <br></br>
+		       		<div class="content">
+		       
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli ritorno disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="volo" value="#{ViaggioBean.filteredVolosRitorno}">
+				
+				<div class="grid2">
+				<div class="left">
+					 <h:graphicImage  value="../images/#{volo.immagine}" height="90" width="90" />
+				</div>
+				<div class="right">
+					#{volo.compagnia}
+					<br></br>
+					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
+					 #{volo.costo}
+				    <br></br>
+				    <h:outputLabel for="username">Data 
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				    </h:outputLabel> &nbsp; 
+					 #{volo.data} 
+					 <br></br>
+				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
+					 #{volo.luogo_partenza} 
+					 <h:outputLabel for="username">Luogo arrivo</h:outputLabel> &nbsp; 
+					 #{volo.luogo_arrivo} 
+					 
+					 <p:commandButton id="volorbutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_r}" value="#{volo}"/>
+       				 </p:commandButton>
+					 
+				   </div>
+				</div>
+				
+				</ui:repeat>
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+
+		       <br></br>
+		       		<div class="content">
+		       
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Escursioni disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="esc" value="#{ViaggioBean.filteredEscursiones}">
+				
+				<div class="grid2">
+				 <div class="left">
+					 <h:graphicImage  value="../images/#{esc.immagine}" height="90" width="90" /> 
+  				 </div>		
+  				  <div class="right">		
+					#{esc.nome}
+					<br></br>
+					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
+					 #{esc.costo}
+					 <br></br>
+				    <h:outputLabel for="username">Data
+				    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				    </h:outputLabel> &nbsp; 
+					 #{esc.data} 
+					 
+					 <p:commandButton id="escbutton" value="Aggiungi" action="#{ViaggioBean.selezionaEsc}" onclick="$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.esc}" value="#{esc}"/>
+       				 </p:commandButton>
+       				 <p:commandButton id="escdeselect" value="Elimina" action="#{ViaggioBean.deselezionaEsc}" onclick="$(this).parent().parent().css( 'background-color', '#FFFFFF' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.esc}" value="#{esc}"/>
+       				 </p:commandButton>
+				   </div>
+				</div>
+				
+				</ui:repeat>
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+		</h:panelGroup>
+		
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Conferma il tuo viaggio!</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+			<div class="clear"> </div>
+			<br></br><br></br>
+		
+		<h:form>
+							<center>
+		
+		<h:commandButton value="Acquista viaggio" styleClass="button" 
+			action="#{ViaggioBean.acquista_paga()}" icon="ui-icon-script"/>
+				
+		<h:commandButton value="Aggiungi alla gift list" styleClass="button" 
 				action="#{ViaggioBean.aggiungi_gift()}" icon="ui-icon-script"/>
 				
-				<h:commandButton value="Invita a partecipare" update="regGrid"
+		<h:commandButton value="Invita a partecipare" styleClass="button" 
 				action="#{ViaggioBean.invita()}" icon="ui-icon-script"/>
+		   </center>   
+		   </h:form>
+		      
+		<div class="clear"> </div>
+		<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>Ut rutrum neque a mollis laoreet diam enim feuiat dui nec ulacoper quam felis id diam. Nunc ut tortor ligula eu petiu risus. Pelleesque conquat dignissim lacus quis altrcies.</p>
+				</div>
+				<div class="footer-grid">
+					<h3>RECENT POSTS</h3>
+					<ul>
+						<li><a href="#">Vestibulum felis</a></li>
+						<li><a href="#">Mauris at tellus</a></li>
+						<li><a href="#">Donec ut lectus</a></li>
+						<li><a href="#">vitae interdum</a></li>
+					</ul>
+				</div>
+				<div class="footer-grid">
+					<h3>USEFUL INFO</h3>
+					<ul>
+						<li><a href="#">Hendrerit quam</a></li>
+						<li><a href="#">Amet consectetur </a></li>
+						<li><a href="#">Iquam hendrerit</a></li>
+						<li><a href="#">Donec ut lectus </a></li>
+					</ul>
+				</div>
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> rikimotta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+		</ui:define>
+		</ui:composition>
+</html>
 
-     
-		</p:panel>
-	   
-	</h:form>
-</ui:define>
-</ui:composition>
