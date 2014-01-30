@@ -87,8 +87,8 @@ public class InvitoBean {
 	}
 	
 	public String submit(){
-		if (invito==null) {
-			System.out.println("null");
+		if (invito==null || amico.equals("")) {
+			return "";
 		} else {
 		
 		invito.setAmico(amico);
