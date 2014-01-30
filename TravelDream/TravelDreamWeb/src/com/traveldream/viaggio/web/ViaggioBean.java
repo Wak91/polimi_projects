@@ -176,6 +176,7 @@ public class ViaggioBean {
 		 restoreSelected();
 		 viaggio.setData_inizio(null);
 		 viaggio.setData_fine(null);
+		 System.out.println();
 	}
 	
 

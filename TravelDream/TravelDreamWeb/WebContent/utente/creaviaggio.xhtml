@@ -93,7 +93,7 @@
 				      </p:inputText>
 				      
     		          <br></br> 
-    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update="@([id$=viaggioitems]) @([id$=filterform])"/>
+    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" process="@this" update=":filterform:datef  @([id$=viaggioitems]) :filterform:datei"/>
     		           <br></br> 
 				      </section>
 				     </h:form>	
