@@ -356,7 +356,7 @@ public class ViaggioBean {
 			return "userhome.xhtml?faces-redirect=true";
 
 		}
-		return "pagamento.xhtml"; 	
+		return "pagamento.xhtml?faces-redirect=true"; 	
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -431,7 +431,7 @@ public class ViaggioBean {
 		
 	    BMB.savePrenotazione(prenotazione);
 	    
-		return "imieiviaggi.xhtml"; 	
+		return "imieiviaggi.xhtml?faces-redirect=true"; 	
 	}
 	
 	
