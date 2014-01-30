@@ -245,6 +245,8 @@ public class ViaggioBean {
 		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
 		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	
 		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
+		 viaggio.setData_inizio(null);
+		 viaggio.setData_fine(null);
 
 	}
 	
