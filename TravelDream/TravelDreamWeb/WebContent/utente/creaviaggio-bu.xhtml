@@ -90,7 +90,7 @@
 				    	<p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" />
 				      </p:inputText>
 				      
-    		          <br></br> <br></br>
+    		          <br></br> 
     		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update="@([id$=viaggioitems]) @([id$=filterform])"/>
     		           <br></br> 
 				      </section>
@@ -105,7 +105,7 @@
 			</table>
 				     
 		<h:panelGroup id="viaggioitems">			
-    <p:accordionPanel multiple="true"> 
+		<div class="clear"> </div>
 		       
 		       <br></br>
 		
@@ -113,8 +113,12 @@
 		<div class="content">
 		<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
 		       
-		    <p:tab title="Hotel">
-		
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Hotel disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>		
 		       
 		       <div class="wrap">
 			<div class="content-grids">
@@ -138,27 +142,25 @@
 				
 				
 				</ui:repeat>
-				</div>
-				</div>
-				</p:tab>
-				
-				
 				<div class="clear"> </div>
 				</div>
 				<div class="clear"> </div>
-				
+				</div>
 				
 				<div class="clear"> </div>
+			</div>
 		       <br></br>
 		       		<div class="content">
 		       		
-		        <p:tab title="Voli andata">
-		
+		       		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli andata disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 		       
 		       <div class="wrap">
 			<div class="content-grids">
-		       
-		      
 				<ui:repeat var="volo" value="#{ViaggioBean.filteredVolos}">
 				
 				<div class="grid2">
@@ -188,23 +190,25 @@
 				</div>
 				
 				</ui:repeat>
-				</div>
-				</div>
-				</p:tab>
-			    </div>	
-			    	
 				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
 		       <br></br>
-		       
-		       
 		       		<div class="content">
 		       
-		       <p:tab title="Voli ritorno">
-		
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli ritorno disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 		       
 		       <div class="wrap">
 			<div class="content-grids">
-
 				<ui:repeat var="volo" value="#{ViaggioBean.filteredVolosRitorno}">
 				
 				<div class="grid2">
@@ -234,18 +238,24 @@
 				</div>
 				
 				</ui:repeat>
+				<div class="clear"> </div>
 				</div>
+				<div class="clear"> </div>
 				</div>
-				</p:tab>
-			
+				
 				<div class="clear"> </div>
 			</div>
 
 		       <br></br>
 		       		<div class="content">
 		       
-		          <p:tab title="Escursioni">
-	
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Escursioni disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+		       
 		       <div class="wrap">
 			<div class="content-grids">
 				<ui:repeat var="esc" value="#{ViaggioBean.filteredEscursiones}">
@@ -275,15 +285,15 @@
 				</div>
 				
 				</ui:repeat>
-				</div>
-				</div>
-				</p:tab>
-				
 				<div class="clear"> </div>
 				</div>
-			</p:accordionPanel>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+			
 		</h:panelGroup>
-		<br></br>
 		
 		<div class="specials">
 					<div class="specials-heading">

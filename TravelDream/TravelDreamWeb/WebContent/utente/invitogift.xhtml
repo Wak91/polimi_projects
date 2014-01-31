@@ -33,19 +33,19 @@
 		</div>  		
 		
 <br></br>
-				  	<h3>Personal info</h3>
-					    <h:form id="form">
-					    	 <p:growl id="msgs" value="Inserisci valida email"/>  
+					
     
     
    
-  
+      <h:form id="form">
+   <p:growl id="msgs" value="Inserisci valida email"/>  
     <p:panel header="Aggiungi un nuovo amico">  
         <h:panelGrid columns="2" id="grid">  
-        <h:outputLabel value="Numero Persone del viaggio" ></h:outputLabel>  
+        <h:outputLabel value="In quanti parteciperete a questo viaggio?" ></h:outputLabel>  
          <p:spinner id="numpers"   value="#{GiftListBean.giftListDTO.npersone}" min="1" max="15">         
      	</p:spinner> 
               
+            <h:outputLabel value="Notifica il tuo desiderio ai tuoi amici"></h:outputLabel><br></br> 
             <h:outputLabel value="Email Amico a" for="email"></h:outputLabel>  
             <p:inputText id="email"   value="#{GiftListBean.amico}" >  
                <f:validateRegex pattern="(^$|^.*@.*\..*$)" />
@@ -96,26 +96,9 @@
 			<div class="footer-grids">
 				<div class="footer-grid">
 					<h3>EXTRAS</h3>
-					<p>Ut rutrum neque a mollis laoreet diam enim feuiat dui nec ulacoper quam felis id diam. Nunc ut tortor ligula eu petiu risus. Pelleesque conquat dignissim lacus quis altrcies.</p>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
 				</div>
-				<div class="footer-grid">
-					<h3>RECENT POSTS</h3>
-					<ul>
-						<li><a href="#">Vestibulum felis</a></li>
-						<li><a href="#">Mauris at tellus</a></li>
-						<li><a href="#">Donec ut lectus</a></li>
-						<li><a href="#">vitae interdum</a></li>
-					</ul>
-				</div>
-				<div class="footer-grid">
-					<h3>USEFUL INFO</h3>
-					<ul>
-						<li><a href="#">Hendrerit quam</a></li>
-						<li><a href="#">Amet consectetur </a></li>
-						<li><a href="#">Iquam hendrerit</a></li>
-						<li><a href="#">Donec ut lectus </a></li>
-					</ul>
-				</div>
+			
 				<div class="footer-grid footer-lastgrid">
 					<h3>CONTACT US</h3>
 					<p>Per informazioni contattaci</p>
@@ -132,7 +115,7 @@
 		<div class="clear"> </div>
 		<div class="copy-right">
     	<p>TravelDream All right reserved</p>
-		</div>			
+		</div>
 </ui:define>
 	</ui:composition>
 </html>
