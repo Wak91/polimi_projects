@@ -53,7 +53,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 	private BookManagerBeanLocal BMG;
 	
 	
-	public void addToGiftList(GiftListDTO giftListDTO){
+	public String addToGiftList(GiftListDTO giftListDTO){
 		Gift_List gift_List = new Gift_List();
 		//crea viaggio
 		
@@ -84,8 +84,10 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 			}
 
 			gift_List.setEscursionePagatas(escursionePagatas);
-			//inviaEmail(gift_List);
-
+			 SendMailThread mail = new SendMailThread(gift_List);
+             Thread thread = new Thread(mail);
+             thread.start();
+             return gift_List.getHash();
 	}
 	
 
@@ -181,7 +183,18 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 		
 	}
 	
-    private void inviaEmail(Gift_List gift){
+ class SendMailThread implements Runnable{
+     
+     private Gift_List gift;  
+    
+     public SendMailThread(){            
+     }
+     
+     public SendMailThread(Gift_List gift_list){
+             this.gift = gift_list;
+     }
+     @Override
+     public void run() {
     	  final Properties props = new Properties();
           props.setProperty ("mail.host", "smtp.gmail.com");
           props.setProperty("mail.smtp.auth", "true");
@@ -217,6 +230,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 	        }
 	        }
 	    }
+ }
        
 
 

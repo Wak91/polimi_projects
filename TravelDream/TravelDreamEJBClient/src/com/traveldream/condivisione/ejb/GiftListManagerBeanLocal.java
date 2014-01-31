@@ -10,7 +10,7 @@ import com.traveldream.autenticazione.ejb.UserDTO;
 public interface GiftListManagerBeanLocal {
 
 	ArrayList<GiftListDTO> getGiftListDTO(UserDTO user);
-	void addToGiftList(GiftListDTO giftListDTO);
+	String addToGiftList(GiftListDTO giftListDTO);
 	void removeFromGift(GiftListDTO giftListDTO);
 	GiftListDTO findGiftByHash(String codice);
 	void aggiornaGift(GiftListDTO giftListDTO);

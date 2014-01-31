@@ -37,7 +37,7 @@
     
     
    
-      <h:form id="form">
+ <h:form id="form">
    <p:growl id="msgs" value="Inserisci valida email"/>  
     <p:panel header="Aggiungi un nuovo amico">  
         <h:panelGrid columns="2" id="grid">  
@@ -84,9 +84,11 @@
   
         </p:dataTable>  
     </p:outputPanel>  
-              <p:commandButton value="Create Gift List" action="#{GiftListBean.creaGift()}" update="emails msgs @parent" />  
+    <p:commandButton value="Create Gift List" action="#{GiftListBean.creaGift()}" update="emails msgs @parent" />  
               
-					    </h:form>
+ </h:form>
+	   
+             
 
 				  				
   			<div class="clear"> </div>

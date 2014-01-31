@@ -140,6 +140,9 @@ public class GiftListBean {
 		
 	public String confermaGift(){
 		costocomplessivo = Pagamento.CalcolaCostoUtenteGift(selectedGiftListDTO);
+		if (costocomplessivo==0) {
+			return AcquistaGift();
+		}
 		return "pagamentogift.xhtml?faces-redirect=true";
 	}
 	
@@ -243,6 +246,7 @@ public class GiftListBean {
 	public void setList_gift(ArrayList <GiftListDTO> list_gift) {
 		this.list_gift = list_gift;
 	}
+
 
 	
 	
