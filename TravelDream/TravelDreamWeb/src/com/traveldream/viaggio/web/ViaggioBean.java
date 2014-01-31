@@ -123,7 +123,7 @@ public class ViaggioBean {
 		ArrayList<VoloDTO> voli =new ArrayList<VoloDTO>();
 		for (VoloDTO voloDTO : packet.getLista_voli_andata()) {
 			if((viaggio.getData_inizio()==null || voloDTO.getData().equals(viaggio.getData_inizio())) &&
-					(partenza==null || partenza.equals("") || partenza.equals(voloDTO.getLuogo_partenza()))){
+					(partenza==null || partenza.equals("") || partenza.matches(voloDTO.getLuogo_partenza()+"*"))){
 				voli.add(voloDTO);
 			}
 		}
@@ -133,7 +133,7 @@ public class ViaggioBean {
 		ArrayList<VoloDTO> voli =new ArrayList<VoloDTO>();
 		for (VoloDTO voloDTO : packet.getLista_voli_ritorno()) {
 			if((viaggio.getData_fine()==null || voloDTO.getData().equals(viaggio.getData_fine())) &&
-					(partenza==null || partenza.equals(voloDTO.getLuogo_arrivo()) ||  partenza.equals("")) ){
+					(partenza==null || partenza.matches(voloDTO.getLuogo_arrivo()+"*") ||  partenza.equals("")) ){
 				voli.add(voloDTO);
 			}
 			
@@ -352,13 +352,13 @@ public class ViaggioBean {
 			|| viaggio.getData_fine() == null || viaggio.getData_inizio() == null)
 		  {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore: hai lasciato qualche campo vuoto, controlla i dati inseriti" ));  	
-			System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"+selectedHotels.getNome());
-			System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"+selectedVolo_a.getCompagnia());
-			System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"+selectedVolo_r.getCompagnia());
-            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"+viaggio.getData_fine());
+
 			return "creaviaggio.xhtml?id=last_id";
 		  }
 		
+		System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS hotel "+selectedHotels.getNome());
+		System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS andata"+selectedVolo_a.getCompagnia());
+		System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS ritorno "+selectedVolo_r.getCompagnia());
 		viaggio.setHotel(selectedHotels);
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);

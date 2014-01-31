@@ -8,7 +8,7 @@
 <ui:composition template="Template.xhtml">
 
 
-	<ui:define name="content">
+	<ui:define name="content" >
        #{ViaggioBean.getPacchettoById(param['id'])}
 
 
@@ -92,7 +92,7 @@
 				      </p:inputText>
 				      
     		          <br></br> <br></br>
-    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update="@([id$=viaggioitems]) @([id$=filterform])"/>
+    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update=":filterform:datef @([id$=viaggioitems]) :filterform:datei "/>
     		           <br></br> 
 				      </section>
 				     </h:form>	
@@ -108,7 +108,7 @@
 		<h:panelGroup id="viaggioitems">
 				<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
 					
-    <p:accordionPanel multiple="true"> 
+    <p:accordionPanel multiple="true" activeIndex="0,1,2,3,4"> 
 		       
 		       <br></br>
 		
