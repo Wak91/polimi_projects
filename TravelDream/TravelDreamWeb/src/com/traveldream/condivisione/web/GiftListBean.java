@@ -148,7 +148,7 @@ public class GiftListBean {
 	
 	public String AcquistaGift(){
 		PrenotazioneDTO prenotazione = new PrenotazioneDTO();
-		prenotazione.setCosto(costocomplessivo);
+		prenotazione.setCosto(Pagamento.costoEffettivoGift(selectedGiftListDTO));
 		prenotazione.setNumero_persone(selectedGiftListDTO.getNpersone());
 		prenotazione.setUtente(selectedGiftListDTO.getUtente());
 		prenotazione.setViaggio(selectedGiftListDTO.getViaggio());

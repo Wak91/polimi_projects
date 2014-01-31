@@ -46,4 +46,21 @@ public class Pagamento {
 		return giftListDTO.getViaggio().getVolo_ritorno().getCosto()*giftListDTO.getNpersone();
 	}
 
+	public static int calcolaCostoEscursioni(GiftListDTO giftListDTO){
+		int sum=0;
+		for (EscursionePagataDTO escursionePagataDTO : giftListDTO.getEscursionePagata()) {
+			
+				sum+=escursionePagataDTO.getEscursione().getCosto()*giftListDTO.getNpersone();
+			
+		}
+		return sum;	
+	}
+	public static int costoEffettivoGift(GiftListDTO giftListDTO) {
+		int costo=0;
+		costo+=calcolaCostoHotel(giftListDTO);
+		costo+=calcolaCostoVoloA(giftListDTO);
+		costo+=calcolaCostoVoloR(giftListDTO);
+		costo+=calcolaCostoEscursioni(giftListDTO);
+		return costo;
+	}
 }
