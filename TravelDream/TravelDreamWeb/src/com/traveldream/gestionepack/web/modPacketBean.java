@@ -280,13 +280,10 @@ public class modPacketBean {
 		
 		//Ora controllo che sia possibile creare almeno un viaggio con questo pack
 	    //Cioè che ci sia un volo di andata ed uno di ritorno per quella destinazione
-	    //Gli hotel inseriti sono per semplicità dati 
 				
 		int andata=0, ritorno=0;
 		for(VoloDTO vdto : selectedVolo)
-				   {
-					
-					
+				   {		
 					if(vdto.getLuogo_arrivo().equals(packet.getDestinazione()))
 						andata++;
 					if(vdto.getLuogo_partenza().equals(packet.getDestinazione()))
