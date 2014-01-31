@@ -130,7 +130,8 @@ public class UserBean {
 	
 	public String deleteImp(String username){
 		userMgr.unregister(userMgr.findImp(username));
-		return "/admin/adminlist?faces-redirect=true";		
+
+		return "adminlist?faces-redirect=true";		
 	}
 
 }
