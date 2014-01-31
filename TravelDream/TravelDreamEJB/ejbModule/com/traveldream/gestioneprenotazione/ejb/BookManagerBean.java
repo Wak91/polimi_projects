@@ -12,6 +12,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
+import com.traveldream.condivisione.ejb.EscursionePagataDTO;
 import com.traveldream.condivisione.ejb.InvitoDTO;
 import com.traveldream.gestionecomponente.ejb.ComponentManagerBean;
 import com.traveldream.gestionecomponente.ejb.EscursioneDTO;
@@ -77,6 +78,8 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		 v.getHotel().setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono gia' a posto
 		 v.getVolo_andata().setId(id_vsa);  
 		 v.getVolo_ritorno().setId(id_vsr);
+		 
+		
 		 //Gli id dei componenti ora sono id che si riferiscono alla tabella dei componenti salvati
 		 
 		 int id = this.cercaViaggio(v); // vado alla ricerca di possibili duplicati del viaggio appena creato
@@ -87,7 +90,8 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		   travel.setData_fine(v.getData_fine());
 		   travel.setHotelSalvato(this.DTOtoEntityHotel(v.getHotel()));
 		   travel.setVoloSalvato1(this.DTOtoEntityVolo(v.getVolo_andata()));
-		   travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
+		   travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));		  
+		   travel.setEscursioneSalvatas(this.DTOtoEntityEscursione(v.getLista_escursioni()));		   
 		   em.persist(travel);	
 		   em.flush();
 		   return  Converter.ViaggioToDTO(em.find(Viaggio.class, travel.getId()));
@@ -117,8 +121,11 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		p.setNumero_persone(pdto.getNumero_persone());
 		p.setUtenteBean(DTOtoEntityUtente(pdto.getUtente()));
 		p.setViaggioBean(DTOtoEntityViaggio(pdto.getViaggio()));
+		
+		
 		em.persist(p);
 		em.flush();
+		
 	}
 	
 	 private Viaggio DTOtoEntityViaggio(ViaggioDTO viaggio) {
@@ -136,8 +143,12 @@ public class BookManagerBean implements BookManagerBeanLocal {
 	 
 	 private List<EscursioneSalvata> DTOtoEntityEscursione(List<EscursioneDTO> escursioneDTOs){
          ArrayList<EscursioneSalvata> listaEscursioni = new ArrayList<EscursioneSalvata>();
-         EscursioneSalvata es = new EscursioneSalvata();
          for (EscursioneDTO escursioneDTO :escursioneDTOs){
+             EscursioneSalvata es = new EscursioneSalvata();
+
+        	 if (escursioneDTO.getId()!=0) {
+				es.setId(escursioneDTO.getId());
+			}        	
         	      es.setCosto(escursioneDTO.getCosto());
         	      es.setData(escursioneDTO.getData());
         	      es.setImmagine(escursioneDTO.getImmagine());
@@ -145,6 +156,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
         	      es.setNome(escursioneDTO.getNome());
                   listaEscursioni.add(es);
          }
+
          return listaEscursioni;
  }
 	  private  VoloSalvato DTOtoEntityVolo(VoloDTO volodto){
@@ -181,7 +193,6 @@ public int cercaHotelSalvato(HotelDTO hdto)
 }
 
 
-@Override
 public int cercaVoloSalvato(VoloDTO vdto) {
 	
 	List<VoloSalvato> myList;
@@ -202,7 +213,6 @@ public int cercaVoloSalvato(VoloDTO vdto) {
 	
 }
 
-@Override
 public int cercaEscursioneSalvata(EscursioneDTO edto) {
 	
 	List<EscursioneSalvata> myList;
@@ -280,6 +290,14 @@ public int cercaEscursioneSalvata(EscursioneDTO edto) {
 				p1.setCosto(p.getCosto());
 				p1.setId(p.getId());
 				p1.setNumero_persone(p.getNumero_persone());
+				System.out.println("sono in cerca prenotazioe");
+				for (EscursioneSalvata escursioneSalvata : p.getViaggioBean().getEscursioneSalvatas()) {
+					System.out.println("esc in viaggiobean "+escursioneSalvata.getNome());
+
+				};
+
+				
+				p1.setViaggio(Converter.ViaggioToDTO(p.getViaggioBean()));
 				myDTOList.add(p1);
 			  }
 		   }

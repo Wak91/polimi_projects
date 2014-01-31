@@ -105,6 +105,12 @@ public class UserBean {
 		return "/admin/adminlist?faces-redirect=true";
 	}
 	
+	public String modificaUser(){
+		user.setUsername(userMgr.getUserDTO().getUsername());
+		userMgr.modifyUser(user);
+		return "userhome.xhtml?faces-redirect=true";
+	}
+	
 	public String register(){
 		userMgr.saveUser(user);
 		return "/utente/userhome?faces-redirect=true";

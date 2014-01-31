@@ -54,6 +54,8 @@ public class GiftListBean {
 
 	private GiftListDTO giftListDTO; //gift list per la creazione
 	
+	private ArrayList <GiftListDTO> list_gift;
+	
 
 	int costocomplessivo;
 	String password;
@@ -232,6 +234,14 @@ public class GiftListBean {
 
 	public void setCostocomplessivo(int costocomplessivo) {
 		this.costocomplessivo = costocomplessivo;
+	}
+
+	public ArrayList <GiftListDTO> getList_gift() {
+		return list_gift;
+	}
+
+	public void setList_gift(ArrayList <GiftListDTO> list_gift) {
+		this.list_gift = list_gift;
 	}
 
 	

@@ -7,43 +7,94 @@
 
 	<ui:composition template="Template.xhtml">
 	 <ui:define name="content">
-       #{userBean.getcurrentUser()}
-     <p:tabMenu activeIndex="1">  
-     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
-     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
-     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
-     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
-     </p:tabMenu>  
-	    <h:form>
-		<p:panel header="Dati Personali">
-			
-			<h:panelGrid columns="2" id="regGrid">
-			
-				<h:outputLabel for="username">Username</h:outputLabel>
-				<p:inputText id="username" value="#{userBean.user.username}" />
+	    #{userBean.getcurrentUser()}
+		<div class="header">
+				<div class="wrap">
 				
-				<h:outputLabel for="password">Password</h:outputLabel>
-				<p:password id="password" value="#{userBean.user.password}" />
-				
-				<h:outputLabel for="nome"> Nome</h:outputLabel>  
-				<p:inputText id="nome" value="#{userBean.user.firstName}" />
-                      
-				<h:outputLabel for="cognome">Cognome</h:outputLabel>
-				<p:inputText id="cognome" value="#{userBean.user.lastName}" />
-				
-                  <h:outputLabel for="email">Email</h:outputLabel>
-				<p:inputText id="email" value="#{userBean.user.email}" />
-				
-				<h:outputLabel for="date">Data di nascita:</h:outputLabel>
-				<p:calendar id="date" value="#{userBean.user.data}" pattern="dd/MM/yyyy" navigator="true" display="inline"/>  
+				<div class="logo">
+					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li><a href="userhome.xhtml">Home</a></li>
+						<li class="active"><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+						<li><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
+					    <li><h:form>
+								<p:commandLink action="#{userBean.logout}" value="Logout" />
+			                </h:form>
+			            </li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>  		
+			<div class="col span_2_of_3">
+				  <div class="contact-form">
+				  	<h3>Personal info</h3>
+					    <h:form>
+					    	<div>
+						    	<h:outputLabel for="password">Password:</h:outputLabel>
+								<p:password id="password" value="#{userBean.user.password}"
+								feedback="true" match="pwd2" label="Password"/>
+								
+						    </div>
+						    <div>
+						    	<h:outputLabel for="pwd2">Conferma Password:</h:outputLabel>
+								<p:password id="pwd2" label="Confirm Password" value="#{userBean.user.password}"/>
+						    </div>
+						    
+						    <div>
+						        <h:outputLabel for="nome"> Nome</h:outputLabel>  
+							    <p:inputText id="nome" value="#{userBean.user.firstName}" />
+						    </div>
+						    <div>
+						    	<h:outputLabel for="cognome">Cognome</h:outputLabel>
+								<p:inputText id="cognome" value="#{userBean.user.lastName}" />
+						    </div>
+						    	<h:outputLabel for="email">Email</h:outputLabel>
+							    <p:inputText id="email" value="#{userBean.user.email}" />
+						     <div>
+						    	<h:outputLabel for="date">Data di nascita:</h:outputLabel>
+								<p:calendar id="date" value="#{userBean.user.data}" pattern="dd/MM/yyyy" navigator="true" display="inline"/>  
+						    </div>
+						   <div>
+						   			<h:commandButton value="Modifica" 
+									action="#{userBean.modificaUser()}" />
+						  </div>
+					    </h:form>
 
-				</h:panelGrid>
-				<p:commandButton value="Modifica" update="regGrid"
-				action="#{userBean.modificaUtente()}" />
-     
-		</p:panel>
-	   
-	</h:form>
+				    </div>
+  				</div>	  				
+  			<div class="clear"> </div>
+  				
+  				<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
+				</div>
+			
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> rikimotta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
 </ui:define>
 	</ui:composition>
 </html>

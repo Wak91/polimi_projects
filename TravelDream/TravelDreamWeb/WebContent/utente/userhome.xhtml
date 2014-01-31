@@ -8,58 +8,136 @@
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
-	    #{PacketBean.initBean()}
-	    <p:tabMenu activeIndex="0">  
-     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
-     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
-     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
-     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
-     </p:tabMenu>   
-      <h:form id="form">  
-    WELCOME TO TRAVEL DREAM <br></br>
-    .......................
-    LISTA PACCHETTI DISPONIBILI
-    <p:dataTable var="pack" value="#{PacketBean.packModels}" rowKey="#{pack.nome}" paginator="true" rows="10"  
-                selection="#{PacketBean.packet}" selectionMode="single" filteredValue="#{PacketBean.packlist}" id="packTable">  
-  
-        <f:facet name="header">  
-            <h:outputText value="Pacchetto" />  
-        </f:facet>  
-  
-        <p:column headerText="Nome" sortBy="nome" filterBy="#{pack.nome}" id="pack">  
-            <h:outputText value="#{pack.nome}" />  
-        </p:column>  
-        
-         <p:column headerText="Destinazione" sortBy="destinazione" filterBy="#{pack.destinazione}" id="destinazione">  
-            <h:outputText value="#{pack.destinazione}" />  
-        </p:column> 
-  
-        <p:column headerText="Data inizio" sortBy="data_inizio" pattern="dd/MM/yyyy" filterBy="#{pack.data_inizio}" id="datainizio">  
-            <h:outputText value="#{pack.data_inizio}">
-            				<f:convertDateTime pattern="dd/MM/yyyy" />
-            </h:outputText>  
-        </p:column>  
-  
-        <p:column headerText="Data fine" sortBy="data_fine"  pattern="dd/MM/yyyy"  filterBy="#{pack.data_fine}" id="datafine">  
-            <h:outputText value="#{pack.data_fine}">
-            				<f:convertDateTime pattern="dd/MM/yyyy" />
-            </h:outputText>  
-        </p:column>   
-        
-        <p:column headerText="Esplora pacchetto" style="width:24%" >  
-        <h:link outcome = "creaviaggio?id=#{pack.id}"  value="Esplora"/>
-	    </p:column> 
-  
-    </p:dataTable> 
-     
-    </h:form>  
-
-    <p:commandButton action="#{userBean.logout}" value="Logout" />
-    
-    <p:button id="confirm" value="Conferma Invito" outcome="/utente/idFormConferma.xhtml?faces-redirect=true"/>
-	         
-
-	</ui:define>
-
-</ui:composition>
+	#{PacketBean.initBean()}
+			<div class="header">
+				<div class="wrap">
+				
+				<div class="logo">
+					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li class="active"><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+						<li><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
+					    <li>
+					        <h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			                </h:form>
+			            </li>
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>
+					<div class="image-slider">
+					    <ul class="rslides" id="slider1">
+					     
+					      <li><img src="../images/slider2.jpg" alt=""/>
+					      </li>
+					      <li><img src="../images/slider4.jpg" alt=""/>
+					      </li>
+					    </ul>
+					</div>
+					
+		<div class="clear"> </div>
+		       <div class="searchbar"> 
+		       	 <h:form>   
+		       	<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />  
+		       	 
+		           <section id="bar">
+				   <h:outputLabel for="where" >DOVE?</h:outputLabel>
+		           <p:inputText id="where" value="#{PacketBean.destinazione_pacchetto}">
+		     		<p:ajax event="keyup" listener="#{PacketBean.filterPacket}" update="@([id$=packetlist])" />  		    
+		           </p:inputText>
+		           &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel>DA QUANDO?</h:outputLabel>
+				   <p:calendar id="date" value="#{PacketBean.data_inizio_pacchetto}" navigator="true" display="inline" pattern="dd/MM/yyyy" >  
+				   <p:ajax event="dateSelect" listener="#{PacketBean.filterPacket}"   update="@([id$=packetlist])" /> 
+				  <f:convertDateTime pattern="dd/MM/yyyy"  />
+				   </p:calendar> 
+    		       &nbsp; &nbsp; &nbsp; 
+    		       <h:outputLabel>A QUANDO?</h:outputLabel>
+				   <p:calendar id="date2" value="#{PacketBean.data_fine_pacchetto}" navigator="true" display="inline" pattern="dd/MM/yyyy" >  
+				   <p:ajax event="dateSelect" listener="#{PacketBean.filterPacket}"   update="@([id$=packetlist])" /> 
+				   <f:convertDateTime pattern="dd/MM/yyyy"  />
+				   </p:calendar>
+				   &nbsp; &nbsp; &nbsp;
+				   </section>
+				   </h:form>
+		       </div>
+		       <br></br>
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Le nostre offerte</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+					</div>
+		<div class="content">
+			<div class="wrap">
+			<div class="content-grids">
+			<h:panelGroup id="packetlist">
+				<ui:repeat var="pacchetto" value="#{PacketBean.packlist}">
+				
+				<div class="grid">
+					<h:link outcome = "creaviaggio?id=#{pacchetto.id}" >
+					 <h:graphicImage  value="../images/#{pacchetto.pathtoImage}" height="200" width="300"/> 
+                     </h:link>
+                     <br></br>
+					<div class="emphasis">#{pacchetto.nome}</div>
+					<br></br>
+					<h:outputLabel for="username">Destinazione</h:outputLabel> &nbsp; 
+					 #{pacchetto.destinazione}<br></br>
+					<h:outputLabel for="username">Dal</h:outputLabel> &nbsp;  
+				    <h:outputText id="datei" value="#{pacchetto.data_inizio}" >
+				          <f:convertDateTime pattern="dd/MM/yyyy" />
+				    </h:outputText>
+				    <br></br>
+				    <h:outputLabel for="username">Al</h:outputLabel>&nbsp;  
+					  <h:outputText id="datef" value="#{pacchetto.data_fine}" >
+				          <f:convertDateTime pattern="dd/MM/yyyy" />
+				    </h:outputText>
+				    <br></br>
+					<h:link class="button" value="Esplora" outcome = "creaviaggio?id=#{pacchetto.id}" ></h:link>				    
+				</div>
+				</ui:repeat>
+			</h:panelGroup>
+				
+				<div class="clear"> </div>
+			</div>
+			<div class="clear"> </div>
+			</div>	
+			<div class="clear"> </div>
+		</div>
+		<div class="clear"> </div>
+		<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
+				</div>
+			
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> rikimotta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+		</ui:define>
+		</ui:composition>
 </html>
+

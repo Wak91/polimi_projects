@@ -1,4 +1,5 @@
 package com.traveldream.gestionepack.web;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +15,13 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.CloseEvent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import com.traveldream.gestionecomponente.ejb.*;
@@ -56,7 +59,16 @@ public class PacketBean {
     
     private PacchettoDTO selectedPackDTO;
     
-   
+    
+    //Utilizzati per ricerca 
+  
+    Date data_inizio_pacchetto;
+	Date data_fine_pacchetto;
+	String destinazione_pacchetto;
+	
+	String partenza;
+	int stelle;
+	
     	
     //---INIZIALIZZAZIONE BEAN---
     
@@ -70,6 +82,7 @@ public class PacketBean {
 	selectedEsc = new ArrayList <EscursioneDTO>();
 	}
 	
+	
 	public void initBean()
 	{
 		 packet = new PacchettoDTO();
@@ -82,6 +95,7 @@ public class PacketBean {
 		 selectedEsc.clear();
 		 packlist = PMB.getAllPack();
 	}
+	
 	//---FUNZIONI PER PACCHETTI---------------------
 	 public PacchettoDataModel getPackModels() {
 			return packModels;
@@ -181,6 +195,22 @@ public class PacketBean {
 	//FILTRI
 	//---------------------------------------------------------------
 
+	public void filterPacket(){
+		if (data_fine_pacchetto==null) {
+			System.out.println("fine null");
+
+		}
+		if (data_fine_pacchetto!=null && data_inizio_pacchetto!=null && data_inizio_pacchetto.after(data_fine_pacchetto)){
+			  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "La data di fine deve essere successiva a quella di inizio"));  	
+			  packlist = new ArrayList<PacchettoDTO>();
+		}
+		else{
+		packlist=PMB.getFilteredPacchetti(destinazione_pacchetto,data_inizio_pacchetto,data_fine_pacchetto);
+		}
+	}
+	
+	
+	
 	public void filterComponents(){
 		
 	
@@ -382,4 +412,29 @@ public class PacketBean {
 	public void setSelectedPackDTO(PacchettoDTO selectedPackDTO) {
 		this.selectedPackDTO = selectedPackDTO;
 	}
+	
+	//FUNZIONE RICERCA E FILTRO
+	
+	
+	public Date getData_inizio_pacchetto() {
+		return data_inizio_pacchetto;
+	}
+	public void setData_inizio_pacchetto(Date data_inizio_pacchetto) {
+		this.data_inizio_pacchetto = data_inizio_pacchetto;
+	}
+	public Date getData_fine_pacchetto() {
+		return data_fine_pacchetto;
+	}
+	public void setData_fine_pacchetto(Date data_fine_pacchetto) {
+		this.data_fine_pacchetto = data_fine_pacchetto;
+	}
+	public String getDestinazione_pacchetto() {
+		return destinazione_pacchetto;
+	}
+	public void setDestinazione_pacchetto(String destinazione) {
+		this.destinazione_pacchetto = destinazione;
+	}
+	
+	
+	
 }

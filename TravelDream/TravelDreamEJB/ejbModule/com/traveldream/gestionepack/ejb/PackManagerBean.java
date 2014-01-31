@@ -290,5 +290,34 @@ public class PackManagerBean implements PackManagerBeanLocal {
           }
           return listaHotel;
   }
+
+	@Override
+	public ArrayList<PacchettoDTO> getFilteredPacchetti(String destinazione, Date data_inizio,Date data_fine) {
+		System.out.println("inizio viaggio"+data_inizio);
+		CriteriaBuilder qb = em.getCriteriaBuilder();
+		CriteriaQuery<Pacchetto> c  = qb.createQuery(Pacchetto.class);
+		Root<Pacchetto> pacchetto = c.from(Pacchetto.class);
+	   List<Predicate> predicates = new ArrayList<Predicate>(); 
+	    if (destinazione != null && !destinazione.isEmpty()) {
+	    	Predicate LuogoOK = qb.like(pacchetto.<String>get("destinazione"), destinazione+"%");
+
+	        predicates.add(LuogoOK);
+	    }
+	  
+	    System.out.println("data inizio pack "+pacchetto.<Date>get("data_inizio"));
+	    if (data_inizio != null){
+	    	predicates.add(
+	    			qb.lessThanOrEqualTo(pacchetto.<Date>get("data_inizio"),data_inizio));   	
+	    }
+	    if (data_fine != null){
+	    	predicates.add(
+	    			qb.greaterThanOrEqualTo(pacchetto.<Date>get("data_fine"),data_fine));   	
+	    }
+	    
+	    c.where(predicates.toArray(new Predicate[]{}));
+	    TypedQuery<Pacchetto> q = em.createQuery(c);
+	    List<Pacchetto> pacchettos = q.getResultList();
+	    return Converter.EntitytoDTOPacchetto(pacchettos);
+	}
 	
 }

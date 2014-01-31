@@ -1,39 +1,58 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition  
-      xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      template="Template.xhtml">
-      
-       <ui:define name="content">
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:composition template="Template.xhtml">
+	 <ui:define name="content">
        #{GiftListBean.init()}
-            <p:tabMenu activeIndex="2">  
-     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
-     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
-     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
-     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
-     </p:tabMenu>  
-			<h:form id="form">  
-  
-    <p:growl id="msgs" value="Inserisci valida email"/>  
+		<div class="header">
+				<div class="wrap">
+				
+				<div class="logo">
+					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li class="active"><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+						<li><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
+					    <li><h:form>
+								<p:commandLink action="#{userBean.logout}" value="Logout" />
+			                </h:form>
+			            </li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>  		
+		
+<br></br>
+					
+    
     
    
-  
+      <h:form id="form">
+   <p:growl id="msgs" value="Inserisci valida email"/>  
     <p:panel header="Aggiungi un nuovo amico">  
         <h:panelGrid columns="2" id="grid">  
-        <h:outputLabel value="Numero Persone" ></h:outputLabel>  
+        <h:outputLabel value="In quanti parteciperete a questo viaggio?" ></h:outputLabel>  
          <p:spinner id="numpers"   value="#{GiftListBean.giftListDTO.npersone}" min="1" max="15">         
      	</p:spinner> 
+              
+            <h:outputLabel value="Notifica il tuo desiderio ai tuoi amici"></h:outputLabel><br></br> 
             <h:outputLabel value="Email Amico a" for="email"></h:outputLabel>  
             <p:inputText id="email"   value="#{GiftListBean.amico}" >  
                <f:validateRegex pattern="(^$|^.*@.*\..*$)" />
             </p:inputText>
               
              
-              
-            <p:commandButton id="btn_add" value="Aggiungi Amico" update="emails msgs @parent"  
+            <p:commandButton id="btn_add" value="Aggiungi Amico" update=":form:emails :form:msgs @parent"  
                             action="#{GiftListBean.reinit}" >  
                 <p:collector value="#{GiftListBean.amico}"   
                             addTo="#{GiftListBean.giftListDTO.amico}" />  
@@ -67,11 +86,36 @@
     </p:outputPanel>  
               <p:commandButton value="Create Gift List" action="#{GiftListBean.creaGift()}" update="emails msgs @parent" />  
               
-  
-</h:form> 
+					    </h:form>
 
- 
-       
-       </ui:define>
-      
-</ui:composition>
+				  				
+  			<div class="clear"> </div>
+  				
+  				<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
+				</div>
+			
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> rikimotta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+</ui:define>
+	</ui:composition>
+</html>

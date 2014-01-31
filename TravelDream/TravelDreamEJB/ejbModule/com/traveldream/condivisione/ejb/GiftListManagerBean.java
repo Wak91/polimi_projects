@@ -84,7 +84,7 @@ public class GiftListManagerBean implements GiftListManagerBeanLocal {
 			}
 
 			gift_List.setEscursionePagatas(escursionePagatas);
-			inviaEmail(gift_List);
+			//inviaEmail(gift_List);
 
 	}
 	

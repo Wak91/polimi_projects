@@ -8,7 +8,7 @@
 <ui:composition template="Template.xhtml">
 
 
-	<ui:define name="content" >
+	<ui:define name="content">
        #{ViaggioBean.getPacchettoById(param['id'])}
 
 
@@ -60,63 +60,65 @@
 			<br></br>
 			<table width="100%" align="center">
                 <tr>
-                    <td width="1%" ><div class="searchbar"> 
+                    <td width="30%" ><div class="searchbar"> 
 		       	      <h:form id="filterform">   
 		       	      
 		              <section id="bar2">
-		              <h:outputLabel>DATE DEL VIAGGIO?*</h:outputLabel><br></br>
+		              <h:outputLabel>DATE DEL VIAGGIO?*:</h:outputLabel><br></br>
 		              <hr></hr>
-				      <h:outputLabel>DA QUANDO?</h:outputLabel><br></br>
+				      <h:outputLabel>DA QUANDO?:</h:outputLabel><br></br>
 				      <p:calendar id="datei" value="#{ViaggioBean.viaggio.data_inizio}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
 				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
 				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
 				      </p:calendar>  
     		          <br></br>
-    		          <h:outputLabel>A QUANDO?</h:outputLabel><br></br>
+    		          <h:outputLabel>A QUANDO?:</h:outputLabel><br></br>
 				      <p:calendar id="datef" value="#{ViaggioBean.viaggio.data_fine}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
 				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
 				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
 				      </p:calendar>  
 				      <br></br>
-				      <br></br>
-				      <h:outputLabel>FILTRA LA TUA RICERCA!</h:outputLabel><br></br>
 				      <hr></hr>
-				      <h:outputLabel>PARTENZA DA?</h:outputLabel><br></br>
+				      <h:outputLabel>FILTRA LA TUA RICERCA!:</h:outputLabel><br></br>
+				      <h:outputLabel>PARTENZA DA?:</h:outputLabel><br></br>
 		              <p:inputText id="where" value="#{ViaggioBean.partenza}">
 		              <p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" /> 
 		              </p:inputText>
     		          <br></br> 
-				      <h:outputLabel for="starts" >STELLE?</h:outputLabel><br></br>
+				      <h:outputLabel for="starts" >STELLE?:</h:outputLabel><br></br>
 				      <p:inputText id="stars" value="#{ViaggioBean.stelle}">
 				    	<p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" />
 				      </p:inputText>
 				      
-    		          <br></br> <br></br>
-    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update=":filterform:datef @([id$=viaggioitems]) :filterform:datei "/>
+    		          <br></br> 
+    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update="@([id$=viaggioitems]) @([id$=filterform])"/>
     		           <br></br> 
 				      </section>
 				     </h:form>	
 		             </div></td>
                     <td width="70%">
-                       <h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="340" width="100%"/> 
+                       <h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="315" width="1051"/> 
                   
                    
 					</td>
                 </tr>
 			</table>
 				     
-		<h:panelGroup id="viaggioitems">
-				<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
-					
-    <p:accordionPanel multiple="true" activeIndex="0,1,2,3,4"> 
+		<h:panelGroup id="viaggioitems">			
+		<div class="clear"> </div>
 		       
 		       <br></br>
 		
 				
 		<div class="content">
+		<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
 		       
-		    <p:tab title="Hotel">
-		
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Hotel disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>		
 		       
 		       <div class="wrap">
 			<div class="content-grids">
@@ -125,153 +127,135 @@
 		    
 				<div class="grid2">
 				 <div class="left">
-				  
-					 <h:graphicImage value="../images/#{hotel.hotelImg}" height="90" width="90" /> 
+					 <h:graphicImage  value="../images/#{hotel.hotelImg}" height="90" width="90" /> 
 				</div>
-                     <div class="center">
-                     	#{hotel.nome}<br></br>
-                     <center><p:rating id="stars" align="center" value="#{hotel.stelle}" stars="5" cancel="false" readonly="true"/> </center> 				    
-					 </div>
-					
-					 <div class ="right">
+                     <div class="right">
+					#{hotel.nome}<br></br>
+					<h:outputLabel for="costo">Costo</h:outputLabel> &nbsp; &nbsp; 
+					 #{hotel.costo_giornaliero}<br></br>
+				    <p:rating id="stars" value="#{hotel.stelle}" stars="5" cancel="false" readonly="true"/>  
 				    <p:commandButton id="hotelbutton" value="Seleziona" onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.selectedHotels}" value="#{hotel}"/>
        				 </p:commandButton>
-					 </div>
-					  <div class="rightpay">
-					 #{hotel.costo_giornaliero}&nbsp; € <br></br>
 					 </div>
 				</div>
 				
 				
 				</ui:repeat>
-				</div>
-				</div>
-				</p:tab>
-				
-				
 				<div class="clear"> </div>
 				</div>
 				<div class="clear"> </div>
-				
+				</div>
 				
 				<div class="clear"> </div>
+			</div>
 		       <br></br>
 		       		<div class="content">
 		       		
-		        <p:tab title="Voli andata">
-		
+		       		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli andata disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 		       
 		       <div class="wrap">
 			<div class="content-grids">
-		       
-		      
 				<ui:repeat var="volo" value="#{ViaggioBean.filteredVolos}">
 				
 				<div class="grid2">
 				<div class="left">
 					 <h:graphicImage  value="../images/#{volo.immagine}" height="90" width="90" /> 
-			         <h:outputLabel for="part">Da </h:outputLabel> &nbsp; 
-					 #{volo.luogo_partenza} <br></br>
-					 <h:outputLabel for="arr">&nbsp; Per </h:outputLabel> &nbsp; 
-					 #{volo.luogo_arrivo} <br></br>
 			    </div>
-			   <div class="center">
+			   <div class="right">
 			    
 					#{volo.compagnia}
 					<br></br>
+					<h:outputLabel for="costo">Costo</h:outputLabel> &nbsp; 
+					 #{volo.costo}
+					 <br></br>
+				    <h:outputLabel for="data">Data</h:outputLabel> &nbsp; 
 					 #{volo.data} 
 					 <br></br>
-					 
-					 </div>
-					
-			   
-			   <div class="right">
-				    
-			
+				     <h:outputLabel for="part">Luogo partenza</h:outputLabel> &nbsp; 
+					 #{volo.luogo_partenza} <br></br>
+					 <h:outputLabel for="arr">Luogo arrivo</h:outputLabel> &nbsp; 
+					 #{volo.luogo_arrivo} <br></br>
 					  <p:commandButton id="voloabutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_a}" value="#{volo}"/>
        				</p:commandButton>
-       						 
 					 
-			   </div>
-			   
-			   <div class="rightpay">
-					 #{volo.costo} &nbsp; €
-					 <br></br>
 					 </div>
-			   
 				   
 				</div>
 				
 				</ui:repeat>
-				</div>
-				</div>
-				</p:tab>
-			    </div>	
-			    	
 				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
 		       <br></br>
-		       
-		       
 		       		<div class="content">
 		       
-		       <p:tab title="Voli ritorno">
-		
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Voli ritorno disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 		       
 		       <div class="wrap">
 			<div class="content-grids">
-
 				<ui:repeat var="volo" value="#{ViaggioBean.filteredVolosRitorno}">
 				
 				<div class="grid2">
 				<div class="left">
-					 <h:graphicImage  value="../images/#{volo.immagine}" height="90" width="90" /> 
-			         <h:outputLabel for="part">Da </h:outputLabel> &nbsp; 
-					 #{volo.luogo_partenza} <br></br>
-					 <h:outputLabel for="arr">&nbsp; Per </h:outputLabel> &nbsp; 
-					 #{volo.luogo_arrivo} <br></br>
-			    </div>
-			   <div class="center">
-			    
+					 <h:graphicImage  value="../images/#{volo.immagine}" height="90" width="90" />
+				</div>
+				<div class="right">
 					#{volo.compagnia}
 					<br></br>
+					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
+					 #{volo.costo}
+				    <br></br>
+				    <h:outputLabel for="username">Data 
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				    </h:outputLabel> &nbsp; 
 					 #{volo.data} 
 					 <br></br>
-					 
-					 </div>
-					
-			   
-			   <div class="right">
-				    
-			
-					  <p:commandButton id="volorbutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+				     <h:outputLabel for="username">Luogo partenza</h:outputLabel> &nbsp; 
+					 #{volo.luogo_partenza} <br></br>
+					 <h:outputLabel for="username">Luogo arrivo</h:outputLabel> &nbsp; 
+					 #{volo.luogo_arrivo} <br></br>					 
+					 <p:commandButton id="volorbutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_r}" value="#{volo}"/>
-       				</p:commandButton>
-       						 
+       				 </p:commandButton>
 					 
-			   </div>
-			   
-			   <div class="rightpay">
-					 #{volo.costo} &nbsp; €
-					 <br></br>
-					 </div>
-			   
-				   
+				   </div>
 				</div>
+				
 				</ui:repeat>
+				<div class="clear"> </div>
 				</div>
+				<div class="clear"> </div>
 				</div>
-				</p:tab>
-			
+				
 				<div class="clear"> </div>
 			</div>
 
 		       <br></br>
 		       		<div class="content">
 		       
-		          <p:tab title="Escursioni">
-	
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Escursioni disponibili</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+		       
 		       <div class="wrap">
 			<div class="content-grids">
 				<ui:repeat var="esc" value="#{ViaggioBean.filteredEscursiones}">
@@ -280,17 +264,17 @@
 				 <div class="left">
 					 <h:graphicImage  value="../images/#{esc.immagine}" height="90" width="90" /> 
   				 </div>		
-  				  <div class="center">		
+  				  <div class="right">		
 					#{esc.nome}
 					<br></br>
-					#{esc.data} 
+					<h:outputLabel for="username">Costo</h:outputLabel> &nbsp; 
+					 #{esc.costo}
 					 <br></br>
-				</div>
-					 
-					
-					 
-					 <div class="right">
-				 
+				    <h:outputLabel for="username">Data
+				    <f:convertDateTime pattern="dd/MM/yyyy" />
+				    </h:outputLabel> &nbsp; 
+					 #{esc.data} 
+					 <br></br>
 					 <p:commandButton id="escbutton" value="Aggiungi" action="#{ViaggioBean.selezionaEsc}" onclick="$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.esc}" value="#{esc}"/>
        				 </p:commandButton>
@@ -298,23 +282,25 @@
             			<f:setPropertyActionListener target="#{ViaggioBean.esc}" value="#{esc}"/>
        				 </p:commandButton>
 				   </div>
-				    <div class="rightpay">
-					 #{esc.costo} &bnsp; €
-					 <br></br>
-					 </div>
-				   			   
 				</div>
+				
 				</ui:repeat>
-				
-				</div>
-				</div>
-				</p:tab>
-				
 				<div class="clear"> </div>
 				</div>
-			</p:accordionPanel>
+				<div class="clear"> </div>
+				</div>
+				
+				<div class="clear"> </div>
+			</div>
+			
 		</h:panelGroup>
-		<br></br>
+		
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Conferma il tuo viaggio!</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
 			<div class="clear"> </div>
 			<br></br><br></br>
 		
@@ -329,7 +315,6 @@
 				
 		<h:commandButton value="Invita a partecipare" styleClass="button" 
 				action="#{ViaggioBean.invita()}" icon="ui-icon-script"/>
-				<br></br>
 		   </center>   
 		   </h:form>
 		      

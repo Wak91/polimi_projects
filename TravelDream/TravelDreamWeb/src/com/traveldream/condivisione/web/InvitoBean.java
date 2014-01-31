@@ -1,5 +1,7 @@
 package com.traveldream.condivisione.web;
 
+import java.util.ArrayList;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -37,6 +39,8 @@ public class InvitoBean {
 	
     
 	private InvDataModel invmodels;
+	
+	private ArrayList <InvitoDTO> lista_inviti;
 
 	
 	@EJB
@@ -83,8 +87,8 @@ public class InvitoBean {
 	}
 	
 	public String submit(){
-		if (invito==null) {
-			System.out.println("null");
+		if (invito==null || amico.equals("")) {
+			return "";
 		} else {
 		
 		invito.setAmico(amico);
@@ -102,7 +106,7 @@ public class InvitoBean {
 		UserDTO current_user = userMgr.getUserDTO();
 		System.out.println("Current:" +current_user.getUsername());
 		
-		setInvmodels(new InvDataModel(IMB.cercaInvito(current_user)));
+		setInvmodels(new InvDataModel ( IMB.cercaInvito(current_user) ));
 	}
 	
     public InvDataModel getInvmodels() {
@@ -199,6 +203,16 @@ public class InvitoBean {
 	        FacesContext.getCurrentInstance().addMessage("null", message);
 			return "/utente/imieiviaggi.xhtml?faces-redirect=true";
 		}	
+	}
+
+
+	public ArrayList <InvitoDTO> getLista_inviti() {
+		return lista_inviti;
+	}
+
+
+	public void setLista_inviti(ArrayList <InvitoDTO> lista_inviti) {
+		this.lista_inviti = lista_inviti;
 	}
 	
 	public String deleteInvito(int id){

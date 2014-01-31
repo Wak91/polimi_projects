@@ -1,13 +1,16 @@
 package com.traveldream.viaggio.web;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import sun.util.calendar.LocalGregorianCalendar.Date;
+
 import javax.faces.context.FacesContext;
+
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
 import com.traveldream.condivisione.ejb.GiftListDTO;
@@ -54,6 +57,7 @@ public class ViaggioBean {
 	private VoloDTO selectedVolo_a;
 	private VoloDTO selectedVolo_r;
 	private ArrayList <EscursioneDTO> selectedEsc;
+	private EscursioneDTO esc;				//temporary value to store selected esc
 	private PrenotazioneDTO selectedpre;
 	
 	
@@ -67,6 +71,7 @@ public class ViaggioBean {
 	private ArrayList<HotelDTO> filteredHotels;
 	private ArrayList<EscursioneDTO> filteredEscursiones;
 	private ArrayList<VoloDTO> filteredVolos;
+	private ArrayList <VoloDTO> filteredVolosRitorno;
     
 	private PacchettoDTO packet;
 
@@ -77,7 +82,17 @@ public class ViaggioBean {
     private int n_partecipanti;
     private int quotacomplessiva;
     private int quotapp;
+    private int last_id;
+    
+    private ArrayList <PrenotazioneDTO> lista_prenotazioni;
    
+    //filtri
+    String partenza;
+ 
+    Integer stelle;
+
+
+    
 
 	private String password1;
 	
@@ -87,8 +102,110 @@ public class ViaggioBean {
 		 viaggio = new ViaggioDTO();
 		 prenotazione = new PrenotazioneDTO();
 		 invito = new InvitoDTO();
+		 selectedEsc=new ArrayList<EscursioneDTO>();
 	}
 
+	
+	public void filterViaggio(){
+		if (viaggio.getData_inizio()!=null &&viaggio.getData_fine()!=null &&viaggio.getData_inizio().after(viaggio.getData_fine())){
+			  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "La data di fine deve essere successiva a quella di inizio"));  	
+
+		}
+		filteredVolos=filterVoliA(packet);
+		filteredVolosRitorno=filterVoliR(packet);
+		filteredHotels=filterHotels(packet);
+		filteredEscursiones=filterEscursioni(packet);
+		restoreSelected();
+		
+	}
+	
+	public ArrayList<VoloDTO> filterVoliA(PacchettoDTO packet) {
+		ArrayList<VoloDTO> voli =new ArrayList<VoloDTO>();
+		for (VoloDTO voloDTO : packet.getLista_voli_andata()) {
+			if((viaggio.getData_inizio()==null || voloDTO.getData().equals(viaggio.getData_inizio())) &&
+					(partenza==null || partenza.equals("") || partenza.matches(voloDTO.getLuogo_partenza()+"*"))){
+				voli.add(voloDTO);
+			}
+		}
+		return voli;
+	}
+	public ArrayList<VoloDTO> filterVoliR(PacchettoDTO packet) {
+		ArrayList<VoloDTO> voli =new ArrayList<VoloDTO>();
+		for (VoloDTO voloDTO : packet.getLista_voli_ritorno()) {
+			if((viaggio.getData_fine()==null || voloDTO.getData().equals(viaggio.getData_fine())) &&
+					(partenza==null || partenza.matches(voloDTO.getLuogo_arrivo()+"*") ||  partenza.equals("")) ){
+				voli.add(voloDTO);
+			}
+			
+		}
+		return voli;
+	}
+	private boolean after_equal(Date date1,Date date2) {
+		return (date1.after(date2) || date1.equals(date2));
+	}
+	private boolean before_equal(Date date1,Date date2) {
+		return (date1.before(date2) || date1.equals(date2));
+	}
+	
+	public ArrayList<EscursioneDTO> filterEscursioni(PacchettoDTO pacchettoDTO){
+		ArrayList<EscursioneDTO> filtered = new ArrayList<EscursioneDTO>();
+		for (EscursioneDTO escursioneDTO : pacchettoDTO.getLista_escursioni()) {
+			if(viaggio.getData_inizio()==null || viaggio.getData_fine()==null || 
+			(after_equal(escursioneDTO.getData(), viaggio.getData_inizio()) && before_equal(escursioneDTO.getData(), viaggio.getData_fine()))){
+				filtered.add(escursioneDTO);
+			}
+		}
+		return filtered;
+	}
+	public ArrayList<HotelDTO> filterHotels(PacchettoDTO packeDto){
+		ArrayList<HotelDTO> filtered=new ArrayList<HotelDTO>();
+		for (HotelDTO hotelDTO : packeDto.getLista_hotel()) {
+			if (hotelDTO.getStelle() == stelle ||stelle==null){
+				filtered.add(hotelDTO);
+			}
+		}
+		
+		return filtered;
+	}
+	
+	public void showAll(){
+		 filteredHotels=(ArrayList<HotelDTO>)packet.getLista_hotel();	
+		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
+		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	
+		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
+		 restoreSelected();
+		 viaggio.setData_inizio(null);
+		 viaggio.setData_fine(null);
+		 System.out.println();
+	}
+	
+
+	public void selezionaEsc(){
+		if(!selectedEsc.contains(esc)){
+		selectedEsc.add(esc);
+		}
+		for (EscursioneDTO escursioneDTO : selectedEsc) {
+			System.out.println("esc"+escursioneDTO.getNome());
+		}
+	}
+	
+	public void deselezionaEsc() {
+		if (selectedEsc.contains(esc)){
+		selectedEsc.remove(esc);
+		}
+	}
+	
+	private void restoreSelected(){
+		 selectedEsc=new ArrayList<EscursioneDTO>();
+		 selectedHotels=null;
+		 selectedVolo_a=null;
+		 selectedVolo_r=null;
+		 
+		 
+
+	}
+
+	
 	public HotelDataModel getHotelModels() {
 		return hotelModels;
 	}
@@ -115,21 +232,30 @@ public class ViaggioBean {
 	
 
 	public void getPacchettoById(int id)
-	{	 
-		 this.packet = PMB.getPacchettoByID(id);
-		 setHotelModels(new HotelDataModel(packet.getLista_hotel()));	
-		 setVoloModels_a(new VoloDataModel(packet.getLista_voli_andata()));
-		 setVoloModels_r(new VoloDataModel(packet.getLista_voli_ritorno()));
-		 setEscModels(new EscDataModel(packet.getLista_escursioni()));
-		 this.viaggio.setData_inizio(packet.getData_inizio());
-		 this.viaggio.setData_fine(packet.getData_fine());
+	{	 if (last_id==0) {
+		last_id=id;
+	}
+	try {
+ 		 this.packet = PMB.getPacchettoByID(id);
+
+	} catch (Exception e) {
+		 this.packet = PMB.getPacchettoByID(last_id);
+
+	}
+		 filteredHotels=(ArrayList<HotelDTO>)packet.getLista_hotel();	
+		 filteredVolos=(ArrayList<VoloDTO>)packet.getLista_voli_andata();	
+		 filteredVolosRitorno=(ArrayList<VoloDTO>)packet.getLista_voli_ritorno();	
+		 filteredEscursiones=(ArrayList<EscursioneDTO>) packet.getLista_escursioni();
+		 viaggio.setData_inizio(null);
+		 viaggio.setData_fine(null);
+
 	}
 	
 	//Riempie la struttura premodels per permettere di visualizzare nella view tutte le prenotazioni di un utente
 	public void getPrenotazioni()
 	{
 		UserDTO current_user = userMgr.getUserDTO();
-		setPremodels(new PreDataModel(BMB.cercaPrenotazione(current_user)));
+	    setPremodels(new PreDataModel(BMB.cercaPrenotazione(current_user)));
 	}
 	
 	public VoloDTO getSelectedVolo_a() {
@@ -215,27 +341,38 @@ public class ViaggioBean {
 		}
 
 		
+	
+
+
 	public String acquista_paga()
 	{
+		
+
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null 
 			|| viaggio.getData_fine() == null || viaggio.getData_inizio() == null)
 		  {
-			return "userhome.xhtml?faces-redirect=true"; 
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore: hai lasciato qualche campo vuoto, controlla i dati inseriti" ));  	
+
+			return "creaviaggio.xhtml?id=last_id";
 		  }
 		
+		System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS hotel "+selectedHotels.getNome());
+		System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS andata"+selectedVolo_a.getCompagnia());
+		System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS ritorno "+selectedVolo_r.getCompagnia());
 		viaggio.setHotel(selectedHotels);
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setLista_escursioni(selectedEsc);
+		for (EscursioneDTO escursioneDTO : viaggio.getLista_escursioni()) {
+			System.out.println("esc in viaggio "+escursioneDTO.getNome());
+		}
 		//Controllo che le date dei voli scelti, e delle escursioni siano a posto.
 		// Gli hotel vengono filtrati in base alla disponibilità, si da per scontato
 		//per semplicità che l'hotel sia sempre disponibile nelle date scelte del viaggio
 		//Controllo anche che le date del viaggio non sparino fuori dalla disponibilità del pack
 		
-		
-		//Occhio che qua controlla anche che l'ora del volo combaci con l'ora di partenza
-		// del viaggio, DA METTERE A POSTO!!!
 		//Possibili errori durante la creazione---------------------------------
+
 		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
 		   check_giorni_coperti()== 0  ||
 		   escOutOfData() == 1 ||
@@ -245,16 +382,18 @@ public class ViaggioBean {
 		{  
 			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
 			//DEBUG
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
-			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
-			return "userhome.xhtml?faces-redirect=true";
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
+			restoreSelected();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+			return "creaviaggio.xhtml?id=last_id";
 
 		}
-		System.out.println("ok");
+		
 		return "pagamento.xhtml?faces-redirect=true"; 	
 	}
 	
@@ -297,6 +436,9 @@ public class ViaggioBean {
 		return 0;
 		
 	}
+	public void updateQuotaComp(){
+		quotacomplessiva = n_partecipanti*quotapp;
+	}
 	
 	public void calcoloquota()
 	{
@@ -322,7 +464,13 @@ public class ViaggioBean {
 	{	
 		this.calcoloquota();
 	    ViaggioDTO viaggio_creato = BMB.saveViaggio(viaggio);	// salvo il viaggio se non esiste già
-	    
+
+		for (EscursioneDTO escursioneDTO : viaggio.getLista_escursioni()) {
+			System.out.println("viaggio  "+escursioneDTO.getNome());
+		}
+	    for (EscursioneDTO escursioneDTO : viaggio_creato.getLista_escursioni()) {
+			System.out.println("viaggio creato "+escursioneDTO.getNome());
+		}
 		prenotazione.setViaggio(viaggio_creato);
 		prenotazione.setNumero_persone(n_partecipanti);
 		prenotazione.setUtente(userMgr.getUserDTO());
@@ -339,17 +487,37 @@ public class ViaggioBean {
 	{
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null)
 		  {
-			System.out.println("dentro if");
-			return "userhome.xhtml?faces-redirect=true";
+			restoreSelected();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+			return "creaviaggio.xhtml?id=last_id";
 		  }
-
 		
 
+		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
+		   check_giorni_coperti()== 0  ||
+		   escOutOfData() == 1 ||
+		   viaggio.getData_inizio().before(packet.getData_inizio()) || 
+		   viaggio.getData_fine().after(packet.getData_fine())
+		   )
+		{  
+			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
+			//DEBUG
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
+			restoreSelected();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+			return "creaviaggio.xhtml?id=last_id";
+
+		}
+		
          viaggio.setHotel(selectedHotels);
          viaggio.setVolo_andata(selectedVolo_a);
          viaggio.setVolo_ritorno(selectedVolo_r);
 		 viaggio.setLista_escursioni(selectedEsc);
-		
 		GiftListDTO gift= new GiftListDTO();
 		gift.setViaggio(viaggio);
 		gift.setUtente(userMgr.getUserDTO());
@@ -357,7 +525,8 @@ public class ViaggioBean {
 		
 		//creazione entita gift
 		
-		
+		 restoreSelected();
+
 		return "invitogift.xhtml?faces-redirect=true";
 	
 	}
@@ -368,22 +537,46 @@ public class ViaggioBean {
 
 		if(selectedHotels == null || selectedVolo_a == null || selectedVolo_r == null)
 		  {
-			return null;
+			restoreSelected();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+
+			return "creaviaggio.xhtml?id=last_id";
 		  }
+		
+
+		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
+		   check_giorni_coperti()== 0  ||
+		   escOutOfData() == 1 ||
+		   viaggio.getData_inizio().before(packet.getData_inizio()) || 
+		   viaggio.getData_fine().after(packet.getData_fine())
+		   )
+		{  
+			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
+			//DEBUG
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
+			restoreSelected();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+			return "creaviaggio.xhtml?id=last_id";
+
+		}
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
-		
 		invito.setViaggio(viaggio);
 		invito.setStatus(false);
 		invito.setUtente(userMgr.getUserDTO());
 		invito.setId(viaggio.getId());
 		FacesUtil.setSessionMapValue("InvDTO", invito);	
 		
+		restoreSelected();
+
 		//creazione entita invito
-		
-		
 		return "/utente/invitoviaggio.xhtml?faces-redirect=true";
 		
 		
@@ -458,30 +651,55 @@ public class ViaggioBean {
 				return "/utente/imieiviaggi.xhtml?faces-redirect=true";
 			}	
 		}
+
+
+		public String getPartenza() {
+			return partenza;
+		}
+
+
+		public void setPartenza(String partenza) {
+			this.partenza = partenza;
+		}
+
+
+
+
+		public Integer getStelle() {
+			return stelle;
+		}
+
+
+		public void setStelle(Integer stelle) {
+			this.stelle = stelle;
+		}
+
+		public ArrayList <PrenotazioneDTO> getLista_prenotazioni() {
+			return lista_prenotazioni;
+		}
+
+		public void setLista_prenotazioni(ArrayList <PrenotazioneDTO> lista_prenotazioni) {
+			this.lista_prenotazioni = lista_prenotazioni;
+		}
 			
-	/*
-	 * dovrebbe servire per filtrare i risultati in base alle date di inzio e fine del viaggio ( TODO )
-	public void filterComponents(){
-		
-		 filteredEscursiones = PMB.getListaEscursioniCompatibili(packet.getDestinazione(), this.data_inizio, this.data_fine);
-		 filteredHotels = PMB.getListaHotelCompatibili(packet.getDestinazione(), this.data_inizio, this.data_fine);
-		 
-		 filteredVolos = PMB.getListaVoliCompatibili(packet.getDestinazione(), this.data_inizio, this.data_fine);
-		
-		 ArrayList <VoloDTO> filteredVolo_a = new ArrayList <VoloDTO>();
-		 ArrayList <VoloDTO> filteredVolo_r = new ArrayList <VoloDTO> ();
-		 
-		 for(VoloDTO v: filteredVolos)
-		    {
-			 if(v.getLuogo_partenza().equals(this.packet.getDestinazione()))
-				 filteredVolo_a.add(v);
-			 else
-				 
-		    }
-		 
-		 setHotelModels(new HotelDataModel(filteredHotels));	
-		 setVoloModels(new VoloDataModel(filteredVolos));
-		 setEscModels(new EscDataModel(filteredEscursiones));
+       public String poutcome(int id)
+       {
+  		 this.packet = PMB.getPacchettoByID(id);
+  		 return "creaviaggio.xhtml";
+       }
+
+	public ArrayList <VoloDTO> getFilteredVolosRitorno() {
+		return filteredVolosRitorno;
 	}
-	*/
+
+		public EscursioneDTO getEsc() {
+			return esc;
+		}
+
+
+		public void setEsc(EscursioneDTO esc) {
+			this.esc = esc;
+		}
+		
+		
 }

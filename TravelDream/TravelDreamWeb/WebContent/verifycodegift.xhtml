@@ -5,22 +5,27 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      template="utente/Template.xhtml">
-      
-       <ui:define name="content">
-           <h:form id="gift">
+      >
+     <h:head>
+	<title>Login</title>
+	<h:outputStylesheet library="css" name="main2.css"  />
+	
+</h:head>
+<h:body>
+<div class="container"> 
+	<section id="content">
+           <form id="gift">
 			<h:panelGrid columns="3">
 				<p:outputLabel for="codice" value="Codice Gift" />
 				<p:inputText id="codice" name="codice" binding="#{cod}"/>
 				<p:message for="codice"/>
-				<p:commandButton value="Submit" action="#{answerGift.verifyCode(cod.value)}" >
-				</p:commandButton>
+				<h:form>
+				<p:commandButton value="Submit" action="#{answerGift.verifyCode(cod.value)}" />
+				</h:form>
 			</h:panelGrid>
-		</h:form>
-		        
-              
-              
-
-       </ui:define>
-      
+		</form>
+		</section>
+	</div>
+	</h:body>
+		             
 </ui:composition>

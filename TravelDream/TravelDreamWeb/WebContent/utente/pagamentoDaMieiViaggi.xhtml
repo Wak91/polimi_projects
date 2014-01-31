@@ -1,60 +1,93 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      template="Template.xhtml"
-      
->
- <ui:define name="content">
-       
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<ui:composition template="Template.xhtml">
+
+	<ui:define name="content">
    #{ViaggioBean.searchViaggioById(param['trv'])}
- 
-	
-	 <h:form id="my_form">
-	 #{ViaggioBean.calcoloquota()}
-	  <p:tabMenu activeIndex="0">  
-     <p:menuitem value="Home" url="userhome.xhtml" icon="ui-icon-person"/>  
-     <p:menuitem value="MyAccount" url="personaldata.xhtml" icon="ui-icon-search" />  
-     <p:menuitem value="ImieiViaggi" url="imieiviaggi.xhtml" icon="ui-icon-search"/>  
-     <p:menuitem value="GiftList" url="giftlist.xhtml" icon="ui-icon-wrench"/>  
-     </p:tabMenu> 
-		<p:panel header="Pagamento">
-		EFFETTUA LA TUA PRENOTAZIONE!
-			<h:panelGrid columns="3" id="regGrid">
-			
-			Numero partecipanti	  
-            <p:spinner id="minmax"   
-            value="#{ViaggioBean.n_partecipanti}" min="1" max="15">         
-            </p:spinner> 
-           
-			<h:outputLabel for="costogg">Quota per persona</h:outputLabel>
-			<h:outputText id="qpp"  value="#{ViaggioBean.quotapp}"></h:outputText> 
-			<br></br>
+   #{ViaggioBean.calcoloquota()}
+			<div class="header">
+				<div class="wrap">
 				
-            <h:outputLabel for="qc"> Quota complessiva</h:outputLabel>  
-            <h:outputText id="qcc" > #{ViaggioBean.quotacomplessiva}</h:outputText>  
-             <br></br>
-            
+				<div class="logo">
+					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li class="active"><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+						<li><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
+					    <li><h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			    </h:form></li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>			
+		<div class="clear"> </div>
+		
+			<h:form>
+					    	<p:panel header="Pagamento">  
+       					 <h:panelGrid columns="2" id="grid"> 
+						    	<h:outputLabel for="np">Numero partecipanti</h:outputLabel>
+								    <p:spinner id="minmax" value="#{ViaggioBean.n_partecipanti}" min="1" max="15">
+								    <p:ajax update="qcc" process="@this" listener="#{ViaggioBean.updateQuotaComp}"/>          
+            						</p:spinner> 
+						    	<h:outputLabel for="costogg">Quota per persona</h:outputLabel>
+								<h:outputText id="qpp"  value="#{ViaggioBean.quotapp}"></h:outputText> 
+						    
+						       <h:outputLabel for="qc"> Quota complessiva</h:outputLabel>  
+            				   <h:outputText id="qcc" value= "#{ViaggioBean.quotacomplessiva}" ></h:outputText>  
+						    
+						    	<h:outputLabel for="cartacredito">Codice carta di credito</h:outputLabel>
+            					<p:password id="pwd1" value="#{ViaggioBean.password1}" match="pwd2" label="Password 1" required="true"/>  
+						    	
+						    	<h:outputLabel for="cartacredito">Conferma codice carta di credito</h:outputLabel>
+            					<p:password id="pwd2" value="#{ViaggioBean.password1}" label="Password 2" required="true"/> 						   
+						   <div>
+						   			 <h:commandButton value="Prenota ora!" update="regGrid"
+			                         action="#{ViaggioBean.creaPrenotazione}" />
+						  </div>
+						  </h:panelGrid>
+						  </p:panel>
+						  </h:form>
+					   				     
+		     
+		<div class="clear"> </div>
+		<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
+				</div>
 			
-			<h:outputLabel for="cartacredito">Codice carta di credito</h:outputLabel>
-            <p:password id="pwd1" value="#{ViaggioBean.password1}" match="pwd2" label="Password 1" required="true"/>  
-            <br></br>
-            
-            <h:outputLabel for="cartacredito">Conferma codice carta di credito</h:outputLabel>
-            <p:password id="pwd2" value="#{ViaggioBean.password1}" label="Password 2" required="true"/> 
-				
-            <h:commandButton value="Prenota ora!" update="regGrid"
-			action="#{ViaggioBean.creaPrenotazione}" />
-			
-        	</h:panelGrid>
-		</p:panel>  
-     </h:form>   
-  
-	
-	
-	
-	
-	</ui:define>
-	</ui:composition>
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> rikimotta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+		</ui:define>
+		</ui:composition>
+</html>
+

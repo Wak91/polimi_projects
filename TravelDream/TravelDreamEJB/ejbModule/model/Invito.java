@@ -14,6 +14,7 @@ import com.traveldream.gestioneprenotazione.ejb.BookManagerBeanLocal;
  * 
  */
 @Entity
+@Table(name="Invito")
 @NamedQueries({
 	@NamedQuery(name="Invito.findAll", query="SELECT i FROM Invito i"),
 	@NamedQuery(name="Invito.findByIdMail", query="SELECT i FROM Invito i WHERE i.id = :id AND i.amico = :amico"),
