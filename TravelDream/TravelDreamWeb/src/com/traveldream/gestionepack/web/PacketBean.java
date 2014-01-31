@@ -370,9 +370,11 @@ public class PacketBean {
 		
 	}
 	
-	public void deletePacchetto(int id)
+	public String deletePacchetto(int id)
 	{ 	
 		PMB.deletePacchetto(id);
+		return "impack.xhtml?faces-redirect=true";
+
 	}	
 
 	//-------------------------------------------------------
