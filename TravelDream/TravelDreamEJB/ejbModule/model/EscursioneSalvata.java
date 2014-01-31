@@ -33,9 +33,7 @@ public class EscursioneSalvata implements Serializable {
 
 	private String nome;
 
-	//bi-directional many-to-one association to Viaggio
-	@ManyToMany(mappedBy="escursioneSalvatas")
-	private List<Viaggio> viaggios;
+	
 
 	public EscursioneSalvata() {
 		
@@ -90,12 +88,5 @@ public class EscursioneSalvata implements Serializable {
 		this.nome = nome;
 	}
 
-	public List<Viaggio> getViaggio() {
-		return this.viaggios;
-	}
-
-	public void setViaggio(List<Viaggio> viaggio) {
-		this.viaggios = viaggio;
-	}
 
 }

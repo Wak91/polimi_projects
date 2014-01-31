@@ -359,6 +359,9 @@ public class ViaggioBean {
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setLista_escursioni(selectedEsc);
+		for (EscursioneDTO escursioneDTO : viaggio.getLista_escursioni()) {
+			System.out.println("esc in viaggio "+escursioneDTO.getNome());
+		}
 		//Controllo che le date dei voli scelti, e delle escursioni siano a posto.
 		// Gli hotel vengono filtrati in base alla disponibilità, si da per scontato
 		//per semplicità che l'hotel sia sempre disponibile nelle date scelte del viaggio
@@ -457,7 +460,13 @@ public class ViaggioBean {
 	{	
 		this.calcoloquota();
 	    ViaggioDTO viaggio_creato = BMB.saveViaggio(viaggio);	// salvo il viaggio se non esiste già
-	    
+
+		for (EscursioneDTO escursioneDTO : viaggio.getLista_escursioni()) {
+			System.out.println("viaggio  "+escursioneDTO.getNome());
+		}
+	    for (EscursioneDTO escursioneDTO : viaggio_creato.getLista_escursioni()) {
+			System.out.println("viaggio creato "+escursioneDTO.getNome());
+		}
 		prenotazione.setViaggio(viaggio_creato);
 		prenotazione.setNumero_persone(n_partecipanti);
 		prenotazione.setUtente(userMgr.getUserDTO());
