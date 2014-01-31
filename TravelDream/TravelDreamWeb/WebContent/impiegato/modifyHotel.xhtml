@@ -62,8 +62,17 @@
 			   <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
 				<p:fileUpload value="#{modComponentBean.imgHotel}" mode="simple" />
 				<br></br>
-                <h:commandButton value="Modifica Hotel" update="regGrid"
-				action="#{modComponentBean.modifyHotel()}" icon="ui-icon-script"/>
+				
+				 <p:commandButton  value="Modifica Hotel"  update="regGrid" action="#{modComponentBean.modifyHotel()}"  icon="ui-icon-close">
+				   <p:confirm header="Confirmation" message="Modificando date o destinazione ptresti perdere alcuni pacchetti, vuoi comunque procedere?" icon="ui-icon-alert" />  
+				 </p:commandButton>
+				 
+				      <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+       		 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+    	</p:confirmDialog> 
+			  
+			  
 		</p:panel>
 	   
 	</h:form>

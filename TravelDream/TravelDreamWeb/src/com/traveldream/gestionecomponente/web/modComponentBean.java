@@ -159,8 +159,17 @@ public class modComponentBean {
   			//se c'è una situazione di incoerenza nelle date o nel luogo elimino l'hotel dal pacchetto, 
   			//controllo se nel pacchetto ci sono altre componenti e nel caso update o elimino pack
 
-  			if(hotel.getData_inizio().after(p.getData_fine()) || (hotel.getLuogo().equals(p.getDestinazione())==false))
-  			{
+  			System.out.println("" + hotel.getData_inizio());
+  			System.out.println(""+hotel.getData_fine());
+  			System.out.println(""+p.getData_inizio());
+  			System.out.println(""+p.getData_fine());
+  			if( ( ( hotel.getData_inizio().after(p.getData_fine()) ) ||
+  				  (hotel.getData_fine().before(p.getData_inizio()))	
+  					
+  			     )    || 
+  					
+  					(hotel.getLuogo().equals(p.getDestinazione())==false))
+  			{ 
   				if(p.getLista_hotel().size()== 1)// se nel pacchetto c'è solo un hotel, in questo caso è proprio quello da eliminare, butto quindi il pacchetto
   				 {
   					PMB.deletePacchetto(p.getId());
@@ -168,15 +177,16 @@ public class modComponentBean {
   				 }
   				else
   				   { // se non era l'unico hotel, rimuovo dalla lista del pacchetto e update pacchetto
-  					 ArrayList <HotelDTO> phdto = (ArrayList<HotelDTO>) p.getLista_hotel();
-  					 
+  					ArrayList <HotelDTO> phdto = (ArrayList<HotelDTO>) p.getLista_hotel();
+					ArrayList <HotelDTO> new_phdto = new ArrayList <HotelDTO> ();
+					
   					 for(HotelDTO hdto: phdto)
   					    {
-  						 if(hdto.getId() == hotel.getId())
-  						  phdto.remove(hdto);
+  						 if(hdto.getId() != hotel.getId())
+  						  new_phdto.add(hdto);
   					    }
 
-  					 p.setLista_hotel(phdto); // modifico la lista degli hotel al pacchetto corrente
+  					 p.setLista_hotel(new_phdto); // modifico la lista degli hotel al pacchetto corrente
   					 PMB.modifyPacchetto(p);
   				   }
   			 }

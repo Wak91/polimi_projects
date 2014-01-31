@@ -142,6 +142,7 @@ public class PackManagerBean implements PackManagerBeanLocal {
 		
 		//riaggiorno la lista di pacchetti contenuta in escursione(che indica in che pacchetti e' inserita) prima rimuovo quelli vecchi poi aggiungo quelli nuovi
 		//faccio in questo modo considerando che il numero di hotel in un pacchetto non sia troppo grosso
+		
 		for(Escursione escursione:pacchetto.getEscursiones()){
 			escursione.getPacchettos().remove(pacchetto);
 		}
@@ -187,16 +188,16 @@ public class PackManagerBean implements PackManagerBeanLocal {
 	    			qb.greaterThanOrEqualTo(hotel.<Date>get("data_fine"),fine));   	
 	    }
 	    if(fine !=null && inizio !=null){
-	    	//Predicate inizioHotelInMezzoPacchetto = qb.between(hotel.<Date>get("data_inizio"), inizio,fine);
-	    //	Predicate fineHotelInMezzoPacchetto = qb.between(hotel.<Date>get("data_fine"), inizio,fine);
+	    	Predicate inizioHotelInMezzoPacchetto = qb.between(hotel.<Date>get("data_inizio"), inizio,fine);
+	        Predicate fineHotelInMezzoPacchetto = qb.between(hotel.<Date>get("data_fine"), inizio,fine);
 	    	Predicate inizioHotelPrimaInizioPacchettoPredicate = qb.lessThanOrEqualTo(hotel.<Date>get("data_inizio"),inizio); 
 	    	Predicate fineHoteldopofinePacchettoPredicate = qb.greaterThanOrEqualTo(hotel.<Date>get("data_fine"),fine); 
 
 	    	Predicate HotelContienePacchetto = qb.and(inizioHotelPrimaInizioPacchettoPredicate,fineHoteldopofinePacchettoPredicate);
-	    //	Predicate inizioOFineHotelInPredicateMezzoPacchettoPredicate = qb.or(inizioHotelInMezzoPacchetto,fineHotelInMezzoPacchetto);
+	        Predicate inizioOFineHotelInPredicateMezzoPacchettoPredicate = qb.or(inizioHotelInMezzoPacchetto,fineHotelInMezzoPacchetto);
 
-	    //	Predicate DataOK = qb.or(HotelContienePacchetto,inizioOFineHotelInPredicateMezzoPacchettoPredicate);
-	        predicates.add(HotelContienePacchetto);
+	        Predicate DataOK = qb.or(HotelContienePacchetto,inizioOFineHotelInPredicateMezzoPacchettoPredicate);
+	        predicates.add(DataOK);
 	    }
 	    
 	    c.where(predicates.toArray(new Predicate[]{}));
