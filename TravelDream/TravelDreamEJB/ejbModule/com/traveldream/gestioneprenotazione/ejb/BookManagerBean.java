@@ -88,6 +88,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		   Viaggio travel = new Viaggio();
 		   travel.setData_inizio(v.getData_inizio());
 		   travel.setData_fine(v.getData_fine());
+		   travel.setNome(v.getNome());
 		   travel.setHotelSalvato(this.DTOtoEntityHotel(v.getHotel()));
 		   travel.setVoloSalvato1(this.DTOtoEntityVolo(v.getVolo_andata()));
 		   travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));		  
