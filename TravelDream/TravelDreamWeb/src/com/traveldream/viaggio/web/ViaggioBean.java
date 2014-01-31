@@ -351,7 +351,11 @@ public class ViaggioBean {
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null 
 			|| viaggio.getData_fine() == null || viaggio.getData_inizio() == null)
 		  {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore: hai lasciato qualche campo vuoto, controlla i dati inseriti" ));  	
+			System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"+selectedHotels.getNome());
+			System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"+selectedVolo_a.getCompagnia());
+			System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"+selectedVolo_r.getCompagnia());
+            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"+viaggio.getData_fine());
 			return "creaviaggio.xhtml?id=last_id";
 		  }
 		

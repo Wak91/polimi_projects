@@ -37,9 +37,7 @@
 					     
 					      <li><img src="../images/slider2.jpg" alt=""/>
 					      </li>
-					      <li><img src="../images/slider3.jpg" alt=""/>
-					      </li>
-					       <li><img src="../images/slider3.jpg" alt=""/>
+					      <li><img src="../images/slider4.jpg" alt=""/>
 					      </li>
 					    </ul>
 					</div>
@@ -50,20 +48,18 @@
 		       	<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />  
 		       	 
 		           <section id="bar">
-		           <img src="../images/lente.png" width="40px" height="40px" />				
-				   &nbsp; &nbsp; &nbsp;
-				   <h:outputLabel for="where" >DOVE?:</h:outputLabel>
+				   <h:outputLabel for="where" >DOVE?</h:outputLabel>
 		           <p:inputText id="where" value="#{PacketBean.destinazione_pacchetto}">
 		     		<p:ajax event="keyup" listener="#{PacketBean.filterPacket}" update="@([id$=packetlist])" />  		    
 		           </p:inputText>
 		           &nbsp; &nbsp; &nbsp; 
-				   <h:outputLabel>DA QUANDO?:</h:outputLabel>
+				   <h:outputLabel>DA QUANDO?</h:outputLabel>
 				   <p:calendar id="date" value="#{PacketBean.data_inizio_pacchetto}" navigator="true" display="inline" pattern="dd/MM/yyyy" >  
 				   <p:ajax event="dateSelect" listener="#{PacketBean.filterPacket}"   update="@([id$=packetlist])" /> 
 				  <f:convertDateTime pattern="dd/MM/yyyy"  />
 				   </p:calendar> 
     		       &nbsp; &nbsp; &nbsp; 
-    		       <h:outputLabel>A QUANDO?:</h:outputLabel>
+    		       <h:outputLabel>A QUANDO?</h:outputLabel>
 				   <p:calendar id="date2" value="#{PacketBean.data_fine_pacchetto}" navigator="true" display="inline" pattern="dd/MM/yyyy" >  
 				   <p:ajax event="dateSelect" listener="#{PacketBean.filterPacket}"   update="@([id$=packetlist])" /> 
 				   <f:convertDateTime pattern="dd/MM/yyyy"  />
