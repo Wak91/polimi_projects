@@ -123,7 +123,7 @@ public class ViaggioBean {
 		ArrayList<VoloDTO> voli =new ArrayList<VoloDTO>();
 		for (VoloDTO voloDTO : packet.getLista_voli_andata()) {
 			if((viaggio.getData_inizio()==null || voloDTO.getData().equals(viaggio.getData_inizio())) &&
-					(partenza==null || partenza.equals("") || partenza.equals(voloDTO.getLuogo_partenza()))){
+					(partenza==null || partenza.equals("") || partenza.matches(voloDTO.getLuogo_partenza()+"*"))){
 				voli.add(voloDTO);
 			}
 		}
@@ -133,7 +133,7 @@ public class ViaggioBean {
 		ArrayList<VoloDTO> voli =new ArrayList<VoloDTO>();
 		for (VoloDTO voloDTO : packet.getLista_voli_ritorno()) {
 			if((viaggio.getData_fine()==null || voloDTO.getData().equals(viaggio.getData_fine())) &&
-					(partenza==null || partenza.equals(voloDTO.getLuogo_arrivo()) ||  partenza.equals("")) ){
+					(partenza==null || partenza.matches(voloDTO.getLuogo_arrivo()+"*") ||  partenza.equals("")) ){
 				voli.add(voloDTO);
 			}
 			
