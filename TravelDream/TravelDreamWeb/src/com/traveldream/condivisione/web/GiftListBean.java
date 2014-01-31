@@ -140,12 +140,15 @@ public class GiftListBean {
 		
 	public String confermaGift(){
 		costocomplessivo = Pagamento.CalcolaCostoUtenteGift(selectedGiftListDTO);
+		if (costocomplessivo==0) {
+			return AcquistaGift();
+		}
 		return "pagamentogift.xhtml?faces-redirect=true";
 	}
 	
 	public String AcquistaGift(){
 		PrenotazioneDTO prenotazione = new PrenotazioneDTO();
-		prenotazione.setCosto(costocomplessivo);
+		prenotazione.setCosto(Pagamento.costoEffettivoGift(selectedGiftListDTO));
 		prenotazione.setNumero_persone(selectedGiftListDTO.getNpersone());
 		prenotazione.setUtente(selectedGiftListDTO.getUtente());
 		prenotazione.setViaggio(selectedGiftListDTO.getViaggio());
@@ -243,6 +246,7 @@ public class GiftListBean {
 	public void setList_gift(ArrayList <GiftListDTO> list_gift) {
 		this.list_gift = list_gift;
 	}
+
 
 	
 	

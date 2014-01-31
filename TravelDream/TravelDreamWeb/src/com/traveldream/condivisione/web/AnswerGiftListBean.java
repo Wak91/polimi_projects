@@ -1,5 +1,6 @@
 package com.traveldream.condivisione.web;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.ejb.EJB;
@@ -35,7 +36,7 @@ private GiftListDTO giftListDTOAmicoDto; //gift list vista dall'amico
 		GiftListDTO gift=GLM.findGiftByHash(codice);
 		if (gift==null){
 			System.out.println("sono nel if");
-			FacesContext.getCurrentInstance().addMessage("codice", new FacesMessage("Il codice inserito non e' corretto"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore inserimento codice Gift non valido o scaduto" ));  	
 			return null;
 		}
 		System.out.println("sono fuori nel if");
@@ -45,12 +46,14 @@ private GiftListDTO giftListDTOAmicoDto; //gift list vista dall'amico
 
 	}
 	
-	public void loadGiftFromHash(String codice){
+	public void loadGiftFromHash(String codice) throws IOException{
 		System.out.println(codice);
+		
 		GiftListDTO gift=GLM.findGiftByHash(codice);
 		if (gift==null){
 			System.out.println("sono nel if");
-			FacesContext.getCurrentInstance().addMessage("null", new FacesMessage("Il codice inserito non e' corretto"));
+			FacesContext.getCurrentInstance().getExternalContext().redirect("verifycodegift.xhtml");
+			return;
 		}
 		giftListDTOAmicoDto=gift;
 		currentEscPag=new ArrayList<EscursionePagataDTO>();

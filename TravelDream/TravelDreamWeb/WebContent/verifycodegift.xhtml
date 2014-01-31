@@ -15,10 +15,11 @@
 <div class="container"> 
 	<section id="content">
            <form id="gift">
+           <p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
 			<h:panelGrid columns="3">
 				<p:outputLabel for="codice" value="Codice Gift" />
-				<p:inputText id="codice" name="codice" binding="#{cod}"/>
-				<p:message for="codice"/>
+				<p:inputText id="codice" name="codice" binding="#{cod}"/><br/>
+				
 				<h:form>
 				<p:commandButton value="Submit" action="#{answerGift.verifyCode(cod.value)}" />
 				</h:form>

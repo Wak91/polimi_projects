@@ -24,7 +24,7 @@
            	
 	           		<h:outputText value="Hotel" /> <br></br>
 	           		<h:outputText value="#{answerGift.giftListDTOAmicoDto.viaggio.hotel.nome}" /> &nbsp;
-	           		<h:outputText value="#{answerGift.calcolaCostoHotel()}" /> 
+	           		<h:outputText value="#{answerGift.calcolaCostoHotel()}€" /> &nbsp;
 	           		<p:selectBooleanCheckbox value="#{answerGift.giftListDTOAmicoDto.hotelPag}" rendered="#{answerGift.currentHotelPag==false}"> 
 	           		</p:selectBooleanCheckbox> 
 	           		<h:outputLabel rendered="#{answerGift.currentHotelPag==true}" value="Già pagata" />
