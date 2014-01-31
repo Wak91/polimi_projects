@@ -60,32 +60,33 @@
 			<br></br>
 			<table width="100%" align="center">
                 <tr>
-                    <td width="30%" ><div class="searchbar"> 
+                    <td width="1%" ><div class="searchbar"> 
 		       	      <h:form id="filterform">   
 		       	      
 		              <section id="bar2">
-		              <h:outputLabel>DATE DEL VIAGGIO?*:</h:outputLabel><br></br>
+		              <h:outputLabel>DATE DEL VIAGGIO?*</h:outputLabel><br></br>
 		              <hr></hr>
-				      <h:outputLabel>DA QUANDO?:</h:outputLabel><br></br>
+				      <h:outputLabel>DA QUANDO?</h:outputLabel><br></br>
 				      <p:calendar id="datei" value="#{ViaggioBean.viaggio.data_inizio}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
 				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
 				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
 				      </p:calendar>  
     		          <br></br>
-    		          <h:outputLabel>A QUANDO?:</h:outputLabel><br></br>
+    		          <h:outputLabel>A QUANDO?</h:outputLabel><br></br>
 				      <p:calendar id="datef" value="#{ViaggioBean.viaggio.data_fine}" navigator="true" display="inline" pattern="dd/MM/yyyy" >
 				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
 				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
 				      </p:calendar>  
 				      <br></br>
+				      <br></br>
+				      <h:outputLabel>FILTRA LA TUA RICERCA!</h:outputLabel><br></br>
 				      <hr></hr>
-				      <h:outputLabel>FILTRA LA TUA RICERCA!:</h:outputLabel><br></br>
-				      <h:outputLabel>PARTENZA DA?:</h:outputLabel><br></br>
+				      <h:outputLabel>PARTENZA DA?</h:outputLabel><br></br>
 		              <p:inputText id="where" value="#{ViaggioBean.partenza}">
 		              <p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" /> 
 		              </p:inputText>
     		          <br></br> 
-				      <h:outputLabel for="starts" >STELLE?:</h:outputLabel><br></br>
+				      <h:outputLabel for="starts" >STELLE?</h:outputLabel><br></br>
 				      <p:inputText id="stars" value="#{ViaggioBean.stelle}">
 				    	<p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" />
 				      </p:inputText>
@@ -97,7 +98,7 @@
 				     </h:form>	
 		             </div></td>
                     <td width="70%">
-                       <h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="315" width="1051"/> 
+                       <h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="340" width="100%"/> 
                   
                    
 					</td>
@@ -123,16 +124,21 @@
 		    
 				<div class="grid2">
 				 <div class="left">
-					 <h:graphicImage  value="../images/#{hotel.hotelImg}" height="90" width="90" /> 
+				  
+					 <h:graphicImage value="../images/#{hotel.hotelImg}" height="90" width="90" /> 
 				</div>
-                     <div class="right">
-					#{hotel.nome}<br></br>
-					<h:outputLabel for="costo">Costo</h:outputLabel> &nbsp; &nbsp; 
-					 #{hotel.costo_giornaliero}<br></br>
-				    <p:rating id="stars" value="#{hotel.stelle}" stars="5" cancel="false" readonly="true"/>  
+                     <div class="center">
+                     	#{hotel.nome}<br></br>
+                     <center><p:rating id="stars" align="center" value="#{hotel.stelle}" stars="5" cancel="false" readonly="true"/> </center> 				    
+					 </div>
+					
+					 <div class ="right">
 				    <p:commandButton id="hotelbutton" value="Seleziona" onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
             			<f:setPropertyActionListener target="#{ViaggioBean.selectedHotels}" value="#{hotel}"/>
        				 </p:commandButton>
+					 </div>
+					  <div class="rightpay">
+					 #{hotel.costo_giornaliero}&nbsp; € <br></br>
 					 </div>
 				</div>
 				
@@ -305,6 +311,7 @@
 				
 		<h:commandButton value="Invita a partecipare" styleClass="button" 
 				action="#{ViaggioBean.invita()}" icon="ui-icon-script"/>
+				<br></br>
 		   </center>   
 		   </h:form>
 		      

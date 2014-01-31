@@ -77,6 +77,8 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		 v.getHotel().setId(id_h); //aggiorno gli id dei DTO, solo quelli perchè gli altri campi sono gia' a posto
 		 v.getVolo_andata().setId(id_vsa);  
 		 v.getVolo_ritorno().setId(id_vsr);
+		 
+		
 		 //Gli id dei componenti ora sono id che si riferiscono alla tabella dei componenti salvati
 		 
 		 int id = this.cercaViaggio(v); // vado alla ricerca di possibili duplicati del viaggio appena creato
@@ -88,6 +90,7 @@ public class BookManagerBean implements BookManagerBeanLocal {
 		   travel.setHotelSalvato(this.DTOtoEntityHotel(v.getHotel()));
 		   travel.setVoloSalvato1(this.DTOtoEntityVolo(v.getVolo_andata()));
 		   travel.setVoloSalvato2(this.DTOtoEntityVolo(v.getVolo_ritorno()));
+
 		   em.persist(travel);	
 		   em.flush();
 		   return  Converter.ViaggioToDTO(em.find(Viaggio.class, travel.getId()));
