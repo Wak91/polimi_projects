@@ -210,7 +210,11 @@ public class modPacketBean {
 		ArrayList <HotelDTO> hdtolist = new ArrayList <HotelDTO>();
 		for(HotelDTO hdto: CMB.getAllHotel()  )
 		   {
-			if(hdto.getLuogo().equals(packet.getDestinazione()))
+			if(
+				   hdto.getLuogo().equals(packet.getDestinazione()) && 
+			    (  hdto.getData_inizio().after(packet.getData_fine()) == false ) && 
+			    (  hdto.getData_fine().before(packet.getData_inizio()) == false )  
+			  )
 				hdtolist.add(hdto);
 		   }
 		 setHotelModels(new HotelDataModel(hdtolist));	

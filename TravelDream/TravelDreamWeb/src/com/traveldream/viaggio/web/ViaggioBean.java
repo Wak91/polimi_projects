@@ -373,12 +373,7 @@ public class ViaggioBean {
 		
 		//Possibili errori durante la creazione---------------------------------
 
-		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
-		   check_giorni_coperti()== 0  ||
-		   escOutOfData() == 1 ||
-		   viaggio.getData_inizio().before(packet.getData_inizio()) || 
-		   viaggio.getData_fine().after(packet.getData_fine())
-		   )
+		if(big_check()==0)
 		{  
 			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
 			//DEBUG
@@ -404,16 +399,16 @@ public class ViaggioBean {
 		java.util.Date ritorno_volo = selectedVolo_r.getData();
 		java.util.Date inizio_viaggio = viaggio.getData_inizio();
 		java.util.Date fine_viaggio = viaggio.getData_fine();
+		java.util.Date inizio_hotel = selectedHotels.getData_inizio();
+		java.util.Date fine_hotel = selectedHotels.getData_fine();
+
 		
 		if(
-		   andata_volo.getDate() == inizio_viaggio.getDate()   && 
-		   andata_volo.getMonth() == inizio_viaggio.getMonth() &&
-		   andata_volo.getYear() == inizio_viaggio.getYear() &&
-		   
-		   ritorno_volo.getDate() == fine_viaggio.getDate()   && 
-		   ritorno_volo.getMonth() == fine_viaggio.getMonth() &&
-		   ritorno_volo.getYear() == fine_viaggio.getYear()
-		   
+		    andata_volo.equals(inizio_viaggio) &&
+		    ritorno_volo.equals(fine_viaggio) &&
+		    ( inizio_hotel.after( inizio_viaggio ) == false ) && // rispetta requisito "niente barbonate"
+		    ( fine_hotel.before(fine_viaggio)) == false 
+		    
 		   )
 		  {
 			return 1;
@@ -436,6 +431,25 @@ public class ViaggioBean {
 		return 0;
 		
 	}
+	
+	
+	private int big_check()
+	{
+	 if( viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
+			   check_giorni_coperti()== 0  ||
+			   escOutOfData() == 1 ||
+			   viaggio.getData_inizio().before(packet.getData_inizio()) || 
+			   viaggio.getData_fine().after(packet.getData_fine())
+	)	
+	  {
+		 return 0; // problemi nella creazione del viaggio
+	  }
+	 else 
+		 return 1; //viaggio tutto ok
+		
+	}
+	
+	
 	public void updateQuotaComp(){
 		quotacomplessiva = n_partecipanti*quotapp;
 	}
@@ -493,26 +507,21 @@ public class ViaggioBean {
 		  }
 		
 
-		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
-		   check_giorni_coperti()== 0  ||
-		   escOutOfData() == 1 ||
-		   viaggio.getData_inizio().before(packet.getData_inizio()) || 
-		   viaggio.getData_fine().after(packet.getData_fine())
-		   )
-		{  
-			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
-			//DEBUG
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
-			restoreSelected();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-			return "creaviaggio.xhtml?id=last_id";
+		if(big_check()==0)
+				{  
+					//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
+					//DEBUG
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
+					restoreSelected();
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+					return "creaviaggio.xhtml?id=last_id";
 
-		}
+				}
 		
          viaggio.setHotel(selectedHotels);
          viaggio.setVolo_andata(selectedVolo_a);
@@ -544,26 +553,21 @@ public class ViaggioBean {
 		  }
 		
 
-		if(viaggio.getData_fine()==null || viaggio.getData_inizio()==null || 
-		   check_giorni_coperti()== 0  ||
-		   escOutOfData() == 1 ||
-		   viaggio.getData_inizio().before(packet.getData_inizio()) || 
-		   viaggio.getData_fine().after(packet.getData_fine())
-		   )
-		{  
-			//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
-			//DEBUG
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
-			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
-			restoreSelected();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-			return "creaviaggio.xhtml?id=last_id";
+		if(big_check()==0)
+				{  
+					//MESSAGGIO ERRORE, CONTROLLA I DATI INSERITI
+					//DEBUG
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_fine()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +viaggio.getData_inizio()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_a.getData()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +selectedVolo_r.getData()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_inizio()+"");
+					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
+					restoreSelected();
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
+					return "creaviaggio.xhtml?id=last_id";
 
-		}
+				}
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
