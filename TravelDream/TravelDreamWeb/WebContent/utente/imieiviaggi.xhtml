@@ -286,11 +286,16 @@
         </p:column>
         
         <p:column headerText="Elimina" style="width:24%" >  			
-   		<h:commandButton value="Elimina" onclick="return confirm('Are you sure?')" update="regGrid" action="#{InvitoBean.deleteInvito(invito.id)}"/>
+   		<p:commandButton   update="tab" action="#{InvitoBean.deleteInvito(invito.id)}"  icon="ui-icon-close">
+			<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
+		</p:commandButton>
 		</p:column>
         
         </p:dataTable>                      
-             
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+       		 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+    	</p:confirmDialog> 
              
                      
 			</h:panelGroup>
