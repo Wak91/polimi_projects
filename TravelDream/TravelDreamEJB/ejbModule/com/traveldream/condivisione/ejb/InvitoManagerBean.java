@@ -130,6 +130,16 @@ public class InvitoManagerBean implements InvitoManagerBeanLocal{
 			return null;
 		}
 	}
+
+
+	@Override
+	public void eliminaInvito(int id) {
+		// TODO Auto-generated method stub
+		Invito invito = em.createNamedQuery("Invito.findById", Invito.class)
+				.setParameter("id", id)
+				.getSingleResult();
+		em.remove(invito);
+	}
 	
 		
 }

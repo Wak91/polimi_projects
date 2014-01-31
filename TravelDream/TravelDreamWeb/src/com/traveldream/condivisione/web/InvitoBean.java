@@ -152,7 +152,7 @@ public class InvitoBean {
 		IMB.cambiaStato(invito);
 		System.out.println("stato cambiato");
 		System.out.println(invito.getStatus());
-		return "/homepage.xhtml?faces-redirect=true";
+		return "/utente/userhome.xhtml?faces-redirect=true";
 	}
 
 
@@ -175,10 +175,12 @@ public class InvitoBean {
 		try {
 			InvitoDTO invito_dto = IMB.cercaInvitoById(getId_amico(), getMail());
 			setInvito(invito_dto);
+			if (userMgr.getUserDTO().getEmail() != invito_dto.getUtente().getEmail()){
 			System.out.println(invito_dto.getViaggio().getHotel().getNome());
 			System.out.println(invito_dto.getAmico());
 			System.out.println(invito_dto.getStatus());
 			return "/utente/confermaInvito.xhtml?faces-redirect=true";
+			} else { return "/utente/userhome.xhtml?faces-redirect=true"; }
 		} catch (NullPointerException e){
 			System.out.println("null");
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity.");
@@ -211,6 +213,11 @@ public class InvitoBean {
 
 	public void setLista_inviti(ArrayList <InvitoDTO> lista_inviti) {
 		this.lista_inviti = lista_inviti;
+	}
+	
+	public String deleteInvito(int id){
+		IMB.eliminaInvito(id);
+		return "/utente/imieiviaggi.xhtml?faces-redirect=true";
 	}
 	
 }
