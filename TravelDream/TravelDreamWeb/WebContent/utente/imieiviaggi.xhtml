@@ -285,8 +285,10 @@
   		</p:button>
         </p:column>
         
-        <p:column headerText="Elimina" style="width:24%" >  			
-   		<h:commandButton value="Elimina" onclick="return confirm('Are you sure?')" update="regGrid" action="#{InvitoBean.deleteInvito(invito.id)}"/>
+        <p:column headerText="Elimina" style="width:24%" >  
+        <p:commandButton>	
+   		<p:confirm value="Elimina" onclick="return confirm('Are you sure?')" update="tab" action="#{InvitoBean.deleteInvito(invito.id)}"/>
+		</p:commandButton>		
 		</p:column>
         
         </p:dataTable>                      

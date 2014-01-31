@@ -160,9 +160,9 @@ public class ComponentBean {
 			volo.setImmagine(imgVolo.getFileName());
 		    }
 		 
-			if(volo.getCosto()<=0)
+			if(volo.getCosto()<=0 || ( volo.getLuogo_arrivo().equals(volo.getLuogo_partenza()) ) )
 			  {
-		    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Il costo giornaliero deve essere > 0" ));  	
+		    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Errori nell'immissione dei dati" ));  	
 				return "addVolo.xhtml";
 			  }
 			  
