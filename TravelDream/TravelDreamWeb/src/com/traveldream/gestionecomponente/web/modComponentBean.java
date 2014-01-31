@@ -159,10 +159,10 @@ public class modComponentBean {
   			//se c'è una situazione di incoerenza nelle date o nel luogo elimino l'hotel dal pacchetto, 
   			//controllo se nel pacchetto ci sono altre componenti e nel caso update o elimino pack
 
-  			System.out.println("" + hotel.getData_inizio());
-  			System.out.println(""+hotel.getData_fine());
-  			System.out.println(""+p.getData_inizio());
-  			System.out.println(""+p.getData_fine());
+  			//System.out.println("" + hotel.getData_inizio());
+  			//System.out.println(""+hotel.getData_fine());
+  			//System.out.println(""+p.getData_inizio());
+  			//System.out.println(""+p.getData_fine());
   			if( ( ( hotel.getData_inizio().after(p.getData_fine()) ) ||
   				  (hotel.getData_fine().before(p.getData_inizio()))	
   					

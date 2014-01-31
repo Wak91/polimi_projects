@@ -119,7 +119,7 @@ public class ComponentBean {
 		hotel.setHotelImg(imgHotel.getFileName());
 		    }
 		
-		if(hotel.getCosto_giornaliero()<=0)
+		if(hotel.getCosto_giornaliero()<=0 || hotel.getData_inizio().after(hotel.getData_fine()))
 		  {
 	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Il costo giornaliero deve essere > 0" ));  	
 			return "addHotel.xhtml";
@@ -342,7 +342,28 @@ public class ComponentBean {
 			    		if(vdto2.getLuogo_arrivo().equals(p.getDestinazione()))
 			    			ritorno++;
 			       }
-			    if(andata>=1 && ritorno>=1) // se ho ancora abbastanza voli salvo la nuova lista e aggiorno il pack
+			  
+			    int temporal=0; //Controllo che ci sia ancora un volo di andata prima di uno di ritorno nel pacchetto
+			    for(VoloDTO vdto: new_pvdto) 
+				   {
+					if(vdto.getLuogo_arrivo().equals(p.getDestinazione()))
+					  {
+						Date date_ref = vdto.getData(); 
+					    for(VoloDTO vdto2: new_pvdto)
+					      {
+						    if(vdto2.getLuogo_partenza().equals(p.getDestinazione()))
+						      {
+						    	if(vdto2.getData().after(date_ref))
+						    	  {
+						    		temporal++;
+						    		break;
+						    	  }
+						      }
+					      }
+					
+				      }
+				   }
+			    if(andata>=1 && ritorno>=1 &&temporal>=1) // se ho ancora abbastanza voli salvo la nuova lista e aggiorno il pack
 			    {
 			      p.setLista_voli(new_pvdto); 
 				  PMB.modifyPacchetto(p);
