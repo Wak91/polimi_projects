@@ -122,6 +122,13 @@ public class modComponentBean {
 	
 	public String modifyHotel()
 	{ 
+		  if(hotel.getCosto_giornaliero() <= 0 )
+		    {
+		        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Prezzo giornaliero deve essere > 0" ));
+		        return "";
+			  
+		    }
+		
 		  if(!imgHotel.getFileName().equals(""))
 		  { InputStream inputStr = null;
 		    try {
@@ -219,7 +226,16 @@ public class modComponentBean {
 	}
 	
 	public String modificaVolo()
-	{     
+	{    
+	
+
+		  if(volo.getCosto() <= 0 )
+		    {
+		        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Prezzo deve essere > 0" ));
+		        return "";
+			  
+		    }	
+		
     if(!imgVolo.getFileName().equals(""))
 	{InputStream inputStr = null;
     try {
@@ -354,6 +370,13 @@ public class modComponentBean {
 	
 	public String modificaEscursione()
 	{ 
+		 if(escursione.getCosto() <= 0 )
+		    {
+		        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Prezzo deve essere > 0" ));
+		        return "";
+			  
+		    }	
+		
 		 if(!imgEscursione.getFileName().equals("")){
 		 InputStream inputStr = null;
 		    try {

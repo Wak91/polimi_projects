@@ -217,7 +217,7 @@ public class InvitoBean {
 	
 	public String deleteInvito(int id){
 		IMB.eliminaInvito(id);
-		return "/utente/imieiviaggi.xhtml?faces-redirect=true";
+		return "imieiviaggi.xhtml?faces-redirect=true";
 	}
 	
 }
