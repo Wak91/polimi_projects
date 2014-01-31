@@ -282,11 +282,10 @@ public class ComponentBean {
 		}
 		if(pr>=1)
 		{
-			System.out.println(pr+"");
 	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Con questa modifica " +pr+" pacchetto/i sono stati eliminati per incompatibilità" ));  	
 		}
 		CMB.eliminaHotel(id);
-	return "toHotel.xhtml";
+	return "toHotel.xhtml?faces-redirect=true";
 	}
 //------------------------GETTER_SETTER_VOLO------------------------------------
 	
@@ -357,7 +356,7 @@ public class ComponentBean {
 	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Info message", "Con questa modifica " +pr+" pacchetto/i sono stati eliminati per incompatibilità" ));  	
 		}
 		CMB.eliminaVolo(id);
-	  return "toVolo.xhtml";
+	  return "toVolo.xhtml?faces-redirect=true";
 	}
 	
 //-------------------------GETTER_SETTER_ESCURSIONE--------------------------------
@@ -400,15 +399,16 @@ public class ComponentBean {
 		for(PacchettoDTO p : esc_pack_list)
 		   {
 					ArrayList <EscursioneDTO> pedto = (ArrayList<EscursioneDTO>) p.getLista_escursioni();
+					ArrayList <EscursioneDTO> new_pedto = new ArrayList <EscursioneDTO> ();
 					if(!pedto.isEmpty()) 
 					  {
 					   for(EscursioneDTO edto: pedto)
 					    {
-						 if(edto.getId() == id)
-						  pedto.remove(edto);
+						 if(edto.getId() != id) // ogni escursione diversa da quella che sto eliminando va tenuta
+						   new_pedto.add(edto);
 					    }
 
-					    p.setLista_escursioni(pedto); // modifico la lista degli hotel al pacchetto corrente
+					    p.setLista_escursioni(new_pedto); // modifico la lista degli hotel al pacchetto corrente
 					    PMB.modifyPacchetto(p);
 					  }
 		   }
