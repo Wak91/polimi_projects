@@ -107,7 +107,7 @@ img{max-width:100%;}
     display: table-caption;
     font-family: 'Roboto',sans-serif;
     font-size: 0.975em;
-    padding: 5px 30px;
+    padding: 28px 30px;
 
 }
 
@@ -146,6 +146,11 @@ img{max-width:100%;}
 	text-align: center;
 	 margin: 3px;
 
+}
+
+.rosso{
+	
+	color:#FF0000;
 }
 
 .grid2{

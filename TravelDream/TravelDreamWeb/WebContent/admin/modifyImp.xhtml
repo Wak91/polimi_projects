@@ -15,7 +15,6 @@
      <p:menuitem value="Add impiegato" url="addImpiegato.xhtml" icon="ui-icon-wrench"/>  
      </p:tabMenu>
         #{userBean.getImpByUn(param['id'])}
-        #{userBean.scrivi()}
         <f:metadata>
         <f:viewParam name="id" value="#{userBean.user.username}" />
     	</f:metadata>

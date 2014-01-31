@@ -12,7 +12,7 @@
 				<div class="wrap">
 				
 				<div class="logo">
-					<a href="index.html"><img src="../images/logo.png" title="logo" /></a>
+					<a href="userhome.xhtml"><img src="../images/logo.png" title="logo" /></a>
 				</div>
 				<div class="top-nav">
 					<ul>
@@ -35,16 +35,7 @@
 				  <div class="contact-form">
 				  	<h3>Personal info</h3>
 					    <h:form>
-					    	<div>
-						    	<h:outputLabel for="password">Password:</h:outputLabel>
-								<p:password id="password" value="#{userBean.user.password}"
-								feedback="true" match="pwd2" label="Password"/>
-								
-						    </div>
-						    <div>
-						    	<h:outputLabel for="pwd2">Conferma Password:</h:outputLabel>
-								<p:password id="pwd2" label="Confirm Password" value="#{userBean.user.password}"/>
-						    </div>
+					    	
 						    
 						    <div>
 						        <h:outputLabel for="nome"> Nome</h:outputLabel>  
@@ -60,7 +51,23 @@
 						    	<h:outputLabel for="date">Data di nascita:</h:outputLabel>
 								<p:calendar id="date" value="#{userBean.user.data}" pattern="dd/MM/yyyy" navigator="true" display="inline"/>  
 						    </div>
+						    
+						    <div>
+						    	<h:outputLabel for="password">Password:</h:outputLabel>
+								<p:password id="password" value="#{userBean.user.password}"
+								feedback="true" match="pwd2" label="Password"/>
+								
+						    </div>
+						    <div>
+						    	<h:outputLabel for="pwd2">Conferma Password:</h:outputLabel>
+								<p:password id="pwd2" label="Confirm Password" value="#{userBean.user.password}"/>
+						    </div>
+						    
 						   <div>
+						   			<br></br>
+						   			<div class="rosso"><h:outputLabel for="date">Si prega di confermare/cambiare la password prima della modifica per renderla effettiva</h:outputLabel>
+						   			</div>
+						   			<br></br><be></be>
 						   			<h:commandButton value="Modifica" 
 									action="#{userBean.modificaUser()}" />
 						  </div>
