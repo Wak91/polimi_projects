@@ -160,7 +160,9 @@ public class ViaggioBean {
 	public ArrayList<HotelDTO> filterHotels(PacchettoDTO packeDto){
 		ArrayList<HotelDTO> filtered=new ArrayList<HotelDTO>();
 		for (HotelDTO hotelDTO : packeDto.getLista_hotel()) {
-			if (hotelDTO.getStelle() == stelle ||stelle==null){
+			if (hotelDTO.getStelle() == stelle ||stelle==null &&
+					( viaggio.getData_inizio()==null || after_equal(viaggio.getData_inizio(), hotelDTO.getData_inizio()) ) &&
+					(viaggio.getData_fine()==null || before_equal(viaggio.getData_fine(), hotelDTO.getData_fine()))){
 				filtered.add(hotelDTO);
 			}
 		}
