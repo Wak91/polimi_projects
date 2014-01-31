@@ -50,8 +50,8 @@
 			 selectionMode="single" selection="#{ViaggioBean.selectedpre}" paginator="true" rows="5"
       		 rowKey="#{pre.id}">  
                                 
-                <p:column headerText="Codice prenotazione" style="width:25%"  >  
-                  <h:outputText value="#{pre.id}" />  
+                <p:column headerText="Nome Viaggio" style="width:25%"  >  
+                  <h:outputText value="#{pre.viaggio.nome}" />  
                 </p:column>  
   
                 <p:column headerText="Numero persone" style="width:25%">  

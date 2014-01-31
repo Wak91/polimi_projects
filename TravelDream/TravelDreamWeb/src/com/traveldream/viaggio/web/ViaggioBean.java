@@ -365,6 +365,7 @@ public class ViaggioBean {
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setLista_escursioni(selectedEsc);
+		viaggio.setNome(packet.getNome());
 		for (EscursioneDTO escursioneDTO : viaggio.getLista_escursioni()) {
 			System.out.println("esc in viaggio "+escursioneDTO.getNome());
 		}
@@ -529,6 +530,8 @@ public class ViaggioBean {
          viaggio.setVolo_andata(selectedVolo_a);
          viaggio.setVolo_ritorno(selectedVolo_r);
 		 viaggio.setLista_escursioni(selectedEsc);
+		viaggio.setNome(packet.getNome());
+
 		GiftListDTO gift= new GiftListDTO();
 		gift.setViaggio(viaggio);
 		gift.setUtente(userMgr.getUserDTO());
@@ -574,6 +577,8 @@ public class ViaggioBean {
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
+		viaggio.setNome(packet.getNome());
+
 		invito.setViaggio(viaggio);
 		invito.setStatus(false);
 		invito.setUtente(userMgr.getUserDTO());

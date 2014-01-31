@@ -14,6 +14,8 @@ public class ViaggioDTO {
 
 	private int id;
 	
+	private String nome;
+	
 	@NotNull 
 	private HotelDTO hotel;
 	
@@ -21,7 +23,7 @@ public class ViaggioDTO {
 	private VoloDTO volo_andata;
 	
 	@NotNull
-	private VoloDTO volo_ritorno; // perchè viaggio nel db ha solo un volo?!?! andata + ritorno!!
+	private VoloDTO volo_ritorno; // perch viaggio nel db ha solo un volo?!?! andata + ritorno!!
 		
 	@NotNull
     private Date data_inizio;
@@ -86,4 +88,14 @@ public class ViaggioDTO {
 	public void setLista_escursioni(ArrayList<EscursioneDTO> lista_escursioni) {
 		this.lista_escursioni = lista_escursioni;
 	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	
 }

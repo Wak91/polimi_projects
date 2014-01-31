@@ -24,6 +24,8 @@ public class Viaggio implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	private int id;
+	
+	private String nome;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="`Data fine`")
@@ -118,6 +120,14 @@ public class Viaggio implements Serializable {
 
 	public void setVoloSalvato2(VoloSalvato voloSalvato2) {
 		this.voloSalvato2 = voloSalvato2;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 }

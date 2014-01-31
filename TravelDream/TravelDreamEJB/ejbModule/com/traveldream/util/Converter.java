@@ -193,6 +193,7 @@ public class Converter {
 				vdto.setId(v.getId());	
 				vdto.setData_fine(v.getData_fine());
 				vdto.setData_inizio(v.getData_inizio());
+				vdto.setNome(v.getNome());
 				vdto.setHotel(HotelToDTOSimple(v.getHotelSalvato()));
 				vdto.setVolo_andata(VoloToDTO(v.getVoloSalvato1()));
 				vdto.setVolo_ritorno(VoloToDTO(v.getVoloSalvato2()));
