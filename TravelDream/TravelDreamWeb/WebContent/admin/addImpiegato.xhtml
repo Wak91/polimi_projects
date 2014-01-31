@@ -8,7 +8,11 @@
       	<ui:composition template="Template.xhtml">
       
 			<ui:define name="content">
-
+<p:tabMenu activeIndex="2">  
+     <p:menuitem value="Account" url="adminhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Lista impiegati" url="adminlist.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Add impiegato" url="addImpiegato.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>
  <h:form id="form">
 		<p:panel header="Aggiunta Impiegato">
 			<h:panelGrid columns="3" id="regGrid">

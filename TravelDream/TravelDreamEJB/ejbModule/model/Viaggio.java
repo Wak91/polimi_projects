@@ -26,6 +26,7 @@ public class Viaggio implements Serializable {
 	private int id;
 	
 	private String nome;
+	
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="`Data fine`")

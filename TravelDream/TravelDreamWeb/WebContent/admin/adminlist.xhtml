@@ -3,12 +3,18 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"> 
+      xmlns:p="http://primefaces.org/ui"
+      > 
       
     <ui:composition template="Template.xhtml"> 
     <ui:define name="content">
        #{userBean.initBean()}
- 
+        <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Account" url="adminhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Lista impiegati" url="adminlist.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Add impiegato" url="addImpiegato.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>
+	
         
       			<h:form id="myform">
       			

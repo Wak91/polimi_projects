@@ -132,10 +132,5 @@ public class UserBean {
 		userMgr.unregister(userMgr.findImp(username));
 		return "/admin/adminlist?faces-redirect=true";		
 	}
-	
-	//TOGLIEREEEEEEE
-	public void scrivi(){
-		System.out.println("data: " +user.getData());
-	}
 
 }

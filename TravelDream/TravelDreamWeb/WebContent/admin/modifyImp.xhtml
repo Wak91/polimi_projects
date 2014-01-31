@@ -9,6 +9,11 @@
 
         <ui:define name="content">
         
+        <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Account" url="adminhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Lista impiegati" url="adminlist.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Add impiegato" url="addImpiegato.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>
         #{userBean.getImpByUn(param['id'])}
         #{userBean.scrivi()}
         <f:metadata>
