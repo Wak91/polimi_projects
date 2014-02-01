@@ -10,6 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.Min;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
@@ -77,8 +78,8 @@ public class ViaggioBean {
 
     private ViaggioDTO viaggio;
     private PrenotazioneDTO prenotazione;
-    private InvitoDTO invito;
     
+	@Min(1)
     private int n_partecipanti;
     private int quotacomplessiva;
     private int quotapp;
@@ -101,7 +102,6 @@ public class ViaggioBean {
 		 packet = new PacchettoDTO();
 		 viaggio = new ViaggioDTO();
 		 prenotazione = new PrenotazioneDTO();
-		 invito = new InvitoDTO();
 		 selectedEsc=new ArrayList<EscursioneDTO>();
 	}
 
@@ -244,6 +244,7 @@ public class ViaggioBean {
 	} catch (Exception e) {
 		try {
 			this.packet = PMB.getPacchettoByID(last_id);
+			last_id = packet.getId();
 		} catch (Exception e2) {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("userhome.xhtml");
 			return;
@@ -394,7 +395,7 @@ public class ViaggioBean {
 			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 			restoreSelected();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-			return "creaviaggio.xhtml?id=#packet.";
+			return "creaviaggio.xhtml?id=id_pack";
 
 		}
 		
@@ -500,6 +501,10 @@ public class ViaggioBean {
 		prenotazione.setCosto(quotacomplessiva);
 		
 	    BMB.savePrenotazione(prenotazione);
+	    
+		 restoreSelected();
+
+	    
 		return "imieiviaggi.xhtml?faces-redirect=true";
 		
 	}
@@ -510,11 +515,13 @@ public class ViaggioBean {
 	//---QUESTI VANNO NEL BEAN GESTIONE GIFT LIST E GESTIONE INVITO 
 	public String aggiungi_gift()
 	{
+		int id_pack = packet.getId();
+		
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null)
 		  {
 			restoreSelected();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-			return "creaviaggio.xhtml?id=last_id";
+			return "creaviaggio.xhtml?id=id_pack";
 		  }
 		
 
@@ -530,7 +537,7 @@ public class ViaggioBean {
 					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 					restoreSelected();
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-					return "creaviaggio.xhtml?id=last_id";
+					return "creaviaggio.xhtml?id=id_pack";
 
 				}
 		
@@ -556,13 +563,14 @@ public class ViaggioBean {
 	
 	public String invita()
 	{
+		int id_pack = packet.getId();
 
-		if(selectedHotels == null || selectedVolo_a == null || selectedVolo_r == null)
+		if(selectedHotels == null || selectedVolo_a == null || selectedVolo_r == null )
 		  {
 			restoreSelected();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
 
-			return "creaviaggio.xhtml?id=last_id";
+			return "creaviaggio.xhtml?id=id_pack";
 		  }
 		
 
@@ -578,25 +586,29 @@ public class ViaggioBean {
 					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 					restoreSelected();
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-					return "creaviaggio.xhtml?id=last_id";
+					return "creaviaggio.xhtml?id=id_pack";
 
 				}
+		
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
 		viaggio.setNome(packet.getNome());
-
+		
+		InvitoDTO invito = new InvitoDTO();
+		
 		invito.setViaggio(viaggio);
 		invito.setStatus(false);
 		invito.setUtente(userMgr.getUserDTO());
 		invito.setId(viaggio.getId());
 		FacesUtil.setSessionMapValue("InvDTO", invito);	
+
 		
 		restoreSelected();
 
 		//creazione entita invito
-		return "/utente/invitoviaggio.xhtml?faces-redirect=true";
+		return "invitoviaggio.xhtml?faces-redirect=true";
 		
 		
 	}
