@@ -594,14 +594,13 @@ public class ViaggioBean {
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
-		viaggio.setNome(packet.getNome());
-		
+		viaggio.setNome(packet.getNome());		
 		InvitoDTO invito = new InvitoDTO();
-		
 		invito.setViaggio(viaggio);
 		invito.setStatus(false);
 		invito.setUtente(userMgr.getUserDTO());
 		invito.setId(viaggio.getId());
+		System.out.println("date via ggio invito "+invito.getViaggio().getData_inizio());
 		FacesUtil.setSessionMapValue("InvDTO", invito);	
 
 		
