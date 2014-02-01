@@ -1,5 +1,6 @@
 package com.traveldream.viaggio.web;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +9,6 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
 import javax.faces.context.FacesContext;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
@@ -233,7 +233,7 @@ public class ViaggioBean {
 	}
 	
 
-	public void getPacchettoById(int id)
+	public void getPacchettoById(int id) throws IOException
 	{	 if (last_id==0) {
 		last_id=id;
 	}
@@ -242,7 +242,12 @@ public class ViaggioBean {
  		 last_id = packet.getId();
 
 	} catch (Exception e) {
-		 this.packet = PMB.getPacchettoByID(last_id);
+		try {
+			this.packet = PMB.getPacchettoByID(last_id);
+		} catch (Exception e2) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("userhome.xhtml");
+			return;
+		} 
 
 	}
 		 filteredHotels=(ArrayList<HotelDTO>)packet.getLista_hotel();	
