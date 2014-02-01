@@ -161,7 +161,9 @@
             <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.compagnia}" style="font-weight:bold"/>  
   
             <h:outputText value="Data Partenza" />  
-            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.data}" style="font-weight:bold"/>  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.data}" style="font-weight:bold">
+            				  <f:convertDateTime pattern="dd/MM/yyyy"  />
+            </h:outputText>  
   
   
             <h:outputText value="Partenza" />  
@@ -194,7 +196,9 @@
             <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.compagnia}" style="font-weight:bold"/>  
   
             <h:outputText value="Data Partenza" />  
-            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.data}" style="font-weight:bold"/>  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.data}" style="font-weight:bold">
+            				  <f:convertDateTime pattern="dd/MM/yyyy"  />
+            </h:outputText>  
   
   
             <h:outputText value="Partenza" />  
