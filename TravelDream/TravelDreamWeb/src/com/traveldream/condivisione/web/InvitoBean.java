@@ -56,11 +56,10 @@ public class InvitoBean {
 	}
 	
 	
-	@PostConstruct
     public void init(){
 		
 		invito = (InvitoDTO)FacesUtil.getSessionMapValue("InvDTO");
-
+		System.out.println("invito data viaggio in invitobean"+invito.getViaggio().getData_inizio());
 		if (invito==null){
 			System.out.println("XXXXXXXXXXXXXXinding cazzi");
 		}

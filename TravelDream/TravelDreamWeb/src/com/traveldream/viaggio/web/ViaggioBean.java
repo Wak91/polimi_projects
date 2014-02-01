@@ -77,7 +77,6 @@ public class ViaggioBean {
 
     private ViaggioDTO viaggio;
     private PrenotazioneDTO prenotazione;
-    private InvitoDTO invito;
     
     private int n_partecipanti;
     private int quotacomplessiva;
@@ -101,7 +100,6 @@ public class ViaggioBean {
 		 packet = new PacchettoDTO();
 		 viaggio = new ViaggioDTO();
 		 prenotazione = new PrenotazioneDTO();
-		 invito = new InvitoDTO();
 		 selectedEsc=new ArrayList<EscursioneDTO>();
 	}
 
@@ -587,10 +585,12 @@ public class ViaggioBean {
 		viaggio.setLista_escursioni(selectedEsc);
 		viaggio.setNome(packet.getNome());
 
+		InvitoDTO invito = new InvitoDTO();
 		invito.setViaggio(viaggio);
 		invito.setStatus(false);
 		invito.setUtente(userMgr.getUserDTO());
 		invito.setId(viaggio.getId());
+		System.out.println("date via ggio invito "+invito.getViaggio().getData_inizio());
 		FacesUtil.setSessionMapValue("InvDTO", invito);	
 		
 		restoreSelected();
