@@ -37,7 +37,7 @@
 				  	    
 					    <h:form>
 					    	<p:panel header="Pagamento">  
-       					 <h:panelGrid columns="2" id="grid">  
+       					 <h:panelGrid columns="2" id="grid"> 
 						    	<h:outputLabel for="np"> Numero partecipanti</h:outputLabel>  
 							     <p:spinner id="numpers"   value="#{ViaggioBean.n_partecipanti}" min="1" max="15" >         
      							<p:ajax update="qcc" process="@this" listener="#{ViaggioBean.updateQuotaComp}"/> 

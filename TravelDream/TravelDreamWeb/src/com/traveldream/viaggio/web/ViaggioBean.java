@@ -494,9 +494,11 @@ public class ViaggioBean {
 		prenotazione.setCosto(quotacomplessiva);
 		
 	    BMB.savePrenotazione(prenotazione);
-	    
-		return "imieiviaggi.xhtml?faces-redirect=true"; 	
+		return "imieiviaggi.xhtml?faces-redirect=true";
+		
 	}
+	
+	
 	
 	
 	//---QUESTI VANNO NEL BEAN GESTIONE GIFT LIST E GESTIONE INVITO 
