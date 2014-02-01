@@ -239,6 +239,7 @@ public class ViaggioBean {
 	}
 	try {
  		 this.packet = PMB.getPacchettoByID(id);
+ 		 last_id = packet.getId();
 
 	} catch (Exception e) {
 		 this.packet = PMB.getPacchettoByID(last_id);
@@ -348,14 +349,14 @@ public class ViaggioBean {
 
 	public String acquista_paga()
 	{
-		
+		int id_pack = packet.getId();
 
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null 
 			|| viaggio.getData_fine() == null || viaggio.getData_inizio() == null)
 		  {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore: hai lasciato qualche campo vuoto, controlla i dati inseriti" ));  	
 
-			return "creaviaggio.xhtml?id=last_id";
+			return "creaviaggio.xhtml?id=id_pack";
 		  }
 		
 		System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS hotel "+selectedHotels.getNome());
@@ -388,7 +389,7 @@ public class ViaggioBean {
 			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 			restoreSelected();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-			return "creaviaggio.xhtml?id=last_id";
+			return "creaviaggio.xhtml?id=#packet.";
 
 		}
 		
