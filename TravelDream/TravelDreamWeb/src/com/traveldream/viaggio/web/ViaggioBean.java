@@ -84,6 +84,7 @@ public class ViaggioBean {
     private int quotacomplessiva;
     private int quotapp;
     private int last_id;
+    private int id_da_viaggio;
     
     private ArrayList <PrenotazioneDTO> lista_prenotazioni;
    
@@ -466,6 +467,7 @@ public class ViaggioBean {
 	
 	public void calcoloquota()
 	{
+		
       int cg = viaggio.getHotel().getCosto_giornaliero();
       
       int duration = (int) (( viaggio.getData_fine().getTime() - viaggio.getData_inizio().getTime() ) / (1000 * 60 * 60 * 24));
@@ -669,17 +671,18 @@ public class ViaggioBean {
 			this.selectedpre = selectedpre;
 		}
 		
-		public String searchViaggioById(int id){
+		public void searchViaggioById(){
 			try {
-				ViaggioDTO viaggio_dto = BMB.cercaViaggioById(id);
+				ViaggioDTO viaggio_dto = BMB.cercaViaggioById(id_da_viaggio);
 				setViaggio(viaggio_dto);
-				return "/utente/pagamentoDaMieiViaggi.xhtml?faces-redirect=true";
+				
 			} catch (NullPointerException e){
 				System.out.println("null");
 				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity.");
 		        FacesContext.getCurrentInstance().addMessage("null", message);
-				return "/utente/imieiviaggi.xhtml?faces-redirect=true";
-			}	
+			}
+		
+			
 		}
 
 
@@ -729,6 +732,12 @@ public class ViaggioBean {
 
 		public void setEsc(EscursioneDTO esc) {
 			this.esc = esc;
+		}
+		
+		public String voutcome(int id)
+		{
+			this.id_da_viaggio = id;
+			return "pagamentoDaMieiViaggi.xhtml?faces-redirect=true";
 		}
 		
 		

@@ -59,7 +59,7 @@
                 </p:column>  
   
                 <p:column headerText="Prezzo totale" style="width:24%" >  
-                <h:outputText value="#{pre.costo}" />    
+                <h:outputText value="#{pre.costo} €" />    
                 </p:column> 
                 
               <p:column headerText="Dettagli" style="width:25%" >  
@@ -93,20 +93,20 @@
        	     		   <h:outputText value="--Hotel--" style="font-weight:bold"/><br></br>
        	     		   Nome &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.nome}" />  <br></br>     	     		   
        	     		   Stelle &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.stelle}"/> <br></br>
-       	     		   Costo al giorno &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.costo_giornaliero}"/><br></br>
+       	     		   Costo al giorno &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.hotel.costo_giornaliero}  €"/><br></br>
        	     		   <br></br>
        	     		   <h:outputText value="--Volo andata--" style="font-weight:bold"/><br></br>
        	     		   Compagnia &nbsp; <h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.compagnia}"/> <br></br>       	     		   
        	     		   Data &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.data}">	  <f:convertDateTime pattern="dd/MM/yyyy"  />
                        </h:outputText>   <br></br>  	     		   
        	     		   Luogo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.luogo_partenza}" />  <br></br> 
-       	     		   Costo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.costo}" />  <br></br> 
+       	     		   Costo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_andata.costo}  €" />  <br></br> 
        	     		   <h:outputText value="--Volo ritorno--" style="font-weight:bold"/><br></br>
        	     		   Compagnia &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.compagnia}" /> <br></br>       	     		   
        	     		   Data &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.data}">	  <f:convertDateTime pattern="dd/MM/yyyy"  />
                        </h:outputText>   <br></br>  	     		   
        	     		   Luogo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.luogo_partenza}" />  <br></br> 
-       	     		   Costo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.costo}" />  <br></br> 
+       	     		   Costo &nbsp;<h:outputText value="#{ViaggioBean.selectedpre.viaggio.volo_ritorno.costo}  €" />  <br></br> 
        	     		   
        	     		   <h:outputText value="--Escursioni--" style="font-weight:bold"/><br></br>    
 						<p:dataTable id="display" value="#{ViaggioBean.selectedpre.viaggio.lista_escursioni}" var="esc">
@@ -115,7 +115,7 @@
 			                </p:column>  
 			  
 			                <p:column headerText="Costo" style="width:10%">  
-			                <h:outputText value="#{esc.costo} &nbsp; €" />  
+			                <h:outputText value="#{esc.costo}  €" />  
 			                </p:column>  
 			                
 			                <p:column headerText="Data" style="width:10%">  
@@ -209,7 +209,7 @@
                			    </p:column>    
                 
                   			<p:column headerText="Costo" style="width:24%">  
-                  			#{hotel1.costo_giornaliero}
+                  			#{hotel1.costo_giornaliero} &nbsp; €
                             </p:column> 
                             
                             
@@ -233,7 +233,7 @@
                			    </p:column>  
                 
                   			<p:column headerText="Costo" style="width:24%">  
-                  			#{volo2.costo}
+                  			#{volo2.costo} &nbsp; €
                             </p:column> 
                             
                             <p:column headerText="Partenza da" style="width:24%">  
@@ -267,7 +267,7 @@
                			    </p:column>  
                 
                   			<p:column headerText="Costo" style="width:24%">  
-                  			#{volo3.costo}
+                  			#{volo3.costo} &nbps; €
                             </p:column> 
                             
                             <p:column headerText="Partenza da" style="width:24%">  
@@ -282,10 +282,12 @@
                 </p:dialog>       
         </p:column>    
         
-        <p:column headerText="Buy">
-        <p:button id="acq" outcome="pagamentoDaMieiViaggi" icon="ui-icon-cart">
-        <f:param name="trv" value="#{invito.viaggio.id}"/>	
-        </p:button>
+        <p:column headerText="Buy"> 
+                <h:form>
+        
+        <h:commandLink value="Acquista" action="#{ViaggioBean.voutcome(invito.viaggio.id)}" />        
+                </h:form>
+        
         </p:column>
         
         <p:column headerText="Share">

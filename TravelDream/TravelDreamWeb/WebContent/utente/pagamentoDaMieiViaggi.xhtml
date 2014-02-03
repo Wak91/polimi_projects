@@ -8,7 +8,7 @@
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
-   #{ViaggioBean.searchViaggioById(param['trv'])}
+   #{ViaggioBean.searchViaggioById()}
    #{ViaggioBean.calcoloquota()}
 			<div class="header">
 				<div class="wrap">
@@ -53,7 +53,7 @@
 						    	<h:outputLabel for="cartacredito">Conferma codice carta di credito</h:outputLabel>
             					<p:password id="pwd2" value="#{ViaggioBean.password1}" label="Password 2" required="true"/> 						   
 						   <div>
-						   			 <h:commandButton value="Prenota ora!" update="regGrid"
+						   			 <p:commandButton value="Prenota ora!" 
 			                         action="#{ViaggioBean.creaPrenotazione}" />
 						  </div>
 						  </h:panelGrid>
