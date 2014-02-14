@@ -119,7 +119,7 @@
                 </p:column>  
                 
                 <p:column headerText="Costo" style="width:10%">  
-                <h:outputText value="#{escpag.escursione.costo}€" />  
+                <h:outputText value="#{escpag.escursione.costo} €" />  
                 </p:column>  
         
         		</p:dataTable>
@@ -140,10 +140,10 @@
   
   
             <h:outputText value="Costo Giornaliero a testa" />  
-            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.hotel.costo_giornaliero}€" style="font-weight:bold"/>  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.hotel.costo_giornaliero} €" style="font-weight:bold"/>  
             
             <h:outputText value="Costo complessivo" />  
-            <h:outputText value="#{GiftListBean.calcolaCostoHotel()}€" style="font-weight:bold"/>  
+            <h:outputText value="#{GiftListBean.calcolaCostoHotel()} €" style="font-weight:bold"/>  
   
 
         </h:panelGrid>  
@@ -161,7 +161,9 @@
             <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.compagnia}" style="font-weight:bold"/>  
   
             <h:outputText value="Data Partenza" />  
-            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.data}" style="font-weight:bold"/>  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.data}" style="font-weight:bold">
+            				  <f:convertDateTime pattern="dd/MM/yyyy"  />
+            </h:outputText>  
   
   
             <h:outputText value="Partenza" />  
@@ -175,10 +177,10 @@
             <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.compagnia}" style="font-weight:bold"/>  
   
   			<h:outputText value="Costo a testa" />  
-            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.costo}€" style="font-weight:bold"/>  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.costo} €" style="font-weight:bold"/>  
   
 			<h:outputText value="Costo complessivo" />  
-            <h:outputText value="#{GiftListBean.calcolaCostoVoloA()}" style="font-weight:bold"/>  
+            <h:outputText value="#{GiftListBean.calcolaCostoVoloA()} €" style="font-weight:bold"/>  
   
 			
         </h:panelGrid>  
@@ -194,7 +196,9 @@
             <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.compagnia}" style="font-weight:bold"/>  
   
             <h:outputText value="Data Partenza" />  
-            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.data}" style="font-weight:bold"/>  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.data}" style="font-weight:bold">
+            				  <f:convertDateTime pattern="dd/MM/yyyy"  />
+            </h:outputText>  
   
   
             <h:outputText value="Partenza" />  
@@ -208,7 +212,7 @@
             <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.compagnia}" style="font-weight:bold"/>  
   
   			<h:outputText value="Costo a testa" />  
-            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.costo}€" style="font-weight:bold"/>  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.costo} €" style="font-weight:bold"/>  
   
 			<h:outputText value="Costo complessivo" />  
             <h:outputText value="#{GiftListBean.calcolaCostoVoloR()}" style="font-weight:bold"/>  

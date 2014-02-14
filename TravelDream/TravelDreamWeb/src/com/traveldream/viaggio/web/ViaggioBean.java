@@ -10,6 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.Min;
 
 import com.traveldream.autenticazione.ejb.UserDTO;
 import com.traveldream.autenticazione.ejb.UserMgr;
@@ -78,10 +79,12 @@ public class ViaggioBean {
     private ViaggioDTO viaggio;
     private PrenotazioneDTO prenotazione;
     
+	@Min(1)
     private int n_partecipanti;
     private int quotacomplessiva;
     private int quotapp;
     private int last_id;
+    private int id_da_viaggio;
     
     private ArrayList <PrenotazioneDTO> lista_prenotazioni;
    
@@ -242,6 +245,7 @@ public class ViaggioBean {
 	} catch (Exception e) {
 		try {
 			this.packet = PMB.getPacchettoByID(last_id);
+			last_id = packet.getId();
 		} catch (Exception e2) {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("userhome.xhtml");
 			return;
@@ -392,7 +396,7 @@ public class ViaggioBean {
 			//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 			restoreSelected();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-			return "creaviaggio.xhtml?id=#packet.";
+			return "creaviaggio.xhtml?id=id_pack";
 
 		}
 		
@@ -463,6 +467,7 @@ public class ViaggioBean {
 	
 	public void calcoloquota()
 	{
+		
       int cg = viaggio.getHotel().getCosto_giornaliero();
       
       int duration = (int) (( viaggio.getData_fine().getTime() - viaggio.getData_inizio().getTime() ) / (1000 * 60 * 60 * 24));
@@ -498,6 +503,10 @@ public class ViaggioBean {
 		prenotazione.setCosto(quotacomplessiva);
 		
 	    BMB.savePrenotazione(prenotazione);
+	    
+		 restoreSelected();
+
+	    
 		return "imieiviaggi.xhtml?faces-redirect=true";
 		
 	}
@@ -508,11 +517,13 @@ public class ViaggioBean {
 	//---QUESTI VANNO NEL BEAN GESTIONE GIFT LIST E GESTIONE INVITO 
 	public String aggiungi_gift()
 	{
+		int id_pack = packet.getId();
+		
 		if(selectedHotels==null || selectedVolo_a == null || selectedVolo_r == null)
 		  {
 			restoreSelected();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-			return "creaviaggio.xhtml?id=last_id";
+			return "creaviaggio.xhtml?id=id_pack";
 		  }
 		
 
@@ -528,7 +539,7 @@ public class ViaggioBean {
 					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 					restoreSelected();
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-					return "creaviaggio.xhtml?id=last_id";
+					return "creaviaggio.xhtml?id=id_pack";
 
 				}
 		
@@ -554,13 +565,14 @@ public class ViaggioBean {
 	
 	public String invita()
 	{
+		int id_pack = packet.getId();
 
-		if(selectedHotels == null || selectedVolo_a == null || selectedVolo_r == null)
+		if(selectedHotels == null || selectedVolo_a == null || selectedVolo_r == null )
 		  {
 			restoreSelected();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
 
-			return "creaviaggio.xhtml?id=last_id";
+			return "creaviaggio.xhtml?id=id_pack";
 		  }
 		
 
@@ -576,15 +588,15 @@ public class ViaggioBean {
 					//System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" +packet.getData_fine()+"");
 					restoreSelected();
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info message", "Errore durante la creazione del tuo viaggio, controlla i dati inseriti" ));  	
-					return "creaviaggio.xhtml?id=last_id";
+					return "creaviaggio.xhtml?id=id_pack";
 
 				}
+		
 		viaggio.setVolo_andata(selectedVolo_a);
 		viaggio.setVolo_ritorno(selectedVolo_r);
 		viaggio.setHotel(selectedHotels);
 		viaggio.setLista_escursioni(selectedEsc);
-		viaggio.setNome(packet.getNome());
-
+		viaggio.setNome(packet.getNome());		
 		InvitoDTO invito = new InvitoDTO();
 		invito.setViaggio(viaggio);
 		invito.setStatus(false);
@@ -592,11 +604,12 @@ public class ViaggioBean {
 		invito.setId(viaggio.getId());
 		System.out.println("date via ggio invito "+invito.getViaggio().getData_inizio());
 		FacesUtil.setSessionMapValue("InvDTO", invito);	
+
 		
 		restoreSelected();
 
 		//creazione entita invito
-		return "/utente/invitoviaggio.xhtml?faces-redirect=true";
+		return "invitoviaggio.xhtml?faces-redirect=true";
 		
 		
 	}
@@ -658,17 +671,18 @@ public class ViaggioBean {
 			this.selectedpre = selectedpre;
 		}
 		
-		public String searchViaggioById(int id){
+		public void searchViaggioById(){
 			try {
-				ViaggioDTO viaggio_dto = BMB.cercaViaggioById(id);
+				ViaggioDTO viaggio_dto = BMB.cercaViaggioById(id_da_viaggio);
 				setViaggio(viaggio_dto);
-				return "/utente/pagamentoDaMieiViaggi.xhtml?faces-redirect=true";
+				
 			} catch (NullPointerException e){
 				System.out.println("null");
 				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity.");
 		        FacesContext.getCurrentInstance().addMessage("null", message);
-				return "/utente/imieiviaggi.xhtml?faces-redirect=true";
-			}	
+			}
+		
+			
 		}
 
 
@@ -718,6 +732,12 @@ public class ViaggioBean {
 
 		public void setEsc(EscursioneDTO esc) {
 			this.esc = esc;
+		}
+		
+		public String voutcome(int id)
+		{
+			this.id_da_viaggio = id;
+			return "pagamentoDaMieiViaggi.xhtml?faces-redirect=true";
 		}
 		
 		

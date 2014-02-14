@@ -8,7 +8,7 @@
 <ui:composition template="Template.xhtml">
 
 	<ui:define name="content">
-   #{ViaggioBean.searchViaggioById(param['trv'])}
+   #{ViaggioBean.searchViaggioById()}
    #{ViaggioBean.calcoloquota()}
 			<div class="header">
 				<div class="wrap">
@@ -41,10 +41,10 @@
 								    <p:spinner id="minmax" value="#{ViaggioBean.n_partecipanti}" min="1" max="15">
 								    <p:ajax update="qcc" process="@this" listener="#{ViaggioBean.updateQuotaComp}"/>          
             						</p:spinner> 
-						    	<h:outputLabel for="costogg">Quota per persona</h:outputLabel>
+						    	<h:outputLabel for="costogg">Quota per persona </h:outputLabel> 
 								<h:outputText id="qpp"  value="#{ViaggioBean.quotapp}"></h:outputText> 
 						    
-						       <h:outputLabel for="qc"> Quota complessiva</h:outputLabel>  
+						       <h:outputLabel for="qc"> Quota complessiva </h:outputLabel> 
             				   <h:outputText id="qcc" value= "#{ViaggioBean.quotacomplessiva}" ></h:outputText>  
 						    
 						    	<h:outputLabel for="cartacredito">Codice carta di credito</h:outputLabel>
@@ -53,7 +53,7 @@
 						    	<h:outputLabel for="cartacredito">Conferma codice carta di credito</h:outputLabel>
             					<p:password id="pwd2" value="#{ViaggioBean.password1}" label="Password 2" required="true"/> 						   
 						   <div>
-						   			 <h:commandButton value="Prenota ora!" update="regGrid"
+						   			 <p:commandButton value="Prenota ora!" 
 			                         action="#{ViaggioBean.creaPrenotazione}" />
 						  </div>
 						  </h:panelGrid>
