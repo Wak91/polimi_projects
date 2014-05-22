@@ -102,11 +102,12 @@ public class MainActivity extends Activity {
 	    	
 	     }
 	 
+	 
 	 public void render_hello(View view)
 	 {
-		  RenderScript rs = RenderScript.create(this);
-		  ScriptC_hello hs = new ScriptC_hello(rs,getResources(),R.raw.hello);
-		  hs.invoke_hello_world();
+		  RenderScript rs = RenderScript.create(this); //Initialize a rs context
+		  ScriptC_hello hs = new ScriptC_hello(rs,getResources(),R.raw.hello); // initializate the script 
+		  hs.invoke_hello_world(); //invoke the script 
 	 }
 	    
 	 

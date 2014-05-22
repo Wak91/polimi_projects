@@ -41,16 +41,6 @@
         android:onClick="grayScale"
         android:text="@string/button_gray_scale" />
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="66dp"
-        android:scaleType="center"
-        android:src="@drawable/image" />
-
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
@@ -62,6 +52,17 @@
         android:onClick="matrix"
         android:text="@string/button_matrix" />
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:scaleType="center"
+        android:src="@drawable/image" />
+
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
@@ -69,20 +70,19 @@
         android:layout_alignLeft="@+id/button2"
         android:layout_alignRight="@+id/button2"
         android:layout_below="@+id/button2"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="16dp"
         android:onClick="matrixJni"
         android:text="@string/button_matrix_jni" />
-    
+
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_alignRight="@+id/button2"
-        android:layout_below="@+id/button2"
-        android:layout_marginTop="28dp"
+        android:layout_alignLeft="@+id/button3"
+        android:layout_alignRight="@+id/button3"
+        android:layout_below="@+id/button3"
+        android:layout_marginTop="18dp"
         android:onClick="render_hello"
         android:text="@string/button_hello_render" />
-    
 
 </RelativeLayout>
