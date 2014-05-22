@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 
-JNIEXPORT void JNICALL Java_com_hpps_androbenchmark_Matrix_pureJni(JNIEnv* env, jclass clazz){
+JNIEXPORT void JNICALL Java_app_androbenchmark_Matrix_pureJni(JNIEnv* env, jclass clazz){
 
 	jint m1[1000][1000];
 	jint m2[1000][1000];
