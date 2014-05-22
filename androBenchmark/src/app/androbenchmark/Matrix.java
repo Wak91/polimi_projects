@@ -46,6 +46,4 @@ public class Matrix {
 
 	public native static void pureJni();
 
-
-
 }
