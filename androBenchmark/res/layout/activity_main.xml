@@ -72,5 +72,17 @@
         android:layout_marginTop="26dp"
         android:onClick="matrixJni"
         android:text="@string/button_matrix_jni" />
+    
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button2"
+        android:layout_alignRight="@+id/button2"
+        android:layout_below="@+id/button2"
+        android:layout_marginTop="28dp"
+        android:onClick="render_hello"
+        android:text="@string/button_hello_render" />
+    
 
 </RelativeLayout>

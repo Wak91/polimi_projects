@@ -1,6 +1,7 @@
 package app.androbenchmark;
 
 import android.os.Bundle;
+import android.renderscript.RenderScript;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -100,6 +101,13 @@ public class MainActivity extends Activity {
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();
 	    	
 	     }
+	 
+	 public void render_hello(View view)
+	 {
+		  RenderScript rs = RenderScript.create(this);
+		  ScriptC_hello hs = new ScriptC_hello(rs,getResources(),R.raw.hello);
+		  hs.invoke_hello_world();
+	 }
 	    
 	 
 	 
