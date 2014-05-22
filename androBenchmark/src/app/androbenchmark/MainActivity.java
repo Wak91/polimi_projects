@@ -21,10 +21,11 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 	}
 	
-	static{
-		System.loadLibrary("app_androbenchmark_Matrix");
+	static 
+	{
+		System.loadLibrary("app_androbenchmark_Matrix");		
 	}
-	    
+	  
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
