@@ -2,9 +2,11 @@ package app.androbenchmark;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
 
-public class GrayScaling {
-
+public class GrayScaling {	
+	
 	/**
 	 * This is a gray scaling of a bitmap in pure java!
 	 * @param bm2

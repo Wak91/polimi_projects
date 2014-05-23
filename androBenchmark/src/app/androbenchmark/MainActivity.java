@@ -1,12 +1,14 @@
 package app.androbenchmark;
 
 import android.os.Bundle;
+import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,7 +16,6 @@ import android.widget.ImageView;
 public class MainActivity extends Activity {
 
 	private static final String TAG= "MainActivity"; //tag for logcat 
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +110,42 @@ public class MainActivity extends Activity {
 		  ScriptC_hello hs = new ScriptC_hello(rs,getResources(),R.raw.hello); // initializate the script 
 		  hs.invoke_hello_world(); //invoke the script 
 	 }
-	    
 	 
+	 
+	 
+	 public void render_filter(View view)
+	 {	  	
+		  
+	 	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
+     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones     	
+
+		RenderScript rs = RenderScript.create(this);
+
+		Allocation mInAllocation = Allocation.createFromBitmap(rs, bm2,Allocation.MipmapControl.MIPMAP_NONE,Allocation.USAGE_SCRIPT);
+
+		Allocation mOutAllocation = Allocation.createTyped(rs, mInAllocation.getType());
+		
+		Log.w("myApp", "all right here");
+
+		ScriptC_filter  mScript = new ScriptC_filter(rs,getResources(),R.raw.filter);
+
+		Log.w("myApp", "passed");
+
+		mScript.set_gIn(mInAllocation);
+
+		mScript.set_gOut(mOutAllocation);
+
+		mScript.set_gScript(mScript);
+
+		mScript.invoke_filter();
+		
+		mOutAllocation.copyTo(bm2);
+		
+		 
+    	
+	 }
+	    
+	
 	 
 
 }
