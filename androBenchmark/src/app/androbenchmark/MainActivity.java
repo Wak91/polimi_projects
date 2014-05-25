@@ -25,7 +25,8 @@ public class MainActivity extends Activity {
 	
 	static 
 	{
-		System.loadLibrary("app_androbenchmark_GrayScaling");		
+		System.loadLibrary("app_androbenchmark_GrayScaling");
+		System.loadLibrary("app_androbenchmark_Matrix");
 	}
 	  
 
