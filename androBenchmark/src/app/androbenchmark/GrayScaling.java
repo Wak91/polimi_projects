@@ -2,8 +2,7 @@ package app.androbenchmark;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
+
 
 public class GrayScaling {	
 	
@@ -32,5 +31,7 @@ public class GrayScaling {
     	return bm2;
     	
 	}
+	
+	public native static void pureJni(Bitmap bm);
 
 }
