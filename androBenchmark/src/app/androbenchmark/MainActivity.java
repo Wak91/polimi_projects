@@ -42,79 +42,48 @@ public class MainActivity extends Activity {
 	     	
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
 	     	
-	     	//-----CORE OF THE GS ALGORITHM----------------------------
+	     	//-----CORE OF THE BENCHMARK----------------------------
+	     	long t = System.currentTimeMillis();
+	     	
 	    	GrayScaling.pureJava(bm2);
+	    	
+	    	t = System.currentTimeMillis() - t;
 	    	//----------------------------------------------------------
 	    	
 	    	ImageView iv = (ImageView) findViewById(R.id.image);
 	    	iv.setImageBitmap(bm2);
 	    	
-	    	new AlertDialog.Builder(this)
-	        .setTitle("Benchmark ended").setMessage("Benchmark finished, press OK").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // continue with delete
-	            }
-	         })
-	        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // do nothing
-	            }
-	         })
-	        .setIcon(android.R.drawable.ic_dialog_alert).show();
+	    	showResult(t);
 	    	
 	     }
 	 
 	 public void matrix(View view){
 	    	
-	     	
+		 	//-----CORE OF THE BENCHMARK----------------------------
+		 	long t = System.currentTimeMillis();
+		 	
 	   	    Matrix.pureJava();
-	    	 	
-	    	new AlertDialog.Builder(this)
-	        .setTitle("Benchmark ended").setMessage("Benchmark finished, press OK").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // continue with delete
-	            }
-	         })
-	        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // do nothing
-	            }
-	         })
-	        .setIcon(android.R.drawable.ic_dialog_alert).show();
+	   	    
+	   	    t = System.currentTimeMillis() - t;
+	   	    //----------------------------------------------------------
+	   	      	 	
+	   	    showResult(t);
 	    	
 	     }
 	 
 	 public void matrixJni(View view){
-	    	
+	     	
+		 	//-----CORE OF THE BENCHMARK----------------------------
+		    long t = System.currentTimeMillis();
+		 
 	    	Matrix.pureJni();
 	    	
-	    	new AlertDialog.Builder(this)
-	        .setTitle("Benchmark ended").setMessage("Benchmark finished, press OK").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // continue with delete
-	            }
-	         })
-	        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // do nothing
-	            }
-	         })
-	        .setIcon(android.R.drawable.ic_dialog_alert).show();
+	    	t = System.currentTimeMillis() - t;
+	    	//----------------------------------------------------------
+	    	
+	    	showResult(t);
 	    	
 	     }
-	 
-	 
-	 public void render_hello(View view)
-	 {
-		 
-
-		  Log.w("myApp", "ciao");
-		  /*
-		  RenderScript rs = RenderScript.create(this); //Initialize a rs context
-		  ScriptC_hello hs = new ScriptC_hello(rs,getResources(),R.raw.hello); // initializate the script 
-		  hs.invoke_hello_world(); //invoke the script 
-		  */
-	 }
 	 
 	 
 	 
@@ -124,33 +93,56 @@ public class MainActivity extends Activity {
 	 	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
      	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones     	
 
+     	//creo un isrtanza renderscript associandolo a questo contesto
 		RenderScript rs = RenderScript.create(this);
 
+		//creo le 2 allocazioni di memoria con cui renderscript lavora
 		Allocation mInAllocation = Allocation.createFromBitmap(rs, bm2,Allocation.MipmapControl.MIPMAP_NONE,Allocation.USAGE_SCRIPT);
 
 		Allocation mOutAllocation = Allocation.createTyped(rs, mInAllocation.getType());
 		
-		Log.w("myApp", "all right here");
-
+		//associo la classe generata
 		ScriptC_filter  mScript = new ScriptC_filter(rs,getResources(),R.raw.filter);
 
-		Log.w("myApp", "passed");
-
+		//setto levariabili di renderscript
 		mScript.set_gIn(mInAllocation);
 
 		mScript.set_gOut(mOutAllocation);
 
 		mScript.set_gScript(mScript);
-
-		mScript.invoke_filter();
 		
+		//-----CORE OF THE BENCHMARK----------------------------
+		long t = System.currentTimeMillis();
+		//chiamo la funzione di rendercript (script_c)
+		mScript.invoke_filter();
+		t = System.currentTimeMillis() - t;
+		//----------------------------------------------------------
+		
+		//copio da memoria virtuale di rs all'immagine reale
 		mOutAllocation.copyTo(bm2);
 		
 		ImageView iv = (ImageView) findViewById(R.id.image);
     	iv.setImageBitmap(bm2);
 		
+    	showResult(t);
 		 
     	
+	 }
+	 
+	 private void showResult(long t){
+		 
+		 new AlertDialog.Builder(this)
+	        .setTitle("Benchmark ended").setMessage("Benchmark finished, press OK \n\nTime:" + t + "ms").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) { 
+	                // continue with delete
+	            }
+	         })
+	        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) { 
+	                // do nothing
+	            }
+	         })
+	        .setIcon(android.R.drawable.ic_dialog_alert).show();
 	 }
 	    
 	
