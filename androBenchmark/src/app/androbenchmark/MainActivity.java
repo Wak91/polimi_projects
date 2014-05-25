@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 	
 	static 
 	{
-		System.loadLibrary("app_androbenchmark_Matrix");		
+		System.loadLibrary("app_androbenchmark_GrayScaling");		
 	}
 	  
 
@@ -128,6 +128,28 @@ public class MainActivity extends Activity {
 		 
     	
 	 }
+	 
+	 
+	 public void grayScaleJni(View view){
+	    	
+	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
+	     	
+	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
+	     	
+	     	//-----CORE OF THE BENCHMARK----------------------------
+	     	long t = System.currentTimeMillis();
+	     	
+	    	GrayScaling.pureJni(bm2);
+	    	
+	    	t = System.currentTimeMillis() - t;
+	    	//----------------------------------------------------------
+	    	
+	    	ImageView iv = (ImageView) findViewById(R.id.image);
+	    	iv.setImageBitmap(bm2);
+	    	
+	    	showResult(t);
+	    	
+	     }
 	 
 	 private void showResult(long t){
 		 

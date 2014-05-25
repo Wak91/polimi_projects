@@ -14,4 +14,5 @@
     <string name="button_matrix_jni">Do a matrix mul(jni)</string>
     <string name="button_gray_render">GrayScale.rs</string>
     <string name="button_hello_render"> Hello.rs</string>
+    <string name="button_gray_jni">Gray(jni)</string>
 </resources>

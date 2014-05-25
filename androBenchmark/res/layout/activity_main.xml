@@ -54,17 +54,6 @@
         android:src="@drawable/image" />
 
         <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/Button1"
-            android:layout_marginTop="17dp"
-            android:onClick="render_filter"
-            android:text="@string/button_gray_render" />
-
-        <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,13 +65,32 @@
             android:text="@string/button_matrix_jni" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/TextView1"
+            android:layout_below="@+id/Button1"
+            android:onClick="render_filter"
+            android:text="@string/button_gray_render" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/button4"
-            android:layout_marginTop="14dp"
+            android:layout_below="@+id/Button1"
+            android:layout_toRightOf="@+id/button4"
+            android:onClick="grayScaleJni"
+            android:text="@string/button_gray_jni" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:onClick="matrix"
             android:text="@string/button_matrix" />
 
