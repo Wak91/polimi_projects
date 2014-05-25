@@ -106,9 +106,14 @@ public class MainActivity extends Activity {
 	 
 	 public void render_hello(View view)
 	 {
+		 
+
+		  Log.w("myApp", "ciao");
+		  /*
 		  RenderScript rs = RenderScript.create(this); //Initialize a rs context
 		  ScriptC_hello hs = new ScriptC_hello(rs,getResources(),R.raw.hello); // initializate the script 
 		  hs.invoke_hello_world(); //invoke the script 
+		  */
 	 }
 	 
 	 
@@ -140,6 +145,9 @@ public class MainActivity extends Activity {
 		mScript.invoke_filter();
 		
 		mOutAllocation.copyTo(bm2);
+		
+		ImageView iv = (ImageView) findViewById(R.id.image);
+    	iv.setImageBitmap(bm2);
 		
 		 
     	

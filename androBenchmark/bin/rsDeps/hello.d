@@ -1,17 +1,17 @@
-/home/degrigis/Scrivania/Workspace/androBenchmark/bin/res/bc/raw/hello.bc \
-  /home/degrigis/Scrivania/Workspace/androBenchmark/gen/app/androbenchmark/ScriptC_hello.java: \
-  /home/degrigis/Scrivania/Workspace/androBenchmark/src/hello.rs \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_core.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_types.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/clang-include/stdbool.h \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_allocation.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_atomic.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_cl.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_debug.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_element.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_math.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_matrix.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_object.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_quaternion.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_sampler.rsh \
-  /home/degrigis/Scrivania/adt-bundle-linux-x86-20131030/sdk/build-tools/android-4.4/renderscript/include/rs_time.rsh
+/Users/seba0691/Desktop/androBenchmark/bin/res/bc/raw/hello.bc \
+  /Users/seba0691/Desktop/androBenchmark/gen/app/androbenchmark/ScriptC_hello.java: \
+  /Users/seba0691/Desktop/androBenchmark/src/hello.rs \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_core.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_types.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/clang-include/stdbool.h \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_allocation.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_atomic.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_cl.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_debug.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_element.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_math.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_matrix.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_object.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_quaternion.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_sampler.rsh \
+  /Applications/adt-bundle-mac-x86_64-20140321/sdk/build-tools/android-4.4.2/renderscript/include/rs_time.rsh
