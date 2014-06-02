@@ -1,8 +1,14 @@
 package app.androbenchmark;
 
+import java.util.Random;
+
 import android.os.Bundle;
 import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.Element.DataType;
 import android.renderscript.RenderScript;
+import android.renderscript.Matrix4f;
+import android.renderscript.Type;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -39,7 +45,7 @@ public class MainActivity extends Activity {
 	
 	 public void grayScale(View view){
 	    	
-	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
+	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.images); 
 	     	
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
 	     	
@@ -91,7 +97,7 @@ public class MainActivity extends Activity {
 	 public void render_filter(View view)
 	 {	  	
 		  
-	 	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
+	 	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.images); 
      	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones     	
 
      	//creo un isrtanza renderscript associandolo a questo contesto
@@ -126,14 +132,68 @@ public class MainActivity extends Activity {
     	iv.setImageBitmap(bm2);
 		
     	showResult(t);
+		 	
+	 }
+	 
+	 /*
+	  *  Great doc.
+	  *  http://stackoverflow.com/questions/21734275/calculate-the-sum-of-values-in-an-array-using-renderscript?lq=1
+	  */
+	 public void render_matrix(View view){
+	     
+     Random rg = new Random();
+
 		 
-    	
+		 /*
+     int[][] m1 = new int[300][300];
+     int[][] m2 = new int[300][300]; 
+	 int[][] r =  new int[300][300];
+     
+
+     
+     for (int i = 0; i < m1.length; i++) {
+			for (int j = 0; j < m1[0].length; j++) {
+
+				m1[i][j] = randomGenerator.nextInt(100); //inizializzo a caso la matrice
+				m2[i][j] = randomGenerator.nextInt(100);  //inizializzo a caso la matrice
+				r[i][j] = 0;  //inizializzo a 0 la matrice
+			}
+		}
+     */
+     int[] test  = new int[64];
+     int[] result = new int[64];
+     
+     for(int i=0; i<test.length;i++)
+        {
+    	 test[i]  = rg.nextInt(10);
+        }
+     
+	 RenderScript rs = RenderScript.create(this);
+	 
+	 Allocation mat1 = Allocation.createSized(rs, Element.I32(rs), test.length , Allocation.USAGE_SCRIPT);
+	 Allocation res = Allocation.createSized(rs, Element.I32(rs), result.length , Allocation.USAGE_SCRIPT);
+
+	 mat1.copy1DRangeFrom(0, test.length, test );
+	 
+	 ScriptC_matrix script = new ScriptC_matrix(rs,getResources(),R.raw.matrix);
+	 
+	 script.set_gScript(script);
+     script.set_gIn(mat1);
+     script.set_gOut(res);
+     
+     script.invoke_calc();
+
+     res.copyTo(result);
+     
+     for(int j=0; j<result.length;j++)
+        Log.w("ANDROBENCHMARK",j+")"+result[j]);
+	 
 	 }
 	 
 	 
 	 public void grayScaleJni(View view){
 	    	
-	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
+	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.images); 
 	     	
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
 	     	
@@ -155,14 +215,9 @@ public class MainActivity extends Activity {
 	 private void showResult(long t){
 		 
 		 new AlertDialog.Builder(this)
-	        .setTitle("Benchmark ended").setMessage("Benchmark finished, press OK \n\nTime:" + t + "ms").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	        .setTitle("Benchmark ended").setMessage("Benchmark finished \n\nTime:" + t + "ms").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int which) { 
 	                // continue with delete
-	            }
-	         })
-	        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // do nothing
 	            }
 	         })
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();

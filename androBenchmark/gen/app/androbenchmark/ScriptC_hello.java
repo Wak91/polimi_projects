@@ -16,7 +16,7 @@
 
 /*
  * This file is auto-generated. DO NOT MODIFY!
- * The source Renderscript file: /Users/seba0691/Desktop/androBenchmark/src/hello.rs
+ * The source Renderscript file: /home/degrigis/Scrivania/androBenchmark/src/hello.rs
  */
 package app.androbenchmark;
 

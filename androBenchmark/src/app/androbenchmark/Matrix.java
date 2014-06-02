@@ -13,9 +13,9 @@ public class Matrix {
 	 */
 	public static int[][] pureJava(){	
 
-		int[][] m1 = new int[1000][1000];  
-		int[][] m2 = new int[1000][1000]; ;
-		int[][] result = new int[1000][1000];
+		int[][] m1 = new int[300][300];  
+		int[][] m2 = new int[300][300]; 
+		int[][] result = new int[500][500];
 
 		Random randomGenerator = new Random();
 
