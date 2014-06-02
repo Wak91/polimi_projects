@@ -163,9 +163,10 @@ public class MainActivity extends Activity {
      int[] test  = new int[64];
      int[] result = new int[64];
      
-     for(int i=0; i<test.length;i++)
+     for(int i=0; i<63;i++)
         {
     	 test[i]  = rg.nextInt(10);
+    	 //result[i] = 0;
         }
      
 	 RenderScript rs = RenderScript.create(this);
@@ -174,6 +175,7 @@ public class MainActivity extends Activity {
 	 Allocation res = Allocation.createSized(rs, Element.I32(rs), result.length , Allocation.USAGE_SCRIPT);
 
 	 mat1.copy1DRangeFrom(0, test.length, test );
+	 res.copy1DRangeFrom(0, result.length, result);
 	 
 	 ScriptC_matrix script = new ScriptC_matrix(rs,getResources(),R.raw.matrix);
 	 
@@ -185,6 +187,12 @@ public class MainActivity extends Activity {
 
      res.copyTo(result);
      
+     Log.w("ANDROBENCHMARK" , "Test was:\n");
+     for(int j=0; j<result.length;j++)
+         Log.w("ANDROBENCHMARK",j+")"+test[j]);
+     
+     Log.w("ANDROBENCHMARK" , "Result is:\n");
+
      for(int j=0; j<result.length;j++)
         Log.w("ANDROBENCHMARK",j+")"+result[j]);
 	 
