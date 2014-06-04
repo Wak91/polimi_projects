@@ -138,64 +138,46 @@ public class MainActivity extends Activity {
 	 /*
 	  *  Great doc.
 	  *  http://stackoverflow.com/questions/21734275/calculate-the-sum-of-values-in-an-array-using-renderscript?lq=1
+	  *  http://stackoverflow.com/questions/10576583/passing-array-to-rsforeach-in-renderscript-compute [ TO READ ]
 	  */
 	 public void render_matrix(View view){
 	     
      Random rg = new Random();
 
-		 
-		 /*
-     int[][] m1 = new int[300][300];
-     int[][] m2 = new int[300][300]; 
-	 int[][] r =  new int[300][300];
-     
-
-     
-     for (int i = 0; i < m1.length; i++) {
-			for (int j = 0; j < m1[0].length; j++) {
-
-				m1[i][j] = randomGenerator.nextInt(100); //inizializzo a caso la matrice
-				m2[i][j] = randomGenerator.nextInt(100);  //inizializzo a caso la matrice
-				r[i][j] = 0;  //inizializzo a 0 la matrice
-			}
-		}
-     */
      int[] test  = new int[64];
-     int[] result = new int[64];
-     
+     int[] test2  = new int[64];
+          
      for(int i=0; i<63;i++)
-        {
-    	 test[i]  = rg.nextInt(10);
-    	 //result[i] = 0;
-        }
-     
+    	 	{
+    	 	 test[i]  = rg.nextInt(10);
+    	 	}
+        
 	 RenderScript rs = RenderScript.create(this);
-	 
-	 Allocation mat1 = Allocation.createSized(rs, Element.I32(rs), test.length , Allocation.USAGE_SCRIPT);
-	 Allocation res = Allocation.createSized(rs, Element.I32(rs), result.length , Allocation.USAGE_SCRIPT);
-
-	 mat1.copy1DRangeFrom(0, test.length, test );
-	 res.copy1DRangeFrom(0, result.length, result);
-	 
 	 ScriptC_matrix script = new ScriptC_matrix(rs,getResources(),R.raw.matrix);
-	 
 	 script.set_gScript(script);
-     script.set_gIn(mat1);
-     script.set_gOut(res);
-     
-     script.invoke_calc();
 
-     res.copyTo(result);
+	 //Creo l'allocazione per l'array test 
+	 Allocation array = Allocation.createSized(rs, Element.I32(rs), test.length, Allocation.USAGE_SCRIPT);
+	 Allocation r = Allocation.createSized(rs, Element.I32(rs), test.length, Allocation.USAGE_SCRIPT);
+     array.copyFrom(test);
+        
+	 script.set_gIn(array);
+	 script.set_gOut(r);	 
+	 
+     script.invoke_calc();
      
-     Log.w("ANDROBENCHMARK" , "Test was:\n");
-     for(int j=0; j<result.length;j++)
+     r.copyTo(test2);
+     
+     Log.w("ANDROBENCHMARK" , "test was:\n");
+     for(int j=0; j<test.length;j++)
          Log.w("ANDROBENCHMARK",j+")"+test[j]);
      
-     Log.w("ANDROBENCHMARK" , "Result is:\n");
+     
+     Log.w("ANDROBENCHMARK" , "test2 is:\n");
 
-     for(int j=0; j<result.length;j++)
-        Log.w("ANDROBENCHMARK",j+")"+result[j]);
-	 
+     for(int j=0; j<test2.length;j++)
+        Log.w("ANDROBENCHMARK",j+")"+ test2[j]);
+     
 	 }
 	 
 	 

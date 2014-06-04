@@ -5,8 +5,11 @@ rs_allocation gIn;
 rs_allocation gOut;
 rs_script gScript;
 
-void root(const uchar4 *v_in, uchar4 *v_out, const void *usrData, uint32_t x, uint32_t y) {
-   v_out[x] = v_in[x];
+int fix=1;
+
+void root(const int32_t *v_in, int32_t *v_out) {
+   
+   *v_out = *v_in + fix;
 }
 
 
