@@ -24,7 +24,8 @@ obj/local/armeabi/objs/app_androbenchmark_GrayScaling/app_androbenchmark_GraySca
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/malloc.h \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/alloca.h \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/strings.h \
- /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/memory.h
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/memory.h \
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/android/log.h
 
 jni/app_androbenchmark_GrayScaling.h:
 
@@ -75,3 +76,5 @@ jni/app_androbenchmark_GrayScaling.h:
 /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/strings.h:
 
 /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/memory.h:
+
+/Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/android/log.h:

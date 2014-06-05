@@ -23,17 +23,19 @@ public final class R {
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int image=0x7f020001;
-        public static final int img1=0x7f020002;
+        public static final int images=0x7f020002;
+        public static final int img1=0x7f020003;
     }
     public static final class id {
         public static final int Button1=0x7f090002;
         public static final int RelativeLayout1=0x7f090000;
         public static final int TextView1=0x7f090001;
-        public static final int action_settings=0x7f090008;
-        public static final int button2=0x7f090007;
-        public static final int button3=0x7f090004;
-        public static final int button4=0x7f090005;
-        public static final int button5=0x7f090006;
+        public static final int action_settings=0x7f090009;
+        public static final int button2=0x7f090006;
+        public static final int button3=0x7f090007;
+        public static final int button4=0x7f090004;
+        public static final int button5=0x7f090005;
+        public static final int button6=0x7f090008;
         public static final int image=0x7f090003;
     }
     public static final class layout {
@@ -58,6 +60,7 @@ public final class R {
         public static final int button_hello_render=0x7f06000c;
         public static final int button_matrix=0x7f060009;
         public static final int button_matrix_jni=0x7f06000a;
+        public static final int button_matrix_rs=0x7f06000e;
         public static final int button_send=0x7f060003;
         public static final int edit_message=0x7f060002;
         public static final int hello_world=0x7f060005;
