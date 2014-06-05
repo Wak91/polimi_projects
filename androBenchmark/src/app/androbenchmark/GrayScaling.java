@@ -21,7 +21,7 @@ public class GrayScaling {
     		    r = (int) (Color.red(pixel) * 0.299);
     		    g = (int) (Color.green(pixel) * 0.587);
     		    b = (int) (Color.blue(pixel) * 0.114);
-    		    
+    		    //fix immagine verde (i valori r,g,b vanno sommati per ogni componente)
     		    int gray = Color.rgb(r+g+b,r+g+b,r+g+b);
     		    bm2.setPixel(x, y, gray);
 

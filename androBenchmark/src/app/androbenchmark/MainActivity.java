@@ -64,29 +64,22 @@ public class MainActivity extends Activity {
 	    	
 	     }
 	 
-	 public void matrix(View view){
+	 public void grayScaleJni(View view){
 	    	
-		 	//-----CORE OF THE BENCHMARK----------------------------
-		 	long t = System.currentTimeMillis();
-		 	
-	   	    Matrix.pureJava();
-	   	    
-	   	    t = System.currentTimeMillis() - t;
-	   	    //----------------------------------------------------------
-	   	      	 	
-	   	    showResult(t);
-	    	
-	     }
-	 
-	 public void matrixJni(View view){
+	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
 	     	
-		 	//-----CORE OF THE BENCHMARK----------------------------
-		    long t = System.currentTimeMillis();
-		 
-	    	Matrix.pureJni();
+	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
+	     	
+	     	//-----CORE OF THE BENCHMARK----------------------------
+	     	long t = System.currentTimeMillis();
+	     	
+	    	GrayScaling.pureJni(bm2);
 	    	
 	    	t = System.currentTimeMillis() - t;
 	    	//----------------------------------------------------------
+	    	
+	    	ImageView iv = (ImageView) findViewById(R.id.image);
+	    	iv.setImageBitmap(bm2);
 	    	
 	    	showResult(t);
 	    	
@@ -97,7 +90,7 @@ public class MainActivity extends Activity {
 	 public void render_filter(View view)
 	 {	  	
 		  
-	 	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.images); 
+	 	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
      	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones     	
 
      	//creo un istanza renderscript associandolo a questo contesto
@@ -134,6 +127,35 @@ public class MainActivity extends Activity {
     	showResult(t);
 		 	
 	 }
+	 
+	 public void matrix(View view){
+	    	
+		 	//-----CORE OF THE BENCHMARK----------------------------
+		 	long t = System.currentTimeMillis();
+		 	
+	   	    Matrix.pureJava();
+	   	    
+	   	    t = System.currentTimeMillis() - t;
+	   	    //----------------------------------------------------------
+	   	      	 	
+	   	    showResult(t);
+	    	
+	     }
+	 
+	 public void matrixJni(View view){
+	     	
+		 	//-----CORE OF THE BENCHMARK----------------------------
+		    long t = System.currentTimeMillis();
+		 
+	    	Matrix.pureJni();
+	    	
+	    	t = System.currentTimeMillis() - t;
+	    	//----------------------------------------------------------
+	    	
+	    	showResult(t);
+	    	
+	     }
+	 
 	 
 	 /*
 	  *  Great doc.
@@ -214,34 +236,9 @@ public class MainActivity extends Activity {
 		 
 		 
 		 
-		 
-		 
-		 
-		 
-		 
-		 
 	 }
 	 
-	 public void grayScaleJni(View view){
-	    	
-	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
-	     	
-	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
-	     	
-	     	//-----CORE OF THE BENCHMARK----------------------------
-	     	long t = System.currentTimeMillis();
-	     	
-	    	GrayScaling.pureJni(bm2);
-	    	
-	    	t = System.currentTimeMillis() - t;
-	    	//----------------------------------------------------------
-	    	
-	    	ImageView iv = (ImageView) findViewById(R.id.image);
-	    	iv.setImageBitmap(bm2);
-	    	
-	    	showResult(t);
-	    	
-	     }
+	
 	 
 	 private void showResult(long t){
 		 
