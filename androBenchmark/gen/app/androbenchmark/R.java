@@ -45,6 +45,8 @@ public final class R {
     public static final class raw {
         public static final int filter=0x7f040000;
         public static final int hello=0x7f040001;
+        public static final int matrix=0x7f040002;
+        public static final int matrix2=0x7f040003;
     }
     public static final class string {
         public static final int action_search=0x7f060006;
