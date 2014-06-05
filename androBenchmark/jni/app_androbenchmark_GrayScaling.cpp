@@ -39,7 +39,7 @@ JNIEXPORT void JNICALL Java_app_androbenchmark_GrayScaling_pureJni(JNIEnv* env, 
 			//__android_log_print(ANDROID_LOG_DEBUG, "ANDROTAG", "r is %08x , g is %08x , b is %08x",r,g,b);
 
 			//applico il filtro al pixel
-			int r_gray = r;
+			int r_gray = r - 0x000000ff;
 			int g_gray = g;
 			int b_gray = b;
 			int a_gray = a;
