@@ -162,7 +162,7 @@ public class MainActivity extends Activity {
 	  *  http://stackoverflow.com/questions/21734275/calculate-the-sum-of-values-in-an-array-using-renderscript?lq=1
 	  *  http://stackoverflow.com/questions/10576583/passing-array-to-rsforeach-in-renderscript-compute [ TO READ ]
 	  */
-	 public void render_matrix(View view){
+	 public void simple_math(View view){
 	     
      Random rg = new Random();
 
@@ -175,7 +175,7 @@ public class MainActivity extends Activity {
     	 	}
         
 	 RenderScript rs = RenderScript.create(this);
-	 ScriptC_matrix script = new ScriptC_matrix(rs,getResources(),R.raw.matrix);
+	 ScriptC_simple_math script = new ScriptC_simple_math(rs,getResources(),R.raw.simple_math);
 	 script.set_gScript(script);
 
 	 //Creo l'allocazione per l'array test 
@@ -204,39 +204,66 @@ public class MainActivity extends Activity {
 	 }
 
 	 
-	 public void matrix_test(View view)
+	 public void simple_matrix(View view)
 	 {
 		 
 		 Random rg = new Random();		
  	 	
-	     int[] test  = new int[64];
-	     
-	     for(int i=0; i<63;i++)
- 	 	 {
- 	 	 test[i]  = rg.nextInt(10);
- 	 	 }
+	     Matrix4f test = new Matrix4f();
+	     Matrix4f test2 = new Matrix4f();
 
-		 
+	     
+	     for(int i=0; i<4;i++)
+ 	 	  for(int j=0;j<4;j++)
+ 	 		  {
+ 	 		  test.set(i, j,rg.nextInt(100));
+ 	 		  test2.set(i, j,rg.nextInt(100));
+ 	 		  }
+ 	 	 
+
+	     		 
 		 RenderScript rs = RenderScript.create(this);
 		 
-		 ScriptC_matrix2 script = new ScriptC_matrix2(rs,getResources(),R.raw.matrix2);
+		 ScriptC_simple_matrix script = new ScriptC_simple_matrix(rs,getResources(),R.raw.simple_matrix);
 		 script.set_gScript(script);
 		 
 		 //---Sandbox---
 		 
-		 Allocation matrix = Allocation.createSized(rs, Element.MATRIX_4X4(rs), Allocation.USAGE_SCRIPT);
-		 Allocation matrix2 = Allocation.createSized(rs, Element.MATRIX_4X4(rs), Allocation.USAGE_SCRIPT);
+		 //Allocation matrix = Allocation.createSized(rs, Element.MATRIX_4X4(rs), Allocation.USAGE_SCRIPT);
+		 //Allocation matrix2 = Allocation.createSized(rs, Element.MATRIX_4X4(rs), Allocation.USAGE_SCRIPT);
 
-		 matrix.copyFrom(test); // Have to try with this and see what's happen ...
-		 
+		 script.set_matrix1(test);
+		 script.set_matrix2(test2);
 		
+		 script.invoke_hello();
 		 
-		 script.set_gIn(matrix);
-		 script.set_gOut(matrix2);
+		 //script.set_gIn(matrix);
+		 //script.set_gOut(matrix2); 		 	 
+	 }
+	 
+	 public void rsmatrix(View view)
+	 {
+		 int [][] row = new int[64][64];
 		 
+		 Random rg = new Random();		
+ 	 
+		 RenderScript rs = RenderScript.create(this);
+		 
+		 ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,getResources(),R.raw.rsmatrix);
+		 
+		 //---Sandbox---
+			 	 
+		 Element.Builder eb = new Element.Builder(rs); 
+		 eb.add(Element.I32(rs), "matrix", 64);
+		 eb.create();
+		 
+		 Allocation matrix = Allocation.createSized(rs, eb.create(),64, Allocation.USAGE_SCRIPT);
+
 		 
 		 
 	 }
+	 
+	 
 	 
 	
 	 
