@@ -18,11 +18,11 @@ public class GrayScaling {
     	   for(int y=0; y<bm2.getHeight(); y++)
     	      {
     		    pixel = bm2.getPixel(x, y);
-    		    r = (int) (Color.red(pixel) * 0.299f);
-    		    g = (int) (Color.green(pixel) * 0.587f);
-    		    b = (int) (Color.blue(pixel) * 0.114f);
+    		    r = (int) (Color.red(pixel) * 0.299);
+    		    g = (int) (Color.green(pixel) * 0.587);
+    		    b = (int) (Color.blue(pixel) * 0.114);
     		    
-    		    int gray = Color.rgb(r, g, b);
+    		    int gray = Color.rgb(r+g+b,r+g+b,r+g+b);
     		    bm2.setPixel(x, y, gray);
 
     	      }

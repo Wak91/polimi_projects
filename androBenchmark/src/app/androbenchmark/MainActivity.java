@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 	
 	 public void grayScale(View view){
 	    	
-	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.images); 
+	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
 	     	
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
 	     	
