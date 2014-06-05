@@ -24,7 +24,8 @@ obj/local/armeabi-v7a/objs/app_androbenchmark_GrayScaling/app_androbenchmark_Gra
  /home/degrigis/Scrivania/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/malloc.h \
  /home/degrigis/Scrivania/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/alloca.h \
  /home/degrigis/Scrivania/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/strings.h \
- /home/degrigis/Scrivania/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/memory.h
+ /home/degrigis/Scrivania/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/memory.h \
+ /home/degrigis/Scrivania/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/android/log.h
 
 jni/app_androbenchmark_GrayScaling.h:
 
@@ -75,3 +76,5 @@ jni/app_androbenchmark_GrayScaling.h:
 /home/degrigis/Scrivania/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/strings.h:
 
 /home/degrigis/Scrivania/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/memory.h:
+
+/home/degrigis/Scrivania/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/android/log.h:

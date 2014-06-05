@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
 	 	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.images); 
      	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones     	
 
-     	//creo un isrtanza renderscript associandolo a questo contesto
+     	//creo un istanza renderscript associandolo a questo contesto
 		RenderScript rs = RenderScript.create(this);
 
 		//creo le 2 allocazioni di memoria con cui renderscript lavora
@@ -160,7 +160,8 @@ public class MainActivity extends Activity {
 	 Allocation array = Allocation.createSized(rs, Element.I32(rs), test.length, Allocation.USAGE_SCRIPT);
 	 Allocation r = Allocation.createSized(rs, Element.I32(rs), test.length, Allocation.USAGE_SCRIPT);
      array.copyFrom(test);
-        
+     
+   
 	 script.set_gIn(array);
 	 script.set_gOut(r);	 
 	 
@@ -179,11 +180,51 @@ public class MainActivity extends Activity {
         Log.w("ANDROBENCHMARK",j+")"+ test2[j]);
      
 	 }
+
 	 
+	 public void matrix_test(View view)
+	 {
+		 
+		 Random rg = new Random();		
+ 	 	
+	     int[] test  = new int[64];
+	     
+	     for(int i=0; i<63;i++)
+ 	 	 {
+ 	 	 test[i]  = rg.nextInt(10);
+ 	 	 }
+
+		 
+		 RenderScript rs = RenderScript.create(this);
+		 
+		 ScriptC_matrix2 script = new ScriptC_matrix2(rs,getResources(),R.raw.matrix2);
+		 script.set_gScript(script);
+		 
+		 //---Sandbox---
+		 
+		 Allocation matrix = Allocation.createSized(rs, Element.MATRIX_4X4(rs), Allocation.USAGE_SCRIPT);
+		 Allocation matrix2 = Allocation.createSized(rs, Element.MATRIX_4X4(rs), Allocation.USAGE_SCRIPT);
+
+		 matrix.copyFrom(test); // Have to try with this and see what's happen ...
+		 
+		
+		 
+		 script.set_gIn(matrix);
+		 script.set_gOut(matrix2);
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+	 }
 	 
 	 public void grayScaleJni(View view){
 	    	
-	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.images); 
+	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
 	     	
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
 	     	
