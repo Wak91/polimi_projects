@@ -101,7 +101,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/button3"
             android:layout_toRightOf="@+id/button3"
-            android:onClick="simple_matrix"
+            android:onClick="rsmatrix"
             android:text="@string/button_matrix_rs" />
 
 </RelativeLayout>

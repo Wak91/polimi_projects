@@ -212,54 +212,52 @@ public class MainActivity extends Activity {
 	     Matrix4f test = new Matrix4f();
 	     Matrix4f test2 = new Matrix4f();
 
-	     
 	     for(int i=0; i<4;i++)
  	 	  for(int j=0;j<4;j++)
  	 		  {
  	 		  test.set(i, j,rg.nextInt(100));
  	 		  test2.set(i, j,rg.nextInt(100));
  	 		  }
- 	 	 
-
-	     		 
+ 	 	 	 
 		 RenderScript rs = RenderScript.create(this);
 		 
 		 ScriptC_simple_matrix script = new ScriptC_simple_matrix(rs,getResources(),R.raw.simple_matrix);
 		 script.set_gScript(script);
-		 
-		 //---Sandbox---
-		 
-		 //Allocation matrix = Allocation.createSized(rs, Element.MATRIX_4X4(rs), Allocation.USAGE_SCRIPT);
-		 //Allocation matrix2 = Allocation.createSized(rs, Element.MATRIX_4X4(rs), Allocation.USAGE_SCRIPT);
-
+		 		 
 		 script.set_matrix1(test);
 		 script.set_matrix2(test2);
 		
-		 script.invoke_hello();
-		 
-		 //script.set_gIn(matrix);
-		 //script.set_gOut(matrix2); 		 	 
+		 script.invoke_hello(); 		 	 
 	 }
 	 
 	 public void rsmatrix(View view)
 	 {
-		 int [][] row = new int[64][64];
-		 
-		 Random rg = new Random();		
- 	 
 		 RenderScript rs = RenderScript.create(this);
-		 
 		 ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,getResources(),R.raw.rsmatrix);
+		 script.set_gScript(script);
 		 
-		 //---Sandbox---
-			 	 
-		 Element.Builder eb = new Element.Builder(rs); 
-		 eb.add(Element.I32(rs), "matrix", 64);
-		 eb.create();
+		 Element.Builder matrix = new Element.Builder(rs);
+		 matrix.add(Element.U32(rs),"r0", 5);
+		 matrix.add(Element.U32(rs),"r1", 5);
+		 matrix.add(Element.U32(rs),"r2", 5);
+		 matrix.add(Element.U32(rs),"r3", 5);
+		 matrix.add(Element.U32(rs),"r4", 5);
 		 
-		 Allocation matrix = Allocation.createSized(rs, eb.create(),64, Allocation.USAGE_SCRIPT);
+		 Element my_element = matrix.create();
+		 
+		 
+		 Allocation wow = Allocation.createSized(rs, my_element, 5);
+		 script.set_gIn(wow);
+		 
+		 
+		 Allocation wow2 = Allocation.createSized(rs, my_element, 5);
+		 script.set_gOut(wow2);
+		 
+		 script.invoke_calc();
+		 
+		 
+		 
 
-		 
 		 
 	 }
 	 
