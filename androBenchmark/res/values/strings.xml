@@ -17,4 +17,5 @@
     <string name="button_gray_jni">Gray(jni)</string>
     <string name="button_matrix_rs">Matrix.rs</string>
 	<string name="button_bruteforce_java">Bruteforce</string>    
+	<string name="button_bruteforce_jni">Bruteforce (JNI)</string>    
 </resources>

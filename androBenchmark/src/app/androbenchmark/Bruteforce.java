@@ -31,6 +31,8 @@ public class Bruteforce {
 
 	}
 	
+	public native static void pureJni();
+	
 	
 	
 

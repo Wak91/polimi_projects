@@ -113,4 +113,15 @@
             android:onClick="bruteforce"
             android:text="@string/button_bruteforce_java" />
 
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/button7"
+            android:layout_alignBottom="@+id/button7"
+            android:layout_alignLeft="@+id/button5"
+            android:layout_alignParentRight="true"
+            android:onClick="bruteforceJni"
+            android:text="@string/button_bruteforce_jni" />
+
 </RelativeLayout>

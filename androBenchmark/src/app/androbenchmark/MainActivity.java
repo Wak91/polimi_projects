@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 	{
 		System.loadLibrary("app_androbenchmark_GrayScaling");
 		System.loadLibrary("app_androbenchmark_Matrix");
+		System.loadLibrary("app_androbenchmark_Bruteforce");
 	}
 	  
 
@@ -270,6 +271,20 @@ public class MainActivity extends Activity {
 		 	long t = System.currentTimeMillis();
 		 	
 	   	    Bruteforce.pureJava();
+	   	    
+	   	    t = System.currentTimeMillis() - t;
+	   	    //----------------------------------------------------------
+	   	      	 	
+	   	    showResult(t);
+	    	
+	 }
+
+	 public void bruteforceJni(View view){
+	    	
+		 	//-----CORE OF THE BENCHMARK----------------------------
+		 	long t = System.currentTimeMillis();
+		 	
+	   	    Bruteforce.pureJni();
 	   	    
 	   	    t = System.currentTimeMillis() - t;
 	   	    //----------------------------------------------------------
