@@ -232,8 +232,9 @@ public class MainActivity extends Activity {
 	 
 	 public void rsmatrix(View view)
 	 {
+		 /*
 		 RenderScript rs = RenderScript.create(this);
-		 ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,getResources(),R.raw.rsmatrix);
+		 //ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,getResources(),R.raw.rsmatrix);
 		 script.set_gScript(script);
 		 
 		 Element.Builder matrix = new Element.Builder(rs);
@@ -256,7 +257,7 @@ public class MainActivity extends Activity {
 		 script.invoke_calc();
 		 
 		 
-		 
+		 */
 
 		 
 	 }
