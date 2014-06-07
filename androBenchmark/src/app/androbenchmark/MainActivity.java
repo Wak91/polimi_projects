@@ -8,7 +8,6 @@ import android.renderscript.Element;
 import android.renderscript.Element.DataType;
 import android.renderscript.RenderScript;
 import android.renderscript.Matrix4f;
-import android.renderscript.Type;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,6 +21,8 @@ import android.widget.ImageView;
 public class MainActivity extends Activity {
 
 	private static final String TAG= "MainActivity"; //tag for logcat 
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -261,14 +262,22 @@ public class MainActivity extends Activity {
 		 script.invoke_calc();
 		 
 		 
-		
-
-		 
 	 }
 	 
-	 
-	 
-	
+	 public void bruteforce(View view){
+	    	
+		 	//-----CORE OF THE BENCHMARK----------------------------
+		 	long t = System.currentTimeMillis();
+		 	
+	   	    Bruteforce.pureJava();
+	   	    
+	   	    t = System.currentTimeMillis() - t;
+	   	    //----------------------------------------------------------
+	   	      	 	
+	   	    showResult(t);
+	    	
+	 }
+
 	 
 	 private void showResult(long t){
 		 
