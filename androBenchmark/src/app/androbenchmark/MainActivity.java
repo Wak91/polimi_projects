@@ -115,6 +115,8 @@ public class MainActivity extends Activity {
 		long t = System.currentTimeMillis();
 		//chiamo la funzione di rendercript (script_c)
 		mScript.invoke_filter();
+		rs.finish(); // let's wait for the script in this context to finish 
+		
 		t = System.currentTimeMillis() - t;
 		//----------------------------------------------------------
 		
@@ -227,7 +229,8 @@ public class MainActivity extends Activity {
 		 script.set_matrix1(test);
 		 script.set_matrix2(test2);
 		
-		 script.invoke_hello(); 		 	 
+		 script.invoke_hello(); 		
+		
 	 }
 	 
 	 public void rsmatrix(View view)
@@ -252,6 +255,7 @@ public class MainActivity extends Activity {
 		 
 		 Allocation wow2 = Allocation.createSized(rs, my_element, 5);
 		 script.set_gOut(wow2);
+		 
 		 
 		 script.invoke_calc();
 		 
