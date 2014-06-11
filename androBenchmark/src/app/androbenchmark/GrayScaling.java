@@ -1,10 +1,14 @@
 package app.androbenchmark;
 
+
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 
 
 public class GrayScaling {	
+	
+	private static final String TAG = "GrayScale"; //tag for logcat 
 	
 	/**
 	 * This is a gray scaling of a bitmap in pure java!
@@ -32,6 +36,12 @@ public class GrayScaling {
     	
 	}
 	
+
+	
 	public native static void pureJni(Bitmap bm);
+
+	
+
+	
 
 }

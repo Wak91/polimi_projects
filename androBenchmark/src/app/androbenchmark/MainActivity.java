@@ -1,7 +1,9 @@
 package app.androbenchmark;
 
 import java.util.Random;
+import java.util.concurrent.Callable;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -53,8 +55,9 @@ public class MainActivity extends Activity {
 	     	
 	     	//-----CORE OF THE BENCHMARK----------------------------
 	     	long t = System.currentTimeMillis();
+	     		     
 	     	
-	    	GrayScaling.pureJava(bm2);
+	    	new ExecuteBenchmarkTask().execute(bm2);//new GrayScaling(), "prova");
 	    	
 	    	t = System.currentTimeMillis() - t;
 	    	//----------------------------------------------------------
@@ -294,7 +297,7 @@ public class MainActivity extends Activity {
 	 }
 
 	 
-	 private void showResult(long t){
+	 public void showResult(long t){
 		 
 		 new AlertDialog.Builder(this)
 	        .setTitle("Benchmark ended").setMessage("Benchmark finished \n\nTime:" + t + "ms").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -304,6 +307,29 @@ public class MainActivity extends Activity {
 	         })
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();
 	 }
+	 
+	 //------------ Classe privata per async task --------------//
+	 
+	 public class ExecuteBenchmarkTask extends AsyncTask <Object, Integer, Long> {
+
+		
+			
+			@Override
+			protected void onProgressUpdate(Integer... progress) {
+		        //setProgress(progress[0]);
+		    }
+			@Override
+		    protected void onPostExecute(Long result) {
+				showResult(System.currentTimeMillis());
+		    }
+
+			@Override
+			protected Long doInBackground(Object... params) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+		}
 	    
 	
 	 
