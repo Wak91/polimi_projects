@@ -57,7 +57,8 @@ public class MainActivity extends Activity {
 	     	long t = System.currentTimeMillis();
 	     		     
 	     	
-	    	new ExecuteBenchmarkTask().execute(bm2);//new GrayScaling(), "prova");
+	    	//new ExecuteBenchmarkTask().execute(new GrayScaling(), "pureJava", bm2);
+	    	new ExecuteBenchmarkTask().execute(new GrayScaling(), "pureJava", bm2);
 	    	
 	    	t = System.currentTimeMillis() - t;
 	    	//----------------------------------------------------------
@@ -308,30 +309,6 @@ public class MainActivity extends Activity {
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();
 	 }
 	 
-	 //------------ Classe privata per async task --------------//
-	 
-	 public class ExecuteBenchmarkTask extends AsyncTask <Object, Integer, Long> {
-
-		
-			
-			@Override
-			protected void onProgressUpdate(Integer... progress) {
-		        //setProgress(progress[0]);
-		    }
-			@Override
-		    protected void onPostExecute(Long result) {
-				showResult(System.currentTimeMillis());
-		    }
-
-			@Override
-			protected Long doInBackground(Object... params) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-		}
-	    
 	
-	 
 
 }

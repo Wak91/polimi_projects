@@ -36,7 +36,14 @@ public class GrayScaling {
     	
 	}
 	
-
+	public static void prova(){
+		for(int x=0; x<100; x++){
+			for(int y=0; y<100; x++){
+				
+				 Log.w(TAG , "ciao");
+			}
+		}
+	}
 	
 	public native static void pureJni(Bitmap bm);
 

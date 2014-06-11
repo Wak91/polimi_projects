@@ -3,22 +3,46 @@ package app.androbenchmark;
 
 import java.lang.reflect.InvocationTargetException;
 
-import android.graphics.Bitmap;
+
 import android.os.AsyncTask;
 
-public  class ExecuteBenchmarkTask extends AsyncTask <Bitmap, Void, Bitmap> {
+public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Object> {
 
-	@Override
-	protected Bitmap doInBackground(Bitmap... params) {
-		return GrayScaling.pureJava(params[0]);
-	}
 
+	//wrapper generale per gli asynctask cosi da non dover definire piu funzioni(una per benchmark)
 	/*
+	 * 
+	 * SPIEGAZIONE
+	 * 
+	 * 1 - passo un istanza della classe di cui voglio chiamare il metodo, il nome del metodo da chiamare 
+	 *     sottoforma di stringa, e gli eventuali parametri del merodo
+	 *   
+	 * 2 - ricavo la classe dall istanza passata
+	 * 
+	 * 3 - ricavo il metodo dal nome passato e anche gli argomenti che riceve a seconda di quelli passati(il tipo dei parametri e ricavato in automatico)
+	 * 
+	 * 4 - eseguo il metodo scelto e ne ritorno il valore
+	 * 
+	 * 
+	 * TODO:RENDERE IL WRAPPER FLESSIBILE DAL PUNTO DI VISTA DEL NUMERO DEI PARAETRI IMMESSI
+	 * 
+	 * 
+	 */
+	
 	@Override
 	protected Object doInBackground(Object... params) {
 		// TODO Auto-generated method stub
 		try {
-			return params[0].getClass().getMethod((String)params[1]).invoke(params[0]);
+			
+			//ottimizzare
+			//soluzione provvisoria perche conosciamo il massimo numero di argomenti da passare
+			if(params.length == 2){
+				return params[0].getClass().getMethod((String)params[1]).invoke(params[0]);
+			}
+			else{
+				return params[0].getClass().getMethod((String)params[1], params[2].getClass()).invoke(params[0], params[2]);
+			}
+			
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,7 +61,7 @@ public  class ExecuteBenchmarkTask extends AsyncTask <Bitmap, Void, Bitmap> {
 			return null;
 		}
 	}
-	*/
+	
 	
 	
 
