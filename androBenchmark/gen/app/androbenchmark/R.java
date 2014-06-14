@@ -27,10 +27,11 @@ public final class R {
         public static final int img1=0x7f020003;
     }
     public static final class id {
+        public static final int Button01=0x7f09000b;
         public static final int Button1=0x7f090002;
         public static final int RelativeLayout1=0x7f090000;
         public static final int TextView1=0x7f090001;
-        public static final int action_settings=0x7f09000b;
+        public static final int action_settings=0x7f09000c;
         public static final int button2=0x7f090007;
         public static final int button3=0x7f090006;
         public static final int button4=0x7f090004;
@@ -47,11 +48,12 @@ public final class R {
         public static final int main=0x7f080000;
     }
     public static final class raw {
-        public static final int filter=0x7f040000;
-        public static final int hello=0x7f040001;
-        public static final int rsmatrix=0x7f040002;
-        public static final int simple_math=0x7f040003;
-        public static final int simple_matrix=0x7f040004;
+        public static final int brute=0x7f040000;
+        public static final int filter=0x7f040001;
+        public static final int hello=0x7f040002;
+        public static final int rsmatrix=0x7f040003;
+        public static final int simple_math=0x7f040004;
+        public static final int simple_matrix=0x7f040005;
     }
     public static final class string {
         public static final int action_search=0x7f060006;
@@ -59,6 +61,7 @@ public final class R {
         public static final int app_name=0x7f060000;
         public static final int button_bruteforce_java=0x7f06000f;
         public static final int button_bruteforce_jni=0x7f060010;
+        public static final int button_bruteforce_rs=0x7f060011;
         public static final int button_gray_jni=0x7f06000d;
         public static final int button_gray_render=0x7f06000b;
         public static final int button_gray_scale=0x7f060008;

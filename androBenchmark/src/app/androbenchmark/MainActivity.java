@@ -5,6 +5,7 @@ import java.util.Random;
 import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
+import android.renderscript.ScriptGroup;
 import android.renderscript.Element.DataType;
 import android.renderscript.RenderScript;
 import android.renderscript.Matrix4f;
@@ -186,10 +187,10 @@ public class MainActivity extends Activity {
 	 Allocation array = Allocation.createSized(rs, Element.I32(rs), test.length, Allocation.USAGE_SCRIPT);
 	 Allocation r = Allocation.createSized(rs, Element.I32(rs), test.length, Allocation.USAGE_SCRIPT);
      array.copyFrom(test);
-     
-   
+               
 	 script.set_gIn(array);
-	 script.set_gOut(r);	 
+	 script.set_gOut(r);
+	 
 	 
      script.invoke_calc();
      
@@ -237,31 +238,19 @@ public class MainActivity extends Activity {
 	 
 	 public void rsmatrix(View view)
 	 {
-		
 		 RenderScript rs = RenderScript.create(this);
 		 ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,getResources(),R.raw.rsmatrix);
-		 script.set_gScript(script);
 		 
-		 Element.Builder matrix = new Element.Builder(rs);
-		 matrix.add(Element.U32(rs),"r0", 5);
-		 matrix.add(Element.U32(rs),"r1", 5);
-		 matrix.add(Element.U32(rs),"r2", 5);
-		 matrix.add(Element.U32(rs),"r3", 5);
-		 matrix.add(Element.U32(rs),"r4", 5);
-		 
-		 Element my_element = matrix.create();
-		 
-		 
-		 Allocation wow = Allocation.createSized(rs, my_element, 5);
-		 script.set_gIn(wow);
-		 
-		 
-		 Allocation wow2 = Allocation.createSized(rs, my_element, 5);
-		 script.set_gOut(wow2);
-		 
-		 
+		 long t = System.currentTimeMillis();
+
 		 script.invoke_calc();
+		 rs.finish();
 		 
+	   	 t = System.currentTimeMillis() - t;
+	   	 showResult(t);
+
+
+
 		 
 	 }
 	 
@@ -293,6 +282,33 @@ public class MainActivity extends Activity {
 	    	
 	 }
 
+	 public void rsbrute(View view)
+	 {
+		 RenderScript rs = RenderScript.create(this);
+		 ScriptC_brute script = new ScriptC_brute(rs,getResources(),R.raw.brute);
+		 
+		 String s1 = new String("ciaoo");
+		 
+		 int dim = s1.length();
+		 
+		 script.set_dim(dim);
+		 
+		 Allocation word = Allocation.createFromString(rs, s1,Allocation.USAGE_SCRIPT );
+		 script.bind_word(word);
+		 
+		 long t = System.currentTimeMillis();
+		 
+		 script.invoke_brute();
+		 rs.finish();
+	   	 
+		 t = System.currentTimeMillis() - t;
+
+	   	 showResult(t);
+
+		 
+		 
+	 }
+	 
 	 
 	 private void showResult(long t){
 		 
