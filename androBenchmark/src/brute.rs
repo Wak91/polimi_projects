@@ -90,5 +90,5 @@ void brute()
 	     }	
 	     
 	FINE:   
-	rsDebug("Ciao", "c");    
+	rsDebug("well,done", "");    
 }

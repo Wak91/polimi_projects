@@ -11,7 +11,6 @@ JNIEXPORT void JNICALL Java_app_androbenchmark_Bruteforce_pureJni(JNIEnv* env, j
 
 	char fword[] = "ciaoo";
 
-		__android_log_write(ANDROID_LOG_INFO, "ANDROBENCHMARK", "I'M HERE BABY");
 		int r,i,k,s,l,index,checkpoint;
 
 		int length = strlen(fword);
@@ -80,7 +79,8 @@ JNIEXPORT void JNICALL Java_app_androbenchmark_Bruteforce_pureJni(JNIEnv* env, j
 
 		     }
 
-		FINE: printf("well,done");
+		FINE: __android_log_write(ANDROID_LOG_INFO, "ANDROBENCHMARK", "WELL,DONE");
+
 
 
 	}

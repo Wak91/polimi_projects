@@ -4,32 +4,95 @@ public class Bruteforce {
 	
 	
 	private static final String SECRET= "ciaoo";
+	private static int length;
 	
-	private static final String[] lettere = {"a","b","c","d","e","f","g","h","i","l","m","n","o","p","q","r","s","t","u","v","z","0","1","2","3","4","5","6","7","8","9"};
+	private static final String range= "abcdefghijklmnopqrstuvwxyz0123456789";
 	
+	private static int attemp[];
+	private static int iword[];
+
+	private static String word;
 
 	
 	public static void pureJava(){
 
-    	for (int i = 0; i < lettere.length; i++) {
-    		for (int j = 0; j < lettere.length; j++) {
-    			for (int k = 0; k < lettere.length; k++) {
-    				for (int h = 0; h < lettere.length; h++) {
-    					for (int l = 0; l < lettere.length; l++) {    						
-    						//costruisco la parola
-    						String create = lettere[i] + lettere[j] + lettere[k] + lettere[h] + lettere[l];
-    						//se e uguale esco
-    						if(create.equals(SECRET)){
-    							return;
-    						}
-    						
-    					}
-    				}
-    			}
-    		}
-		}
+		int r=0,i,k,s,l,index;
+		
+		length = SECRET.length();
+		word = new String();
+		
+		word = SECRET;
 
+		int range_size = range.length();
+		attemp = new int[length];
+		iword = new int [length];
+		
+	    int find;
+
+		for(i=0;i<length;i++) // let's copy the integer representation of the word
+		   {
+			   iword[i] = (int)(word.charAt(i));
+		   }
+
+		//let's initialize the attemp with all 'a'
+
+		for(i=0;i<length;i++)
+		   {
+			   attemp[i] = (int)range.charAt(i);
+		   }
+
+		r = test();
+		
+		index=length-1;
+
+		while(r==0)
+		     {
+				 find=0;
+				 for(k=0;k<range_size;k++)
+				    {
+						attemp[index] = (int)range.charAt(k);
+						r = test();
+
+					}
+				 
+				 if(r==0){ // if I don't find the word!
+	 
+				 for(l=index-1;l>=0;l--)
+				    {
+						if(attemp[l] != ((int)range.charAt(35)) )
+						  {
+							  if(attemp[l]==122)
+							     attemp[l]=48;   // this is for the hole between chars and numbers
+							  else
+							     attemp[l]++;
+							  for(s=l+1;s<length;s++)
+							      {
+									  attemp[s] = (int)range.charAt(0);
+								  }
+							  find = 1;
+							  break; // stop to search behind for a char to scroll
+						  }
+					}
+				 
+
+					if(find!=1) // If the word is finish ( this can't happen )
+					  	break;
+				 }
+		     } //closed while
 	}
+	
+	static int test()
+	{
+	    int i;
+		for(i=0;i<length;i++)
+		   {
+			   if(attemp[i] != iword[i])
+			      return 0;
+			}
+	    
+        return 1;
+		}
+	
 	
 	public native static void pureJni();
 	
