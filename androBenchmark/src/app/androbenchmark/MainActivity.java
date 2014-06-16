@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
 	     		     		     	     	    	
 	     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-	    	task.execute(new GrayScaling(), "pureJava", bm2); 	
+	    	task.execute(new GrayScaling(), "callPureJava", bm2); 	
 	    	
 	    	//----------------------------------------------------------
 	    	
@@ -67,8 +67,7 @@ public class MainActivity extends Activity {
 	     	
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
 	     	
-	     	//-----CORE OF THE BENCHMARK----------------------------
-	     	
+	     	//-----CORE OF THE BENCHMARK----------------------------	     	
 	     	
 	     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
@@ -88,43 +87,20 @@ public class MainActivity extends Activity {
 	 {	  	
 		  
 	 	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
+	 	
      	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones     	
-
-     	//creo un istanza renderscript associandolo a questo contesto
-		RenderScript rs = RenderScript.create(this);
-
-		//creo le 2 allocazioni di memoria con cui renderscript lavora
-		Allocation mInAllocation = Allocation.createFromBitmap(rs, bm2,Allocation.MipmapControl.MIPMAP_NONE,Allocation.USAGE_SCRIPT);
-
-		Allocation mOutAllocation = Allocation.createTyped(rs, mInAllocation.getType());
-		
-		//associo la classe generata
-		ScriptC_filter  mScript = new ScriptC_filter(rs,getResources(),R.raw.filter);
-
-		//setto levariabili di renderscript
-		mScript.set_gIn(mInAllocation);
-
-		mScript.set_gOut(mOutAllocation);
-
-		mScript.set_gScript(mScript);
-		
-		//-----CORE OF THE BENCHMARK----------------------------
-		long t = System.currentTimeMillis();
-		
-		//chiamo la funzione di rendercript (script_c)
-		mScript.invoke_filter();
-		rs.finish(); // let's wait for the script in this context to finish 
-		
-		t = System.currentTimeMillis() - t;
-		//----------------------------------------------------------
-		
-		//copio da memoria virtuale di rs all'immagine reale
-		mOutAllocation.copyTo(bm2);
+     	
+     	//-----CORE OF THE BENCHMARK----------------------------	     	
+     	
+     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+     	
+     	task.execute(new GrayScaling(), "callRenderScript", bm2, this); 
+     	
+     	//----------------------------------------------------------
 		
 		ImageView iv = (ImageView) findViewById(R.id.image);
     	iv.setImageBitmap(bm2);
 		
-    	showResult(t);
 		 	
 	 }
 	 

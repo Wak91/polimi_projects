@@ -1,22 +1,22 @@
 package app.androbenchmark;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
 
 
 public class GrayScaling {	
 	
 	private static final String TAG = "GrayScale"; //tag for logcat 
 	
-	/**
-	 * This is a gray scaling of a bitmap in pure java!
-	 * @param bm2
-	 * @return
-	 */
-	public static Long pureJava(Bitmap bm2){
+	// ----------------------------- BENCHMARK CORE ----------------------------- //
+	
+	
+	private static void pureJava(Bitmap bm2){
 
-		Long t = System.currentTimeMillis();
 		
     	int r,g,b , pixel;
     	for(int x=0; x<bm2.getWidth(); x++){
@@ -32,11 +32,40 @@ public class GrayScaling {
 
     	      }
     	}
+    	 	
     	
-    	t = System.currentTimeMillis() - t;
+	}
+	
+	private native static void pureJni(Bitmap bm);
+	
+	private static void pureRenderScript(RenderScript rs, ScriptC_filter mScript, Allocation mOutAllocation, Bitmap bm2){
+					
+		//chiamo la funzione di rendercript (script_c)
+		mScript.invoke_filter();
+		rs.finish(); // let's wait for the script in this context to finish 
+								
+		
+		mOutAllocation.copyTo(bm2);				
+		
+	}
+	
+// ----------------------------- END BENCHMARK CORE ----------------------------- //
+	
+	
+	
+// ----------------------------- SETUP BENCHMARK  ----------------------------- //	
+	
+	
+	public static Long callPureJava(Bitmap bm){
+		
+		Long t = System.currentTimeMillis();
+		
+		pureJava(bm);
+		
+		t = System.currentTimeMillis() - t;
     	
     	return t;
-    	
+					
 	}
 	
 	public static Long callPureJni(Bitmap bm){
@@ -51,10 +80,39 @@ public class GrayScaling {
 					
 	}
 	
-	
-	
-	private native static void pureJni(Bitmap bm);
+	public static Long callRenderScript(Bitmap bm, MainActivity activity){
+		
+		Context context = activity.getBaseContext();
+		
+		//creo un istanza renderscript associandolo a questo contesto
+	    RenderScript rs = RenderScript.create(context);
 
+		//creo le 2 allocazioni di memoria con cui renderscript lavora
+		Allocation mInAllocation = Allocation.createFromBitmap(rs, bm,Allocation.MipmapControl.MIPMAP_NONE,Allocation.USAGE_SCRIPT);
+
+		Allocation mOutAllocation = Allocation.createTyped(rs, mInAllocation.getType());
+				
+		//associo la classe generata
+		ScriptC_filter  mScript = new ScriptC_filter(rs,context.getResources(),R.raw.filter);
+
+		//setto levariabili di renderscript
+		mScript.set_gIn(mInAllocation);
+
+		mScript.set_gOut(mOutAllocation);
+
+		mScript.set_gScript(mScript);
+					
+		Long t = System.currentTimeMillis();
+		//cuore del benchmark
+		pureRenderScript(rs, mScript, mOutAllocation, bm);
+		
+		t = System.currentTimeMillis() - t;
+    	
+    	return t;
+	}
+	
+
+// ----------------------------- SETUP BENCHMARK  ----------------------------- //
 	
 
 }

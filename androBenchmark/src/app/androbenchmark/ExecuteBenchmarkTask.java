@@ -64,10 +64,15 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 				return (Long)params[0].getClass().getMethod((String)params[1]).invoke(params[0]);
 				
 			}
-			else{
+			else if(params.length == 3){
 				//faccio il cast a long perche il tempo mi viene passatodirettamente dal benchmark										
 				return (Long)params[0].getClass().getMethod((String)params[1], params[2].getClass()).invoke(params[0], params[2]);
 
+			}
+			else{
+				
+				return (Long)params[0].getClass().getMethod((String)params[1], params[2].getClass(), params[3].getClass()).invoke(params[0], params[2], params[3]);
+				
 			}
 			
 		} catch (IllegalAccessException e) {
