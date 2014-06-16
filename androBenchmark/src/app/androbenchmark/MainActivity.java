@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 public class MainActivity extends Activity {
@@ -39,6 +40,37 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	public void start_benchmark(View view){
+		
+		 final CheckBox checkgray = (CheckBox) findViewById(R.id.checkBox1);
+		 final CheckBox checkmatrix = (CheckBox) findViewById(R.id.checkBox2);
+		 final CheckBox checkbrute = (CheckBox) findViewById(R.id.checkBox3);
+
+		 if(checkgray.isChecked())
+		   {
+			 this.grayScale(view);
+			 //Here store the result of bench
+			 this.grayScaleJni(view);
+			 this.render_filter(view);		 
+		   }
+		 
+		 if(checkmatrix.isChecked())
+		  {
+			 this.matrix(view);
+			 this.matrixJni(view);
+			 this.rsmatrix(view);		 
+		  }
+		 if(checkbrute.isChecked())
+		 {
+			 this.bruteforce(view);
+			 this.bruteforceJni(view);
+			 this.rsbrute(view);	 
+		 }
+		 
+		 
+		
+	}
+	
 	 public void grayScale(View view){
 	    	
 	     	Bitmap bm = BitmapFactory.decodeResource(getResources(),  R.drawable.image); 
@@ -53,8 +85,8 @@ public class MainActivity extends Activity {
 	    	
 	    	//----------------------------------------------------------
 	    	
-	    	ImageView iv = (ImageView) findViewById(R.id.image);
-	    	iv.setImageBitmap(bm2);
+	    	//ImageView iv = (ImageView) findViewById(R.id.image);
+	    	//iv.setImageBitmap(bm2);
 	    	
 	    	
 	    	
@@ -74,8 +106,8 @@ public class MainActivity extends Activity {
 	    	
 	    	//----------------------------------------------------------
 	    	
-	    	ImageView iv = (ImageView) findViewById(R.id.image);
-	    	iv.setImageBitmap(bm2);
+	    	//ImageView iv = (ImageView) findViewById(R.id.image);
+	    	//iv.setImageBitmap(bm2);
 	    		    	
 	    	
 	     }
@@ -104,8 +136,8 @@ public class MainActivity extends Activity {
      	
      	//----------------------------------------------------------
 		
-		ImageView iv = (ImageView) findViewById(R.id.image);
-    	iv.setImageBitmap(bm2);
+		//ImageView iv = (ImageView) findViewById(R.id.image);
+    	//iv.setImageBitmap(bm2);
 		
 		 	
 	 }

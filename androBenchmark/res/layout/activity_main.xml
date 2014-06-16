@@ -5,16 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/TextView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/Button1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_weight="1"
-        android:hint="@string/welcome" />
-
     <!--
 <EditText 
     android:id="@+id/edit_message"
@@ -31,105 +21,64 @@
 />
     -->
 
-    <ImageView
-        android:id="@+id/image"
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Select some benchmarks"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="16dp"
+        android:text="Grayscale" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/checkBox1"
+        android:layout_marginTop="22dp"
+        android:text="MatrixMultiplication" />
+
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/checkBox2"
+        android:layout_marginTop="28dp"
+        android:text="Bruteforce" />
+
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_marginBottom="18dp"
+        android:text="All benchmarks will be executed in 3 solutions: pure Java , jni , renderscript"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView1"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dp"
-        android:scaleType="center"
-        android:src="@drawable/image" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignRight="@+id/TextView1"
-            android:layout_below="@+id/Button1"
-            android:onClick="render_filter"
-            android:text="@string/button_gray_render" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/Button1"
-            android:layout_toRightOf="@+id/button4"
-            android:onClick="grayScaleJni"
-            android:text="@string/button_gray_jni" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/button2"
-            android:onClick="matrixJni"
-            android:text="@string/button_matrix_jni" />
-
-        <Button
-            android:id="@+id/button6"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/button3"
-            android:layout_toRightOf="@+id/button3"
-            android:onClick="rsmatrix"
-            android:text="@string/button_matrix_rs" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/button4"
-            android:onClick="matrix"
-            android:text="@string/button_matrix" />
-
-        <Button
-            android:id="@+id/button7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/button3"
-            android:onClick="bruteforce"
-            android:text="@string/button_bruteforce_java" />
-
-        <Button
-            android:id="@+id/Button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:onClick="grayScale"
-            android:text="@string/button_gray_scale" />
-
-        <Button
-            android:id="@+id/button8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/button7"
-            android:layout_toLeftOf="@+id/button5"
-            android:onClick="bruteforceJni"
-            android:text="@string/button_bruteforce_jni" />
-
-        <Button
-            android:id="@+id/Button01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/image"
-            android:layout_alignLeft="@+id/button5"
-            android:layout_alignParentRight="true"
-            android:onClick="rsbrute"
-            android:text="@string/button_bruteforce_rs" />
+        android:onClick="start_benchmark"
+        android:text="Start" />
 
 </RelativeLayout>

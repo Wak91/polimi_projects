@@ -28,19 +28,14 @@ public final class R {
         public static final int img1=0x7f020004;
     }
     public static final class id {
-        public static final int Button01=0x7f09000b;
-        public static final int Button1=0x7f090002;
         public static final int RelativeLayout1=0x7f090000;
-        public static final int TextView1=0x7f090001;
-        public static final int action_settings=0x7f09000c;
-        public static final int button2=0x7f090007;
-        public static final int button3=0x7f090006;
-        public static final int button4=0x7f090004;
-        public static final int button5=0x7f090005;
-        public static final int button6=0x7f090008;
-        public static final int button7=0x7f090009;
-        public static final int button8=0x7f09000a;
-        public static final int image=0x7f090003;
+        public static final int action_settings=0x7f090007;
+        public static final int button1=0x7f090006;
+        public static final int checkBox1=0x7f090002;
+        public static final int checkBox2=0x7f090003;
+        public static final int checkBox3=0x7f090004;
+        public static final int textView1=0x7f090005;
+        public static final int textView2=0x7f090001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
