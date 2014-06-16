@@ -2,11 +2,7 @@ package app.androbenchmark;
 
 
 import android.os.Bundle;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.Menu;
