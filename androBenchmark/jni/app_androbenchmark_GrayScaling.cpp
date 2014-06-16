@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <android/log.h>
+#include <time.h>
 
 
 JNIEXPORT void JNICALL Java_app_androbenchmark_GrayScaling_pureJni(JNIEnv* env, jclass clazz, jobject bm) {
@@ -23,6 +24,8 @@ JNIEXPORT void JNICALL Java_app_androbenchmark_GrayScaling_pureJni(JNIEnv* env, 
 	if ((ret = AndroidBitmap_lockPixels(env, bm, &pixelscolor)) < 0) {
 
 	}
+
+
 
 	for (y=0;y<infocolor.height;y++) {
 		//i pixel sono visti come array tridimensionali
@@ -92,6 +95,8 @@ JNIEXPORT void JNICALL Java_app_androbenchmark_GrayScaling_pureJni(JNIEnv* env, 
 
 	//sblocco l immagine
 	AndroidBitmap_unlockPixels(env, bm);
+
+
 }
 
 

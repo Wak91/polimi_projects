@@ -54,19 +54,17 @@ public class MainActivity extends Activity {
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
 	     	
 	     	//-----CORE OF THE BENCHMARK----------------------------
-	     	long t = System.currentTimeMillis();
-	     		     
+	     		     		     	     	    	
+	     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-	    	//new ExecuteBenchmarkTask().execute(new GrayScaling(), "pureJava", bm2);
-	    	new ExecuteBenchmarkTask().execute(new GrayScaling(), "pureJava", bm2);
+	    	task.execute(new GrayScaling(), "pureJava", bm2); 	
 	    	
-	    	t = System.currentTimeMillis() - t;
 	    	//----------------------------------------------------------
 	    	
 	    	ImageView iv = (ImageView) findViewById(R.id.image);
 	    	iv.setImageBitmap(bm2);
 	    	
-	    	showResult(t);
+	    	
 	    	
 	     }
 	 
@@ -77,17 +75,15 @@ public class MainActivity extends Activity {
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
 	     	
 	     	//-----CORE OF THE BENCHMARK----------------------------
-	     	long t = System.currentTimeMillis();
 	     	
-	    	GrayScaling.pureJni(bm2);
+	     	//new ExecuteBenchmarkTask().execute(this, new GrayScaling(), "callPureJni", bm2);
 	    	
-	    	t = System.currentTimeMillis() - t;
 	    	//----------------------------------------------------------
 	    	
 	    	ImageView iv = (ImageView) findViewById(R.id.image);
 	    	iv.setImageBitmap(bm2);
 	    	
-	    	showResult(t);
+	    	
 	    	
 	     }
 	 
@@ -119,6 +115,7 @@ public class MainActivity extends Activity {
 		
 		//-----CORE OF THE BENCHMARK----------------------------
 		long t = System.currentTimeMillis();
+		
 		//chiamo la funzione di rendercript (script_c)
 		mScript.invoke_filter();
 		rs.finish(); // let's wait for the script in this context to finish 
@@ -297,6 +294,7 @@ public class MainActivity extends Activity {
 	    	
 	 }
 
+	 
 	 
 	 public void showResult(long t){
 		 

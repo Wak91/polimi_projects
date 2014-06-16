@@ -26,7 +26,12 @@ obj/local/x86/objs/app_androbenchmark_GrayScaling/app_androbenchmark_GrayScaling
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/alloca.h \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/strings.h \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/memory.h \
- /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/android/log.h
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/android/log.h \
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/time.h \
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/sys/time.h \
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/linux/time.h \
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/asm/siginfo.h \
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/asm-generic/siginfo.h
 
 jni/app_androbenchmark_GrayScaling.h:
 
@@ -81,3 +86,13 @@ jni/app_androbenchmark_GrayScaling.h:
 /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/memory.h:
 
 /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/android/log.h:
+
+/Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/time.h:
+
+/Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/sys/time.h:
+
+/Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/linux/time.h:
+
+/Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/asm/siginfo.h:
+
+/Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-x86/usr/include/asm-generic/siginfo.h:

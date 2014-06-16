@@ -11,6 +11,8 @@ public class Bruteforce {
 	
 	public static void pureJava(){
 
+		Long t = System.currentTimeMillis();
+		
     	for (int i = 0; i < lettere.length; i++) {
     		for (int j = 0; j < lettere.length; j++) {
     			for (int k = 0; k < lettere.length; k++) {

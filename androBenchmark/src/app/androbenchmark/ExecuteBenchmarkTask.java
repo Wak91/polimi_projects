@@ -3,10 +3,17 @@ package app.androbenchmark;
 
 import java.lang.reflect.InvocationTargetException;
 
-
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 
-public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Object> {
+public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
+	
+	
+	private AlertDialog loadingDialog;
+	private Context context;
+	
 
 
 	//wrapper generale per gli asynctask cosi da non dover definire piu funzioni(una per benchmark)
@@ -29,18 +36,37 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Object> {
 	 * 
 	 */
 	
+	
+	public ExecuteBenchmarkTask(Context context){
+		this.context = context;
+	}
+	
+	
 	@Override
-	protected Object doInBackground(Object... params) {
+	protected void onPreExecute(){
+		
+		loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+	}
+	
+	
+	
+	
+	@Override
+	protected Long doInBackground(Object... params) {
 		// TODO Auto-generated method stub
 		try {
 			
 			//ottimizzare
 			//soluzione provvisoria perche conosciamo il massimo numero di argomenti da passare
 			if(params.length == 2){
-				return params[0].getClass().getMethod((String)params[1]).invoke(params[0]);
+								
+				return (Long)params[0].getClass().getMethod((String)params[1]).invoke(params[0]);
+				
 			}
 			else{
-				return params[0].getClass().getMethod((String)params[1], params[2].getClass()).invoke(params[0], params[2]);
+											
+				return (Long)params[0].getClass().getMethod((String)params[1], params[2].getClass()).invoke(params[0], params[2]);
+
 			}
 			
 		} catch (IllegalAccessException e) {
@@ -61,6 +87,34 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Object> {
 			return null;
 		}
 	}
+	
+	@Override
+	protected void onPostExecute(Long result) {	
+		
+		loadingDialog.dismiss();
+		
+		new AlertDialog.Builder(context)
+	        .setTitle("Benchmark ended").setMessage("Benchmark finished \n\nTime:" + result + "ms").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) { 
+	                // continue with delete
+	            }
+	         })
+	        .setIcon(android.R.drawable.ic_dialog_alert).show();
+		
+    }
+
+
+	public Context getContext() {
+		return context;
+	}
+
+
+	public void setContext(Context context) {
+		this.context = context;
+	}
+	
+	
+
 	
 	
 	
