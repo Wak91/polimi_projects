@@ -14,9 +14,10 @@ public class Bruteforce {
 	private static String word;
 
 	
-	public static void pureJava(){
+	public static Long pureJava(){
 
-
+		Long t = System.currentTimeMillis();
+		
 		int r=0,i,k,s,l,index;
 		
 		length = SECRET.length();
@@ -81,6 +82,10 @@ public class Bruteforce {
 					  	break;
 				 }
 		     } //closed while
+		
+		 t = System.currentTimeMillis() - t;
+		 
+		 return t;
 	}
 	
 	static int test()
@@ -96,7 +101,19 @@ public class Bruteforce {
 		}
 	
 	
-	public native static void pureJni();
+	public static Long callPureJni(){
+		
+		Long t = System.currentTimeMillis();
+		
+		pureJni();
+		
+		t = System.currentTimeMillis() - t;
+    	
+    	return t;
+					
+	}
+	
+	private native static void pureJni();
 	
 	
 	

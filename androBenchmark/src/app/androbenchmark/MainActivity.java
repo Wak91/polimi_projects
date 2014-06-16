@@ -163,79 +163,6 @@ public class MainActivity extends Activity {
 	 }
 	 
 	 
-	 /*
-	  *  Great doc.
-	  *  http://stackoverflow.com/questions/21734275/calculate-the-sum-of-values-in-an-array-using-renderscript?lq=1
-	  *  http://stackoverflow.com/questions/10576583/passing-array-to-rsforeach-in-renderscript-compute [ TO READ ]
-	  */
-	 public void simple_math(View view){
-	     
-     Random rg = new Random();
-
-     int[] test  = new int[64];
-     int[] test2  = new int[64];
-          
-     for(int i=0; i<63;i++)
-    	 	{
-    	 	 test[i]  = rg.nextInt(10);
-    	 	}
-        
-	 RenderScript rs = RenderScript.create(this);
-	 ScriptC_simple_math script = new ScriptC_simple_math(rs,getResources(),R.raw.simple_math);
-	 script.set_gScript(script);
-
-	 //Creo l'allocazione per l'array test 
-	 Allocation array = Allocation.createSized(rs, Element.I32(rs), test.length, Allocation.USAGE_SCRIPT);
-	 Allocation r = Allocation.createSized(rs, Element.I32(rs), test.length, Allocation.USAGE_SCRIPT);
-     array.copyFrom(test);
-               
-	 script.set_gIn(array);
-	 script.set_gOut(r);
-	 
-	 
-     script.invoke_calc();
-     
-     r.copyTo(test2);
-     
-     Log.w("ANDROBENCHMARK" , "test was:\n");
-     for(int j=0; j<test.length;j++)
-         Log.w("ANDROBENCHMARK",j+")"+test[j]);
-     
-     
-     Log.w("ANDROBENCHMARK" , "test2 is:\n");
-
-     for(int j=0; j<test2.length;j++)
-        Log.w("ANDROBENCHMARK",j+")"+ test2[j]);
-     
-	 }
-
-	 
-	 public void simple_matrix(View view)
-	 {
-		 
-		 Random rg = new Random();		
- 	 	
-	     Matrix4f test = new Matrix4f();
-	     Matrix4f test2 = new Matrix4f();
-
-	     for(int i=0; i<4;i++)
- 	 	  for(int j=0;j<4;j++)
- 	 		  {
- 	 		  test.set(i, j,rg.nextInt(100));
- 	 		  test2.set(i, j,rg.nextInt(100));
- 	 		  }
- 	 	 	 
-		 RenderScript rs = RenderScript.create(this);
-		 
-		 ScriptC_simple_matrix script = new ScriptC_simple_matrix(rs,getResources(),R.raw.simple_matrix);
-		 script.set_gScript(script);
-		 		 
-		 script.set_matrix1(test);
-		 script.set_matrix2(test2);
-		
-		 script.invoke_hello(); 		
-		
-	 }
 	 
 	 public void rsmatrix(View view)
 	 {
@@ -250,38 +177,32 @@ public class MainActivity extends Activity {
 	   	 t = System.currentTimeMillis() - t;
 	   	 showResult(t);
 
-
-
 		 
 	 }
 	 
 	 public void bruteforce(View view){
 	    	
-		 	//-----CORE OF THE BENCHMARK----------------------------
-		 	long t = System.currentTimeMillis();
-		 	
-	   	    Bruteforce.pureJava();
-	   	    
-	   	    t = System.currentTimeMillis() - t;
-	   	    //----------------------------------------------------------
+		 //-----CORE OF THE BENCHMARK----------------------------
+		 ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+	     	
+		 task.execute(new Bruteforce(), "pureJava");
+		 
+	   	 //----------------------------------------------------------
 	   	      	 	
-	   	    showResult(t);
 	    	
 	 }
 
 	 public void bruteforceJni(View view){
 	    	
-		 	//-----CORE OF THE BENCHMARK----------------------------
-		 	long t = System.currentTimeMillis();
-		 	
-	   	    Bruteforce.pureJni();
-	   	    
-	   	    t = System.currentTimeMillis() - t;
-	   	    //----------------------------------------------------------
+	    //-----CORE OF THE BENCHMARK----------------------------
+	    ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+	     	
+		task.execute(new Bruteforce(), "callPureJni"); 
+	   	//----------------------------------------------------------
 	   	      	 	
-	   	    showResult(t);
 	    	
 	 }
+	 
 
 	 public void rsbrute(View view)
 	 {
