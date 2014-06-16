@@ -15,6 +15,7 @@ public class MainActivity extends Activity {
 
 	//private static final String TAG= "MainActivity"; //tag for logcat 
 	
+	private AlertDialog loadingDialog;
 	
 	
 	@Override
@@ -94,6 +95,9 @@ public class MainActivity extends Activity {
      	
      	task.execute(new GrayScaling(), "callPureRenderScript", bm2, this);
      	*/
+     	
+     	showLoading();
+     	
      	Long t = GrayScaling.callPureRenderScript(bm2, this);
      	
      	showResult(t);
@@ -143,6 +147,8 @@ public class MainActivity extends Activity {
 	    task.execute(new Matrix(), "callPureRenderScript", this);
 	    */
 		 
+		 showLoading();
+		 
 		 Long t = Matrix.callPureRenderScript(this); 
 		 
 		 showResult(t);
@@ -187,7 +193,9 @@ public class MainActivity extends Activity {
 		     	
 		task.execute(new Bruteforce(), "callPureRenderScript", this);
 		*/
-		
+		 
+		showLoading();
+		 
 		Long t = Bruteforce.callPureRenderScript(this);
 		
 		showResult(t);
@@ -197,7 +205,16 @@ public class MainActivity extends Activity {
 		 
 	 }
 	 
+	 private void showLoading(){
+		 
+		 loadingDialog = new AlertDialog.Builder(this).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+
+	 }
+	 
 	 private void showResult(Long t){
+		 
+		 loadingDialog.dismiss();
+		 
 		 new AlertDialog.Builder(this)
 	        .setTitle("Benchmark ended").setMessage("Benchmark finished \n\nTime:" + t + "ms").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int which) { 
