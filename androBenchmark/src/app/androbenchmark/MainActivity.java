@@ -3,6 +3,8 @@ package app.androbenchmark;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.Menu;
@@ -87,10 +89,14 @@ public class MainActivity extends Activity {
      	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones     	
      	
      	//-----CORE OF THE BENCHMARK----------------------------	     	
-     	
+     	/*
      	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
      	
-     	task.execute(new GrayScaling(), "callPureRenderScript", bm2, this); 
+     	task.execute(new GrayScaling(), "callPureRenderScript", bm2, this);
+     	*/
+     	Long t = GrayScaling.callPureRenderScript(bm2, this);
+     	
+     	showResult(t);
      	
      	//----------------------------------------------------------
 		
@@ -130,10 +136,16 @@ public class MainActivity extends Activity {
 	 public void rsmatrix(View view){
 		 
 		//-----CORE OF THE BENCHMARK----------------------------
-		 
+		
+		/* 
 		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
 	    task.execute(new Matrix(), "callPureRenderScript", this);
+	    */
+		 
+		 Long t = Matrix.callPureRenderScript(this); 
+		 
+		 showResult(t);
 	     
 	    //----------------------------------------------------------
 
@@ -170,14 +182,29 @@ public class MainActivity extends Activity {
 	 public void rsbrute(View view){
 		 		 
 		//-----CORE OF THE BENCHMARK----------------------------
-		 
+		/*
 		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 		     	
 		task.execute(new Bruteforce(), "callPureRenderScript", this);
+		*/
+		
+		Long t = Bruteforce.callPureRenderScript(this);
+		
+		showResult(t);
 		     
 	    //----------------------------------------------------------
 		 
 		 
+	 }
+	 
+	 private void showResult(Long t){
+		 new AlertDialog.Builder(this)
+	        .setTitle("Benchmark ended").setMessage("Benchmark finished \n\nTime:" + t + "ms").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) { 
+	                // continue with delete
+	            }
+	         })
+	        .setIcon(android.R.drawable.ic_dialog_alert).show();
 	 }
 	 
 	 
