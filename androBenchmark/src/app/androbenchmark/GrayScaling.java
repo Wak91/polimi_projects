@@ -1,11 +1,8 @@
 package app.androbenchmark;
 
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
 
 
 public class GrayScaling {	
@@ -21,7 +18,7 @@ public class GrayScaling {
 
 		Long t = System.currentTimeMillis();
 		
-    	int r,g,b,a , pixel;
+    	int r,g,b , pixel;
     	for(int x=0; x<bm2.getWidth(); x++){
     	   for(int y=0; y<bm2.getHeight(); y++)
     	      {
@@ -57,8 +54,6 @@ public class GrayScaling {
 	
 	
 	private native static void pureJni(Bitmap bm);
-
-	
 
 	
 

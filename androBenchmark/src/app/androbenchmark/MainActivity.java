@@ -1,29 +1,21 @@
 package app.androbenchmark;
 
-import java.util.Random;
-import java.util.concurrent.Callable;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.ScriptGroup;
-import android.renderscript.Element.DataType;
 import android.renderscript.RenderScript;
-import android.renderscript.Matrix4f;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
-	private static final String TAG= "MainActivity"; //tag for logcat 
+	//private static final String TAG= "MainActivity"; //tag for logcat 
 	
 	
 	

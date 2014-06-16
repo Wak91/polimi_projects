@@ -2,7 +2,6 @@ package app.androbenchmark;
 
 import java.util.Random;
 
-import android.graphics.Bitmap;
 
 
 public class Matrix {
