@@ -2,19 +2,19 @@ package app.androbenchmark;
 
 import java.util.Random;
 
+import android.content.Context;
+import android.renderscript.RenderScript;
+
 
 
 public class Matrix {
 
 
-	/**
-	 * 
-	 * moltiplicazione tra 2 matrici in puro java
-	 * @return
-	 */
-	public static Long pureJava(){	
+// ----------------------------- BENCHMARK CORE ----------------------------- //
+	
+	private static void pureJava(){	
 		
-		Long t = System.currentTimeMillis();
+		
 		
 		int[][] m1 = new int[300][300];  
 		int[][] m2 = new int[300][300]; 
@@ -42,11 +42,35 @@ public class Matrix {
 
 		}
 		
+
+
+	}
+	
+	private native static void pureJni();
+	
+	private static void pureRenderScript(RenderScript rs, ScriptC_rsmatrix script){
+		
+		 script.invoke_calc();
+		 rs.finish();
+								
+
+	}
+
+// ----------------------------- END BENCHMARK CORE ----------------------------- //
+	
+// ----------------------------- SETUP BENCHMARK  ----------------------------- //
+	
+	
+	public static Long callPureJava(){
+		
+		Long t = System.currentTimeMillis();
+		
+		pureJava();
+		
 		t = System.currentTimeMillis() - t;
-
-		return t;
-
-
+    	
+    	return t;
+					
 	}
 	
 	
@@ -61,7 +85,24 @@ public class Matrix {
     	return t;
 					
 	}
+	
+	public static Long callPureRenderScript(MainActivity activity){
+		
+		Context context = activity.getBaseContext();
+		
+		RenderScript rs = RenderScript.create(context);
+		ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,context.getResources(),R.raw.rsmatrix);
+		
+		Long t = System.currentTimeMillis();
+		
+		pureRenderScript(rs, script);
+		
+		t = System.currentTimeMillis() - t;
+    	
+    	return t;
+					
+	}
 
-	private native static void pureJni();
+// ----------------------------- END SETUP BENCHMARK  ----------------------------- //
 
 }

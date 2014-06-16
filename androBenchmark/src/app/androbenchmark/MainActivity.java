@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
      	
      	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
      	
-     	task.execute(new GrayScaling(), "callRenderScript", bm2, this); 
+     	task.execute(new GrayScaling(), "callPureRenderScript", bm2, this); 
      	
      	//----------------------------------------------------------
 		
@@ -110,7 +110,7 @@ public class MainActivity extends Activity {
 		 	
 		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-		task.execute(new Matrix(), "pureJava"); 
+		task.execute(new Matrix(), "callPureJava"); 
 	   	    	   	   
 	   	//----------------------------------------------------------
 	   	      	 	    	
@@ -130,20 +130,16 @@ public class MainActivity extends Activity {
 	    	
 	 }
 	 
-	 
-	 
-	 public void rsmatrix(View view)
-	 {
-		 RenderScript rs = RenderScript.create(this);
-		 ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,getResources(),R.raw.rsmatrix);
+	 	 
+	 public void rsmatrix(View view){
 		 
-		 long t = System.currentTimeMillis();
-
-		 script.invoke_calc();
-		 rs.finish();
+		//-----CORE OF THE BENCHMARK----------------------------
 		 
-	   	 t = System.currentTimeMillis() - t;
-	   	 showResult(t);
+		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+	     	
+	    task.execute(new Matrix(), "callPureRenderScript", this);
+	     
+	    //----------------------------------------------------------
 
 		 
 	 }

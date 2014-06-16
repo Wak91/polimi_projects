@@ -12,7 +12,7 @@ public class GrayScaling {
 	
 	private static final String TAG = "GrayScale"; //tag for logcat 
 	
-	// ----------------------------- BENCHMARK CORE ----------------------------- //
+// ----------------------------- BENCHMARK CORE ----------------------------- //
 	
 	
 	private static void pureJava(Bitmap bm2){
@@ -80,7 +80,7 @@ public class GrayScaling {
 					
 	}
 	
-	public static Long callRenderScript(Bitmap bm, MainActivity activity){
+	public static Long callPureRenderScript(Bitmap bm, MainActivity activity){
 		
 		Context context = activity.getBaseContext();
 		
