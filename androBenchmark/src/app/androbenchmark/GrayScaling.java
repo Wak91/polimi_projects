@@ -1,18 +1,26 @@
 package app.androbenchmark;
 
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
 
 
 public class GrayScaling {	
+	
+	private static final String TAG = "GrayScale"; //tag for logcat 
 	
 	/**
 	 * This is a gray scaling of a bitmap in pure java!
 	 * @param bm2
 	 * @return
 	 */
-	public static Bitmap pureJava(Bitmap bm2){
+	public static Long pureJava(Bitmap bm2){
 
+		Long t = System.currentTimeMillis();
+		
     	int r,g,b,a , pixel;
     	for(int x=0; x<bm2.getWidth(); x++){
     	   for(int y=0; y<bm2.getHeight(); y++)
@@ -28,10 +36,30 @@ public class GrayScaling {
     	      }
     	}
     	
-    	return bm2;
+    	t = System.currentTimeMillis() - t;
+    	
+    	return t;
     	
 	}
 	
-	public native static void pureJni(Bitmap bm);
+	public static Long callPureJni(Bitmap bm){
+		
+		Long t = System.currentTimeMillis();
+		
+		pureJni(bm);
+		
+		t = System.currentTimeMillis() - t;
+    	
+    	return t;
+					
+	}
+	
+	
+	
+	private native static void pureJni(Bitmap bm);
+
+	
+
+	
 
 }

@@ -16,6 +16,7 @@ public class Bruteforce {
 	
 	public static void pureJava(){
 
+
 		int r=0,i,k,s,l,index;
 		
 		length = SECRET.length();
@@ -40,6 +41,7 @@ public class Bruteforce {
 		   {
 			   attemp[i] = (int)range.charAt(i);
 		   }
+
 
 		r = test();
 		
