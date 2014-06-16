@@ -1,7 +1,12 @@
 package app.androbenchmark;
 
+import android.content.Context;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
+
 public class Bruteforce {
 	
+// ----------------------------- BENCHMARK CORE ----------------------------- //
 	
 	private static final String SECRET= "ciaoo";
 	private static int length;
@@ -14,9 +19,10 @@ public class Bruteforce {
 	private static String word;
 
 	
-	public static Long pureJava(){
+	
+	private static void pureJava(){
 
-		Long t = System.currentTimeMillis();
+		
 		
 		int r=0,i,k,s,l,index;
 		
@@ -83,9 +89,7 @@ public class Bruteforce {
 				 }
 		     } //closed while
 		
-		 t = System.currentTimeMillis() - t;
 		 
-		 return t;
 	}
 	
 	static int test()
@@ -100,7 +104,32 @@ public class Bruteforce {
         return 1;
 		}
 	
+	private native static void pureJni();
 	
+	private static void pureRenderScript(RenderScript rs, ScriptC_brute script){
+		
+		script.invoke_brute();
+		rs.finish();
+								
+	}
+	
+// ----------------------------- END BENCHMARK CORE ----------------------------- //
+	
+// ----------------------------- SETUP BENCHMARK ----------------------------- //
+	
+	public static Long callPureJava(){
+		
+		Long t = System.currentTimeMillis();
+		
+		pureJava();
+		
+		t = System.currentTimeMillis() - t;
+    	
+    	return t;
+					
+	}
+
+
 	public static Long callPureJni(){
 		
 		Long t = System.currentTimeMillis();
@@ -113,7 +142,33 @@ public class Bruteforce {
 					
 	}
 	
-	private native static void pureJni();
+	public static Long callPureRenderScript(MainActivity activity){
+		
+		Context context = activity.getBaseContext();
+		
+		RenderScript rs = RenderScript.create(context);
+	    ScriptC_brute script = new ScriptC_brute(rs,context.getResources(),R.raw.brute);
+		 
+	    String s1 = new String("ciaoo");
+		 
+	    int dim = s1.length();
+		 
+	    script.set_dim(dim);
+		 
+	    Allocation word = Allocation.createFromString(rs, s1,Allocation.USAGE_SCRIPT );
+	    script.bind_word(word);
+		
+		Long t = System.currentTimeMillis();
+		
+		pureRenderScript(rs, script);
+		
+		t = System.currentTimeMillis() - t;
+    	
+    	return t;
+					
+	}
+	
+	
 	
 	
 	

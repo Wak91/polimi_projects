@@ -147,9 +147,10 @@ public class MainActivity extends Activity {
 	 public void bruteforce(View view){
 	    	
 		 //-----CORE OF THE BENCHMARK----------------------------
+		 
 		 ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-		 task.execute(new Bruteforce(), "pureJava");
+		 task.execute(new Bruteforce(), "callPureJava");
 		 
 	   	 //----------------------------------------------------------
 	   	      	 	
@@ -159,55 +160,32 @@ public class MainActivity extends Activity {
 	 public void bruteforceJni(View view){
 	    	
 	    //-----CORE OF THE BENCHMARK----------------------------
+		 
 	    ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
 		task.execute(new Bruteforce(), "callPureJni"); 
+		
 	   	//----------------------------------------------------------
 	   	      	 	
 	    	
 	 }
 	 
 
-	 public void rsbrute(View view)
-	 {
-		 RenderScript rs = RenderScript.create(this);
-		 ScriptC_brute script = new ScriptC_brute(rs,getResources(),R.raw.brute);
+	 public void rsbrute(View view){
+		 		 
+		//-----CORE OF THE BENCHMARK----------------------------
 		 
-		 String s1 = new String("ciaoo");
-		 
-		 int dim = s1.length();
-		 
-		 script.set_dim(dim);
-		 
-		 Allocation word = Allocation.createFromString(rs, s1,Allocation.USAGE_SCRIPT );
-		 script.bind_word(word);
-		 
-		 long t = System.currentTimeMillis();
-		 
-		 script.invoke_brute();
-		 rs.finish();
-	   	 
-		 t = System.currentTimeMillis() - t;
-
-	   	 showResult(t);
-
+		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+		     	
+		task.execute(new Bruteforce(), "callPureRenderScript", this);
+		     
+	    //----------------------------------------------------------
 		 
 		 
 	 }
 	 
 	 
-	 
-	 public void showResult(long t){
-		 
-		 new AlertDialog.Builder(this)
-	        .setTitle("Benchmark ended").setMessage("Benchmark finished \n\nTime:" + t + "ms").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // continue with delete
-	            }
-	         })
-	        .setIcon(android.R.drawable.ic_dialog_alert).show();
-	 }
-	 
+
 	
 
 }
