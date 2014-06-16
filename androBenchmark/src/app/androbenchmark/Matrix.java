@@ -2,6 +2,8 @@ package app.androbenchmark;
 
 import java.util.Random;
 
+import android.graphics.Bitmap;
+
 
 public class Matrix {
 
@@ -11,8 +13,10 @@ public class Matrix {
 	 * moltiplicazione tra 2 matrici in puro java
 	 * @return
 	 */
-	public static int[][] pureJava(){	
-
+	public static Long pureJava(){	
+		
+		Long t = System.currentTimeMillis();
+		
 		int[][] m1 = new int[300][300];  
 		int[][] m2 = new int[300][300]; 
 		int[][] result = new int[500][500];
@@ -38,12 +42,27 @@ public class Matrix {
 			}
 
 		}
+		
+		t = System.currentTimeMillis() - t;
 
-		return result;
+		return t;
 
 
-		}
+	}
+	
+	
+	public static Long callPureJni(){
+		
+		Long t = System.currentTimeMillis();
+		
+		pureJni();
+		
+		t = System.currentTimeMillis() - t;
+    	
+    	return t;
+					
+	}
 
-	public native static void pureJni();
+	private native static void pureJni();
 
 }

@@ -138,33 +138,29 @@ public class MainActivity extends Activity {
 	 
 	 public void matrix(View view){
 	    	
-		 	//-----CORE OF THE BENCHMARK----------------------------
-		 	long t = System.currentTimeMillis();
+		//-----CORE OF THE BENCHMARK----------------------------
 		 	
-		 	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-	    	task.execute(new Matrix(), "pureJava"); 
-	   	    
-	   	    t = System.currentTimeMillis() - t;
-	   	    //----------------------------------------------------------
-	   	      	 	
-	   	    showResult(t);
-	    	
-	     }
+		task.execute(new Matrix(), "pureJava"); 
+	   	    	   	   
+	   	//----------------------------------------------------------
+	   	      	 	    	
+	 }
 	 
 	 public void matrixJni(View view){
 	     	
-		 	//-----CORE OF THE BENCHMARK----------------------------
-		    long t = System.currentTimeMillis();
-		 
-	    	Matrix.pureJni();
+		//-----CORE OF THE BENCHMARK----------------------------
+		
+		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+	     	
+		task.execute(new Matrix(), "callPureJni"); 
+	    
+		//----------------------------------------------------------
 	    	
-	    	t = System.currentTimeMillis() - t;
-	    	//----------------------------------------------------------
+	    
 	    	
-	    	showResult(t);
-	    	
-	     }
+	 }
 	 
 	 
 	 /*
