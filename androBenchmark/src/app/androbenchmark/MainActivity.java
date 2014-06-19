@@ -43,7 +43,13 @@ public class MainActivity extends Activity {
 	public void start_benchmark(View view){
 		
 		 final CheckBox checkgray = (CheckBox) findViewById(R.id.checkBox1);
-		 final CheckBox checkmatrix = (CheckBox) findViewById(R.id.checkBox2);
+		 
+		 final CheckBox checkmatrixjni = (CheckBox) findViewById(R.id.checkBox2);
+		 final CheckBox checkmatrixjama = (CheckBox) findViewById(R.id.checkBox4);
+		 final CheckBox checkmatrixjava = (CheckBox) findViewById(R.id.checkBox5);
+		 final CheckBox checkmatrixrs = (CheckBox) findViewById(R.id.checkBox6);
+
+		 
 		 final CheckBox checkbrute = (CheckBox) findViewById(R.id.checkBox3);
 
 		 if(checkgray.isChecked())
@@ -54,12 +60,27 @@ public class MainActivity extends Activity {
 			 this.render_filter(view);		 
 		   }
 		 
-		 if(checkmatrix.isChecked())
+		 if(checkmatrixjni.isChecked())
 		  {
-			 this.matrix(view);
-			 this.matrixJni(view);
-			 this.rsmatrix(view);		 
+			 this.matrixJni(view);	 		 
 		  }
+		 
+		 if(checkmatrixjama.isChecked())
+		  {
+			 this.matrixjama(view);	 		 
+		  }
+		 
+		 if(checkmatrixjava.isChecked())
+		  {
+			 this.matrix(view); 		 
+		  }
+		 
+		 if(checkmatrixrs.isChecked())
+		  {
+			 this.rsmatrix(view);	 		 
+		  }
+		 
+		 	 
 		 if(checkbrute.isChecked())
 		 {
 			 this.bruteforce(view);
@@ -149,6 +170,19 @@ public class MainActivity extends Activity {
 		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
 		task.execute(new Matrix(), "callPureJava"); 
+	   	    	   	   
+	   	//----------------------------------------------------------
+	   	      	 	    	
+	 }
+	 
+	 
+	 public void matrixjama(View view){
+	    	
+		//-----CORE OF THE BENCHMARK----------------------------
+		 	
+		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+	     	
+		task.execute(new Matrix(), "calljavaJAMA"); 
 	   	    	   	   
 	   	//----------------------------------------------------------
 	   	      	 	    	

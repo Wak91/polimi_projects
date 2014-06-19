@@ -29,12 +29,15 @@ public final class R {
     }
     public static final class id {
         public static final int RelativeLayout1=0x7f090000;
-        public static final int action_settings=0x7f090007;
-        public static final int button1=0x7f090006;
+        public static final int action_settings=0x7f09000a;
+        public static final int button1=0x7f090005;
         public static final int checkBox1=0x7f090002;
         public static final int checkBox2=0x7f090003;
-        public static final int checkBox3=0x7f090004;
-        public static final int textView1=0x7f090005;
+        public static final int checkBox3=0x7f090006;
+        public static final int checkBox4=0x7f090007;
+        public static final int checkBox5=0x7f090008;
+        public static final int checkBox6=0x7f090009;
+        public static final int textView1=0x7f090004;
         public static final int textView2=0x7f090001;
     }
     public static final class layout {
