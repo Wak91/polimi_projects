@@ -57,10 +57,9 @@ public class MainActivity extends Activity {
 		gray_result_rs = new ArrayList();
 
 		names = new ArrayList();
+		names.add("image0.bmp");
 		names.add("image1.bmp");
 		names.add("image2.bmp");
-		names.add("image3.bmp");
-		names.add("image4.bmp");
 
 
 		
@@ -90,7 +89,7 @@ public class MainActivity extends Activity {
 		 
 		 if(selected == R.id.radio0)
 		   {
-			  for(int i=1;i<=names.size();i++)
+			  for(int i=0;i<names.size();i++)
 		      {    
 				Bitmap bm=null;
 				try {
@@ -113,12 +112,12 @@ public class MainActivity extends Activity {
 			plot.setDomainValueFormat(new DecimalFormat("0"));
 			plot.setDomainStepValue(1);
 
-			plot.setDomainLeftMin(1);
-			plot.setDomainRightMin(4);
+			plot.setDomainLeftMin(0);
+			plot.setDomainRightMin(3);
 		
 			
 			 plot.setRangeBoundaries(0,16000, BoundaryMode.FIXED);
-			 plot.setRangeStepValue(15);
+			 plot.setRangeStepValue(5);
 			 plot.setRangeValueFormat(new DecimalFormat("0"));
 			 
 			 XYSeries series1 = new SimpleXYSeries(gray_result_j,
@@ -240,7 +239,7 @@ public class MainActivity extends Activity {
      	task.execute(new GrayScaling(), "callPureRenderScript", bm2, this);
      	*/
      	
-     	showLoading();
+     	//showLoading();
      	
      	Long t = GrayScaling.callPureRenderScript(bm2, this);
      
