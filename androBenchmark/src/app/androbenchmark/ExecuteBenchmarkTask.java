@@ -22,7 +22,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 	 * SPIEGAZIONE
 	 * 
 	 * 1 - passo un istanza della classe di cui voglio chiamare il metodo, il nome del metodo da chiamare 
-	 *     sottoforma di stringa, e gli eventuali parametri del merodo
+	 *     sottoforma di stringa, e gli eventuali parametri del metodo
 	 *   
 	 * 2 - ricavo la classe dall istanza passata
 	 * 
@@ -46,7 +46,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 	@Override
 	protected void onPreExecute(){
 		//mostro il loading dialog nel contesto giusto
-		loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+		//loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
 	}
 	
 	
@@ -98,9 +98,10 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 	protected void onPostExecute(Long result) {	
 		
 		//tolgo il loading dialog
-		loadingDialog.dismiss();
+		//loadingDialog.dismiss();
 		
-		//mostro il dialog di fine nel contesto giusto
+		//mostro il dialog di fine nel contesto giusto ( obsolete ) 
+		/*
 		new AlertDialog.Builder(context)
 	        .setTitle("Benchmark ended").setMessage("Benchmark finished \n\nTime:" + result + "ms").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int which) { 
@@ -108,9 +109,17 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 	            }
 	         })
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();
+	     */
+		
+		this.return_time(result);
 		
     }
 
+	
+	private Long return_time(Long time)
+	{
+		return time;
+	}
 
 	public Context getContext() {
 		return context;

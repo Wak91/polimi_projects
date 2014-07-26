@@ -4,7 +4,9 @@ import java.util.Random;
 
 import android.content.Context;
 import android.renderscript.RenderScript;
+import android.renderscript.ScriptGroup;
 import Jama.*; 
+import android.renderscript.ScriptGroup.Builder;
 
 
 public class Matrix {
@@ -79,8 +81,6 @@ public class Matrix {
 		
 		 script.invoke_calc();
 		 rs.finish();
-								
-
 	}
 
 // ----------------------------- END BENCHMARK CORE ----------------------------- //
@@ -141,7 +141,25 @@ public static Long calljavaJAMA(){
     	return t;
 					
 	}
+	
+	public static Long callparallRenderScript(MainActivity activity){
+		
+
+		Context context = activity.getBaseContext();
+		
+		RenderScript rs = RenderScript.create(context);
+		
+		ScriptGroup.Builder builder = new ScriptGroup.Builder(rs);
+		
+		ScriptC_rspmatrix script1 = new ScriptC_rspmatrix(rs,context.getResources(),R.raw.rspmatrix);
+		ScriptC_sum_elements script2 = new ScriptC_sum_elements(rs,context.getResources(),R.raw.sum_elements);
+				
+
+		
+		return (long) 1;
+		
+		
+	}
 
 // ----------------------------- END SETUP BENCHMARK  ----------------------------- //
-
 }
