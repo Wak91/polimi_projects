@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_app_androbenchmark_Matrix_pureJni
-  (JNIEnv *, jclass);
+  (JNIEnv *, jclass , jint);
 
 #ifdef __cplusplus
 }

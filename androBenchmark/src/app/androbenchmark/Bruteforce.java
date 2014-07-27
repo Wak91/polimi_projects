@@ -8,7 +8,6 @@ public class Bruteforce {
 	
 // ----------------------------- BENCHMARK CORE ----------------------------- //
 	
-	private static final String SECRET= "ciaoo";
 	private static int length;
 	
 	private static final String range= "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -19,17 +18,14 @@ public class Bruteforce {
 	private static String word;
 
 	
-	
-	private static void pureJava(){
+	private static void pureJava(String sword){
 
-		
-		
 		int r=0,i,k,s,l,index;
 		
-		length = SECRET.length();
+		length = sword.length();
 		word = new String();
 		
-		word = SECRET;
+		word = sword;
 
 		int range_size = range.length();
 		attemp = new int[length];
@@ -104,9 +100,10 @@ public class Bruteforce {
         return 1;
 		}
 	
-	private native static void pureJni();
+	private native static void pureJni(String sword);
 	
-	private static void pureRenderScript(RenderScript rs, ScriptC_brute script){
+	private static void pureRenderScript(RenderScript rs, ScriptC_brute script, String sword){
+		
 		
 		script.invoke_brute();
 		rs.finish();
@@ -117,11 +114,11 @@ public class Bruteforce {
 	
 // ----------------------------- SETUP BENCHMARK ----------------------------- //
 	
-	public static Long callPureJava(){
+	public static Long callPureJava(String sword){
 		
 		Long t = System.currentTimeMillis();
 		
-		pureJava();
+		pureJava(sword);
 		
 		t = System.currentTimeMillis() - t;
     	
@@ -130,11 +127,11 @@ public class Bruteforce {
 	}
 
 
-	public static Long callPureJni(){
+	public static Long callPureJni(String sword){
 		
 		Long t = System.currentTimeMillis();
 		
-		pureJni();
+		pureJni(sword);
 		
 		t = System.currentTimeMillis() - t;
     	
@@ -142,25 +139,24 @@ public class Bruteforce {
 					
 	}
 	
-	public static Long callPureRenderScript(MainActivity activity){
+	public static Long callPureRenderScript(MainActivity activity , String sword){
 		
 		Context context = activity.getBaseContext();
 		
 		RenderScript rs = RenderScript.create(context);
 	    ScriptC_brute script = new ScriptC_brute(rs,context.getResources(),R.raw.brute);
 		 
-	    String s1 = new String("ciaoo");
 		 
-	    int dim = s1.length();
+	    int dim = sword.length();
 		 
 	    script.set_dim(dim);
 		 
-	    Allocation word = Allocation.createFromString(rs, s1,Allocation.USAGE_SCRIPT );
+	    Allocation word = Allocation.createFromString(rs, sword,Allocation.USAGE_SCRIPT );
 	    script.bind_word(word);
 		
 		Long t = System.currentTimeMillis();
 		
-		pureRenderScript(rs, script);
+		pureRenderScript(rs, script,sword);
 		
 		t = System.currentTimeMillis() - t;
     	

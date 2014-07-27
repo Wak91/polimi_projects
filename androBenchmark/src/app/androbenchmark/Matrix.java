@@ -14,47 +14,11 @@ public class Matrix {
 
 // ----------------------------- BENCHMARK CORE ----------------------------- //
 	
-	private static void pureJava(){	
+	private static void javaJAMA(int dim){
 		
-		
-		
-		int[][] m1 = new int[300][300];  
-		int[][] m2 = new int[300][300]; 
-		int[][] result = new int[300][300];
-
-		Random randomGenerator = new Random();
-
-		for (int i = 0; i < m1.length; i++) {
-			for (int j = 0; j < m1[0].length; j++) {
-
-				m1[i][j] = randomGenerator.nextInt(100); //inizializzo a caso la matrice
-				m2[i][j] = randomGenerator.nextInt(100);  //inizializzo a caso la matrice
-				result[i][j] = 0;  //inizializzo a 0 la matrice
-			}
-		}
-
-		//moltiplico le 2 matrici
-		for (int i = 0; i < m1.length; i++) { //scorro le righe di m1
-			for (int j = 0; j < m2[0].length; j++) { //scorro le colonne di m2
-				for (int j2 = 0; j2 < m2[0].length; j2++) { //centro la colonna e la riga giusta corrispondente
-					result[i][j] = result[i][j] + ( m1[i][j2] * m2[j2][j] );
-				}
-
-			}
-
-		}
-		
-
-
-	}
-	
-	
-	private static void javaJAMA(){
-		
-		
-		double[][] m1 = new double[300][300];  
-		double[][] m2 = new double[300][300]; 
-		double[][] result = new double[300][300];
+		double[][] m1 = new double[dim][dim];  
+		double[][] m2 = new double[dim][dim]; 
+		double[][] result = new double[dim][dim];
 
 		Random randomGenerator = new Random();
 
@@ -75,10 +39,11 @@ public class Matrix {
 		
 	}
 	
-	private native static void pureJni();
+	private native static void pureJni(int dim);
 	
-	private static void pureRenderScript(RenderScript rs, ScriptC_rsmatrix script){
+	private static void pureRenderScript(RenderScript rs, ScriptC_rsmatrix script , int dim){
 		
+		 script.set_dim(dim);
 		 script.invoke_calc();
 		 rs.finish();
 	}
@@ -87,12 +52,11 @@ public class Matrix {
 	
 // ----------------------------- SETUP BENCHMARK  ----------------------------- //
 	
-	
-	public static Long callPureJava(){
+	public static Long callPureJni(int dim){
 		
 		Long t = System.currentTimeMillis();
-		
-		pureJava();
+				
+		pureJni(dim);
 		
 		t = System.currentTimeMillis() - t;
     	
@@ -100,12 +64,11 @@ public class Matrix {
 					
 	}
 	
-	
-	public static Long callPureJni(){
+public static Long calljavaJAMA(int dim){
 		
 		Long t = System.currentTimeMillis();
 		
-		pureJni();
+		javaJAMA(dim);
 		
 		t = System.currentTimeMillis() - t;
     	
@@ -113,19 +76,7 @@ public class Matrix {
 					
 	}
 	
-public static Long calljavaJAMA(){
-		
-		Long t = System.currentTimeMillis();
-		
-		javaJAMA();
-		
-		t = System.currentTimeMillis() - t;
-    	
-    	return t;
-					
-	}
-	
-	public static Long callPureRenderScript(MainActivity activity){
+	public static Long callPureRenderScript(MainActivity activity, int dim){
 		
 		Context context = activity.getBaseContext();
 		
@@ -134,7 +85,7 @@ public static Long calljavaJAMA(){
 		
 		Long t = System.currentTimeMillis();
 		
-		pureRenderScript(rs, script);
+		pureRenderScript(rs,script,dim);
 		
 		t = System.currentTimeMillis() - t;
     	
@@ -142,6 +93,7 @@ public static Long calljavaJAMA(){
 					
 	}
 	
+	/*
 	public static Long callparallRenderScript(MainActivity activity){
 		
 
@@ -158,8 +110,9 @@ public static Long calljavaJAMA(){
 		
 		return (long) 1;
 		
-		
+	
 	}
+	*/
 
 // ----------------------------- END SETUP BENCHMARK  ----------------------------- //
 }

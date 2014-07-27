@@ -5,17 +5,19 @@
 #include <stdlib.h>
 
 
-JNIEXPORT void JNICALL Java_app_androbenchmark_Bruteforce_pureJni(JNIEnv* env, jclass clazz){
+JNIEXPORT void JNICALL Java_app_androbenchmark_Bruteforce_pureJni(JNIEnv* env, jclass clazz , jstring sword){
 
 	char range[] = "abcdefghijklmnopqrstuvwxyz0123456789";  //36 elements
 
-	char fword[] = "ciaoo";
+	char* swords;
+
+	swords = (*env)->GetStringUTFChars( env, sword , NULL );
 
 		int r,i,k,s,l,index,checkpoint;
 
-		int length = strlen(fword);
+		int length = strlen(swords);
 		char word[length];
-		strcpy(word,fword);
+		strcpy(word,swords);
 
 
 		int range_size = strlen(range);

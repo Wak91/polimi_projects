@@ -35,13 +35,13 @@ public class MainActivity extends Activity {
 	//Log.w("ANDROBENCHMARK", "id is" + selected);
 
 	private final int num_of_test=3;
-	private List gray_result_j;
-	private List gray_result_jni;
-	private List gray_result_rs;
-	ArrayList names; // this contain the name of all the images
-
-	private Long[] matrix_result;
-	private Long[] brute_result;
+	private List result_j;
+	private List result_jni;
+	private List result_rs;
+	private ArrayList names; // this contain the name of all the images
+    private int[] matrix_dimension;
+    private ArrayList words;
+    
 	private XYPlot plot;
 
 	
@@ -52,19 +52,27 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 				
-		gray_result_j = new ArrayList();
-		gray_result_jni = new ArrayList();
-		gray_result_rs = new ArrayList();
+		result_j = new ArrayList();
+		result_jni = new ArrayList();
+		result_rs = new ArrayList();
 
 		names = new ArrayList();
 		names.add("image0.bmp");
 		names.add("image1.bmp");
 		names.add("image2.bmp");
-
-
 		
-		matrix_result = new Long[num_of_test];
-		brute_result = new Long[num_of_test];
+		matrix_dimension = new int[3];
+		
+		matrix_dimension[0]=300;
+		matrix_dimension[1]=400;
+		matrix_dimension[2]=500;
+		
+		words = new ArrayList();
+		
+		words.add("cia");
+		words.add("ciao");
+		words.add("ciaop");
+
 	}
 	
 	static 
@@ -103,83 +111,41 @@ public class MainActivity extends Activity {
 			    this.grayScaleJni(view,bm);
 			    this.render_filter(view,bm);
 		     }
-			  
-			  
-			 setContentView(R.layout.graph);
-			 plot = (XYPlot) findViewById(R.id.xyPlot);
-			 
-			plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, names.size());     
-			plot.setDomainValueFormat(new DecimalFormat("0"));
-			plot.setDomainStepValue(1);
-
-			plot.setDomainLeftMin(0);
-			plot.setDomainRightMin(3);
-		
-			
-			 plot.setRangeBoundaries(0,16000, BoundaryMode.FIXED);
-			 plot.setRangeStepValue(5);
-			 plot.setRangeValueFormat(new DecimalFormat("0"));
-			 
-			 XYSeries series1 = new SimpleXYSeries(gray_result_j,
-				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Pure Java");
-			 
-			 
-			 XYSeries series2 = new SimpleXYSeries(gray_result_jni,
-				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "JNI");
-			 
-			 XYSeries series3 = new SimpleXYSeries(gray_result_rs,
-				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Renderscript");
-			 
-			 LineAndPointFormatter s1Format = new LineAndPointFormatter();
-			    s1Format.setPointLabelFormatter(new PointLabelFormatter());
-			    s1Format.configure(getApplicationContext(),
-			        R.layout.lpf1);
-			    
-			    LineAndPointFormatter s2Format = new LineAndPointFormatter();
-			    s2Format.setPointLabelFormatter(new PointLabelFormatter());
-			    s2Format.configure(getApplicationContext(),
-			        R.layout.lpf2);
-			    
-			    LineAndPointFormatter s3Format = new LineAndPointFormatter();
-			    s3Format.setPointLabelFormatter(new PointLabelFormatter());
-			    s3Format.configure(getApplicationContext(),
-			        R.layout.lpf3);
-			    
-			 plot.addSeries(series1, s1Format);
-			 plot.addSeries(series2, s2Format);
-			 plot.addSeries(series3, s3Format);
-			 
-
-			 plot.setTicksPerDomainLabel(1);
-			 plot.setTicksPerRangeLabel(1);
-			    plot.getGraphWidget().setDomainLabelOrientation(-45);
-			    
-			    plot.getBackgroundPaint().setAlpha(0);
-			    plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
-			    plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);   
-			 
-			 gray_result_j.clear();
-			 gray_result_jni.clear();
-			 gray_result_rs.clear();
-			 
-			 
+			  	  
+			this.plot();
 		   }
 		 else 
 			 if(selected == R.id.radio1)
 			   {
-				 this.bruteforce(view);
-				 this.bruteforceJni(view);
-				 this.rsbrute(view);
+				 for(int j=0; j<words.size();j++)
+				 {
+				   String word;
+				   word = (String) words.get(j);
+				   				 
+				   this.bruteforce(view,word);
+				   this.bruteforceJni(view,word);
+				   this.rsbrute(view,word);
+				
+				 }
 				 
+				 this.plot();
 			   }
+		 
 			 else
 				 if(selected == R.id.radio2)
-				   {	 
-					 this.matrixjama(view);
-					 this.matrixJni(view);
-					 this.rsmatrix(view);
-				   }
-		
+				   {	
+					 for(int j=0;j<matrix_dimension.length;j++)
+					    {
+						 
+						 int dim;
+						 dim = matrix_dimension[j];						 
+						 
+						 this.matrixjama(view,dim);	 
+						 this.matrixJni(view,dim);	  
+						 this.rsmatrix(view,dim);			
+					    }
+					 this.plot();	
+				   }		
 	}
 		 
 	
@@ -194,7 +160,7 @@ public class MainActivity extends Activity {
 	    	task.execute(new GrayScaling(), "callPureJava", bm2); 	
 	    	
 	    	try {
-				gray_result_j.add(task.get()); // retrieve the value from the async task
+				result_j.add(task.get()); // retrieve the value from the async task
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
@@ -203,7 +169,6 @@ public class MainActivity extends Activity {
 		    
 		 }
 	   
-	 
 	 public void grayScaleJni(View view,Bitmap bm){
 	    		     	
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
@@ -212,20 +177,15 @@ public class MainActivity extends Activity {
 	     	
 	     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-	    	task.execute(new GrayScaling(), "callPureJni", bm2); 	
+	    	//task.execute(new GrayScaling(), "callPureJni", bm2); 	
 	    	
-	    	try {
-	    		gray_result_jni.add(task.get()); // retrieve the value from the async task
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
+	     	Long t = GrayScaling.callPureJni(bm);
+	        
+	     	result_jni.add(t); // retrieve the value from the async task
+			
 	    	
 	    	
 	     }
-	 
-	 
 	 
 	 public void render_filter(View view,Bitmap bm)
 	 {	  	
@@ -243,51 +203,47 @@ public class MainActivity extends Activity {
      	
      	Long t = GrayScaling.callPureRenderScript(bm2, this);
      
-     	gray_result_rs.add(t);
+     	result_rs.add(t);
 			 	
 	 }
 	 
-	 public void matrix(View view){
+ 
+	 public void matrixjama(View view, int dim){
 	    	
 		//-----CORE OF THE BENCHMARK----------------------------
 		 	
 		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-		task.execute(new Matrix(), "callPureJava"); 
+		//task.execute(new Matrix(), "calljavaJAMA" , dim); 
+		Long t = Matrix.calljavaJAMA(dim); // Da sistemare, bisogna passare dall'async task ma logcat 
+		//dice che calljavaJAMA non esiste! 
+	
+		result_j.add(t);
+	
 	   	    	   	   
 	   	//----------------------------------------------------------
 	   	      	 	    	
 	 }
 	 
-	 
-	 public void matrixjama(View view){
-	    	
-		//-----CORE OF THE BENCHMARK----------------------------
-		 	
-		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-	     	
-		task.execute(new Matrix(), "calljavaJAMA"); 
-	   	    	   	   
-	   	//----------------------------------------------------------
-	   	      	 	    	
-	 }
-	 
-	 public void matrixJni(View view){
+	 public void matrixJni(View view, int dim){
 	     	
 		//-----CORE OF THE BENCHMARK----------------------------
 		
 		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-		task.execute(new Matrix(), "callPureJni"); 
+		//task.execute(new Matrix(), "callPureJni" , dim); 
 	    
-		//----------------------------------------------------------
-	    	
-	    
-	    	
+		Long t = Matrix.callPureJni(dim);
+		
+	
+			result_jni.add(t);
+		
+		
+		//----------------------------------------------------------    	
 	 }
 	 
 	 	 
-	 public void rsmatrix(View view){
+	 public void rsmatrix(View view, int dim){
 		 
 		//-----CORE OF THE BENCHMARK----------------------------
 		
@@ -297,49 +253,57 @@ public class MainActivity extends Activity {
 	    task.execute(new Matrix(), "callPureRenderScript", this);
 	    */
 		 
-		 showLoading();
+		 //showLoading();
 		 
-		 Long t = Matrix.callPureRenderScript(this); 
+		 Long t = Matrix.callPureRenderScript(this,dim); 
 		 
-		 showResult(t);
+		 result_rs.add(t);
 	     
 	    //----------------------------------------------------------
 
 	 }
 	 
 	 public void rsparall_matrix(View view){
-				 
+				 //TODO
 		 
 	 }
 	 
-	 public void bruteforce(View view){
+	 public void bruteforce(View view, String word){
 	    	
 		 //-----CORE OF THE BENCHMARK----------------------------
 		 
 		 ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-		 task.execute(new Bruteforce(), "callPureJava");
+		 //task.execute(new Bruteforce(), "callPureJava");
+		 
+		 Long t = Bruteforce.callPureJava(word);
+		 
+		 result_j.add(t);
 		 
 	   	 //----------------------------------------------------------
 	   	      	 	
 	    	
 	 }
 
-	 public void bruteforceJni(View view){
+	 public void bruteforceJni(View view , String word){
 	    	
 	    //-----CORE OF THE BENCHMARK----------------------------
 		 
 	    ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-		task.execute(new Bruteforce(), "callPureJni"); 
+		//task.execute(new Bruteforce(), "callPureJni"); 
 		
+	    Long t = Bruteforce.callPureJni(word);
+	    
+	    result_jni.add(t);
+	    
 	   	//----------------------------------------------------------
 	   	      	 	
 	    	
 	 }
 	 
 
-	 public void rsbrute(View view){
+	 public void rsbrute(View view , String word){
 		 		 
 		//-----CORE OF THE BENCHMARK----------------------------
 		/*
@@ -348,12 +312,15 @@ public class MainActivity extends Activity {
 		task.execute(new Bruteforce(), "callPureRenderScript", this);
 		*/
 		 
-		showLoading();
+		//showLoading();
 		 
-		Long t = Bruteforce.callPureRenderScript(this);
+		Long t = Bruteforce.callPureRenderScript(this,word);
 		
-		showResult(t);
-		     
+		//showResult(t);
+		
+		result_rs.add(t);
+		
+		
 	    //----------------------------------------------------------
 		 
 		 
@@ -376,6 +343,67 @@ public class MainActivity extends Activity {
 	            }
 	         })
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();
+	 }
+	 
+	 private void plot()
+	 {
+		 
+		 setContentView(R.layout.graph);
+	     plot = (XYPlot) findViewById(R.id.xyPlot);
+			 
+	     plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, names.size());     
+	     plot.setDomainValueFormat(new DecimalFormat("0"));
+		 plot.setDomainStepValue(1);
+
+		 plot.setDomainLeftMin(0);
+		 plot.setDomainRightMin(3);
+		
+			
+		 plot.setRangeBoundaries(0,10000, BoundaryMode.FIXED);
+		 plot.setRangeStepValue(5);
+		 plot.setRangeValueFormat(new DecimalFormat("0"));
+			 
+		 XYSeries series1 = new SimpleXYSeries(result_j,
+				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Pure Java");
+			 
+			 
+		 XYSeries series2 = new SimpleXYSeries(result_jni,
+				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "JNI");
+			 
+		 XYSeries series3 = new SimpleXYSeries(result_rs,
+				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Renderscript");
+			 
+		 LineAndPointFormatter s1Format = new LineAndPointFormatter();
+			    s1Format.setPointLabelFormatter(new PointLabelFormatter());
+			    s1Format.configure(getApplicationContext(),
+			        R.layout.lpf1);
+			    
+		 LineAndPointFormatter s2Format = new LineAndPointFormatter();
+			    s2Format.setPointLabelFormatter(new PointLabelFormatter());
+			    s2Format.configure(getApplicationContext(),
+			        R.layout.lpf2);
+			    
+		 LineAndPointFormatter s3Format = new LineAndPointFormatter();
+			    s3Format.setPointLabelFormatter(new PointLabelFormatter());
+			    s3Format.configure(getApplicationContext(),
+			        R.layout.lpf3);
+			    
+		plot.addSeries(series1, s1Format);
+		plot.addSeries(series2, s2Format);
+		plot.addSeries(series3, s3Format);
+			 
+
+		plot.setTicksPerDomainLabel(1);
+		plot.setTicksPerRangeLabel(1);
+		plot.getGraphWidget().setDomainLabelOrientation(-45);
+			    
+	    plot.getBackgroundPaint().setAlpha(0);
+	    plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
+		plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);   
+			 
+	    result_j.clear();
+	    result_jni.clear();
+	    result_rs.clear(); 	 
 	 }
 	 
 	 

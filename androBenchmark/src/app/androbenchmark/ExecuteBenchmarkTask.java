@@ -111,7 +111,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();
 	     */
 		
-		this.return_time(result);
+		this.return_time(result); // return the time from async task to store it and plot 
 		
     }
 
