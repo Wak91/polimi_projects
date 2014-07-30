@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -47,6 +48,8 @@ public class MainActivity extends Activity {
     
 	private XYPlot plot;
 
+	//DATA FOR PERSISTENT MEMORY
+	//--------------------------
 	private String mgs1="GSJ"; //Gray scale java
 	private String mgs2="GSJN"; //Gray scale JNI
 	private String mgs3="GSR";  //Gray scale renderscript 
@@ -58,7 +61,8 @@ public class MainActivity extends Activity {
 	private String mb1="BJ"; //Bruteforce java
 	private String mb2="BJN";
 	private String mb3="BR";
-	
+	//--------------------------
+
 	
 	private AlertDialog loadingDialog;
 	
@@ -71,22 +75,26 @@ public class MainActivity extends Activity {
 		result_jni = new ArrayList();
 		result_rs = new ArrayList();
 
+		//Initialization of image's name 
 		names = new ArrayList();
 		names.add("image0.bmp");
 		names.add("image1.bmp");
 		names.add("image2.bmp");
 		
-		matrix_dimension = new int[3];
-		
+		//Inizialization of matrix dimension
+		matrix_dimension = new int[3];	
 		matrix_dimension[0]=300;
 		matrix_dimension[1]=400;
 		matrix_dimension[2]=500;
 		
+		//Inizialization of words to crack 
 		words = new ArrayList();
-		
-		words.add("cia");
 		words.add("ciao");
-		words.add("ciaop");
+		words.add("ciaoo");
+		words.add("ciaooo");
+		
+		TelephonyManager tManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+		String uid = tManager.getDeviceId(); //retrieve uid of the phone for server analysis 
 
 	}
 	
