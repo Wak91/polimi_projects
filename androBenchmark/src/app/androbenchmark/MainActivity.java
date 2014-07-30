@@ -1,6 +1,8 @@
 package app.androbenchmark;
 
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -44,6 +47,18 @@ public class MainActivity extends Activity {
     
 	private XYPlot plot;
 
+	private String mgs1="GSJ"; //Gray scale java
+	private String mgs2="GSJN"; //Gray scale JNI
+	private String mgs3="GSR";  //Gray scale renderscript 
+	
+	private String mmm1="MMJ"; //Matrix multiplication java
+	private String mmm2="MMJN";
+	private String mmm3="MMR";
+	
+	private String mb1="BJ"; //Bruteforce java
+	private String mb2="BJN";
+	private String mb3="BR";
+	
 	
 	private AlertDialog loadingDialog;
 	
@@ -91,13 +106,15 @@ public class MainActivity extends Activity {
 	}
 	
 	public void start_benchmark(View view){
-		
+				
 		 RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
 		 int selected = radioGroup1.getCheckedRadioButtonId();
+		 Long max;
 		 
 		 if(selected == R.id.radio0)
 		   {
-			  for(int i=0;i<names.size();i++)
+			  
+		      for(int i=0;i<names.size();i++)
 		      {    
 				Bitmap bm=null;
 				try {
@@ -111,8 +128,25 @@ public class MainActivity extends Activity {
 			    this.grayScaleJni(view,bm);
 			    this.render_filter(view,bm);
 		     }
-			  	  
-			this.plot();
+			  		    		    
+		    //Let's write the last result on the persistent memory for further visualization 
+		    
+		    this.store(result_j, mgs1);
+		    this.store(result_jni, mgs2);
+		    this.store(result_rs, mgs3);
+
+		    //Find the max from java result ( what a news?! ) 
+		    max = this.find_max(result_j);	
+
+		    //and plot the results
+		    this.plot(max.intValue());
+		    
+		    //Clear the temporary store of the results for further tests 
+		    result_j.clear();
+		    result_jni.clear();
+		    result_rs.clear(); 	 
+		    
+		    
 		   }
 		 else 
 			 if(selected == R.id.radio1)
@@ -128,7 +162,20 @@ public class MainActivity extends Activity {
 				
 				 }
 				 
-				 this.plot();
+				 this.store(result_j, mb1);
+				 this.store(result_jni, mb2);
+				 this.store(result_rs, mb3);
+
+				    //Find the max from java result ( what a news?! ) 
+				 max = this.find_max(result_j);	
+
+				    //and plot the results
+				 this.plot(max.intValue());
+				    
+				    //Clear the temporary store of the results for further tests 
+				 result_j.clear();
+				 result_jni.clear();
+				 result_rs.clear(); 	 
 			   }
 		 
 			 else
@@ -144,28 +191,57 @@ public class MainActivity extends Activity {
 						 this.matrixJni(view,dim);	  
 						 this.rsmatrix(view,dim);			
 					    }
-					 this.plot();	
+					 
+					 this.store(result_j, mmm1);
+					 this.store(result_jni, mmm2);
+					 this.store(result_rs, mmm3);
+
+					 //Find the max from java result ( what a news?! ) 
+					 max = this.find_max(result_j);	
+
+					 //and plot the results
+					 this.plot(max.intValue());
+					    
+					 //Clear the temporary store of the results for further tests 
+					 result_j.clear();
+					 result_jni.clear();
+					 result_rs.clear(); 	 			 
 				   }		
 	}
 		 
 	
-	 public void grayScale(View view,Bitmap bm){
+	 private Long find_max(List result_j) {
+		
+		Long max=(long) -1;
+		Long r ;
+		 for(int i=0;i<result_j.size();i++)
+		    {		 
+			 r= (Long) result_j.get(i);
+			 if(r>max)
+				 max=(Long) result_j.get(i);	 
+		    }
+		 if(max==-1)
+		   {
+			 max=(long) 1500;
+		   }
+		 return max;
+		 
+	}
+
+	public void grayScale(View view,Bitmap bm){
 	    	
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
 	     	
 	     	//-----CORE OF THE BENCHMARK----------------------------
-	     		     		     	     	    	
-	     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+	     		 	     	
+	     	//ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-	    	task.execute(new GrayScaling(), "callPureJava", bm2); 	
+	    	//task.execute(new GrayScaling(), "callPureJava", bm2); 	
 	    	
-	    	try {
-				result_j.add(task.get()); // retrieve the value from the async task
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
+	     	Long t = GrayScaling.callPureJava(bm2);
+	     	
+		    result_j.add(t); // retrieve the value from the async task
+			
 		    
 		 }
 	   
@@ -175,13 +251,14 @@ public class MainActivity extends Activity {
 	     	
 	     	//-----CORE OF THE BENCHMARK----------------------------	     	
 	     	
-	     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+	     	//ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
 	    	//task.execute(new GrayScaling(), "callPureJni", bm2); 	
 	    	
 	     	Long t = GrayScaling.callPureJni(bm);
 	        
-	     	result_jni.add(t); // retrieve the value from the async task
+	     	result_jni.add(t); 
+	    
 			
 	    	
 	    	
@@ -198,9 +275,7 @@ public class MainActivity extends Activity {
      	
      	task.execute(new GrayScaling(), "callPureRenderScript", bm2, this);
      	*/
-     	
-     	//showLoading();
-     	
+     	     	
      	Long t = GrayScaling.callPureRenderScript(bm2, this);
      
      	result_rs.add(t);
@@ -328,8 +403,8 @@ public class MainActivity extends Activity {
 	 
 	 private void showLoading(){
 		 
-		 loadingDialog = new AlertDialog.Builder(this).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
-
+		 
+		 
 	 }
 	 
 	 private void showResult(Long t){
@@ -345,7 +420,7 @@ public class MainActivity extends Activity {
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();
 	 }
 	 
-	 private void plot()
+	 private void plot(int max)
 	 {
 		 
 		 setContentView(R.layout.graph);
@@ -358,8 +433,9 @@ public class MainActivity extends Activity {
 		 plot.setDomainLeftMin(0);
 		 plot.setDomainRightMin(3);
 		
+		 max=max+500;
 			
-		 plot.setRangeBoundaries(0,10000, BoundaryMode.FIXED);
+		 plot.setRangeBoundaries(0,max, BoundaryMode.FIXED);
 		 plot.setRangeStepValue(5);
 		 plot.setRangeValueFormat(new DecimalFormat("0"));
 			 
@@ -400,10 +476,37 @@ public class MainActivity extends Activity {
 	    plot.getBackgroundPaint().setAlpha(0);
 	    plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
 		plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);   
-			 
-	    result_j.clear();
-	    result_jni.clear();
-	    result_rs.clear(); 	 
+			
+	 }
+	 
+	 
+	 /*
+	  * result is the list of value that you want to store and the id 
+	  * is the marker of the persistent data on the memory delcared at the start of the class 
+	  * */
+	 
+	 private void store(List result , String id)
+	 {
+		 String n;
+		    
+		    for(int i=0;i<result.size();i++)
+		       {
+		    	n=result.toString();	    	
+		    	try 
+		    	  {
+		    		  
+				   FileOutputStream fos = openFileOutput(id, Context.MODE_PRIVATE);
+				   fos.write(n.getBytes());
+				   fos.close();
+				  
+				    } 
+		    	catch (FileNotFoundException e) {
+					 	e.printStackTrace();
+				    } 
+		    	catch (IOException e) {
+						e.printStackTrace();
+				    } 	
+		        }		 
 	 }
 	 
 	 

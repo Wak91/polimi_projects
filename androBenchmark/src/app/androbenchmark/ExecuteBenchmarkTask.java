@@ -46,7 +46,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 	@Override
 	protected void onPreExecute(){
 		//mostro il loading dialog nel contesto giusto
-		//loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+		loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
 	}
 	
 	
