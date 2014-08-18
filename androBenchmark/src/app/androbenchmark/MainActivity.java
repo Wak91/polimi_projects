@@ -5,7 +5,6 @@ package app.androbenchmark;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -17,7 +16,6 @@ import com.androidplot.xy.XYStepMode;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 import android.view.Menu;
@@ -30,7 +28,6 @@ public class MainActivity extends Activity {
 	//Log.w("ANDROBENCHMARK", "id is" + selected);
 
 	 private XYPlot plot;
-	 private AlertDialog loadingDialog;
     
 	
 	
@@ -42,7 +39,7 @@ public class MainActivity extends Activity {
 		
 		TelephonyManager tManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		String uid = tManager.getDeviceId(); //retrieve uid of the phone for server analysis 
-
+		
 	}
 	
 	static 
@@ -60,80 +57,40 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+
+	
 	/**
 	 * chiama la suite di benchmark scelta
 	 * @param view
 	 */
 	public void start_benchmark(View view){
 		
-	   //this.loadingDialog = new AlertDialog.Builder(this).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
-	   
+		
 	   //ricaviamo la scelta dell utente
 	   RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
 	   int selected = radioGroup1.getCheckedRadioButtonId();		
 	   
-	   //eseguiamo il benchamrk in un asynctask
+	   //eseguiamo il benchamrk in un asynctask (lasciamo a onPostExecute il compito di aggiornare la UI cosi da non avere rallentamenti )
 	   ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this, selected);
 	   task.execute();
-	   
-	   //creiamo il grafico
-	   setContentView(R.layout.graph);
-	   this.plot = (XYPlot) findViewById(R.id.xyPlot);
-	   
-	   try {
-		//risultato passato dal task   
-		HashMap<String, List> result = task.get();
-		//scaliamo il grafico in modo appropriato
-		Long max = this.find_max(result.get("java"));
-		//disebnamo il grafico
-		this.drawPlot(max.intValue(), result);
-		
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	 
+
 				   	
 	}
 		 
 	
 
 
-	/**
-	 * funzione utile per avere ua scala sulle y appropriata
-	 * @param result_j
-	 * @return
-	 */
-	 private Long find_max(List result_j) {
-			
-			Long max=(long) -1;
-			Long r ;
-			 for(int i=0;i<result_j.size();i++)
-			    {		 
-				 r= (Long) result_j.get(i);
-				 if(r>max)
-					 max=(Long) result_j.get(i);	 
-			    }
-			 if(max==-1)
-			   {
-				 max=(long) 1500;
-			   }
-			 return max;
-			 
-	}
 	 
 	 /**
 	  * funzione che disegna il grafico
 	  * @param max
 	  * @param result
 	  */
-	 private void drawPlot(int max, HashMap<String, List> result)
+	 public void drawPlot(int max, HashMap<String, List<Long>> result)
 	 {
 		 
-		
+		 setContentView(R.layout.graph);
+		 this.plot = (XYPlot) findViewById(R.id.xyPlot);
 		 
 	     plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 3);     
 	     plot.setDomainValueFormat(new DecimalFormat("0"));

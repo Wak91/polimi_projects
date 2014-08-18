@@ -13,68 +13,66 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String, List> > {
+public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String, List<Long>> > {
 	
 	
 	private AlertDialog loadingDialog;
 	private Context context;
 	private int selected;
+	private MainActivity activity;
 
 	
 	private final int num_of_test=3;
-	private List result_j;
-	private List result_jni;
-	private List result_rs;
-	private ArrayList names; // this contain the name of all the images
+	private List<Long> result_j;
+	private List<Long> result_jni;
+	private List<Long> result_rs;
+	private ArrayList<String> names; // this contain the name of all the images
     private int[] matrix_dimension;
-    private ArrayList words;
+    private ArrayList<String> words;
 	
 
 
 	//wrapper generale per gli asynctask cosi da non dover definire piu funzioni(una per benchmark)
-	/*
-	 * 
-	 * SPIEGAZIONE
-	 * 
-	 * 1 - passo un istanza della classe di cui voglio chiamare il metodo, il nome del metodo da chiamare 
-	 *     sottoforma di stringa, e gli eventuali parametri del metodo
-	 *   
-	 * 2 - ricavo la classe dall istanza passata
-	 * 
-	 * 3 - ricavo il metodo dal nome passato e anche gli argomenti che riceve a seconda di quelli passati(il tipo dei parametri e ricavato in automatico)
-	 * 
-	 * 4 - eseguo il metodo scelto e ne ritorno il valore
-	 * 
-	 * 
-	 * TODO:RENDERE IL WRAPPER FLESSIBILE DAL PUNTO DI VISTA DEL NUMERO DEI PARAETRI IMMESSI
-	 * 
-	 * 
-	 */
 	
 	
-	public ExecuteBenchmarkTask(Context context, int selected){
+	
+	public ExecuteBenchmarkTask(MainActivity context, int selected){
 		//setto il contesto giusto(passatto dalla UI)
 		this.context = context;
 		this.selected = selected;
+		this.activity = context;
 		
 	}
 	
 	
 	/**
-	 * settiamo tutti i componenti utili alla suite di benchmark
+	 * mostriamo solo l alert (onPreExecute e onPostExecute girano sullo UI thread quindi limitiamo al mnimo il carico di lavoro cosi da non avere rallentamenti gafici)
 	 */
 	@Override
 	protected void onPreExecute(){
+		//Log.w("PRE", "nome "+ Looper.getMainLooper().getThread().getName());
 		//mostro il loading dialog nel contesto giusto
-		Log.w("ANDROBENCHMARK", "mostro");
-		//this.loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+		//Log.w("ANDROBENCHMARK", "mostro");
+		this.loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
 		
-		result_j = new ArrayList();
-		result_jni = new ArrayList();
-		result_rs = new ArrayList();
+		
+	}
+	
+	
+	
+	/**
+	 * a seconda della scelta eseguiamo il benchmark giusto all'interno di un asynctask
+	 */
+	@Override
+	protected HashMap<String, List<Long> > doInBackground(Void... params) {
+		
+		//configurazione iniziale
+		result_j = new ArrayList<Long>();
+		result_jni = new ArrayList<Long>();
+		result_rs = new ArrayList<Long>();
 
 		//Initialization of image's name 
-		names = new ArrayList();
+		names = new ArrayList<String>();
 		names.add("image0.bmp");
 		names.add("image1.bmp");
 		names.add("image2.bmp");
@@ -86,20 +84,12 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		matrix_dimension[2]=200;
 		
 		//Inizialization of words to crack 
-		words = new ArrayList();
+		words = new ArrayList<String>();
 		words.add("ciao");
 		words.add("ciaoo");
 		words.add("ciaooo");
-	}
-	
-	
-	
-	/**
-	 * a seconda della scelta eseguiamo il benchmark giusto all'interno di un asynctask
-	 */
-	@Override
-	protected HashMap doInBackground(Void... params) {
 		
+		//Log.w("DOINBACK",  "nome "+ Looper.myLooper());
 		 //caso grayscale
 		 if(selected == R.id.radio0){
 			  
@@ -174,7 +164,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		 }
 			 
 	
-		HashMap<String, List> result = new HashMap();
+		HashMap<String, List<Long>> result = new HashMap<String, List<Long>>();
 		
 		result.put("java", result_j);
 		result.put("jni", result_jni);
@@ -184,14 +174,41 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	}
 	
 	/**
-	 * togliamo il dialog di attesa(perche non va)
+	 * togliamo il dialog di attesa e disegnamo il grafico
 	 */
 	@Override
-	protected void onPostExecute(HashMap result) {	
-		Log.w("ANDROBENCHMARK", "tolgo");
-		//this.loadingDialog.dismiss();
+	protected void onPostExecute(HashMap<String, List<Long>> result) {	
+		//Log.w("ANDROBENCHMARK", "tolgo");
+		this.loadingDialog.dismiss();
+		//scaliamo il grafico in modo appropriato
+		Long max = this.find_max(result.get("java"));
+		//disebnamo il grafico
+		this.activity.drawPlot(max.intValue(), result);
 					
     }
+	
+	/**
+	 * funzione utile per avere ua scala sulle y appropriata
+	 * @param result_j
+	 * @return
+	 */
+	 private Long find_max(List<Long> result_j) {
+			
+			Long max=(long) -1;
+			Long r ;
+			 for(int i=0;i<result_j.size();i++)
+			    {		 
+				 r= (Long) result_j.get(i);
+				 if(r>max)
+					 max=(Long) result_j.get(i);	 
+			    }
+			 if(max==-1)
+			   {
+				 max=(long) 1500;
+			   }
+			 return max;
+			 
+	}
 
 
 	public Context getContext() {
