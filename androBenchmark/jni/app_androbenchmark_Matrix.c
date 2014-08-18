@@ -39,7 +39,7 @@ JNIEXPORT void JNICALL Java_app_androbenchmark_Matrix_pureJni(JNIEnv* env, jclas
 		}
 	}
 
-	__android_log_print(ANDROID_LOG_INFO, "ANDROBENCHMARK", "dim is %d ",d);
+	//__android_log_print(ANDROID_LOG_INFO, "ANDROBENCHMARK", "dim is %d ",d);
 
 	//moltiplico le 2 matrici
 	for (i = 0; i < dim; i++) { //scorro le righe di m1
