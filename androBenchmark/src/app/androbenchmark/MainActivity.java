@@ -153,7 +153,7 @@ public class MainActivity extends Activity {
 
 		this.choiceDialog = new AlertDialog.Builder(this);
 		this.choiceDialog.setMessage("Do you want to send data to the server?");
-		
+		//settiamo gli event listener appropriati (fare post o no al server)
 		this.choiceDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 		    public void onClick(DialogInterface dialog, int id) {
 		       
