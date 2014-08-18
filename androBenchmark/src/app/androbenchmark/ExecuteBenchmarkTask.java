@@ -1,18 +1,33 @@
 package app.androbenchmark;
 
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 
-public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
+public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String, List> > {
 	
 	
 	private AlertDialog loadingDialog;
 	private Context context;
+	private int selected;
+
+	
+	private final int num_of_test=3;
+	private List result_j;
+	private List result_jni;
+	private List result_rs;
+	private ArrayList names; // this contain the name of all the images
+    private int[] matrix_dimension;
+    private ArrayList words;
 	
 
 
@@ -37,89 +52,156 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 	 */
 	
 	
-	public ExecuteBenchmarkTask(Context context){
+	public ExecuteBenchmarkTask(Context context, int selected){
 		//setto il contesto giusto(passatto dalla UI)
 		this.context = context;
+		this.selected = selected;
+		
 	}
 	
-	/*
+	
+	/**
+	 * settiamo tutti i componenti utili alla suite di benchmark
+	 */
 	@Override
 	protected void onPreExecute(){
 		//mostro il loading dialog nel contesto giusto
-		loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
-	}
-	*/
-	
-	
-	
-	@Override
-	protected Long doInBackground(Object... params) {
-		// TODO Auto-generated method stub
-		try {
-			
-			//ottimizzare
-			//soluzione provvisoria perche conosciamo il massimo numero di argomenti da passare
-			if(params.length == 2){
-				//faccio il cast a long perche il tempo mi viene passatodirettamente dal benchmark			
-				return (Long)params[0].getClass().getMethod((String)params[1]).invoke(params[0]);
-				
-			}
-			else if(params.length == 3){
-				//faccio il cast a long perche il tempo mi viene passatodirettamente dal benchmark										
-				return (Long)params[0].getClass().getMethod((String)params[1], params[2].getClass()).invoke(params[0], params[2]);
+		Log.w("ANDROBENCHMARK", "mostro");
+		this.loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+		
+		result_j = new ArrayList();
+		result_jni = new ArrayList();
+		result_rs = new ArrayList();
 
-			}
-			else{
-				
-				return (Long)params[0].getClass().getMethod((String)params[1], params[2].getClass(), params[3].getClass()).invoke(params[0], params[2], params[3]);
-				
-			}
-			
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+		//Initialization of image's name 
+		names = new ArrayList();
+		names.add("image0.bmp");
+		names.add("image1.bmp");
+		names.add("image2.bmp");
+		
+		//Inizialization of matrix dimension
+		matrix_dimension = new int[3];	
+		matrix_dimension[0]=300;
+		matrix_dimension[1]=400;
+		matrix_dimension[2]=500;
+		
+		//Inizialization of words to crack 
+		words = new ArrayList();
+		words.add("ciao");
+		words.add("ciaoo");
+		words.add("ciaooo");
 	}
 	
+	
+	
+	/**
+	 * a seconda della scelta eseguiamo il benchmark giusto all'interno di un asynctask
+	 */
 	@Override
-	protected void onPostExecute(Long result) {	
+	protected HashMap doInBackground(Void... params) {
 		
-		//tolgo il loading dialog
-		//loadingDialog.dismiss();
+		 
+		 if(selected == R.id.radio0)
+		   {
+			  
+		      for(int i=0;i<names.size();i++)
+		      {    
+				Bitmap bm = null;
+				Bitmap bm2 = null;
+				try {
+					bm = BitmapFactory.decodeStream(this.context.getAssets().open(""+names.get(i)));
+					bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}   
+				
+				Long t = GrayScaling.callPureJava(bm2);
+				result_j.add(t); 
+				
+				t = GrayScaling.callPureJni(bm); 
+				result_jni.add(t); 
+				
+			    t = GrayScaling.callPureRenderScript(bm, this.context);			     
+		     	result_rs.add(t);
+		     	
+		     	
+		     }
+			  		    		     	    
+		    
+		   }
+		 /*
+		 else 
+			 if(selected == R.id.radio1)
+			   {
+				 for(int j=0; j<words.size();j++)
+				 {
+				   String word;
+				   word = (String) words.get(j);
+				   				 
+				   this.bruteforce(view,word);
+				   this.bruteforceJni(view,word);
+				   this.rsbrute(view,word);
+				
+				 }
+
+				    //Find the max from java result ( what a news?! ) 
+				 max = this.find_max(result_j);	
+
+				    //and plot the results
+				 this.plot(max.intValue());
+				    
+				    //Clear the temporary store of the results for further tests 
+				 result_j.clear();
+				 result_jni.clear();
+				 result_rs.clear(); 	 
+			   }
+		 
+			 else
+				 if(selected == R.id.radio2)
+				   {	
+					 for(int j=0;j<matrix_dimension.length;j++)
+					    {
+						 
+						 int dim;
+						 dim = matrix_dimension[j];						 
+						 
+						 this.matrixjama(view,dim);	 
+						 this.matrixJni(view,dim);	  
+						 this.rsmatrix(view,dim);			
+					    }
+					 
+					 //Find the max from java result ( what a news?! ) 
+					 max = this.find_max(result_j);	
+
+					 //and plot the results
+					 this.plot(max.intValue());
+					    
+					 //Clear the temporary store of the results for further tests 
+					 result_j.clear();
+					 result_jni.clear();
+					 result_rs.clear(); 	 			 
+				   }
+				   */
+		HashMap<String, List> result = new HashMap();
 		
-		//mostro il dialog di fine nel contesto giusto ( obsolete ) 
-		/*
-		new AlertDialog.Builder(context)
-	        .setTitle("Benchmark ended").setMessage("Benchmark finished \n\nTime:" + result + "ms").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // continue with delete
-	            }
-	         })
-	        .setIcon(android.R.drawable.ic_dialog_alert).show();
-	     */
+		result.put("java", result_j);
+		result.put("jni", result_jni);
+		result.put("rs", result_rs);
 		
-		//this.return_time(result); // return the time from async task to store it and plot 
-		
+		return result;
+	}
+	
+	/**
+	 * togliamo il dialog di attesa(perche non va)
+	 */
+	@Override
+	protected void onPostExecute(HashMap result) {	
+		Log.w("ANDROBENCHMARK", "tolgo");
+		this.loadingDialog.dismiss();
+					
     }
 
-	
-	private Long return_time(Long time)
-	{
-		return time;
-	}
 
 	public Context getContext() {
 		return context;
@@ -131,7 +213,6 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 	}
 	
 	
-
 	
 	
 	

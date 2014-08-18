@@ -80,9 +80,8 @@ public class GrayScaling {
 					
 	}
 	
-	public static Long callPureRenderScript(Bitmap bm, MainActivity activity){
+	public static Long callPureRenderScript(Bitmap bm, Context context){
 		
-		Context context = activity.getBaseContext();
 		
 		//creo un istanza renderscript associandolo a questo contesto
 	    RenderScript rs = RenderScript.create(context);

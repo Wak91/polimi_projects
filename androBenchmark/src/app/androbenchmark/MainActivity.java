@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -38,44 +39,15 @@ public class MainActivity extends Activity {
 	//private static final String TAG= "MainActivity"; //tag for logcat 
 	//Log.w("ANDROBENCHMARK", "id is" + selected);
 
-	private final int num_of_test=3;
-	private List result_j;
-	private List result_jni;
-	private List result_rs;
-	private ArrayList names; // this contain the name of all the images
-    private int[] matrix_dimension;
-    private ArrayList words;
+	 private XYPlot plot;
     
-	private XYPlot plot;
 	
-	private AlertDialog loadingDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 				
-		result_j = new ArrayList();
-		result_jni = new ArrayList();
-		result_rs = new ArrayList();
-
-		//Initialization of image's name 
-		names = new ArrayList();
-		names.add("image0.bmp");
-		names.add("image1.bmp");
-		names.add("image2.bmp");
-		
-		//Inizialization of matrix dimension
-		matrix_dimension = new int[3];	
-		matrix_dimension[0]=300;
-		matrix_dimension[1]=400;
-		matrix_dimension[2]=500;
-		
-		//Inizialization of words to crack 
-		words = new ArrayList();
-		words.add("ciao");
-		words.add("ciaoo");
-		words.add("ciaooo");
 		
 		TelephonyManager tManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		String uid = tManager.getDeviceId(); //retrieve uid of the phone for server analysis 
@@ -99,117 +71,37 @@ public class MainActivity extends Activity {
 	
 	public void start_benchmark(View view){
 		
-		this.loadingDialog = new AlertDialog.Builder(this).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+	   RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
+	   int selected = radioGroup1.getCheckedRadioButtonId();		
+	    
+	   ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this, selected);
+	   task.execute();
+	   
+	   
+	   setContentView(R.layout.graph);
+	   this.plot = (XYPlot) findViewById(R.id.xyPlot);
+	   
+	   try {
+		   
+		HashMap<String, List> result = task.get();
+		Long max = this.find_max(result.get("java"));
 		
-		 RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
-		 int selected = radioGroup1.getCheckedRadioButtonId();
-		 Long max;
-		 
-		 if(selected == R.id.radio0)
-		   {
-			  
-		      for(int i=0;i<names.size();i++)
-		      {    
-				Bitmap bm=null;
-				try {
-					bm = BitmapFactory.decodeStream(getAssets().open(""+names.get(i)));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}   
-				
-			    this.grayScale(view,bm);
-			    this.grayScaleJni(view,bm);
-			    this.render_filter(view,bm);
-		     }
-			  		    		    
-		    //Find the max from java result ( what a news?! ) 
-		    max = this.find_max(result_j);	
-		    
-		    
-		    //and plot the results
-		    this.plot(max.intValue());
-		    
-		    //Clear the temporary store of the results for further tests 
-		    result_j.clear();
-		    result_jni.clear();
-		    result_rs.clear(); 	 
-		    
-		    
-		   }
-		 else 
-			 if(selected == R.id.radio1)
-			   {
-				 for(int j=0; j<words.size();j++)
-				 {
-				   String word;
-				   word = (String) words.get(j);
-				   				 
-				   this.bruteforce(view,word);
-				   this.bruteforceJni(view,word);
-				   this.rsbrute(view,word);
-				
-				 }
-
-				    //Find the max from java result ( what a news?! ) 
-				 max = this.find_max(result_j);	
-
-				    //and plot the results
-				 this.plot(max.intValue());
-				    
-				    //Clear the temporary store of the results for further tests 
-				 result_j.clear();
-				 result_jni.clear();
-				 result_rs.clear(); 	 
-			   }
-		 
-			 else
-				 if(selected == R.id.radio2)
-				   {	
-					 for(int j=0;j<matrix_dimension.length;j++)
-					    {
-						 
-						 int dim;
-						 dim = matrix_dimension[j];						 
-						 
-						 this.matrixjama(view,dim);	 
-						 this.matrixJni(view,dim);	  
-						 this.rsmatrix(view,dim);			
-					    }
-					 
-					 //Find the max from java result ( what a news?! ) 
-					 max = this.find_max(result_j);	
-
-					 //and plot the results
-					 this.plot(max.intValue());
-					    
-					 //Clear the temporary store of the results for further tests 
-					 result_j.clear();
-					 result_jni.clear();
-					 result_rs.clear(); 	 			 
-				   }	
+		this.drawPlot(max.intValue(), result);
+		
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	 
 				   	
 	}
 		 
 	
-	 private Long find_max(List result_j) {
-		
-		Long max=(long) -1;
-		Long r ;
-		 for(int i=0;i<result_j.size();i++)
-		    {		 
-			 r= (Long) result_j.get(i);
-			 if(r>max)
-				 max=(Long) result_j.get(i);	 
-		    }
-		 if(max==-1)
-		   {
-			 max=(long) 1500;
-		   }
-		 return max;
-		 
-	}
 
+/*
 	public void grayScale(View view,Bitmap bm){
 	    	
 	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
@@ -266,7 +158,7 @@ public class MainActivity extends Activity {
      	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
      	
      	task.execute(new GrayScaling(), "callPureRenderScript", bm2, this);
-     	*/
+     	
      	     	
      	Long t = GrayScaling.callPureRenderScript(bm2, this);
      
@@ -318,7 +210,7 @@ public class MainActivity extends Activity {
 		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
 	    task.execute(new Matrix(), "callPureRenderScript", this);
-	    */
+	    
 		 
 		 //showLoading();
 		 
@@ -377,7 +269,7 @@ public class MainActivity extends Activity {
 		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 		     	
 		task.execute(new Bruteforce(), "callPureRenderScript", this);
-		*/
+	
 		 
 		//showLoading();
 		 
@@ -412,13 +304,32 @@ public class MainActivity extends Activity {
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();
 	 }
 	 
-	 private void plot(int max)
+	 */
+	
+	 private Long find_max(List result_j) {
+			
+			Long max=(long) -1;
+			Long r ;
+			 for(int i=0;i<result_j.size();i++)
+			    {		 
+				 r= (Long) result_j.get(i);
+				 if(r>max)
+					 max=(Long) result_j.get(i);	 
+			    }
+			 if(max==-1)
+			   {
+				 max=(long) 1500;
+			   }
+			 return max;
+			 
+	}
+	 
+	 private void drawPlot(int max, HashMap<String, List> result)
 	 {
 		 
-		 setContentView(R.layout.graph);
-	     plot = (XYPlot) findViewById(R.id.xyPlot);
-			 
-	     plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, names.size());     
+		
+		 
+	     plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 3);     
 	     plot.setDomainValueFormat(new DecimalFormat("0"));
 		 plot.setDomainStepValue(1);
 
@@ -431,14 +342,14 @@ public class MainActivity extends Activity {
 		 plot.setRangeStepValue(5);
 		 plot.setRangeValueFormat(new DecimalFormat("0"));
 			 
-		 XYSeries series1 = new SimpleXYSeries(result_j,
+		 XYSeries series1 = new SimpleXYSeries(result.get("java"),
 				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Pure Java");
 			 
 			 
-		 XYSeries series2 = new SimpleXYSeries(result_jni,
+		 XYSeries series2 = new SimpleXYSeries(result.get("jni"),
 				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "JNI");
 			 
-		 XYSeries series3 = new SimpleXYSeries(result_rs,
+		 XYSeries series3 = new SimpleXYSeries(result.get("rs"),
 				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Renderscript");
 			 
 		 LineAndPointFormatter s1Format = new LineAndPointFormatter();
@@ -471,5 +382,7 @@ public class MainActivity extends Activity {
 		
 		
 	 }
+	 
+
 	 
 }
