@@ -42,13 +42,13 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 		this.context = context;
 	}
 	
-	
+	/*
 	@Override
 	protected void onPreExecute(){
 		//mostro il loading dialog nel contesto giusto
 		loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
 	}
-	
+	*/
 	
 	
 	
@@ -111,7 +111,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Object, Void, Long> {
 	        .setIcon(android.R.drawable.ic_dialog_alert).show();
 	     */
 		
-		this.return_time(result); // return the time from async task to store it and plot 
+		//this.return_time(result); // return the time from async task to store it and plot 
 		
     }
 

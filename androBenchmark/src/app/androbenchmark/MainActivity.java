@@ -98,7 +98,9 @@ public class MainActivity extends Activity {
 	}
 	
 	public void start_benchmark(View view){
-				
+		
+		this.loadingDialog = new AlertDialog.Builder(this).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+		
 		 RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
 		 int selected = radioGroup1.getCheckedRadioButtonId();
 		 Long max;
@@ -123,7 +125,7 @@ public class MainActivity extends Activity {
 			  		    		    
 		    //Find the max from java result ( what a news?! ) 
 		    max = this.find_max(result_j);	
-
+		    
 		    
 		    //and plot the results
 		    this.plot(max.intValue());
@@ -185,7 +187,8 @@ public class MainActivity extends Activity {
 					 result_j.clear();
 					 result_jni.clear();
 					 result_rs.clear(); 	 			 
-				   }		
+				   }	
+				   	
 	}
 		 
 	
@@ -213,14 +216,24 @@ public class MainActivity extends Activity {
 	     	
 	     	//-----CORE OF THE BENCHMARK----------------------------
 	     		 	     	
-	     	//ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
+	     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
 	     	
-	    	//task.execute(new GrayScaling(), "callPureJava", bm2); 	
+	    	task.execute(new GrayScaling(), "callPureJava", bm2); 	
 	    	
-	     	Long t = GrayScaling.callPureJava(bm2);
-	     	
-		    result_j.add(t); // retrieve the value from the async task
-			
+	    	Long t;
+			try {
+				t = (Long)task.get();
+				result_j.add(t); // retrieve the value from the async task
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	
+	     	//Long t = GrayScaling.callPureJava(bm2);
+	     		
 		    
 		 }
 	   
