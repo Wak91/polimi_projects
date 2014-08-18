@@ -23,7 +23,8 @@ obj/local/mips/objs/app_androbenchmark_Matrix/app_androbenchmark_Matrix.o: \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-mips/usr/include/linux/types.h \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-mips/usr/include/machine/kernel.h \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-mips/usr/include/sys/sysmacros.h \
- /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-mips/usr/include/memory.h
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-mips/usr/include/memory.h \
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-mips/usr/include/android/log.h
 
 jni/app_androbenchmark_Matrix.h:
 
@@ -74,3 +75,5 @@ jni/app_androbenchmark_Matrix.h:
 /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-mips/usr/include/sys/sysmacros.h:
 
 /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-mips/usr/include/memory.h:
+
+/Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-mips/usr/include/android/log.h:

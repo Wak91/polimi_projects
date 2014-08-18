@@ -139,9 +139,8 @@ public class Bruteforce {
 					
 	}
 	
-	public static Long callPureRenderScript(MainActivity activity , String sword){
+	public static Long callPureRenderScript(String sword, Context context){
 		
-		Context context = activity.getBaseContext();
 		
 		RenderScript rs = RenderScript.create(context);
 	    ScriptC_brute script = new ScriptC_brute(rs,context.getResources(),R.raw.brute);

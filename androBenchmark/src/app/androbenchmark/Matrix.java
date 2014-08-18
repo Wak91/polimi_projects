@@ -14,7 +14,7 @@ public class Matrix {
 
 // ----------------------------- BENCHMARK CORE ----------------------------- //
 	
-	private static void javaJAMA(int dim){
+	private static void pureJava(int dim){
 		
 		double[][] m1 = new double[dim][dim];  
 		double[][] m2 = new double[dim][dim]; 
@@ -64,11 +64,11 @@ public class Matrix {
 					
 	}
 	
-public static Long calljavaJAMA(int dim){
+public static Long callPureJava(int dim){
 		
 		Long t = System.currentTimeMillis();
 		
-		javaJAMA(dim);
+		pureJava(dim);
 		
 		t = System.currentTimeMillis() - t;
     	
@@ -76,9 +76,8 @@ public static Long calljavaJAMA(int dim){
 					
 	}
 	
-	public static Long callPureRenderScript(MainActivity activity, int dim){
+	public static Long callPureRenderScript(int dim, Context context){
 		
-		Context context = activity.getBaseContext();
 		
 		RenderScript rs = RenderScript.create(context);
 		ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,context.getResources(),R.raw.rsmatrix);

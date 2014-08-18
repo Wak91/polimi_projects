@@ -22,7 +22,8 @@ obj/local/armeabi/objs/app_androbenchmark_Matrix/app_androbenchmark_Matrix.o: \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/linux/types.h \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/machine/kernel.h \
  /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/sys/sysmacros.h \
- /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/memory.h
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/memory.h \
+ /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/android/log.h
 
 jni/app_androbenchmark_Matrix.h:
 
@@ -71,3 +72,5 @@ jni/app_androbenchmark_Matrix.h:
 /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/sys/sysmacros.h:
 
 /Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/memory.h:
+
+/Users/seba0691/Developer/android-ndk-r9d/platforms/android-19/arch-arm/usr/include/android/log.h:

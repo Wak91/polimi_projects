@@ -81,9 +81,9 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		
 		//Inizialization of matrix dimension
 		matrix_dimension = new int[3];	
-		matrix_dimension[0]=300;
-		matrix_dimension[1]=400;
-		matrix_dimension[2]=500;
+		matrix_dimension[0]=100;
+		matrix_dimension[1]=150;
+		matrix_dimension[2]=200;
 		
 		//Inizialization of words to crack 
 		words = new ArrayList();
@@ -100,9 +100,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	@Override
 	protected HashMap doInBackground(Void... params) {
 		
-		 
-		 if(selected == R.id.radio0)
-		   {
+		 //caso grayscale
+		 if(selected == R.id.radio0){
 			  
 		      for(int i=0;i<names.size();i++)
 		      {    
@@ -127,62 +126,54 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		     	
 		     	
 		     }
-			  		    		     	    
-		    
-		   }
-		 /*
-		 else 
-			 if(selected == R.id.radio1)
-			   {
+			  		    		     	    	    
+		 }
+		 
+		 //caso bruteforce
+		 else if(selected == R.id.radio1) {
 				 for(int j=0; j<words.size();j++)
 				 {
 				   String word;
 				   word = (String) words.get(j);
 				   				 
-				   this.bruteforce(view,word);
-				   this.bruteforceJni(view,word);
-				   this.rsbrute(view,word);
+				   Long t = Bruteforce.callPureJava(word);
+				   result_j.add(t); 
+					
+				   t = Bruteforce.callPureJni(word);
+				   result_jni.add(t); 
+					
+				   t = Bruteforce.callPureRenderScript(word, this.context);
+			       result_rs.add(t);
 				
 				 }
 
-				    //Find the max from java result ( what a news?! ) 
-				 max = this.find_max(result_j);	
-
-				    //and plot the results
-				 this.plot(max.intValue());
-				    
-				    //Clear the temporary store of the results for further tests 
-				 result_j.clear();
-				 result_jni.clear();
-				 result_rs.clear(); 	 
+				  	 
 			   }
-		 
-			 else
-				 if(selected == R.id.radio2)
-				   {	
-					 for(int j=0;j<matrix_dimension.length;j++)
-					    {
+		
+		  //caso moltiplicazione
+		  else if(selected == R.id.radio2) {	
+			
+			  for(int j=0;j<matrix_dimension.length;j++){
 						 
-						 int dim;
-						 dim = matrix_dimension[j];						 
+				int dim;
+				dim = matrix_dimension[j];						 
 						 
-						 this.matrixjama(view,dim);	 
-						 this.matrixJni(view,dim);	  
-						 this.rsmatrix(view,dim);			
-					    }
-					 
-					 //Find the max from java result ( what a news?! ) 
-					 max = this.find_max(result_j);	
-
-					 //and plot the results
-					 this.plot(max.intValue());
-					    
-					 //Clear the temporary store of the results for further tests 
-					 result_j.clear();
-					 result_jni.clear();
-					 result_rs.clear(); 	 			 
-				   }
-				   */
+				Long t = Matrix.callPureJava(dim);
+				result_j.add(t); 
+				
+				Log.w("ANDROBENCHMARK", "mostro" + dim); 
+				
+				t = Matrix.callPureJni(dim);
+				result_jni.add(t); 
+							
+				t = Matrix.callPureRenderScript(dim, this.context); 
+			    result_rs.add(t);		
+					     
+			 }
+					  	 			 
+		 }
+			 
+	
 		HashMap<String, List> result = new HashMap();
 		
 		result.put("java", result_j);
