@@ -33,10 +33,9 @@ public class MainActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-				
 		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);	
 		TelephonyManager tManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		String uid = tManager.getDeviceId(); //retrieve uid of the phone for server analysis 
 		
