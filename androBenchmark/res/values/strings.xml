@@ -16,8 +16,11 @@
     <string name="button_hello_render"> Hello.rs</string>
     <string name="button_gray_jni">Gray(jni)</string>
     <string name="button_matrix_rs">Matrix.rs</string>
-	<string name="button_bruteforce_java">Bruteforce</string>    
-	<string name="button_bruteforce_jni">Bruteforce (JNI)</string>    
-    <string name="button_bruteforce_rs">Bruteforce (RS)</string>    
-	
+    <string name="button_bruteforce_java">Bruteforce</string>
+    <string name="button_bruteforce_jni">Bruteforce (JNI)</string>
+    <string name="button_bruteforce_rs">Bruteforce (RS)</string>
+    <string name="title_activity_graph">GraphActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

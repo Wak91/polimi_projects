@@ -47,22 +47,6 @@ public class MainActivity extends Activity {
     private ArrayList words;
     
 	private XYPlot plot;
-
-	//DATA FOR PERSISTENT MEMORY
-	//--------------------------
-	private String mgs1="GSJ"; //Gray scale java
-	private String mgs2="GSJN"; //Gray scale JNI
-	private String mgs3="GSR";  //Gray scale renderscript 
-	
-	private String mmm1="MMJ"; //Matrix multiplication java
-	private String mmm2="MMJN";
-	private String mmm3="MMR";
-	
-	private String mb1="BJ"; //Bruteforce java
-	private String mb2="BJN";
-	private String mb3="BR";
-	//--------------------------
-
 	
 	private AlertDialog loadingDialog;
 	
@@ -137,15 +121,10 @@ public class MainActivity extends Activity {
 			    this.render_filter(view,bm);
 		     }
 			  		    		    
-		    //Let's write the last result on the persistent memory for further visualization 
-		    
-		    this.store(result_j, mgs1);
-		    this.store(result_jni, mgs2);
-		    this.store(result_rs, mgs3);
-
 		    //Find the max from java result ( what a news?! ) 
 		    max = this.find_max(result_j);	
 
+		    
 		    //and plot the results
 		    this.plot(max.intValue());
 		    
@@ -169,10 +148,6 @@ public class MainActivity extends Activity {
 				   this.rsbrute(view,word);
 				
 				 }
-				 
-				 this.store(result_j, mb1);
-				 this.store(result_jni, mb2);
-				 this.store(result_rs, mb3);
 
 				    //Find the max from java result ( what a news?! ) 
 				 max = this.find_max(result_j);	
@@ -200,10 +175,6 @@ public class MainActivity extends Activity {
 						 this.rsmatrix(view,dim);			
 					    }
 					 
-					 this.store(result_j, mmm1);
-					 this.store(result_jni, mmm2);
-					 this.store(result_rs, mmm3);
-
 					 //Find the max from java result ( what a news?! ) 
 					 max = this.find_max(result_j);	
 
@@ -484,41 +455,8 @@ public class MainActivity extends Activity {
 	    plot.getBackgroundPaint().setAlpha(0);
 	    plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
 		plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);   
-			
+		
+		
 	 }
 	 
-	 
-	 /*
-	  * result is the list of value that you want to store and the id 
-	  * is the marker of the persistent data on the memory delcared at the start of the class 
-	  * */
-	 
-	 private void store(List result , String id)
-	 {
-		 String n;
-		    
-		    for(int i=0;i<result.size();i++)
-		       {
-		    	n=result.toString();	    	
-		    	try 
-		    	  {
-		    		  
-				   FileOutputStream fos = openFileOutput(id, Context.MODE_PRIVATE);
-				   fos.write(n.getBytes());
-				   fos.close();
-				  
-				    } 
-		    	catch (FileNotFoundException e) {
-					 	e.printStackTrace();
-				    } 
-		    	catch (IOException e) {
-						e.printStackTrace();
-				    } 	
-		        }		 
-	 }
-	 
-	 
-
-	
-
 }
