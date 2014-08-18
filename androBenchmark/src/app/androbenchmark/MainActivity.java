@@ -158,6 +158,9 @@ public class MainActivity extends Activity {
 		    public void onClick(DialogInterface dialog, int id) {
 		       
 		    	Log.w("ANDROBENCHMARK", "sending.....");
+		    	
+		    	CheckConnectionTask task = new CheckConnectionTask(MainActivity.this);
+		 	    task.execute();
 		    	dialog.dismiss();
 		    	
 		     }
@@ -176,6 +179,8 @@ public class MainActivity extends Activity {
 		
 
 	 }
+	 
+
 	 
 	 
 
