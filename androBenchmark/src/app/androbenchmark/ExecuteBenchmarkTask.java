@@ -17,6 +17,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	
 	
 	private AlertDialog loadingDialog;
+	private AlertDialog choiceDialog;
 	private Context context;
 	private int selected;
 	private MainActivity activity;
@@ -180,10 +181,13 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	protected void onPostExecute(HashMap<String, List<Long>> result) {	
 		//Log.w("ANDROBENCHMARK", "tolgo");
 		this.loadingDialog.dismiss();
+		
 		//scaliamo il grafico in modo appropriato
 		Long max = this.find_max(result.get("java"));
 		//disebnamo il grafico
 		this.activity.drawPlot(max.intValue(), result);
+		
+		this.activity.showChoiceDialog();
 					
     }
 	

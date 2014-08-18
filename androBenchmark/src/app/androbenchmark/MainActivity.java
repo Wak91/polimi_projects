@@ -16,8 +16,11 @@ import com.androidplot.xy.XYStepMode;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -28,6 +31,7 @@ public class MainActivity extends Activity {
 	//Log.w("ANDROBENCHMARK", "id is" + selected);
 
 	 private XYPlot plot;
+	 private AlertDialog.Builder choiceDialog;
     
 	
 	
@@ -144,6 +148,35 @@ public class MainActivity extends Activity {
 		
 		
 	 }
+	 
+	 public void showChoiceDialog(){
+
+		this.choiceDialog = new AlertDialog.Builder(this);
+		this.choiceDialog.setMessage("Do you want to send data to the server?");
+		
+		this.choiceDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int id) {
+		       
+		    	Log.w("ANDROBENCHMARK", "sending.....");
+		    	dialog.dismiss();
+		    	
+		     }
+		});
+		
+		this.choiceDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int id) {
+		       
+		    	Log.w("ANDROBENCHMARK", "Not accepted");
+		    	dialog.dismiss();
+		    	
+		     }
+		});
+		
+		this.choiceDialog.show();
+		
+
+	 }
+	 
 	 
 
 	 
