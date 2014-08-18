@@ -67,7 +67,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	protected void onPreExecute(){
 		//mostro il loading dialog nel contesto giusto
 		Log.w("ANDROBENCHMARK", "mostro");
-		this.loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+		//this.loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
 		
 		result_j = new ArrayList();
 		result_jni = new ArrayList();
@@ -189,7 +189,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	@Override
 	protected void onPostExecute(HashMap result) {	
 		Log.w("ANDROBENCHMARK", "tolgo");
-		this.loadingDialog.dismiss();
+		//this.loadingDialog.dismiss();
 					
     }
 

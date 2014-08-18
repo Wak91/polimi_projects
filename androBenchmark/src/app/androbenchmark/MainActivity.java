@@ -1,11 +1,8 @@
 package app.androbenchmark;
 
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -19,19 +16,12 @@ import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
 
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 public class MainActivity extends Activity {
@@ -40,6 +30,7 @@ public class MainActivity extends Activity {
 	//Log.w("ANDROBENCHMARK", "id is" + selected);
 
 	 private XYPlot plot;
+	 private AlertDialog loadingDialog;
     
 	
 	
@@ -69,23 +60,32 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	/**
+	 * chiama la suite di benchmark scelta
+	 * @param view
+	 */
 	public void start_benchmark(View view){
 		
+	   //this.loadingDialog = new AlertDialog.Builder(this).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+	   
+	   //ricaviamo la scelta dell utente
 	   RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
 	   int selected = radioGroup1.getCheckedRadioButtonId();		
-	    
+	   
+	   //eseguiamo il benchamrk in un asynctask
 	   ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this, selected);
 	   task.execute();
 	   
-	   
+	   //creiamo il grafico
 	   setContentView(R.layout.graph);
 	   this.plot = (XYPlot) findViewById(R.id.xyPlot);
 	   
 	   try {
-		   
+		//risultato passato dal task   
 		HashMap<String, List> result = task.get();
+		//scaliamo il grafico in modo appropriato
 		Long max = this.find_max(result.get("java"));
-		
+		//disebnamo il grafico
 		this.drawPlot(max.intValue(), result);
 		
 		} catch (InterruptedException e) {
@@ -101,211 +101,12 @@ public class MainActivity extends Activity {
 		 
 	
 
-/*
-	public void grayScale(View view,Bitmap bm){
-	    	
-	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
-	     	
-	     	//-----CORE OF THE BENCHMARK----------------------------
-	     		 	     	
-	     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-	     	
-	    	task.execute(new GrayScaling(), "callPureJava", bm2); 	
-	    	
-	    	Long t;
-			try {
-				t = (Long)task.get();
-				result_j.add(t); // retrieve the value from the async task
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    	
-	     	//Long t = GrayScaling.callPureJava(bm2);
-	     		
-		    
-		 }
-	   
-	 public void grayScaleJni(View view,Bitmap bm){
-	    		     	
-	     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
-	     	
-	     	//-----CORE OF THE BENCHMARK----------------------------	     	
-	     	
-	     	//ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-	     	
-	    	//task.execute(new GrayScaling(), "callPureJni", bm2); 	
-	    	
-	     	Long t = GrayScaling.callPureJni(bm);
-	        
-	     	result_jni.add(t); 
-	    
-			
-	    	
-	    	
-	     }
-	 
-	 public void render_filter(View view,Bitmap bm)
-	 {	  	
-		  	 	
-     	Bitmap bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones     	
-     	
-     	//-----CORE OF THE BENCHMARK----------------------------	     	
-     	/*
-     	ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-     	
-     	task.execute(new GrayScaling(), "callPureRenderScript", bm2, this);
-     	
-     	     	
-     	Long t = GrayScaling.callPureRenderScript(bm2, this);
-     
-     	result_rs.add(t);
-			 	
-	 }
-	 
- 
-	 public void matrixjama(View view, int dim){
-	    	
-		//-----CORE OF THE BENCHMARK----------------------------
-		 	
-		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-	     	
-		//task.execute(new Matrix(), "calljavaJAMA" , dim); 
-		Long t = Matrix.calljavaJAMA(dim); // Da sistemare, bisogna passare dall'async task ma logcat 
-		//dice che calljavaJAMA non esiste! 
-	
-		result_j.add(t);
-	
-	   	    	   	   
-	   	//----------------------------------------------------------
-	   	      	 	    	
-	 }
-	 
-	 public void matrixJni(View view, int dim){
-	     	
-		//-----CORE OF THE BENCHMARK----------------------------
-		
-		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-	     	
-		//task.execute(new Matrix(), "callPureJni" , dim); 
-	    
-		Long t = Matrix.callPureJni(dim);
-		
-	
-			result_jni.add(t);
-		
-		
-		//----------------------------------------------------------    	
-	 }
-	 
-	 	 
-	 public void rsmatrix(View view, int dim){
-		 
-		//-----CORE OF THE BENCHMARK----------------------------
-		
-		/* 
-		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-	     	
-	    task.execute(new Matrix(), "callPureRenderScript", this);
-	    
-		 
-		 //showLoading();
-		 
-		 Long t = Matrix.callPureRenderScript(this,dim); 
-		 
-		 result_rs.add(t);
-	     
-	    //----------------------------------------------------------
 
-	 }
-	 
-	 public void rsparall_matrix(View view){
-				 //TODO
-		 
-	 }
-	 
-	 public void bruteforce(View view, String word){
-	    	
-		 //-----CORE OF THE BENCHMARK----------------------------
-		 
-		 ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-	     	
-		 //task.execute(new Bruteforce(), "callPureJava");
-		 
-		 Long t = Bruteforce.callPureJava(word);
-		 
-		 result_j.add(t);
-		 
-	   	 //----------------------------------------------------------
-	   	      	 	
-	    	
-	 }
-
-	 public void bruteforceJni(View view , String word){
-	    	
-	    //-----CORE OF THE BENCHMARK----------------------------
-		 
-	    ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-	     	
-		//task.execute(new Bruteforce(), "callPureJni"); 
-		
-	    Long t = Bruteforce.callPureJni(word);
-	    
-	    result_jni.add(t);
-	    
-	   	//----------------------------------------------------------
-	   	      	 	
-	    	
-	 }
-	 
-
-	 public void rsbrute(View view , String word){
-		 		 
-		//-----CORE OF THE BENCHMARK----------------------------
-		/*
-		ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this);
-		     	
-		task.execute(new Bruteforce(), "callPureRenderScript", this);
-	
-		 
-		//showLoading();
-		 
-		Long t = Bruteforce.callPureRenderScript(this,word);
-		
-		//showResult(t);
-		
-		result_rs.add(t);
-		
-		
-	    //----------------------------------------------------------
-		 
-		 
-	 }
-	 
-	 private void showLoading(){
-		 
-		 
-		 
-	 }
-	 
-	 private void showResult(Long t){
-		 
-		 loadingDialog.dismiss();
-		 
-		 new AlertDialog.Builder(this)
-	        .setTitle("Benchmark ended").setMessage("Benchmark finished \n\nTime:" + t + "ms").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) { 
-	                // continue with delete
-	            }
-	         })
-	        .setIcon(android.R.drawable.ic_dialog_alert).show();
-	 }
-	 
+	/**
+	 * funzione utile per avere ua scala sulle y appropriata
+	 * @param result_j
+	 * @return
 	 */
-	
 	 private Long find_max(List result_j) {
 			
 			Long max=(long) -1;
@@ -324,6 +125,11 @@ public class MainActivity extends Activity {
 			 
 	}
 	 
+	 /**
+	  * funzione che disegna il grafico
+	  * @param max
+	  * @param result
+	  */
 	 private void drawPlot(int max, HashMap<String, List> result)
 	 {
 		 
