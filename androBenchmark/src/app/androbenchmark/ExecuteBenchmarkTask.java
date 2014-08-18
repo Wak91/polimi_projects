@@ -8,12 +8,15 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.BatteryManager;
 import android.util.Log;
 
-public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String, List<Long>> > {
+public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String, List<Integer>> > {
 	
 	
 	private AlertDialog loadingDialog;
@@ -24,9 +27,15 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 
 	
 	private final int num_of_test=3;
-	private List<Long> result_j;
-	private List<Long> result_jni;
-	private List<Long> result_rs;
+	private List<Integer> result_j;
+	private List<Integer> result_jni;
+	private List<Integer> result_rs;
+	
+	private List<Integer> battery_j;
+	private List<Integer> battery_jni;
+	private List<Integer> battery_rs;
+
+	
 	private ArrayList<String> names; // this contain the name of all the images
     private int[] matrix_dimension;
     private ArrayList<String> words;
@@ -65,12 +74,17 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	 * a seconda della scelta eseguiamo il benchmark giusto all'interno di un asynctask
 	 */
 	@Override
-	protected HashMap<String, List<Long> > doInBackground(Void... params) {
+	protected HashMap<String, List<Integer> > doInBackground(Void... params) {
 		
 		//configurazione iniziale
-		result_j = new ArrayList<Long>();
-		result_jni = new ArrayList<Long>();
-		result_rs = new ArrayList<Long>();
+		result_j = new ArrayList<Integer>();
+		result_jni = new ArrayList<Integer>();
+		result_rs = new ArrayList<Integer>();
+		
+		battery_j =  new ArrayList<Integer>(); 
+		battery_jni =  new ArrayList<Integer>(); 
+		battery_rs =  new ArrayList<Integer>(); 
+
 
 		//Initialization of image's name 
 		names = new ArrayList<String>();
@@ -93,11 +107,10 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		//Log.w("DOINBACK",  "nome "+ Looper.myLooper());
 		 //caso grayscale
 		 if(selected == R.id.radio0){
-			  
+			Bitmap bm = null;
+			Bitmap bm2 = null; 
 		      for(int i=0;i<names.size();i++)
 		      {    
-				Bitmap bm = null;
-				Bitmap bm2 = null;
 				try {
 					bm = BitmapFactory.decodeStream(this.context.getAssets().open(""+names.get(i)));
 					bm2 = bm.copy(bm.getConfig(), true); //bm is immutable, I need to convert it in a mutable ones 
@@ -106,18 +119,45 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 					e.printStackTrace();
 				}   
 				
+								    
 				Long t = GrayScaling.callPureJava(bm2);
-				result_j.add(t); 
+				result_j.add(t.intValue()); 
 				
-				t = GrayScaling.callPureJni(bm); 
-				result_jni.add(t); 
+				t = GrayScaling.callPureJni(bm2); 
+			    result_jni.add(t.intValue()); 
 				
-			    t = GrayScaling.callPureRenderScript(bm, this.context);			     
-		     	result_rs.add(t);
-		     	
-		     	
+			    t = GrayScaling.callPureRenderScript(bm2, this.context);
+		     	result_rs.add(t.intValue());
+		     		     	
 		     }
-			  		    		     	    	    
+		      
+		  //here bm2 is the biggest image, start stress of battery 
+		      
+		  int l_before = this.getVoltage();
+		  for(int i=0;i<5;i++)
+		     {
+			  GrayScaling.callPureJava(bm2);
+		     }
+		  int l_after = this.getVoltage();
+		  
+		  battery_j.add(l_before-l_after);
+		  
+		  l_before = this.getVoltage();
+		  for(int i=0;i<5;i++)
+		     {
+			  GrayScaling.callPureJni(bm2);
+		     }
+		 l_after = this.getVoltage();
+		 battery_jni.add(l_before-l_after);
+		 
+		 l_before = this.getVoltage();
+		  for(int i=0;i<5;i++)
+		     {
+			  GrayScaling.callPureRenderScript(bm2, this.context);
+		     }
+		 l_after = this.getVoltage();
+		 battery_rs.add(l_before-l_after);
+	  		    		     	    	    
 		 }
 		 
 		 //caso bruteforce
@@ -128,13 +168,13 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				   word = (String) words.get(j);
 				   				 
 				   Long t = Bruteforce.callPureJava(word);
-				   result_j.add(t); 
+				   result_j.add(t.intValue()); 
 					
 				   t = Bruteforce.callPureJni(word);
-				   result_jni.add(t); 
+				   result_jni.add(t.intValue()); 
 					
 				   t = Bruteforce.callPureRenderScript(word, this.context);
-			       result_rs.add(t);
+			       result_rs.add(t.intValue());
 				
 				 }
 
@@ -150,27 +190,29 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				dim = matrix_dimension[j];						 
 						 
 				Long t = Matrix.callPureJava(dim);
-				result_j.add(t); 
-				
-				Log.w("ANDROBENCHMARK", "mostro" + dim); 
-				
+				result_j.add(t.intValue()); 
+								
 				t = Matrix.callPureJni(dim);
-				result_jni.add(t); 
+				result_jni.add(t.intValue()); 
 							
 				t = Matrix.callPureRenderScript(dim, this.context); 
-			    result_rs.add(t);		
+			    result_rs.add(t.intValue());		
 					     
 			 }
 					  	 			 
 		 }
 			 
 	
-		HashMap<String, List<Long>> result = new HashMap<String, List<Long>>();
+		HashMap<String, List<Integer>> result = new HashMap<String, List<Integer>>();
 		
 		result.put("java", result_j);
 		result.put("jni", result_jni);
 		result.put("rs", result_rs);
 		
+		result.put("bjava", battery_j);
+		result.put("bjni", battery_jni);
+		result.put("brs", battery_rs);
+	
 		return result;
 	}
 	
@@ -178,13 +220,13 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	 * togliamo il dialog di attesa e disegnamo il grafico
 	 */
 	@Override
-	protected void onPostExecute(HashMap<String, List<Long>> result) {	
+	protected void onPostExecute(HashMap<String, List<Integer>> result) {	
 		//Log.w("ANDROBENCHMARK", "tolgo");
 		this.loadingDialog.dismiss();
 		
 		//scaliamo il grafico in modo appropriato
-		Long max = this.find_max(result.get("java"));
-		//disebnamo il grafico
+		Integer max = this.find_max(result.get("bjava"));
+		//disegniamo il grafico
 		this.activity.drawPlot(max.intValue(), result);
 		
 		this.activity.showChoiceDialog();
@@ -196,19 +238,19 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	 * @param result_j
 	 * @return
 	 */
-	 private Long find_max(List<Long> result_j) {
+	 private Integer find_max(List<Integer> result_j) {
 			
-			Long max=(long) -1;
-			Long r ;
+			int max= -1;
+			int r ;
 			 for(int i=0;i<result_j.size();i++)
 			    {		 
-				 r= (Long) result_j.get(i);
+				 r= result_j.get(i);
 				 if(r>max)
-					 max=(Long) result_j.get(i);	 
+					 max= result_j.get(i);	 
 			    }
 			 if(max==-1)
 			   {
-				 max=(long) 1500;
+				 max= 1500;
 			   }
 			 return max;
 			 
@@ -222,6 +264,15 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 
 	public void setContext(Context context) {
 		this.context = context;
+	}
+	
+	private int getVoltage()
+	{
+		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+	    Intent b = context.registerReceiver(null, ifilter);
+	    int lev = b.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);
+	    
+	    return lev;	
 	}
 	
 	

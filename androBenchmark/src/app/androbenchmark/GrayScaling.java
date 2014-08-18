@@ -2,6 +2,8 @@ package app.androbenchmark;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.renderscript.Allocation;
@@ -59,7 +61,7 @@ public class GrayScaling {
 	public static Long callPureJava(Bitmap bm){
 		
 		Long t = System.currentTimeMillis();
-		
+				
 		pureJava(bm);
 		
 		t = System.currentTimeMillis() - t;

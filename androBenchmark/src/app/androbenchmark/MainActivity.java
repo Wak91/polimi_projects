@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
 	  * @param max
 	  * @param result
 	  */
-	 public void drawPlot(int max, HashMap<String, List<Long>> result)
+	 public void drawPlot(int max, HashMap<String, List<Integer>> result)
 	 {
 		 
 		 setContentView(R.layout.graph);
