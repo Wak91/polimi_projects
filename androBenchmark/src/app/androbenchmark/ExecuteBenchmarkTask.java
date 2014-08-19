@@ -179,7 +179,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		result.put("rs", result_rs);
 		
 		//result.put("battery", battery_result); // valori della scarica della batteria 
-
+		//Log.w("ANDROBENCHMARK", "il risultato e " + result.get("battery"));
 		return result;
 	}
 	
