@@ -70,7 +70,7 @@ public class ViewPagerAdapter extends PagerAdapter {
  
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        // Remove viewpager_item.xml from ViewPager
+       
         ((ViewPager) container).removeView((LinearLayout) object);
  
     }

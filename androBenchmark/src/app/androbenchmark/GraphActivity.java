@@ -26,6 +26,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -45,6 +47,13 @@ public class GraphActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		
+		 //Remove title bar
+	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+	    //Remove notification bar
+	    this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	    
 		setContentView(R.layout.graph_layout);
 		
 		Intent intent = getIntent();
