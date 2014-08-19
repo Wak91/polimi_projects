@@ -17,9 +17,7 @@ import com.androidplot.xy.BarFormatter;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.telephony.TelephonyManager;
 import android.util.Log;

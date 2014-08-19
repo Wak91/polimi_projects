@@ -9,7 +9,6 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -21,10 +20,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	
 	
 	private AlertDialog loadingDialog;
-	private AlertDialog choiceDialog;
 	private Context context;
 	private int selected;
-	private MainActivity activity;
 
 	
 	private final int num_of_test=3;
@@ -50,7 +47,6 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		//setto il contesto giusto(passatto dalla UI)
 		this.context = context;
 		this.selected = selected;
-		this.activity = context;
 		
 	}
 	
@@ -201,14 +197,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		
 		this.context.startActivity(intent);
 		
-		/*
-		//scaliamo il grafico in modo appropriato
-		Integer max = this.find_max(result.get("java"));
-		//disegniamo il grafico
-		this.activity.drawPlot(max.intValue(), result);
 		
-		this.activity.showChoiceDialog();
-		*/
 					
     }
 	

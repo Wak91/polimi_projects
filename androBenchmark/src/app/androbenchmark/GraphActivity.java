@@ -13,22 +13,15 @@ import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import app.androbenchmark.util.SystemUiHider;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
@@ -48,11 +41,9 @@ public class GraphActivity extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		
-		 //Remove title bar
+		//Remove title bar
 	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-	    //Remove notification bar
-	    this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	    
 		setContentView(R.layout.graph_layout);
 		

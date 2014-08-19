@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.os.BatteryManager;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
