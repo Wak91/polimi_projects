@@ -31,10 +31,12 @@ public class MainActivity extends Activity {
 
 	//private static final String TAG= "MainActivity"; //tag for logcat 
 	//Log.w("ANDROBENCHMARK", "id is" + selected);
+	
+	 public final static String RESULTS = "app.androbenchmark.RESULTS";
 
 	 private XYPlot plot;
 	 private XYPlot battery_plot;
-	 private AlertDialog.Builder choiceDialog;
+	 
     
 	
 	
@@ -167,37 +169,7 @@ public class MainActivity extends Activity {
 	 
 	 
 	 
-	 
-	 public void showChoiceDialog(){
-
-		this.choiceDialog = new AlertDialog.Builder(this);
-		this.choiceDialog.setMessage("Do you want to send data to the server?");
-		//settiamo gli event listener appropriati (fare post o no al server)
-		this.choiceDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int id) {
-		       
-		    	Log.w("ANDROBENCHMARK", "sending.....");
-		    	
-		    	CheckConnectionTask task = new CheckConnectionTask(MainActivity.this);
-		 	    task.execute();
-		    	dialog.dismiss();
-		    	
-		     }
-		});
-		
-		this.choiceDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int id) {
-		       
-		    	Log.w("ANDROBENCHMARK", "Not accepted");
-		    	dialog.dismiss();
-		    	
-		     }
-		});
-		
-		this.choiceDialog.show();
-		
-
-	 }
+	
 	 
 
 	 

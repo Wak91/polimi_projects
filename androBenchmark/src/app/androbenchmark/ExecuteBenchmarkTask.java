@@ -19,6 +19,7 @@ import android.util.Log;
 public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String, List<Integer>> > {
 	
 	
+	
 	private AlertDialog loadingDialog;
 	private AlertDialog choiceDialog;
 	private Context context;
@@ -127,7 +128,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		     }
 		  
 		      //Now battery tests 	  
-		      this.battery_result = GrayScaling.stressBattery(bm2, context); // first value in the array is java result, second jni and third rs
+		      //this.battery_result = GrayScaling.stressBattery(bm2, context); // first value in the array is java result, second jni and third rs
 		 	 
 		 }  
 		  
@@ -150,7 +151,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				 }
 				 
 				 //Now battery tests 	  
-				 this.battery_result = Bruteforce.stressBattery(word, context);
+				 //this.battery_result = Bruteforce.stressBattery(word, context);
 				  	 
 			   }
 		
@@ -173,7 +174,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 			 }
 				
 			//Now battery tests 	  		 
-			this.battery_result = Matrix.stressBattery(dim, context);
+			//this.battery_result = Matrix.stressBattery(dim, context);
 				  	   
 		 }
 			 		
@@ -181,7 +182,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		result.put("jni", result_jni);
 		result.put("rs", result_rs);
 		
-		result.put("battery", battery_result); // valori della scarica della batteria 
+		//result.put("battery", battery_result); // valori della scarica della batteria 
 
 		return result;
 	}
@@ -194,37 +195,23 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		//Log.w("ANDROBENCHMARK", "tolgo");
 		this.loadingDialog.dismiss();
 		
+		Intent intent = new Intent(this.context, GraphActivity.class);
+		
+		intent.putExtra(MainActivity.RESULTS, result);
+		
+		this.context.startActivity(intent);
+		
+		/*
 		//scaliamo il grafico in modo appropriato
 		Integer max = this.find_max(result.get("java"));
 		//disegniamo il grafico
 		this.activity.drawPlot(max.intValue(), result);
 		
 		this.activity.showChoiceDialog();
+		*/
 					
     }
 	
-	/**
-	 * funzione utile per avere ua scala sulle y appropriata
-	 * @param result_j
-	 * @return
-	 */
-	 private Integer find_max(List<Integer> result_j) {
-			
-			int max= -1;
-			int r ;
-			 for(int i=0;i<result_j.size();i++)
-			    {		 
-				 r= result_j.get(i);
-				 if(r>max)
-					 max= result_j.get(i);	 
-			    }
-			 if(max==-1)
-			   {
-				 max= 1500;
-			   }
-			 return max;
-			 
-	}
 
 
 	public Context getContext() {

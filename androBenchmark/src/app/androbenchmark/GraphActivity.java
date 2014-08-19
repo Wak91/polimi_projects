@@ -1,6 +1,8 @@
-/*package app.androbenchmark;
+package app.androbenchmark;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.List;
 
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -13,9 +15,13 @@ import com.androidplot.xy.XYStepMode;
 import app.androbenchmark.util.SystemUiHider;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.MenuItem;
@@ -25,45 +31,61 @@ import android.support.v4.app.NavUtils;
 public class GraphActivity extends Activity {
 	
 	private XYPlot plot;
+	private AlertDialog.Builder choiceDialog;
 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.graph_layout);
 		
+		Intent intent = getIntent();
+		HashMap<String, List<Integer>> result = (HashMap<String, List<Integer> >)intent.getSerializableExtra(MainActivity.RESULTS);
+		
+		//scaliamo il grafico in modo appropriato
+		Integer max = this.find_max(result.get("java"));
+		//disegniamo il grafico
+		this.drawPlot(max.intValue(), result);
+		
+		this.showChoiceDialog();
 		
 
 	}
 
 	
-	private void plot(int max)
+	 /**
+	  * funzione che disegna il grafico dei tempi di esecuzione 
+	  * @param max
+	  * @param result
+	  */
+	 public void drawPlot(int max, HashMap<String, List<Integer>> result)
 	 {
 		 
 		 setContentView(R.layout.graph);
-	     plot = (XYPlot) findViewById(R.id.xyPlot);
-			 
-	     plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, names.size());     
+		 this.plot = (XYPlot) findViewById(R.id.xyPlot);
+		 
+	     plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 3);     
 	     plot.setDomainValueFormat(new DecimalFormat("0"));
 		 plot.setDomainStepValue(1);
 
 		 plot.setDomainLeftMin(0);
 		 plot.setDomainRightMin(3);
 		
-		 max=max+500;
+		 max=max+300;
 			
 		 plot.setRangeBoundaries(0,max, BoundaryMode.FIXED);
 		 plot.setRangeStepValue(5);
 		 plot.setRangeValueFormat(new DecimalFormat("0"));
 			 
-		 XYSeries series1 = new SimpleXYSeries(result_j,
+		 XYSeries series1 = new SimpleXYSeries(result.get("java"),
 				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Pure Java");
 			 
 			 
-		 XYSeries series2 = new SimpleXYSeries(result_jni,
+		 XYSeries series2 = new SimpleXYSeries(result.get("jni"),
 				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "JNI");
 			 
-		 XYSeries series3 = new SimpleXYSeries(result_rs,
+		 XYSeries series3 = new SimpleXYSeries(result.get("rs"),
 				        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Renderscript");
 			 
 		 LineAndPointFormatter s1Format = new LineAndPointFormatter();
@@ -93,7 +115,62 @@ public class GraphActivity extends Activity {
 	    plot.getBackgroundPaint().setAlpha(0);
 	    plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
 		plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);   
-			
+	 }
+	 
+		/**
+		 * funzione utile per avere ua scala sulle y appropriata
+		 * @param result_j
+		 * @return
+		 */
+	 private Integer find_max(List<Integer> result_j) {
+				
+				int max= -1;
+				int r ;
+				 for(int i=0;i<result_j.size();i++)
+				    {		 
+					 r= result_j.get(i);
+					 if(r>max)
+						 max= result_j.get(i);	 
+				    }
+				 if(max==-1)
+				   {
+					 max= 1500;
+				   }
+				 return max;
+				 
+		}
+	 
+	 
+	 
+	 public void showChoiceDialog(){
+
+		this.choiceDialog = new AlertDialog.Builder(this);
+		this.choiceDialog.setMessage("Do you want to send data to the server?");
+		//settiamo gli event listener appropriati (fare post o no al server)
+		this.choiceDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int id) {
+		       
+		    	Log.w("ANDROBENCHMARK", "sending.....");
+		    	
+		    	CheckConnectionTask task = new CheckConnectionTask(GraphActivity.this);
+		 	    task.execute();
+		    	dialog.dismiss();
+		    	
+		     }
+		});
+		
+		this.choiceDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int id) {
+		       
+		    	Log.w("ANDROBENCHMARK", "Not accepted");
+		    	dialog.dismiss();
+		    	
+		     }
+		});
+		
+		this.choiceDialog.show();
+		
+
 	 }
 	
-}*/
+}

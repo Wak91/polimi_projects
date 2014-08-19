@@ -15,11 +15,11 @@ import android.util.Log;
 public class CheckConnectionTask extends AsyncTask <Void, Void, Boolean>  {
 	
 
-	private MainActivity activity;
+	private GraphActivity activity;
 	private Context context;
 	private AlertDialog sendingDialog;
 	
-	public CheckConnectionTask(MainActivity context){
+	public CheckConnectionTask(GraphActivity context){
 		this.context = context;
 		this.activity = context;
 		
