@@ -13,12 +13,14 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
+import com.androidplot.xy.BarFormatter;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -31,7 +33,7 @@ public class MainActivity extends Activity {
 	//Log.w("ANDROBENCHMARK", "id is" + selected);
 
 	 private XYPlot plot;
-	 
+	 private XYPlot battery_plot;
 	 private AlertDialog.Builder choiceDialog;
     
 	
@@ -102,7 +104,7 @@ public class MainActivity extends Activity {
 		 plot.setDomainLeftMin(0);
 		 plot.setDomainRightMin(3);
 		
-		 max=max+500;
+		 max=max+300;
 			
 		 plot.setRangeBoundaries(0,max, BoundaryMode.FIXED);
 		 plot.setRangeStepValue(5);
@@ -145,9 +147,26 @@ public class MainActivity extends Activity {
 	    plot.getBackgroundPaint().setAlpha(0);
 	    plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
 		plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);   
-		
-		
 	 }
+	 
+	 public void drawBatteryPlot(int max, HashMap<String, List<Integer>> result)
+	 {
+		 battery_plot = (XYPlot) findViewById(R.id.xyPlot);
+		 BarFormatter format1 = new BarFormatter(Color.argb(200, 100, 150, 100), Color.LTGRAY);
+		 BarFormatter format2 = new BarFormatter(Color.argb(200, 100, 100, 100), Color.LTGRAY);
+		 BarFormatter format3 = new BarFormatter(Color.argb(200, 150, 150, 150), Color.LTGRAY);
+		 
+		 battery_plot.setTicksPerRangeLabel(3);
+		 battery_plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);
+		 battery_plot.setTicksPerDomainLabel(2);
+		 
+		 
+		 
+	 
+	 }
+	 
+	 
+	 
 	 
 	 public void showChoiceDialog(){
 
