@@ -57,13 +57,7 @@ public class GraphActivity extends Activity {
         // associamo l adapter al view pager di prima
         viewPager.setAdapter(adapter);
  
-        /*
-        // mettiamo l indicatore giusto per le varie slide
-        mIndicator = (UnderlinePageIndicator) findViewById(R.id.indicator);
-        mIndicator.setFades(false);
-        mIndicator.setViewPager(viewPager);	
-        */
-        
+        //mettiamo i titoli alle varie view
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(viewPager);
         
