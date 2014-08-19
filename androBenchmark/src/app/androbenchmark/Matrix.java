@@ -1,8 +1,12 @@
 package app.androbenchmark;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptGroup;
 import Jama.*; 
@@ -114,4 +118,75 @@ public static Long callPureJava(int dim){
 	*/
 
 // ----------------------------- END SETUP BENCHMARK  ----------------------------- //
+	
+	// ----------------------------- BATTERY STRESS  ----------------------------- //
+	
+			public static ArrayList <Integer> stressBattery(int dim , Context c) // need the context to register the receiver 
+			{
+			 
+			 ArrayList <Integer> battery_result = new ArrayList<Integer>();
+		     int l_before = getVoltage(c);
+		     int l_after=0;
+		     
+			 //Stress battery with Java 
+
+			 Long t = System.currentTimeMillis();
+			 
+		     do
+		     {
+			  callPureJava(dim);  
+			  l_after = getVoltage(c);
+		     } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
+		     
+		     Long t2 = System.currentTimeMillis() - t;
+		     
+			 battery_result.add(t2.intValue());
+			 
+			 //Stress battery with JNI 
+			 
+		     t = System.currentTimeMillis();
+			 
+		     do
+		     {
+			  callPureJni(dim);  
+			  l_after = getVoltage(c);
+		     } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
+		     
+		     t2 = System.currentTimeMillis() - t;
+		     
+			 battery_result.add(t2.intValue());
+			 
+			 //Stress battery with RS
+			 
+		     t = System.currentTimeMillis();
+			 
+		     do
+		     {
+			  callPureRenderScript(dim,c);  
+			  l_after = getVoltage(c);
+		     } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
+		     
+		     t2 = System.currentTimeMillis() - t;
+		     
+			 battery_result.add(t2.intValue());
+			 
+			 return battery_result;
+			}
+			
+
+			/**
+			 * Funzione che ritorna il valore in mvolt della batteria 
+			 * @return
+			 */
+			private static int getVoltage(Context context)
+			{
+				IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+			    Intent b = context.registerReceiver(null, ifilter);
+			    int lev = b.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);    
+			    return lev;	
+			}
+		
+		
+	
+	
 }

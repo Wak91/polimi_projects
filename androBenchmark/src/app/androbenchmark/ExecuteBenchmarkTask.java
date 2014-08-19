@@ -135,9 +135,9 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		  
 		 //caso bruteforce
 		 else if(selected == R.id.radio1) {
+			   String word="";
 				 for(int j=0; j<words.size();j++)
 				 {
-				   String word;
 				   word = (String) words.get(j);
 				   				 
 				   Long t = Bruteforce.callPureJava(word);
@@ -150,16 +150,19 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 			       result_rs.add(t.intValue());
 				
 				 }
-
+				 
+				 //Now battery tests 	  
+				 int time;
+				 ArrayList<Integer> battery_result = new ArrayList<Integer>();
+				 battery_result = Bruteforce.stressBattery(word, context);
 				  	 
 			   }
 		
 		  //caso moltiplicazione
 		  else if(selected == R.id.radio2) {	
-			
+			  int dim=2;
 			  for(int j=0;j<matrix_dimension.length;j++){
 						 
-				int dim;
 				dim = matrix_dimension[j];						 
 						 
 				Long t = Matrix.callPureJava(dim);
@@ -172,7 +175,12 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 			    result_rs.add(t.intValue());		
 					     
 			 }
-					  	 			 
+				
+			//Now battery tests 	  
+		    int time;
+		    ArrayList<Integer> battery_result = new ArrayList<Integer>();
+			battery_result =Matrix.stressBattery(dim, context);
+				  	   
 		 }
 			 		
 		result.put("java", result_j); //valori dei tempi di esecuzione
