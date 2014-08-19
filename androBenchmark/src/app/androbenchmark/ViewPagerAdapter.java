@@ -30,6 +30,7 @@ public class ViewPagerAdapter extends PagerAdapter {
  
     @Override
     public int getCount() {
+    	//abbiamo dimensione fissa per adesso(da modifivare in futuro)
         return 2;
     }
  
@@ -41,10 +42,10 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
  
-        
- 
+       
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
+        //schiantiamo la slide dentro il graph layout
         View itemView = inflater.inflate(R.layout.graph, container,false);
  
         //scaliamo il grafico in modo appropriato
@@ -53,7 +54,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         //disegniamo il grafico
         this.activity.drawPlot(max.intValue(), result, itemView);
  
-        // Add viewpager_item.xml to ViewPager
+        // mettiamola all interno del ViewPager
         ((ViewPager) container).addView(itemView);
  
         return itemView;

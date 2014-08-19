@@ -48,29 +48,23 @@ public class GraphActivity extends Activity {
 		setContentView(R.layout.graph_layout);
 		
 		Intent intent = getIntent();
+		//prendiamo il risultato passato dall asynctask
 		HashMap<String, List<Integer>> result = (HashMap<String, List<Integer> >)intent.getSerializableExtra(MainActivity.RESULTS);
 		
-		// Locate the ViewPager in viewpager_main.xml
+		// ricaviamo il contenitore ViewPager	
         viewPager = (ViewPager) findViewById(R.id.pager);
-        // Pass results to ViewPagerAdapter Class
+        // laciamo il compito di costruire le varie view all adapter creato appositamente
         adapter = new ViewPagerAdapter(GraphActivity.this, result);
-        // Binds the Adapter to the ViewPager
+        // associamo l adapter al view pager di prima
         viewPager.setAdapter(adapter);
  
-        // ViewPager Indicator
+        // mettiamo l indicatore giusto per le varie slide
         mIndicator = (UnderlinePageIndicator) findViewById(R.id.indicator);
         mIndicator.setFades(false);
-        mIndicator.setViewPager(viewPager);
-        
-		/*
-		//scaliamo il grafico in modo appropriato
-		Integer max = this.find_max(result.get("java"));
-		
-		//disegniamo il grafico
-		this.drawPlot(max.intValue(), result);
+        mIndicator.setViewPager(viewPager);	
 		
 		this.showChoiceDialog();
-		*/
+		
 		
 
 	}
@@ -85,6 +79,7 @@ public class GraphActivity extends Activity {
 	 {
 		 
 		// setContentView(view);
+		 //la view giusta viene passata dall adapter
 		 this.plot = (XYPlot) view.findViewById(R.id.xyPlot);
 		 
 	     plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 3);     
