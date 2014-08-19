@@ -201,7 +201,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		this.loadingDialog.dismiss();
 		
 		//scaliamo il grafico in modo appropriato
-		Integer max = this.find_max(result.get("bjava"));
+		Integer max = this.find_max(result.get("java"));
 		//disegniamo il grafico
 		this.activity.drawPlot(max.intValue(), result);
 		
