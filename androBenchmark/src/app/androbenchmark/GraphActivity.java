@@ -11,6 +11,7 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
+import com.viewpagerindicator.UnderlinePageIndicator;
 
 import app.androbenchmark.util.SystemUiHider;
 import android.annotation.TargetApi;
@@ -26,13 +27,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 
 
 public class GraphActivity extends Activity {
 	
 	private XYPlot plot;
 	private AlertDialog.Builder choiceDialog;
-
+	
+	private ViewPager viewPager;
+    private PagerAdapter adapter;
+    
+    UnderlinePageIndicator mIndicator;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +50,27 @@ public class GraphActivity extends Activity {
 		Intent intent = getIntent();
 		HashMap<String, List<Integer>> result = (HashMap<String, List<Integer> >)intent.getSerializableExtra(MainActivity.RESULTS);
 		
+		// Locate the ViewPager in viewpager_main.xml
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        // Pass results to ViewPagerAdapter Class
+        adapter = new ViewPagerAdapter(GraphActivity.this, result);
+        // Binds the Adapter to the ViewPager
+        viewPager.setAdapter(adapter);
+ 
+        // ViewPager Indicator
+        mIndicator = (UnderlinePageIndicator) findViewById(R.id.indicator);
+        mIndicator.setFades(false);
+        mIndicator.setViewPager(viewPager);
+        
+		/*
 		//scaliamo il grafico in modo appropriato
 		Integer max = this.find_max(result.get("java"));
+		
 		//disegniamo il grafico
 		this.drawPlot(max.intValue(), result);
 		
 		this.showChoiceDialog();
+		*/
 		
 
 	}
@@ -59,11 +81,11 @@ public class GraphActivity extends Activity {
 	  * @param max
 	  * @param result
 	  */
-	 public void drawPlot(int max, HashMap<String, List<Integer>> result)
+	 public void drawPlot(int max, HashMap<String, List<Integer>> result, View view)
 	 {
 		 
-		 setContentView(R.layout.graph);
-		 this.plot = (XYPlot) findViewById(R.id.xyPlot);
+		// setContentView(view);
+		 this.plot = (XYPlot) view.findViewById(R.id.xyPlot);
 		 
 	     plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 3);     
 	     plot.setDomainValueFormat(new DecimalFormat("0"));
@@ -122,7 +144,7 @@ public class GraphActivity extends Activity {
 		 * @param result_j
 		 * @return
 		 */
-	 private Integer find_max(List<Integer> result_j) {
+	 public Integer find_max(List<Integer> result_j) {
 				
 				int max= -1;
 				int r ;
