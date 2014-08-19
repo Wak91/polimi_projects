@@ -11,7 +11,7 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
-import com.viewpagerindicator.UnderlinePageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import app.androbenchmark.util.SystemUiHider;
 import android.annotation.TargetApi;
@@ -39,7 +39,7 @@ public class GraphActivity extends Activity {
 	private ViewPager viewPager;
     private PagerAdapter adapter;
     
-    UnderlinePageIndicator mIndicator;
+    TitlePageIndicator mIndicator;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +58,15 @@ public class GraphActivity extends Activity {
         // associamo l adapter al view pager di prima
         viewPager.setAdapter(adapter);
  
+        /*
         // mettiamo l indicatore giusto per le varie slide
         mIndicator = (UnderlinePageIndicator) findViewById(R.id.indicator);
         mIndicator.setFades(false);
         mIndicator.setViewPager(viewPager);	
+        */
+        
+        mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
+        mIndicator.setViewPager(viewPager);
 		
 		this.showChoiceDialog();
 		

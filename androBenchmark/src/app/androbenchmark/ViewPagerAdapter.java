@@ -15,6 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
  
 public class ViewPagerAdapter extends PagerAdapter {
+	
+	protected static final String[] TITLE = new String[] { "Performance", "Consumption"};
+	
     // Declare Variables
     Context context;
     GraphActivity activity;
@@ -26,6 +29,11 @@ public class ViewPagerAdapter extends PagerAdapter {
         this.activity = context;
         this.result = result;
        
+    }
+    
+    @Override
+    public CharSequence getPageTitle(int position) {
+      return ViewPagerAdapter.TITLE[position % TITLE.length];
     }
  
     @Override
