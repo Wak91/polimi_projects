@@ -31,9 +31,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	private List<Integer> result_jni;
 	private List<Integer> result_rs;
 	
-	private List<Integer> battery_j;
-	private List<Integer> battery_jni;
-	private List<Integer> battery_rs;
+	private ArrayList<Integer> battery_result;
+
 
 	
 	private ArrayList<String> names; // this contain the name of all the images
@@ -76,15 +75,11 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	@Override
 	protected HashMap<String, List<Integer> > doInBackground(Void... params) {
 		
+		HashMap<String, List<Integer>> result = new HashMap<String, List<Integer>>();
 		//configurazione iniziale
 		result_j = new ArrayList<Integer>();
 		result_jni = new ArrayList<Integer>();
 		result_rs = new ArrayList<Integer>();
-		
-		battery_j =  new ArrayList<Integer>(); 
-		battery_jni =  new ArrayList<Integer>(); 
-		battery_rs =  new ArrayList<Integer>(); 
-
 
 		//Initialization of image's name 
 		names = new ArrayList<String>();
@@ -130,36 +125,14 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		     	result_rs.add(t.intValue());
 		     		     	
 		     }
-		      
-		  //here bm2 is the biggest image, start stress of battery 
-		      
-		  int l_before = this.getVoltage();
-		  for(int i=0;i<5;i++)
-		     {
-			  GrayScaling.callPureJava(bm2);
-		     }
-		  int l_after = this.getVoltage();
 		  
-		  battery_j.add(l_before-l_after);
+		 //Now battery tests 	  
+		 int time;
+		 ArrayList<Integer> battery_result = new ArrayList<Integer>();
+		 battery_result = GrayScaling.stressBattery(bm2, context); // first value in the array is java result, second jni and third rs
+		 	 
+		 }  
 		  
-		  l_before = this.getVoltage();
-		  for(int i=0;i<5;i++)
-		     {
-			  GrayScaling.callPureJni(bm2);
-		     }
-		 l_after = this.getVoltage();
-		 battery_jni.add(l_before-l_after);
-		 
-		 l_before = this.getVoltage();
-		  for(int i=0;i<5;i++)
-		     {
-			  GrayScaling.callPureRenderScript(bm2, this.context);
-		     }
-		 l_after = this.getVoltage();
-		 battery_rs.add(l_before-l_after);
-	  		    		     	    	    
-		 }
-		 
 		 //caso bruteforce
 		 else if(selected == R.id.radio1) {
 				 for(int j=0; j<words.size();j++)
@@ -201,18 +174,13 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 			 }
 					  	 			 
 		 }
-			 
-	
-		HashMap<String, List<Integer>> result = new HashMap<String, List<Integer>>();
-		
-		result.put("java", result_j);
+			 		
+		result.put("java", result_j); //valori dei tempi di esecuzione
 		result.put("jni", result_jni);
 		result.put("rs", result_rs);
 		
-		result.put("bjava", battery_j);
-		result.put("bjni", battery_jni);
-		result.put("brs", battery_rs);
-	
+		result.put("battery", battery_result); // valori della scarica della batteria 
+
 		return result;
 	}
 	
@@ -266,14 +234,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		this.context = context;
 	}
 	
-	private int getVoltage()
-	{
-		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-	    Intent b = context.registerReceiver(null, ifilter);
-	    int lev = b.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);
-	    
-	    return lev;	
-	}
+	
+	
 	
 	
 	

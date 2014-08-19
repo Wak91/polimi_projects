@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
 	//Log.w("ANDROBENCHMARK", "id is" + selected);
 
 	 private XYPlot plot;
+	 
 	 private AlertDialog.Builder choiceDialog;
     
 	
@@ -83,9 +84,8 @@ public class MainActivity extends Activity {
 	
 
 
-	 
 	 /**
-	  * funzione che disegna il grafico
+	  * funzione che disegna il grafico dei tempi di esecuzione 
 	  * @param max
 	  * @param result
 	  */
