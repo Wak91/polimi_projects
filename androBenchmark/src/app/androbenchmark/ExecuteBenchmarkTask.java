@@ -126,10 +126,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		     		     	
 		     }
 		  
-		 //Now battery tests 	  
-		 int time;
-		 ArrayList<Integer> battery_result = new ArrayList<Integer>();
-		 battery_result = GrayScaling.stressBattery(bm2, context); // first value in the array is java result, second jni and third rs
+		      //Now battery tests 	  
+		      this.battery_result = GrayScaling.stressBattery(bm2, context); // first value in the array is java result, second jni and third rs
 		 	 
 		 }  
 		  
@@ -152,9 +150,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				 }
 				 
 				 //Now battery tests 	  
-				 int time;
-				 ArrayList<Integer> battery_result = new ArrayList<Integer>();
-				 battery_result = Bruteforce.stressBattery(word, context);
+				 this.battery_result = Bruteforce.stressBattery(word, context);
 				  	 
 			   }
 		
@@ -176,10 +172,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 					     
 			 }
 				
-			//Now battery tests 	  
-		    int time;
-		    ArrayList<Integer> battery_result = new ArrayList<Integer>();
-			battery_result =Matrix.stressBattery(dim, context);
+			//Now battery tests 	  		 
+			this.battery_result = Matrix.stressBattery(dim, context);
 				  	   
 		 }
 			 		
