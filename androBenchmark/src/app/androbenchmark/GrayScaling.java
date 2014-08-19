@@ -164,7 +164,7 @@ public class GrayScaling {
 	 
      do
      {
-	  callPureJni(bm);  
+	  callPureRenderScript(bm,c);  
 	  l_after = getVoltage(c);
      } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
      
@@ -175,7 +175,7 @@ public class GrayScaling {
 	 return battery_result;
 	}
 	
-	
+
 	/**
 	 * Funzione che ritorna il valore in mvolt della batteria 
 	 * @return
