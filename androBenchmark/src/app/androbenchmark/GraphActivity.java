@@ -11,7 +11,7 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
-import com.viewpagerindicator.TitlePageIndicator;
+//import com.viewpagerindicator.TitlePageIndicator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
@@ -34,7 +33,7 @@ public class GraphActivity extends Activity {
 	private ViewPager viewPager;
     private PagerAdapter adapter;
     
-    TitlePageIndicator mIndicator;
+    //UnderlinePageIndicator mIndicator;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +63,10 @@ public class GraphActivity extends Activity {
         mIndicator.setFades(false);
         mIndicator.setViewPager(viewPager);	
         */
-        
+        /*
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(viewPager);
+        */
 		
 		this.showChoiceDialog();
 		
