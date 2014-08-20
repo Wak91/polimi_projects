@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptGroup;
 import Jama.*; 
@@ -125,69 +126,56 @@ public static Long callPureJava(int dim){
 	public static ArrayList <Integer> stressBattery(int dim , Context c) // need the context to register the receiver 
 		{
 		 
-		int soglia = 1;
-		 int differenza;
 		 ArrayList <Integer> battery_result = new ArrayList<Integer>();
-	     int l_before = getVoltage(c);
-	     int l_after=0;
-	     Log.w("BATTERY", "l before e " + l_before);
+	     int l_diff=0;
+	     
 		 //Stress battery with Java 
-	
-		 Long t = System.currentTimeMillis();
+	     int l_before = getVoltage(c);
 		 
-	     do
-	     {
-		  callPureJava(dim);  
-		  l_after = getVoltage(c);
-		  
-		  differenza = l_before - l_after;
-		  Log.w("BATTERY", "l_after java e " + l_after);
-		  Log.w("BATTERY", "la differenza java e " + differenza);
-	     } while((l_before - l_after >= 0) && (l_before - l_after < soglia)); // when the battery is decreased by 5 points	
+	     for(int i=0;i<400;i++) // better 500 
+		    pureJava(dim);  
 	     
-	     Long t2 = System.currentTimeMillis() - t;
-	     
-		 battery_result.add(t2.intValue());
+	     l_diff = l_before - getVoltage(c);
+		     
+		 battery_result.add(l_diff);
 		 
-		 Log.w("BATTERY", "fatto java");
 		 //Stress battery with JNI 
 		 
-	     l_before = getVoltage(c);
-	     t = System.currentTimeMillis();
-		
-	     do
-	     {
-		  callPureJni(dim);
+		 l_before = getVoltage(c);
 		  
-		  l_after = getVoltage(c);
-		  differenza = l_before - l_after;
-		  
-		  Log.w("BATTERY", "la differenza e " + differenza);
-	     } while((l_before - l_after >= 0) && (l_before - l_after < soglia)); // when the battery is decreased by 5 points	
+	     for(int i=0;i<4000;i++)
+		    pureJni(dim); 
 	     
-	     t2 = System.currentTimeMillis() - t;
+	     l_diff = l_before - getVoltage(c);
 	     
-		 battery_result.add(t2.intValue());
+		 battery_result.add(l_diff);
 		 
-		 Log.w("BATTERY", "fatto jni");
 		 //Stress battery with RS
 		 
-	     l_before = getVoltage(c);
-	     t = System.currentTimeMillis();
+		 //Prepare renderscript 
 		 
-	     do
-	     {
-		  callPureRenderScript(dim,c);  
-		  l_after = getVoltage(c);
-	     } while((l_before - l_after >= 0) && (l_before - l_after < soglia)); // when the battery is decreased by 5 points	
-	     
-	     t2 = System.currentTimeMillis() - t;
-	     
-		 battery_result.add(t2.intValue());
-		 Log.w("BATTERY", "fatto rs");
+			
+		RenderScript rs = RenderScript.create(c);
+		ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,c.getResources(),R.raw.rsmatrix);
+		script.set_dim(dim);
+		
+		//
+		 
+		 l_before = getVoltage(c);
+		
+		 for(int i=0;i<4000;i++)
+		    {
+			 script.invoke_calc();
+			 rs.finish();
+	        }
+		 
+		 l_diff = l_before - getVoltage(c);
+	     rs.destroy();
+		 battery_result.add(l_diff);
 		 
 		 return battery_result;
 		}
+		
 		
 	
 		/**

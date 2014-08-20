@@ -160,8 +160,10 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				 }
 				 
 				 result_type.add(1);
-				 //Now battery tests 	  
-				 //this.battery_result = Bruteforce.stressBattery(word, context);
+				 //Now battery tests 
+				 
+				 word = (String) words.get(0); // smallest word 
+				 this.battery_result = Bruteforce.stressBattery(word, context);
 				  	 
 			   }
 		
@@ -184,8 +186,9 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 			 }
 				
 			  result_type.add(2);
-			//Now battery tests 	  		 
-			//this.battery_result = Matrix.stressBattery(dim, context);
+			//Now battery tests 
+			dim = matrix_dimension[0]; //smallest matrix   
+			this.battery_result = Matrix.stressBattery(dim, context);
 				  	   
 		 }
 			 		

@@ -173,53 +173,63 @@ public class Bruteforce {
 		public static ArrayList <Integer> stressBattery(String sword , Context c) // need the context to register the receiver 
 		{
 		 
-		 ArrayList <Integer> battery_result = new ArrayList<Integer>();
-	     int l_before = getVoltage(c);
-	     int l_after=0;
-	     
-		 //Stress battery with Java 
-
-		 Long t = System.currentTimeMillis();
-		 
-	     do
-	     {
-		  callPureJava(sword);  
-		  l_after = getVoltage(c);
-	     } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
-	     
-	     Long t2 = System.currentTimeMillis() - t;
-	     
-		 battery_result.add(t2.intValue());
-		 
-		 //Stress battery with JNI 
-		 
-	     t = System.currentTimeMillis();
-		 
-	     do
-	     {
-		  callPureJni(sword);  
-		  l_after = getVoltage(c);
-	     } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
-	     
-	     t2 = System.currentTimeMillis() - t;
-	     
-		 battery_result.add(t2.intValue());
-		 
-		 //Stress battery with RS
-		 
-	     t = System.currentTimeMillis();
-		 
-	     do
-	     {
-		  callPureRenderScript(sword,c);  
-		  l_after = getVoltage(c);
-	     } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
-	     
-	     t2 = System.currentTimeMillis() - t;
-	     
-		 battery_result.add(t2.intValue());
-		 
-		 return battery_result;
+			 
+			 ArrayList <Integer> battery_result = new ArrayList<Integer>();
+		     int l_diff=0;
+		     
+			 //Stress battery with Java 
+		     int l_before = getVoltage(c);
+			 
+		     for(int i=0;i<400;i++) // better 500 
+			    pureJava(sword);  
+		     
+		     l_diff = l_before - getVoltage(c);
+			     
+			 battery_result.add(l_diff);
+			 
+			 //Stress battery with JNI 
+			 
+			 l_before = getVoltage(c);
+			  
+		     for(int i=0;i<4000;i++)
+			    pureJni(sword); 
+		     
+		     l_diff = l_before - getVoltage(c);
+		     
+			 battery_result.add(l_diff);
+			 
+			 //Stress battery with RS
+			 
+			 //Prepare renderscript 
+			 
+				
+			 RenderScript rs = RenderScript.create(c);
+			 ScriptC_brute script = new ScriptC_brute(rs,c.getResources(),R.raw.brute);
+				 
+				 
+			 int dim = sword.length();
+				 
+			 script.set_dim(dim);
+				 
+			 Allocation word = Allocation.createFromString(rs, sword,Allocation.USAGE_SCRIPT );
+			 script.bind_word(word);
+			
+			//
+			 
+			 l_before = getVoltage(c);
+			
+			 for(int i=0;i<4000;i++)
+			    {
+					script.invoke_brute();
+					rs.finish();					
+		        }
+			 
+			 l_diff = l_before - getVoltage(c);
+			 
+		     rs.destroy();
+			 battery_result.add(l_diff);
+			 
+			 return battery_result;
 		}
 		
 
