@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
+import com.androidplot.xy.BarFormatter;
+import com.androidplot.xy.BarRenderer;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
@@ -19,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +33,7 @@ import app.androbenchmark.util.TitlePageIndicator;
 public class GraphActivity extends Activity {
 	
 	private XYPlot plot;
+	private XYPlot battery_plot;
 	private AlertDialog.Builder choiceDialog;
 	
 	private ViewPager viewPager;
@@ -138,8 +141,65 @@ public class GraphActivity extends Activity {
 		plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);   
 	 }
 	 
+	 public void drawBatteryPlot(int max, HashMap<String, List<Integer>> result ,  View view)
+	 {
+		 battery_plot = (XYPlot) view.findViewById(R.id.xyPlot);
+		 BarFormatter format1 = new BarFormatter(Color.argb(255, 255, 255, 255),Color.RED);
+		 BarFormatter format2 = new BarFormatter(Color.argb(0, 255, 255, 100),Color.YELLOW);
+		 BarFormatter format3 = new BarFormatter(Color.argb(0, 255, 255, 100),Color.BLUE);
+
+		 battery_plot.setTicksPerRangeLabel(1);
+		 battery_plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);
+		 battery_plot.setTicksPerDomainLabel(1);
+		 
+		 ArrayList <Integer> b_java = new ArrayList <Integer> ();
+		 ArrayList <Integer> b_jni = new ArrayList <Integer> ();
+		 ArrayList <Integer> b_rs = new ArrayList <Integer> ();
+
+		 b_java.add(result.get("battery").get(0));
+		 b_jni.add(result.get("battery").get(1));
+		 b_rs.add(result.get("battery").get(2));
+		 
+		 XYSeries series1 = new SimpleXYSeries(result.get("battery"),
+				 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
+				 battery_plot.addSeries(series1, format1);
+		
+		 battery_plot.setRangeBoundaries(0,max+15, BoundaryMode.FIXED);
+		
+		 battery_plot.setDomainLeftMin(0);
+		 battery_plot.setDomainRightMin(2);
+		
+		 battery_plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 1); //Increment the domain by 1
+		 		 
+		// battery_plot.setDomainValueFormat(new DecimalFormat("0")); // remove the decimal in the domain 
+
+
+				 
+				 /*
+				 
+				 XYSeries series2 = new SimpleXYSeries( b_jni,
+						 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
+						 battery_plot.addSeries(series2, format2);
+						 
+
+						 
+						 XYSeries series3 = new SimpleXYSeries( b_rs,
+								 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
+								 battery_plot.addSeries(series3, format3);
+				*/ 
+				 
+				 /*
+				 battery_plot.getBackgroundPaint().setAlpha(0);
+				 battery_plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
+				 battery_plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);
+				
+				 battery_plot.setRangeValueFormat(new DecimalFormat("0"));
+				 */
+	 }
+	 
+	 
 		/**
-		 * funzione utile per avere ua scala sulle y appropriata
+		 * funzione utile per avere una scala sulle y appropriata
 		 * @param result_j
 		 * @return
 		 */

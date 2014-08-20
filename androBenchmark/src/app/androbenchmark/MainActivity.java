@@ -148,22 +148,7 @@ public class MainActivity extends Activity {
 	    plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
 		plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);   
 	 }
-	 
-	 public void drawBatteryPlot(int max, HashMap<String, List<Integer>> result)
-	 {
-		 battery_plot = (XYPlot) findViewById(R.id.xyPlot);
-		 BarFormatter format1 = new BarFormatter(Color.argb(200, 100, 150, 100), Color.LTGRAY);
-		 BarFormatter format2 = new BarFormatter(Color.argb(200, 100, 100, 100), Color.LTGRAY);
-		 BarFormatter format3 = new BarFormatter(Color.argb(200, 150, 150, 150), Color.LTGRAY);
-		 
-		 battery_plot.setTicksPerRangeLabel(3);
-		 battery_plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);
-		 battery_plot.setTicksPerDomainLabel(2);
-		 
-		 
-		 
-	 
-	 }
+	
 	 
 	 
 	 

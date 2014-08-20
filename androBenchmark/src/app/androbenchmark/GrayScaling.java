@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.BatteryManager;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
+import android.util.Log;
 
 
 public class GrayScaling {	
@@ -125,50 +126,61 @@ public class GrayScaling {
 	{
 	 
 	 ArrayList <Integer> battery_result = new ArrayList<Integer>();
-     int l_before = getVoltage(c);
-     int l_after=0;
+     int l_diff=0;
      
 	 //Stress battery with Java 
-
-	 Long t = System.currentTimeMillis();
+     int l_before = getVoltage(c);
 	 
-     do
-     {
-	  callPureJava(bm);  
-	  l_after = getVoltage(c);
-     } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
+     for(int i=0;i<400;i++) // better 500 
+	    pureJava(bm);  
      
-     Long t2 = System.currentTimeMillis() - t;
-     
-	 battery_result.add(t2.intValue());
+     l_diff = l_before - getVoltage(c);
+	     
+	 battery_result.add(l_diff);
 	 
 	 //Stress battery with JNI 
 	 
-     t = System.currentTimeMillis();
-	 
-     do
-     {
-	  callPureJni(bm);  
-	  l_after = getVoltage(c);
-     } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
+	 l_before = getVoltage(c);
+	  
+     for(int i=0;i<4000;i++)
+	    pureJni(bm); 
      
-     t2 = System.currentTimeMillis() - t;
+     l_diff = l_before - getVoltage(c);
      
-	 battery_result.add(t2.intValue());
+	 battery_result.add(l_diff);
 	 
 	 //Stress battery with RS
 	 
-     t = System.currentTimeMillis();
+	 //Prepare renderscript 
 	 
-     do
-     {
-	  callPureRenderScript(bm,c);  
-	  l_after = getVoltage(c);
-     } while(l_before - l_after <5 ); // when the battery is decreased by 5 points	
-     
-     t2 = System.currentTimeMillis() - t;
-     
-	 battery_result.add(t2.intValue());
+	 RenderScript rs = RenderScript.create(c);
+
+     Allocation mInAllocation = Allocation.createFromBitmap(rs, bm,Allocation.MipmapControl.MIPMAP_NONE,Allocation.USAGE_SCRIPT);
+
+     Allocation mOutAllocation = Allocation.createTyped(rs, mInAllocation.getType());
+				
+	 ScriptC_filter  mScript = new ScriptC_filter(rs,c.getResources(),R.raw.filter);
+
+	 mScript.set_gIn(mInAllocation);
+
+	 mScript.set_gOut(mOutAllocation);
+
+	 mScript.set_gScript(mScript);
+					
+	 //
+	 
+	 l_before = getVoltage(c);
+	
+	 for(int i=0;i<4000;i++)
+	    {
+         mScript.invoke_filter();
+ 	     rs.finish();
+        }
+	 
+	 l_diff = l_before - getVoltage(c);
+     rs.destroy();
+
+	 battery_result.add(l_diff);
 	 
 	 return battery_result;
 	}

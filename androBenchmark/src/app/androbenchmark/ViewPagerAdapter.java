@@ -57,10 +57,14 @@ public class ViewPagerAdapter extends PagerAdapter {
  
         //scaliamo il grafico in modo appropriato
         Integer max = this.activity.find_max(result.get("java"));
-      		
-        //disegniamo il grafico
-        this.activity.drawPlot(max.intValue(), result, itemView);
+        Integer maxc = this.activity.find_max(result.get("battery"));
+        //disegniamo il grafico performance 
+        //this.activity.drawPlot(max.intValue(), result, itemView);
  
+        //disegniamo il grafico dei consumi
+        this.activity.drawBatteryPlot(maxc.intValue(), result,itemView);
+
+        
         // mettiamola all interno del ViewPager
         ((ViewPager) container).addView(itemView);
  

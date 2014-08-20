@@ -127,7 +127,17 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		  
 		      result_type.add(0);
 		      //Now battery tests 	  
-		      //this.battery_result = GrayScaling.stressBattery(bm2, context); // first value in the array is java result, second jni and third rs
+		      
+		      
+		      //Take the smallest image 
+		    try {
+				bm = BitmapFactory.decodeStream(this.context.getAssets().open(""+names.get(0)));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			bm2 = bm.copy(bm.getConfig(), true);
+		      this.battery_result = GrayScaling.stressBattery(bm2, context); // first value in the array is java result, second jni and third rs
 		 	 
 		 }  
 		  
@@ -185,7 +195,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		
 		result.put("type", result_type);
 		
-		//result.put("battery", battery_result); // valori della scarica della batteria 
+		result.put("battery", battery_result); // valori della scarica della batteria 
 		//Log.w("ANDROBENCHMARK", "il risultato e " + result.get("battery"));
 		return result;
 	}
