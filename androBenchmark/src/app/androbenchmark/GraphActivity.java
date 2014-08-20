@@ -1,8 +1,11 @@
 package app.androbenchmark;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -32,6 +35,8 @@ public class GraphActivity extends Activity {
 	
 	private ViewPager viewPager;
     private PagerAdapter adapter;
+    
+    private HashMap<String, List<Integer>> result;
     
     TitlePageIndicator mIndicator;
 	
@@ -76,7 +81,7 @@ public class GraphActivity extends Activity {
 	  */
 	 public void drawPlot(int max, HashMap<String, List<Integer>> result, View view)
 	 {
-		 
+		this.setResult(result); 
 		// setContentView(view);
 		 //la view giusta viene passata dall adapter
 		 this.plot = (XYPlot) view.findViewById(R.id.xyPlot);
@@ -188,5 +193,21 @@ public class GraphActivity extends Activity {
 		
 
 	 }
+	 
+	 public void postResult() throws IOException{
+		 
+		SendResultTask task = new SendResultTask(this);
+		task.execute();
+	 }
+
+
+	public HashMap<String, List<Integer>> getResult() {
+		return result;
+	}
+
+
+	public void setResult(HashMap<String, List<Integer>> result) {
+		this.result = result;
+	}
 	
 }

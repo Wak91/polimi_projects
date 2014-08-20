@@ -3,7 +3,12 @@ package app.androbenchmark;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
 
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.NameValuePair;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -57,6 +62,13 @@ public class CheckConnectionTask extends AsyncTask <Void, Void, Boolean>  {
 		else{
 					
 			Log.w("CONNECTIONTASK", "Connessione disponibile");
+			
+			try {
+				this.activity.postResult();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 					
     }

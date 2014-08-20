@@ -28,6 +28,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	private List<Integer> result_j;
 	private List<Integer> result_jni;
 	private List<Integer> result_rs;
+	private List<Integer> result_type;
 	
 	private ArrayList<Integer> battery_result;
 
@@ -77,6 +78,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		result_j = new ArrayList<Integer>();
 		result_jni = new ArrayList<Integer>();
 		result_rs = new ArrayList<Integer>();
+		result_type = new ArrayList<Integer>();
 
 		//Initialization of image's name 
 		names = new ArrayList<String>();
@@ -123,6 +125,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		     		     	
 		     }
 		  
+		      result_type.add(0);
 		      //Now battery tests 	  
 		      //this.battery_result = GrayScaling.stressBattery(bm2, context); // first value in the array is java result, second jni and third rs
 		 	 
@@ -146,6 +149,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				
 				 }
 				 
+				 result_type.add(1);
 				 //Now battery tests 	  
 				 //this.battery_result = Bruteforce.stressBattery(word, context);
 				  	 
@@ -169,6 +173,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 					     
 			 }
 				
+			  result_type.add(2);
 			//Now battery tests 	  		 
 			//this.battery_result = Matrix.stressBattery(dim, context);
 				  	   
@@ -177,6 +182,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		result.put("java", result_j); //valori dei tempi di esecuzione
 		result.put("jni", result_jni);
 		result.put("rs", result_rs);
+		
+		result.put("type", result_type);
 		
 		//result.put("battery", battery_result); // valori della scarica della batteria 
 		//Log.w("ANDROBENCHMARK", "il risultato e " + result.get("battery"));
