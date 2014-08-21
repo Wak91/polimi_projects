@@ -3,6 +3,7 @@ package app.androbenchmark;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -61,9 +62,14 @@ public class ViewPagerAdapter extends PagerAdapter {
         //disegniamo il grafico performance 
         //this.activity.drawPlot(max.intValue(), result, itemView);
  
+        AlertDialog loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Values of battery result are" + result.get("battery").get(0)+" -- " +  result.get("battery").get(1) + " -- " + result.get("battery").get(2)).setIcon(android.R.drawable.ic_dialog_alert).show();
+        
+        
+        
         //disegniamo il grafico dei consumi
         this.activity.drawBatteryPlot(maxc.intValue(), result,itemView);
 
+        
         
         // mettiamola all interno del ViewPager
         ((ViewPager) container).addView(itemView);

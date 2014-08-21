@@ -145,21 +145,24 @@ public class GraphActivity extends Activity {
 	 {
 		 battery_plot = (XYPlot) view.findViewById(R.id.xyPlot);
 		 BarFormatter format1 = new BarFormatter(Color.argb(255, 255, 255, 255),Color.RED);
-
+		 
 		 battery_plot.setTicksPerRangeLabel(1);
 		 battery_plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);
+		 battery_plot.setRangeValueFormat(new DecimalFormat("0"));
 		 battery_plot.setTicksPerDomainLabel(1);
 		 
 		 XYSeries series1 = new SimpleXYSeries(result.get("battery"),
 				 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
 				 battery_plot.addSeries(series1, format1);
 		
-		 battery_plot.setRangeBoundaries(0,max+15, BoundaryMode.FIXED);
+		 battery_plot.setRangeBoundaries(0,max+5, BoundaryMode.FIXED);
 		
 		 battery_plot.setDomainLeftMin(0);
 		 battery_plot.setDomainRightMin(2);
 		
 		 battery_plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 1); //Increment the domain by 1
+	     battery_plot.setDomainValueFormat(new DecimalFormat("0"));
+
 		 
 		 battery_plot.getBackgroundPaint().setAlpha(0);
 		 battery_plot.getGraphWidget().getBackgroundPaint().setAlpha(0);

@@ -126,8 +126,9 @@ public class GrayScaling {
 	{
 	 
      int l_diff=0;
+     int l_before=0;
      
-     int l_before = getVoltage(c);
+     l_before = getVoltage(c);
 	 
      for(int i=0;i<400;i++)
 	    pureJava(bm);  
@@ -139,13 +140,15 @@ public class GrayScaling {
 	
 	public static Integer stressJNIBattery(Bitmap bm , Context c) // need the context to register the receiver 
 	{  
-		
-	 int l_before = getVoltage(c);
+	 int l_diff=0;
+	 int l_before=0;	
+	 
+	 l_before = getVoltage(c);
 	  
      for(int i=0;i<4000;i++)
 	    pureJni(bm); 
      
-     int l_diff = l_before - getVoltage(c);
+     l_diff = l_before - getVoltage(c);
      
      return l_diff;
      
@@ -153,6 +156,9 @@ public class GrayScaling {
 	 
 	public static Integer stressRSBattery(Bitmap bm , Context c) // need the context to register the receiver 
 	{
+
+	 int l_diff=0;
+	 int l_before=0;
 	 
 	 RenderScript rs = RenderScript.create(c);
 
@@ -168,7 +174,7 @@ public class GrayScaling {
 
 	 mScript.set_gScript(mScript);
 						 
-	 int l_before = getVoltage(c);
+	 l_before = getVoltage(c);
 	
 	 for(int i=0;i<4000;i++)
 	    {
@@ -176,7 +182,7 @@ public class GrayScaling {
  	     rs.finish();
         }
 	 
-	 int l_diff = l_before - getVoltage(c);
+	 l_diff = l_before - getVoltage(c);
      rs.destroy();
 
 	 return l_diff;
@@ -191,7 +197,8 @@ public class GrayScaling {
 	{
 		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 	    Intent b = context.registerReceiver(null, ifilter);
-	    int lev = b.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);    
+	    int lev = b.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);
+	    	    
 	    return lev;	
 	}
 }

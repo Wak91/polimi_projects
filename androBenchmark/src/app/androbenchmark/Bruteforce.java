@@ -174,11 +174,11 @@ public class Bruteforce {
 		{
 		 
 		     int l_diff=0;
-		     
+		     int l_before = 0;
 			 //Stress battery with Java 
-		     int l_before = getVoltage(c);
+		     l_before = getVoltage(c);
 			 
-		     for(int i=0;i<400;i++) 
+		     for(int i=0;i<800;i++) 
 			    pureJava(sword);  
 		     
 		     l_diff = l_before - getVoltage(c);
@@ -190,13 +190,15 @@ public class Bruteforce {
 		public static Integer stressJNIBattery(String sword , Context c) // need the context to register the receiver 
 		{ 
 			 //Stress battery with JNI 
+			 int l_before=0;
+			 int l_diff=0;
 			 
-			 int l_before = getVoltage(c);
+			 l_before = getVoltage(c);
 			  
-		     for(int i=0;i<4000;i++)
+		     for(int i=0;i<10000;i++)
 			    pureJni(sword); 
 		     
-		     int l_diff = l_before - getVoltage(c);
+		     l_diff = l_before - getVoltage(c);
 		     
 		     return l_diff;
 		}	 
@@ -206,7 +208,9 @@ public class Bruteforce {
 			 //Stress battery with RS
 			 
 			 //Prepare renderscript here, in order to mantain the context during the stress 
-			 		
+			int l_before=0;
+			int l_diff=0;
+			
 			 RenderScript rs = RenderScript.create(c);
 			 ScriptC_brute script = new ScriptC_brute(rs,c.getResources(),R.raw.brute);
 				 
@@ -220,15 +224,15 @@ public class Bruteforce {
 			
 			//
 			 
-			 int l_before = getVoltage(c);
+			 l_before = getVoltage(c);
 			
-			 for(int i=0;i<4000;i++)
+			 for(int i=0;i<10000;i++)
 			    {
 					script.invoke_brute();
 					rs.finish();					
 		        }
 			 
-			 int l_diff = l_before - getVoltage(c);
+			 l_diff = l_before - getVoltage(c);
 			 
 		     rs.destroy();
 			 

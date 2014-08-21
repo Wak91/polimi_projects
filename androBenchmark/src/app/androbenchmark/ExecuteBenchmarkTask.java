@@ -59,9 +59,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	protected void onPreExecute(){
 		//Log.w("PRE", "nome "+ Looper.getMainLooper().getThread().getName());
 		//mostro il loading dialog nel contesto giusto
-		//Log.w("ANDROBENCHMARK", "mostro");
 		this.loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
-		
+		this.loadingDialog.setCancelable(false);
 		
 	}
 	
@@ -141,6 +140,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
             this.battery_result.add(GrayScaling.stressJNIBattery(bm2, context));		 	 
             this.battery_result.add(GrayScaling.stressRSBattery(bm2, context));		
             
+	        //Log.w("DEBUG", "Values of battery result are" + battery_result.get(0)+" -- " +  battery_result.get(1) + " -- " +  battery_result.get(2));
 
 		 }  
 		  
@@ -168,12 +168,14 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				 word = (String) words.get(0); // smallest word 
 				 this.battery_result.add(Bruteforce.stressJavaBattery(word, context));	
 			     this.battery_result.add(Bruteforce.stressJNIBattery(word, context));		 	 
-			     this.battery_result.add(Bruteforce.stressRSBattery(word, context));				  	 
+			     this.battery_result.add(Bruteforce.stressRSBattery(word, context));
+			     
 			   }
 		
 		  //caso moltiplicazione
 		  else if(selected == R.id.radio2) {	
 			  int dim=2;
+			  
 			  for(int j=0;j<matrix_dimension.length;j++){
 						 
 				dim = matrix_dimension[j];						 
@@ -192,10 +194,14 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 			  result_type.add(2);
 			//Now battery tests 
 			dim = matrix_dimension[0]; //the smallest matrix   
-		    this.battery_result.add(Matrix.stressJavaBattery(dim, context));	
-	        this.battery_result.add(Matrix.stressJNIBattery(dim, context));		 	 
+			
+			
+		    this.battery_result.add(Matrix.stressJavaBattery(dim, context));
+
+	        this.battery_result.add(Matrix.stressJNIBattery(dim, context));	
+	                
 	        this.battery_result.add(Matrix.stressRSBattery(dim, context));	
-				  	   
+	        
 		 }
 			 		
 		result.put("java", result_j); //valori dei tempi di esecuzione
