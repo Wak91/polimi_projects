@@ -145,20 +145,10 @@ public class GraphActivity extends Activity {
 	 {
 		 battery_plot = (XYPlot) view.findViewById(R.id.xyPlot);
 		 BarFormatter format1 = new BarFormatter(Color.argb(255, 255, 255, 255),Color.RED);
-		 BarFormatter format2 = new BarFormatter(Color.argb(0, 255, 255, 100),Color.YELLOW);
-		 BarFormatter format3 = new BarFormatter(Color.argb(0, 255, 255, 100),Color.BLUE);
 
 		 battery_plot.setTicksPerRangeLabel(1);
 		 battery_plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);
 		 battery_plot.setTicksPerDomainLabel(1);
-		 
-		 ArrayList <Integer> b_java = new ArrayList <Integer> ();
-		 ArrayList <Integer> b_jni = new ArrayList <Integer> ();
-		 ArrayList <Integer> b_rs = new ArrayList <Integer> ();
-
-		 b_java.add(result.get("battery").get(0));
-		 b_jni.add(result.get("battery").get(1));
-		 b_rs.add(result.get("battery").get(2));
 		 
 		 XYSeries series1 = new SimpleXYSeries(result.get("battery"),
 				 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
@@ -171,40 +161,9 @@ public class GraphActivity extends Activity {
 		
 		 battery_plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 1); //Increment the domain by 1
 		 
-		 
-		// get the renderer
-		//BarRenderer renderer = ((BarRenderer) plot.getRenderer(BarRenderer.class));
-
-		 // can only set the bar gap if bar width style is VARIABLE_WIDTH
-		 //renderer.setBarWidthStyle(BarRenderer.BarWidthStyle.VARIABLE_WIDTH);
-		 
-		 // mind the gap
-		// renderer.setBarGap(0f);
-		 		 
-		// battery_plot.setDomainValueFormat(new DecimalFormat("0")); // remove the decimal in the domain 
-
-
-				 
-				 /*
-				 
-				 XYSeries series2 = new SimpleXYSeries( b_jni,
-						 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
-						 battery_plot.addSeries(series2, format2);
-						 
-
-						 
-						 XYSeries series3 = new SimpleXYSeries( b_rs,
-								 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
-								 battery_plot.addSeries(series3, format3);
-				*/ 
-				 
-				 /*
-				 battery_plot.getBackgroundPaint().setAlpha(0);
-				 battery_plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
-				 battery_plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);
-				
-				 battery_plot.setRangeValueFormat(new DecimalFormat("0"));
-				 */
+		 battery_plot.getBackgroundPaint().setAlpha(0);
+		 battery_plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
+		 battery_plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);
 	 }
 	 
 	 

@@ -79,6 +79,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		result_jni = new ArrayList<Integer>();
 		result_rs = new ArrayList<Integer>();
 		result_type = new ArrayList<Integer>();
+		battery_result = new ArrayList <Integer> ();
 
 		//Initialization of image's name 
 		names = new ArrayList<String>();
@@ -126,10 +127,9 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		     }
 		  
 		      result_type.add(0);
-		      //Now battery tests 	  
-		      
-		      
-		      //Take the smallest image 
+		     //Now battery tests 	  
+		       
+		    //Take the smallest image 
 		    try {
 				bm = BitmapFactory.decodeStream(this.context.getAssets().open(""+names.get(0)));
 			} catch (IOException e) {
