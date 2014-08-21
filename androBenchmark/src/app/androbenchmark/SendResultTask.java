@@ -34,7 +34,7 @@ public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 	@Override
 	protected void onPreExecute(){
 		//mostriamo il messaggio di testing
-		this.sendingDialog = new AlertDialog.Builder(context).setTitle("Sending").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+		this.sendingDialog = new AlertDialog.Builder(context).setTitle("Sending").setMessage("Wait please...sending result to server").setIcon(android.R.drawable.ic_dialog_alert).show();
 				
 	}
 

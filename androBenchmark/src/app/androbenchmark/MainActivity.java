@@ -15,6 +15,7 @@ import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
 import com.androidplot.xy.BarFormatter;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -46,6 +47,9 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);	
 		TelephonyManager tManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 		String uid = tManager.getDeviceId(); //retrieve uid of the phone for server analysis 
+		
+		String manufacturer = Build.MANUFACTURER; //Retreive the model of device 
+		String model = Build.MODEL;
 		
 	}
 	
