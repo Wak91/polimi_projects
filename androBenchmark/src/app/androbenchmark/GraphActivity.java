@@ -170,6 +170,16 @@ public class GraphActivity extends Activity {
 		 battery_plot.setDomainRightMin(2);
 		
 		 battery_plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 1); //Increment the domain by 1
+		 
+		 
+		// get the renderer
+		//BarRenderer renderer = ((BarRenderer) plot.getRenderer(BarRenderer.class));
+
+		 // can only set the bar gap if bar width style is VARIABLE_WIDTH
+		 //renderer.setBarWidthStyle(BarRenderer.BarWidthStyle.VARIABLE_WIDTH);
+		 
+		 // mind the gap
+		// renderer.setBarGap(0f);
 		 		 
 		// battery_plot.setDomainValueFormat(new DecimalFormat("0")); // remove the decimal in the domain 
 

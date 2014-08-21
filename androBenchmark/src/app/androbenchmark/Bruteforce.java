@@ -200,7 +200,7 @@ public class Bruteforce {
 			 
 			 //Stress battery with RS
 			 
-			 //Prepare renderscript 
+			 //Prepare renderscript here, in order to mantain the context during the stress 
 			 
 				
 			 RenderScript rs = RenderScript.create(c);

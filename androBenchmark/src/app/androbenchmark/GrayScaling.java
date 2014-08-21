@@ -131,7 +131,7 @@ public class GrayScaling {
 	 //Stress battery with Java 
      int l_before = getVoltage(c);
 	 
-     for(int i=0;i<400;i++) // better 500 
+     for(int i=0;i<500;i++) // better 500 
 	    pureJava(bm);  
      
      l_diff = l_before - getVoltage(c);
@@ -142,7 +142,7 @@ public class GrayScaling {
 	 
 	 l_before = getVoltage(c);
 	  
-     for(int i=0;i<4000;i++)
+     for(int i=0;i<9000;i++)
 	    pureJni(bm); 
      
      l_diff = l_before - getVoltage(c);
@@ -171,7 +171,7 @@ public class GrayScaling {
 	 
 	 l_before = getVoltage(c);
 	
-	 for(int i=0;i<4000;i++)
+	 for(int i=0;i<9000;i++)
 	    {
          mScript.invoke_filter();
  	     rs.finish();
