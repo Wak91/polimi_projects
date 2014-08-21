@@ -23,6 +23,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.RadioGroup;
 
 public class MainActivity extends Activity {
@@ -76,8 +77,15 @@ public class MainActivity extends Activity {
 	   RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
 	   int selected = radioGroup1.getCheckedRadioButtonId();		
 	   
+	   
+	   CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox1);
+	   int stressmode=0; 
+	   
+	   if(checkBox.isChecked()) 
+		  stressmode=1;
+	   
 	   //eseguiamo il benchamrk in un asynctask (lasciamo a onPostExecute il compito di aggiornare la UI cosi da non avere rallentamenti )
-	   ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this, selected);
+	   ExecuteBenchmarkTask task = new ExecuteBenchmarkTask(this, selected,stressmode);
 	   task.execute();
 
 				   	

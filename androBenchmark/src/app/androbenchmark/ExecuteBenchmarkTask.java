@@ -22,6 +22,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	private AlertDialog loadingDialog;
 	private Context context;
 	private int selected;
+	private int stressmode;
 
 	
 	private final int num_of_test=3;
@@ -44,10 +45,11 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	
 	
 	
-	public ExecuteBenchmarkTask(MainActivity context, int selected){
+	public ExecuteBenchmarkTask(MainActivity context, int selected , int sm){
 		//setto il contesto giusto(passatto dalla UI)
 		this.context = context;
 		this.selected = selected;
+		this.stressmode = sm;
 		
 	}
 	
@@ -80,6 +82,11 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		result_type = new ArrayList<Integer>();
 		battery_result = new ArrayList <Integer> ();
 
+		//Initialize battery_result with fake value, if StressBattery Mode is on we will update this array later
+		battery_result.add(0);
+		battery_result.add(0);
+		battery_result.add(0);
+	
 		//Initialization of image's name 
 		names = new ArrayList<String>();
 		names.add("image0.bmp");
@@ -135,10 +142,15 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			if(stressmode == 1)
+			{
+			battery_result.clear();//Remove the fake values
 			bm2 = bm.copy(bm.getConfig(), true);
             this.battery_result.add(GrayScaling.stressJavaBattery(bm2, context));	
             this.battery_result.add(GrayScaling.stressJNIBattery(bm2, context));		 	 
-            this.battery_result.add(GrayScaling.stressRSBattery(bm2, context));		
+            this.battery_result.add(GrayScaling.stressRSBattery(bm2, context));		  
+			}
             
 	        //Log.w("DEBUG", "Values of battery result are" + battery_result.get(0)+" -- " +  battery_result.get(1) + " -- " +  battery_result.get(2));
 
@@ -165,10 +177,16 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				 result_type.add(1);
 				 //Now battery tests 
 				 
-				 word = (String) words.get(0); // smallest word 
-				 this.battery_result.add(Bruteforce.stressJavaBattery(word, context));	
-			     this.battery_result.add(Bruteforce.stressJNIBattery(word, context));		 	 
-			     this.battery_result.add(Bruteforce.stressRSBattery(word, context));
+				 
+				 
+					if(stressmode == 1)
+					{
+					battery_result.clear();//Remove the fake values
+					word = (String) words.get(0); // smallest word 
+		            this.battery_result.add(Bruteforce.stressJavaBattery(word, context));	
+		            this.battery_result.add(Bruteforce.stressJNIBattery(word, context));		 	 
+		            this.battery_result.add(Bruteforce.stressRSBattery(word, context));		  
+					}
 			     
 			   }
 		
@@ -193,13 +211,15 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				
 			  result_type.add(2);
 			//Now battery tests 
-			dim = matrix_dimension[0]; //the smallest matrix   
 			
-		    this.battery_result.add(Matrix.stressJavaBattery(dim, context));
-
-	        this.battery_result.add(Matrix.stressJNIBattery(dim, context));	
-	                
-	        this.battery_result.add(Matrix.stressRSBattery(dim, context));	
+			if(stressmode == 1)
+			{
+			battery_result.clear();//Remove the fake values
+			dim = matrix_dimension[0]; //the smallest matrix   
+            this.battery_result.add(Matrix.stressJavaBattery(dim, context));	
+            this.battery_result.add(Matrix.stressJNIBattery(dim, context));		 	 
+            this.battery_result.add(Matrix.stressRSBattery(dim, context));		  
+			}	
 	        
 		 }
 			 		
