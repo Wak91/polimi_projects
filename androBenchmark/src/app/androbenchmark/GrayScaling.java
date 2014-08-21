@@ -122,36 +122,37 @@ public class GrayScaling {
 
 // ----------------------------- BATTERY STRESS  ----------------------------- //
 	
-	public static ArrayList <Integer> stressBattery(Bitmap bm , Context c) // need the context to register the receiver 
+	public static Integer stressJavaBattery(Bitmap bm , Context c) // need the context to register the receiver 
 	{
 	 
-	 ArrayList <Integer> battery_result = new ArrayList<Integer>();
      int l_diff=0;
      
-	 //Stress battery with Java 
      int l_before = getVoltage(c);
 	 
-     for(int i=0;i<500;i++) // better 500 
+     for(int i=0;i<400;i++)
 	    pureJava(bm);  
      
      l_diff = l_before - getVoltage(c);
-	     
-	 battery_result.add(l_diff);
-	 
-	 //Stress battery with JNI 
-	 
-	 l_before = getVoltage(c);
+     
+     return l_diff;
+	}
+	
+	public static Integer stressJNIBattery(Bitmap bm , Context c) // need the context to register the receiver 
+	{  
+		
+	 int l_before = getVoltage(c);
 	  
-     for(int i=0;i<9000;i++)
+     for(int i=0;i<4000;i++)
 	    pureJni(bm); 
      
-     l_diff = l_before - getVoltage(c);
+     int l_diff = l_before - getVoltage(c);
      
-	 battery_result.add(l_diff);
+     return l_diff;
+     
+	}
 	 
-	 //Stress battery with RS
-	 
-	 //Prepare renderscript 
+	public static Integer stressRSBattery(Bitmap bm , Context c) // need the context to register the receiver 
+	{
 	 
 	 RenderScript rs = RenderScript.create(c);
 
@@ -166,23 +167,19 @@ public class GrayScaling {
 	 mScript.set_gOut(mOutAllocation);
 
 	 mScript.set_gScript(mScript);
-					
-	 //
-	 
-	 l_before = getVoltage(c);
+						 
+	 int l_before = getVoltage(c);
 	
-	 for(int i=0;i<9000;i++)
+	 for(int i=0;i<4000;i++)
 	    {
          mScript.invoke_filter();
  	     rs.finish();
         }
 	 
-	 l_diff = l_before - getVoltage(c);
+	 int l_diff = l_before - getVoltage(c);
      rs.destroy();
 
-	 battery_result.add(l_diff);
-	 
-	 return battery_result;
+	 return l_diff;
 	}
 	
 

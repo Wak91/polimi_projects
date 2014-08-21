@@ -170,39 +170,43 @@ public class Bruteforce {
 	
 	// ----------------------------- BATTERY STRESS  ----------------------------- //
 	
-		public static ArrayList <Integer> stressBattery(String sword , Context c) // need the context to register the receiver 
+		public static Integer stressJavaBattery(String sword , Context c) // need the context to register the receiver 
 		{
 		 
-			 
-			 ArrayList <Integer> battery_result = new ArrayList<Integer>();
 		     int l_diff=0;
 		     
 			 //Stress battery with Java 
 		     int l_before = getVoltage(c);
 			 
-		     for(int i=0;i<400;i++) // better 500 
+		     for(int i=0;i<400;i++) 
 			    pureJava(sword);  
 		     
 		     l_diff = l_before - getVoltage(c);
+		     
+		     return l_diff;
 			     
-			 battery_result.add(l_diff);
-			 
+		}
+		
+		public static Integer stressJNIBattery(String sword , Context c) // need the context to register the receiver 
+		{ 
 			 //Stress battery with JNI 
 			 
-			 l_before = getVoltage(c);
+			 int l_before = getVoltage(c);
 			  
 		     for(int i=0;i<4000;i++)
 			    pureJni(sword); 
 		     
-		     l_diff = l_before - getVoltage(c);
+		     int l_diff = l_before - getVoltage(c);
 		     
-			 battery_result.add(l_diff);
-			 
+		     return l_diff;
+		}	 
+		
+		public static Integer stressRSBattery(String sword , Context c) // need the context to register the receiver 
+		{
 			 //Stress battery with RS
 			 
 			 //Prepare renderscript here, in order to mantain the context during the stress 
-			 
-				
+			 		
 			 RenderScript rs = RenderScript.create(c);
 			 ScriptC_brute script = new ScriptC_brute(rs,c.getResources(),R.raw.brute);
 				 
@@ -216,7 +220,7 @@ public class Bruteforce {
 			
 			//
 			 
-			 l_before = getVoltage(c);
+			 int l_before = getVoltage(c);
 			
 			 for(int i=0;i<4000;i++)
 			    {
@@ -224,12 +228,11 @@ public class Bruteforce {
 					rs.finish();					
 		        }
 			 
-			 l_diff = l_before - getVoltage(c);
+			 int l_diff = l_before - getVoltage(c);
 			 
 		     rs.destroy();
-			 battery_result.add(l_diff);
 			 
-			 return battery_result;
+		     return l_diff;
 		}
 		
 

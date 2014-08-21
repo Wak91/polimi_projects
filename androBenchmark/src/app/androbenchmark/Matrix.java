@@ -123,45 +123,43 @@ public static Long callPureJava(int dim){
 	
 	// ----------------------------- BATTERY STRESS  ----------------------------- //
 	
-	public static ArrayList <Integer> stressBattery(int dim , Context c) // need the context to register the receiver 
+	public static Integer stressJavaBattery(int dim , Context c) // need the context to register the receiver 
 		{
 		 
-		 ArrayList <Integer> battery_result = new ArrayList<Integer>();
 	     int l_diff=0;
 	     
 		 //Stress battery with Java 
 	     int l_before = getVoltage(c);
 		 
-	     for(int i=0;i<400;i++) // better 500 
+	     for(int i=0;i<400;i++) 
 		    pureJava(dim);  
 	     
 	     l_diff = l_before - getVoltage(c);
-		     
-		 battery_result.add(l_diff);
+		
+	     return l_diff;
+		}	 
 		 
+	public static Integer stressJNIBattery(int dim , Context c) // need the context to register the receiver 
+	{
 		 //Stress battery with JNI 
-		 
-		 l_before = getVoltage(c);
+	     int l_before = getVoltage(c);
 		  
 	     for(int i=0;i<4000;i++)
 		    pureJni(dim); 
 	     
-	     l_diff = l_before - getVoltage(c);
+	     int l_diff = l_before - getVoltage(c);
 	     
-		 battery_result.add(l_diff);
-		 
-		 //Stress battery with RS
-		 
-		 //Prepare renderscript 
-		 
-			
+	     return l_diff;    
+	}		 
+
+	public static Integer stressRSBattery(int dim , Context c) // need the context to register the receiver 
+	{
+		 	
 		RenderScript rs = RenderScript.create(c);
 		ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,c.getResources(),R.raw.rsmatrix);
 		script.set_dim(dim);
 		
-		//
-		 
-		 l_before = getVoltage(c);
+	    int l_before = getVoltage(c);
 		
 		 for(int i=0;i<4000;i++)
 		    {
@@ -169,12 +167,10 @@ public static Long callPureJava(int dim){
 			 rs.finish();
 	        }
 		 
-		 l_diff = l_before - getVoltage(c);
+		 int l_diff = l_before - getVoltage(c);
 	     rs.destroy();
-		 battery_result.add(l_diff);
-		 
-		 return battery_result;
-		}
+		return l_diff;
+	}
 		
 		
 	

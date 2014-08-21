@@ -137,8 +137,11 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				e.printStackTrace();
 			}
 			bm2 = bm.copy(bm.getConfig(), true);
-		      this.battery_result = GrayScaling.stressBattery(bm2, context); // first value in the array is java result, second jni and third rs
-		 	 
+            this.battery_result.add(GrayScaling.stressJavaBattery(bm2, context));	
+            this.battery_result.add(GrayScaling.stressJNIBattery(bm2, context));		 	 
+            this.battery_result.add(GrayScaling.stressRSBattery(bm2, context));		
+            
+
 		 }  
 		  
 		 //caso bruteforce
@@ -163,8 +166,9 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				 //Now battery tests 
 				 
 				 word = (String) words.get(0); // smallest word 
-				 this.battery_result = Bruteforce.stressBattery(word, context);
-				  	 
+				 this.battery_result.add(Bruteforce.stressJavaBattery(word, context));	
+			     this.battery_result.add(Bruteforce.stressJNIBattery(word, context));		 	 
+			     this.battery_result.add(Bruteforce.stressRSBattery(word, context));				  	 
 			   }
 		
 		  //caso moltiplicazione
@@ -187,8 +191,10 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				
 			  result_type.add(2);
 			//Now battery tests 
-			dim = matrix_dimension[0]; //smallest matrix   
-			this.battery_result = Matrix.stressBattery(dim, context);
+			dim = matrix_dimension[0]; //the smallest matrix   
+		    this.battery_result.add(Matrix.stressJavaBattery(dim, context));	
+	        this.battery_result.add(Matrix.stressJNIBattery(dim, context));		 	 
+	        this.battery_result.add(Matrix.stressRSBattery(dim, context));	
 				  	   
 		 }
 			 		
