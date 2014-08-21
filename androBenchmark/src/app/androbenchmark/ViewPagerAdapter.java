@@ -62,7 +62,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         //disegniamo il grafico performance 
         //this.activity.drawPlot(max.intValue(), result, itemView);
  
-        AlertDialog loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Values of battery result are" + result.get("battery").get(0)+" -- " +  result.get("battery").get(1) + " -- " + result.get("battery").get(2)).setIcon(android.R.drawable.ic_dialog_alert).show();
+        AlertDialog loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Number of execution's for 1% are" + result.get("battery").get(0)+"--" +  result.get("battery").get(1) + "--" + result.get("battery").get(2)).setIcon(android.R.drawable.ic_dialog_alert).show();
         
         
         

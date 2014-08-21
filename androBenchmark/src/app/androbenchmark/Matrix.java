@@ -128,31 +128,36 @@ public static Long callPureJava(int dim){
 		 
 	     int l_diff=0;
 	     int l_before=0;
+	     int cont=0;
 		 //Stress battery with Java 
-	     l_before = getVoltage(c);
+	     l_before = getLevel(c);
 		 
-	     for(int i=0;i<600;i++) 
-		    pureJava(dim);  
+	     do
+		    {
+	    	 cont++;
+	    	 pureJava(dim); 
+	    	 l_diff = l_before - getLevel(c);		     
+		    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
 	     
-	     l_diff = l_before - getVoltage(c);
-		
-	     return l_diff;
+	     return cont;
 		}	 
 		 
 	public static Integer stressJNIBattery(int dim , Context c) // need the context to register the receiver 
 	{
-		 //Stress battery with JNI 
-	    int l_before=0;
-	    int l_diff=0;
-	    
-		l_before = getVoltage(c);
-		  
-	     for(int i=0;i<6000;i++)
-		    pureJni(dim); 
-	     
-	     l_diff = l_before - getVoltage(c);
-	     
-	     return l_diff;    
+		  int l_diff=0;
+		  int l_before=0;
+		  int cont=0;
+			 //Stress battery with JNI
+		  l_before = getLevel(c);
+			 
+		     do
+			    {
+		    	 cont++;
+		    	 pureJni(dim); 
+		    	 l_diff = l_before - getLevel(c);		     
+			    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+		     
+		     return cont;   
 	}		 
 
 	public static Integer stressRSBattery(int dim , Context c) // need the context to register the receiver 
@@ -160,22 +165,23 @@ public static Long callPureJava(int dim){
 		 	
 		int l_before=0;
 		int l_diff=0;
+		int cont=0;
 		
 		RenderScript rs = RenderScript.create(c);
 		ScriptC_rsmatrix script = new ScriptC_rsmatrix(rs,c.getResources(),R.raw.rsmatrix);
 		script.set_dim(dim);
 		
-	    l_before = getVoltage(c);
-		
-		 for(int i=0;i<6000;i++)
-		    {
+	    l_before = getLevel(c);
+	    
+	    do{
+	    	 cont++;
 			 script.invoke_calc();
 			 rs.finish();
-	        }
+	    	 l_diff = l_before - getLevel(c);		     
+	        } while(l_diff!=1);
 		 
-		 l_diff = l_before - getVoltage(c);
 	     rs.destroy();
-		 return l_diff;
+		 return cont;
 	}
 		
 		
@@ -184,11 +190,11 @@ public static Long callPureJava(int dim){
 		 * Funzione che ritorna il valore in mvolt della batteria 
 		 * @return
 		 */
-		private static int getVoltage(Context context)
+		private static int getLevel(Context context)
 		{
 			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 		    Intent b = context.registerReceiver(null, ifilter);
-		    int lev = b.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);    
+		    int lev = b.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);    
 		    return lev;	
 		}
 		

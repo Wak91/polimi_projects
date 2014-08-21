@@ -363,24 +363,26 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_font_size=0x7f060002;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int icon=0x7f020001;
-        public static final int vpi__tab_indicator=0x7f020002;
-        public static final int vpi__tab_selected_focused_holo=0x7f020003;
-        public static final int vpi__tab_selected_holo=0x7f020004;
-        public static final int vpi__tab_selected_pressed_holo=0x7f020005;
-        public static final int vpi__tab_unselected_focused_holo=0x7f020006;
-        public static final int vpi__tab_unselected_holo=0x7f020007;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f020008;
+        public static final int back=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int icon=0x7f020002;
+        public static final int vpi__tab_indicator=0x7f020003;
+        public static final int vpi__tab_selected_focused_holo=0x7f020004;
+        public static final int vpi__tab_selected_holo=0x7f020005;
+        public static final int vpi__tab_selected_pressed_holo=0x7f020006;
+        public static final int vpi__tab_unselected_focused_holo=0x7f020007;
+        public static final int vpi__tab_unselected_holo=0x7f020008;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f020009;
     }
     public static final class id {
         public static final int RelativeLayout1=0x7f090005;
-        public static final int action_settings=0x7f090010;
+        public static final int action_settings=0x7f090011;
         public static final int bottom=0x7f090003;
         public static final int button1=0x7f090008;
-        public static final int indicator=0x7f09000f;
+        public static final int checkBox1=0x7f09000d;
+        public static final int indicator=0x7f090010;
         public static final int none=0x7f090000;
-        public static final int pager=0x7f09000e;
+        public static final int pager=0x7f09000f;
         public static final int radio0=0x7f09000a;
         public static final int radio1=0x7f09000c;
         public static final int radio2=0x7f09000b;
@@ -390,7 +392,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int top=0x7f090004;
         public static final int triangle=0x7f090001;
         public static final int underline=0x7f090002;
-        public static final int xyPlot=0x7f09000d;
+        public static final int xyPlot=0x7f09000e;
     }
     public static final class integer {
         public static final int default_circle_indicator_orientation=0x7f0b0000;

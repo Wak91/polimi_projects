@@ -195,7 +195,6 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 			//Now battery tests 
 			dim = matrix_dimension[0]; //the smallest matrix   
 			
-			
 		    this.battery_result.add(Matrix.stressJavaBattery(dim, context));
 
 	        this.battery_result.add(Matrix.stressJNIBattery(dim, context));	

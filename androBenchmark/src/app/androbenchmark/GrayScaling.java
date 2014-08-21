@@ -124,33 +124,39 @@ public class GrayScaling {
 	
 	public static Integer stressJavaBattery(Bitmap bm , Context c) // need the context to register the receiver 
 	{
-	 
-     int l_diff=0;
-     int l_before=0;
-     
-     l_before = getVoltage(c);
-	 
-     for(int i=0;i<400;i++)
-	    pureJava(bm);  
-     
-     l_diff = l_before - getVoltage(c);
-     
-     return l_diff;
+		 
+	     int l_diff=0;
+	     int l_before=0;
+	     int cont=0;
+		 //Stress battery with Java 
+	     l_before = getLevel(c);
+		 
+	     do
+		    {
+	    	 cont++;
+	    	 pureJava(bm); 
+	    	 l_diff = l_before - getLevel(c);		     
+		    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+	     
+	     return cont;
 	}
 	
 	public static Integer stressJNIBattery(Bitmap bm , Context c) // need the context to register the receiver 
 	{  
-	 int l_diff=0;
-	 int l_before=0;	
-	 
-	 l_before = getVoltage(c);
-	  
-     for(int i=0;i<4000;i++)
-	    pureJni(bm); 
-     
-     l_diff = l_before - getVoltage(c);
-     
-     return l_diff;
+		  int l_diff=0;
+		  int l_before=0;
+		  int cont=0;
+			 //Stress battery with JNI
+		  l_before = getLevel(c);
+			 
+		     do
+			    {
+		    	 cont++;
+		    	 pureJni(bm); 
+		    	 l_diff = l_before - getLevel(c);		     
+			    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+		     
+		     return cont; 
      
 	}
 	 
@@ -159,6 +165,7 @@ public class GrayScaling {
 
 	 int l_diff=0;
 	 int l_before=0;
+	 int cont=0;
 	 
 	 RenderScript rs = RenderScript.create(c);
 
@@ -174,18 +181,19 @@ public class GrayScaling {
 
 	 mScript.set_gScript(mScript);
 						 
-	 l_before = getVoltage(c);
+	 l_before = getLevel(c);
 	
-	 for(int i=0;i<4000;i++)
+	 do
 	    {
+		 cont++;
          mScript.invoke_filter();
  	     rs.finish();
-        }
+ 		 l_diff = l_before - getLevel(c);
+        }while(l_diff!=1);
 	 
-	 l_diff = l_before - getVoltage(c);
      rs.destroy();
 
-	 return l_diff;
+	 return cont;
 	}
 	
 
@@ -193,11 +201,11 @@ public class GrayScaling {
 	 * Funzione che ritorna il valore in mvolt della batteria 
 	 * @return
 	 */
-	private static int getVoltage(Context context)
+	private static int getLevel(Context context)
 	{
 		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 	    Intent b = context.registerReceiver(null, ifilter);
-	    int lev = b.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);
+	    int lev = b.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 	    	    
 	    return lev;	
 	}

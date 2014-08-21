@@ -3,7 +3,9 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/back"
+     >
 
     <!--
 <EditText 
@@ -28,7 +30,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Select a benchmarks"
+        android:text="Select a benchmark"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -38,7 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="18dp"
-        android:text="All benchmarks will be executed in 3 solutions: pure Java , jni , renderscript"
+        android:text="All benchmarks will be executed in 3 solutions: pure Java , jni , renderscript.\n\nThe stress of the battery can take long time ( the bench will be executed untill battery decrease by 1%)"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Button
@@ -78,6 +80,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Bruteforce" />
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="BatteryStress Mode" />
+
     </RadioGroup>
 
 </RelativeLayout>

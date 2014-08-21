@@ -172,35 +172,39 @@ public class Bruteforce {
 	
 		public static Integer stressJavaBattery(String sword , Context c) // need the context to register the receiver 
 		{
-		 
-		     int l_diff=0;
-		     int l_before = 0;
+			int l_diff=0;
+		    int l_before=0;
+		    int cont=0;
 			 //Stress battery with Java 
-		     l_before = getVoltage(c);
+		     l_before = getLevel(c);
 			 
-		     for(int i=0;i<800;i++) 
-			    pureJava(sword);  
+		     do
+			    {
+		    	 cont++;
+		    	 pureJava(sword); 
+		    	 l_diff = l_before - getLevel(c);		     
+			    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
 		     
-		     l_diff = l_before - getVoltage(c);
-		     
-		     return l_diff;
+		     return cont;
 			     
 		}
 		
 		public static Integer stressJNIBattery(String sword , Context c) // need the context to register the receiver 
 		{ 
-			 //Stress battery with JNI 
-			 int l_before=0;
 			 int l_diff=0;
+			 int l_before=0;
+			 int cont=0;
 			 
-			 l_before = getVoltage(c);
-			  
-		     for(int i=0;i<10000;i++)
-			    pureJni(sword); 
-		     
-		     l_diff = l_before - getVoltage(c);
-		     
-		     return l_diff;
+			 l_before = getLevel(c);
+				 
+			     do
+				    {
+			    	 cont++;
+			    	 pureJni(sword); 
+			    	 l_diff = l_before - getLevel(c);		     
+				    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+			     
+			     return cont; 
 		}	 
 		
 		public static Integer stressRSBattery(String sword , Context c) // need the context to register the receiver 
@@ -210,6 +214,7 @@ public class Bruteforce {
 			 //Prepare renderscript here, in order to mantain the context during the stress 
 			int l_before=0;
 			int l_diff=0;
+			int cont=0;
 			
 			 RenderScript rs = RenderScript.create(c);
 			 ScriptC_brute script = new ScriptC_brute(rs,c.getResources(),R.raw.brute);
@@ -222,21 +227,20 @@ public class Bruteforce {
 			 Allocation word = Allocation.createFromString(rs, sword,Allocation.USAGE_SCRIPT );
 			 script.bind_word(word);
 			
-			//
-			 
-			 l_before = getVoltage(c);
+			 l_before = getLevel(c);
 			
-			 for(int i=0;i<10000;i++)
+			 do
 			    {
+				    cont++;
 					script.invoke_brute();
-					rs.finish();					
-		        }
+					rs.finish();	
+					l_diff = l_before - getLevel(c);
+		        }while(l_diff!=1);
 			 
-			 l_diff = l_before - getVoltage(c);
 			 
 		     rs.destroy();
 			 
-		     return l_diff;
+		     return cont;
 		}
 		
 
@@ -244,11 +248,11 @@ public class Bruteforce {
 		 * Funzione che ritorna il valore in mvolt della batteria 
 		 * @return
 		 */
-		private static int getVoltage(Context context)
+		private static int getLevel(Context context)
 		{
 			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 		    Intent b = context.registerReceiver(null, ifilter);
-		    int lev = b.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);    
+		    int lev = b.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);    
 		    return lev;	
 		}
 	
