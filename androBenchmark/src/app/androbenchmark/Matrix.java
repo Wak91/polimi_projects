@@ -137,7 +137,7 @@ public static Long callPureJava(int dim){
 	    	 cont++;
 	    	 pureJava(dim); 
 	    	 l_diff = l_before - getLevel(c);		     
-		    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+		    } while (l_diff<1); // quando la batteria si è scaricata di un livello
 	     
 	     return cont;
 		}	 
@@ -155,7 +155,7 @@ public static Long callPureJava(int dim){
 		    	 cont++;
 		    	 pureJni(dim); 
 		    	 l_diff = l_before - getLevel(c);		     
-			    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+			    } while (l_diff<1); // quando la batteria si è scaricata di un livello
 		     
 		     return cont;   
 	}		 
@@ -178,7 +178,7 @@ public static Long callPureJava(int dim){
 			 script.invoke_calc();
 			 rs.finish();
 	    	 l_diff = l_before - getLevel(c);		     
-	        } while(l_diff!=1);
+	        } while(l_diff<1);
 		 
 	     rs.destroy();
 		 return cont;

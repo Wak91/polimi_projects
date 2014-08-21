@@ -15,6 +15,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import app.androbenchmark.util.HTTPUtil;
 
@@ -24,10 +25,14 @@ public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 	private GraphActivity activity;
 	private Context context;
 	private AlertDialog sendingDialog;
+	private String manuf;
+	private String model;
 	
 	public SendResultTask(GraphActivity context){
 		this.context = context;
 		this.activity = context;
+		this.manuf = Build.MANUFACTURER; //Retreive the model and manuf. of device 
+		this.model = Build.MODEL;
 		
 	}
 	

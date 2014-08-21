@@ -44,13 +44,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);	
-		TelephonyManager tManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-		String uid = tManager.getDeviceId(); //retrieve uid of the phone for server analysis 
-		
-		String manufacturer = Build.MANUFACTURER; //Retreive the model of device 
-		String model = Build.MODEL;
-		
+		setContentView(R.layout.activity_main);			
 	}
 	
 	static 

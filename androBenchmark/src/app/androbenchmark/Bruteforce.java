@@ -183,7 +183,7 @@ public class Bruteforce {
 		    	 cont++;
 		    	 pureJava(sword); 
 		    	 l_diff = l_before - getLevel(c);		     
-			    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+			    } while (l_diff<1); // quando la batteria si è scaricata di un livello
 		     
 		     return cont;
 			     
@@ -202,7 +202,7 @@ public class Bruteforce {
 			    	 cont++;
 			    	 pureJni(sword); 
 			    	 l_diff = l_before - getLevel(c);		     
-				    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+				    } while (l_diff<1); // quando la batteria si è scaricata di un livello
 			     
 			     return cont; 
 		}	 
@@ -235,7 +235,7 @@ public class Bruteforce {
 					script.invoke_brute();
 					rs.finish();	
 					l_diff = l_before - getLevel(c);
-		        }while(l_diff!=1);
+		        }while(l_diff<1);
 			 
 			 
 		     rs.destroy();

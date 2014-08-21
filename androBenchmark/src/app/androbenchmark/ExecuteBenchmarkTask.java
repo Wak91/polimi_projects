@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -142,11 +144,17 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+		    
+		    
 			if(stressmode == 1)
 			{
 			battery_result.clear();//Remove the fake values
 			bm2 = bm.copy(bm.getConfig(), true);
+			
+			//PRIMA DI INIZIARE E' MEGLIO FAR SCALARE DI UNO IL VALORE DELLA BATTERIA PER EVITARE DI FARSARE IL RISULTATO
+			
+			this.doJunk();
+			
             this.battery_result.add(GrayScaling.stressJavaBattery(bm2, context));	
             this.battery_result.add(GrayScaling.stressJNIBattery(bm2, context));		 	 
             this.battery_result.add(GrayScaling.stressRSBattery(bm2, context));		  
@@ -183,6 +191,9 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 					{
 					battery_result.clear();//Remove the fake values
 					word = (String) words.get(0); // smallest word 
+					
+					this.doJunk();
+					
 		            this.battery_result.add(Bruteforce.stressJavaBattery(word, context));	
 		            this.battery_result.add(Bruteforce.stressJNIBattery(word, context));		 	 
 		            this.battery_result.add(Bruteforce.stressRSBattery(word, context));		  
@@ -216,6 +227,9 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 			{
 			battery_result.clear();//Remove the fake values
 			dim = matrix_dimension[0]; //the smallest matrix   
+			
+			this.doJunk();
+			
             this.battery_result.add(Matrix.stressJavaBattery(dim, context));	
             this.battery_result.add(Matrix.stressJNIBattery(dim, context));		 	 
             this.battery_result.add(Matrix.stressRSBattery(dim, context));		  
@@ -261,6 +275,31 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 
 	public void setContext(Context context) {
 		this.context = context;
+	}
+	
+	/**
+	 * Function to lose 1% and start stressBattery with a clean value
+	 */
+	private void doJunk()
+	{
+	  int l_diff=0;
+	  int l_before=0;
+	  Random randomGenerator = new Random();
+	  l_before = this.getLevel(this.context);  
+	  
+	  do{
+		 randomGenerator.nextInt(); 
+		 l_diff = l_before - this.getLevel(this.context);
+	    }while(l_diff<1);
+	}
+	
+	private int getLevel(Context context)
+	{
+		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+	    Intent b = context.registerReceiver(null, ifilter);
+	    int lev = b.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+	    	    
+	    return lev;	
 	}
 	
 	

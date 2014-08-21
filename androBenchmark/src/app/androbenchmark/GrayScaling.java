@@ -136,7 +136,7 @@ public class GrayScaling {
 	    	 cont++;
 	    	 pureJava(bm); 
 	    	 l_diff = l_before - getLevel(c);		     
-		    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+		    } while (l_diff<1); // quando la batteria si è scaricata di un livello
 	     
 	     return cont;
 	}
@@ -154,7 +154,7 @@ public class GrayScaling {
 		    	 cont++;
 		    	 pureJni(bm); 
 		    	 l_diff = l_before - getLevel(c);		     
-			    } while (l_diff!=1); // quando la batteria si è scaricata di un livello
+			    } while (l_diff<1); // quando la batteria si è scaricata di un livello
 		     
 		     return cont; 
      
@@ -189,7 +189,7 @@ public class GrayScaling {
          mScript.invoke_filter();
  	     rs.finish();
  		 l_diff = l_before - getLevel(c);
-        }while(l_diff!=1);
+        }while(l_diff<1);
 	 
      rs.destroy();
 
