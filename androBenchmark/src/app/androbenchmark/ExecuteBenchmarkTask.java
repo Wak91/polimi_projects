@@ -61,7 +61,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	protected void onPreExecute(){
 		//Log.w("PRE", "nome "+ Looper.getMainLooper().getThread().getName());
 		//mostro il loading dialog nel contesto giusto
-		this.loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...").setIcon(android.R.drawable.ic_dialog_alert).show();
+		this.loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...it could take many minutes").setIcon(android.R.drawable.ic_dialog_alert).show();
 		this.loadingDialog.setCancelable(false);
 		
 	}

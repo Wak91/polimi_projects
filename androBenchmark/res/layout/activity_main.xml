@@ -3,9 +3,10 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
+    android:alpha="1"
     android:background="@drawable/back"
-     >
+    android:orientation="vertical"
+    android:padding="@dimen/default_circle_indicator_radius" >
 
     <!--
 <EditText 
@@ -31,17 +32,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:text="Select a benchmark"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="18dp"
-        android:text="All benchmarks will be executed in 3 solutions: pure Java , jni , renderscript.\n\nThe stress of the battery can take long time ( the bench will be executed untill battery decrease by 1%)"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
 
     <Button
         android:id="@+id/button1"
@@ -50,6 +42,7 @@
         android:layout_above="@+id/textView1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:background="@color/default_title_indicator_footer_color"
         android:onClick="start_benchmark"
         android:text="Start" />
 
@@ -67,26 +60,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Grayscale" />
+            android:text="Grayscale"
+            android:textSize="@dimen/default_title_indicator_footer_indicator_underline_padding" />
 
         <RadioButton
             android:id="@+id/radio2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Matrix Multiplication" />
+            android:text="Matrix Multiplication"
+            android:textSize="@dimen/default_title_indicator_footer_indicator_underline_padding" />
 
         <RadioButton
             android:id="@+id/radio1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bruteforce" />
+            android:text="Bruteforce"
+            android:textSize="@dimen/default_title_indicator_footer_indicator_underline_padding" />
 
         <CheckBox
             android:id="@+id/checkBox1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="BatteryStress Mode" />
+            android:text="BatteryStress Mode"
+            android:textSize="@dimen/default_title_indicator_footer_indicator_underline_padding" />
 
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_alignParentBottom="true"
+        android:text="All benchmarks will be executed in 3 solutions: pure Java , jni , renderscript.\n\nThe stress of the battery can take long time ( the bench will be executed untill battery decrease by 1%)"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
