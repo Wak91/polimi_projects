@@ -73,6 +73,9 @@ public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 			        }
 			        
 	     }
+		 
+		 params.add(new BasicNameValuePair("vendor", this.manuf));
+		 params.add(new BasicNameValuePair("model", this.model));
 		
 		try {
 			HTTPUtil.sendRequestOverHTTP("http://37.187.225.187:3000/insert", params, HTTPUtil.RequestMethod.POST );
