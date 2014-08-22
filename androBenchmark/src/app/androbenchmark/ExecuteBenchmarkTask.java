@@ -55,7 +55,6 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		
 	}
 	
-	
 	/**
 	 * mostriamo solo l alert (onPreExecute e onPostExecute girano sullo UI thread quindi limitiamo al mnimo il carico di lavoro cosi da non avere rallentamenti gafici)
 	 */
@@ -67,8 +66,6 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		this.loadingDialog.setCancelable(false);
 		
 	}
-	
-	
 	
 	/**
 	 * a seconda della scelta eseguiamo il benchmark giusto all'interno di un asynctask
@@ -240,7 +237,6 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		result.put("java", result_j); //valori dei tempi di esecuzione
 		result.put("jni", result_jni);
 		result.put("rs", result_rs);
-		
 		result.put("type", result_type);
 		
 		result.put("battery", battery_result); // valori della scarica della batteria 
@@ -260,13 +256,9 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		
 		intent.putExtra(MainActivity.RESULTS, result);
 		
-		this.context.startActivity(intent);
-		
-		
-					
+		this.context.startActivity(intent);				
     }
 	
-
 
 	public Context getContext() {
 		return context;
