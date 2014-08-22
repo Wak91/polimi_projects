@@ -57,11 +57,12 @@ public class GraphActivity extends Activity {
 		Intent intent = getIntent();
 		//prendiamo il risultato passato dall asynctask
 		HashMap<String, List<Integer>> result = (HashMap<String, List<Integer> >)intent.getSerializableExtra(MainActivity.RESULTS);
+		int stress = intent.getIntExtra(MainActivity.STRESS, 0);
 		
 		// ricaviamo il contenitore ViewPager	
         viewPager = (ViewPager) findViewById(R.id.pager);
         // laciamo il compito di costruire le varie view all adapter creato appositamente
-        adapter = new ViewPagerAdapter(GraphActivity.this, result);
+        adapter = new ViewPagerAdapter(GraphActivity.this, result, stress);
         // associamo l adapter al view pager di prima
         viewPager.setAdapter(adapter);
  
@@ -143,8 +144,13 @@ public class GraphActivity extends Activity {
 	 
 	 public void drawBatteryPlot(int max, HashMap<String, List<Integer>> result ,  View view)
 	 {
+		 //Log.w("GRAPH", "entrato");
+		 
+		 //Log.w("GRAPH", "result e " + result.toString());
+		 
 		 battery_plot = (XYPlot) view.findViewById(R.id.xyPlot);
 		 BarFormatter format1 = new BarFormatter(Color.argb(255, 255, 255, 255),Color.RED);
+		 
 		 
 		 battery_plot.setTicksPerRangeLabel(1);
 		 battery_plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);

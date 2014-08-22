@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
 	//Log.w("ANDROBENCHMARK", "id is" + selected);
 	
 	 public final static String RESULTS = "app.androbenchmark.RESULTS";
+	 public final static String STRESS = "app.androbenchmark.STRESS";
 
 	 private XYPlot plot;
 	 private XYPlot battery_plot;
