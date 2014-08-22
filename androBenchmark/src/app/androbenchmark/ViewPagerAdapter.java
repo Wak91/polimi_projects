@@ -19,15 +19,18 @@ public class ViewPagerAdapter extends PagerAdapter {
 	protected static final String[] TITLE = new String[] { "Performance", "Consumption"};
 	
     // Declare Variables
-    Context context;
-    GraphActivity activity;
-    LayoutInflater inflater;
-    HashMap<String, List<Integer>> result;
+	private Context context;
+	private GraphActivity activity;
+	private LayoutInflater inflater;
+	private HashMap<String, List<Integer>> result;
+    
+    private int stressMode;
  
-    public ViewPagerAdapter(GraphActivity context, HashMap<String, List<Integer>> result) {
+    public ViewPagerAdapter(GraphActivity context, HashMap<String, List<Integer>> result, int stress) {
         this.context = context;
         this.activity = context;
         this.result = result;
+        this.stressMode = stress;
        
     }
     
@@ -38,8 +41,13 @@ public class ViewPagerAdapter extends PagerAdapter {
  
     @Override
     public int getCount() {
-    	//abbiamo dimensione fissa per adesso(da modificare in futuro)
-        return 2;
+    	if (this.stressMode == 0){
+    		return 1;
+    	}
+    	else{
+    		 return 2;
+    	}
+       
     }
  
     @Override
@@ -53,28 +61,42 @@ public class ViewPagerAdapter extends PagerAdapter {
        
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
-        //schiantiamo la slide dentro il graph layout
-        View itemView = inflater.inflate(R.layout.graph, container,false);
+        
  
         //scaliamo il grafico in modo appropriato
-        Integer max = this.activity.find_max(result.get("java"));
-        Integer maxc = this.activity.find_max(result.get("battery"));
-        //disegniamo il grafico performance 
-        //this.activity.drawPlot(max.intValue(), result, itemView);
+        if (position == 0){
+        	
+        	//schiantiamo la slide dentro il graph layout
+            View itemView = inflater.inflate(R.layout.graph, container,false);
+        	
+        	 Integer max = this.activity.find_max(result.get("java"));
+        	 
+        	 this.activity.drawPlot(max.intValue(), result, itemView);
+        	 
+        	 // mettiamola all interno del ViewPager
+             ((ViewPager) container).addView(itemView);
+             
+             return itemView;
+        }
+        else {
+        	
+        	//schiantiamo la slide dentro il graph layout
+            View itemView = inflater.inflate(R.layout.bgraph, container,false);
+            
+        	Integer maxc = this.activity.find_max(result.get("battery"));
+        	
+        	this.activity.drawBatteryPlot(maxc.intValue(), result,itemView);
+        	
+        	 // mettiamola all interno del ViewPager
+            ((ViewPager) container).addView(itemView);
+            
+            return itemView;
+        	
+		}
+		
+   
  
-        //AlertDialog loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Number of execution's for 1% are" + result.get("battery").get(0)+"--" +  result.get("battery").get(1) + "--" + result.get("battery").get(2)).setIcon(android.R.drawable.ic_dialog_alert).show();
-        
-        
-        
-        //disegniamo il grafico dei consumi
-        this.activity.drawBatteryPlot(maxc.intValue(), result,itemView);
-
-        
-        
-        // mettiamola all interno del ViewPager
-        ((ViewPager) container).addView(itemView);
- 
-        return itemView;
+       
     }
  
     @Override

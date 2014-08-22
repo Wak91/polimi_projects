@@ -219,9 +219,10 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 				
 			  result_type.add(2);
 			//Now battery tests 
-			
+		
 			if(stressmode == 1)
 			{
+				/*
 			battery_result.clear();//Remove the fake values
 			dim = matrix_dimension[0]; //the smallest matrix   
 			
@@ -229,8 +230,15 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 			
             this.battery_result.add(Matrix.stressJavaBattery(dim, context));	
             this.battery_result.add(Matrix.stressJNIBattery(dim, context));		 	 
-            this.battery_result.add(Matrix.stressRSBattery(dim, context));		  
-			}	
+            this.battery_result.add(Matrix.stressRSBattery(dim, context));	
+            */	
+            battery_result.clear();//Remove the fake values
+			this.battery_result.add(1000);	
+	        this.battery_result.add(900);		 	 
+	        this.battery_result.add(800);	  
+			}
+			
+
 	        
 		 }
 			 		
@@ -255,6 +263,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		Intent intent = new Intent(this.context, GraphActivity.class);
 		
 		intent.putExtra(MainActivity.RESULTS, result);
+		intent.putExtra(MainActivity.STRESS, this.stressmode);
 		
 		this.context.startActivity(intent);				
     }
