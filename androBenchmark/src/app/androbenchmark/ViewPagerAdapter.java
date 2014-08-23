@@ -64,7 +64,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         
  
         //scaliamo il grafico in modo appropriato
-        if (position == 0){
+        if (position == 0){ //TODO ==0
         	
         	//schiantiamo la slide dentro il graph layout
             View itemView = inflater.inflate(R.layout.graph, container,false);

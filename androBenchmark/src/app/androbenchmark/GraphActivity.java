@@ -3,6 +3,7 @@ package app.androbenchmark;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -148,23 +149,38 @@ public class GraphActivity extends Activity {
 		 
 		 //Log.w("GRAPH", "result e " + result.toString());
 		 
-		 battery_plot = (XYPlot) view.findViewById(R.id.xyPlot);
-		 BarFormatter format1 = new BarFormatter(Color.argb(255, 255, 255, 255),Color.RED);
+		 //TESTING 
 		 
+		 
+		 HashMap<String, List<Integer>> result1 = new HashMap<String, List<Integer>>();
+		 
+		 ArrayList <Integer> ar = new ArrayList <Integer>();
+		 ar.add(0); // fake value to plot correctly the graph 
+		 ar.add(result.get("battery").get(0));
+		 ar.add(result.get("battery").get(1));
+		 ar.add(result.get("battery").get(2));
+		 
+		 result1.put("battery", ar);
+		 
+		 //TESTING 
+		 
+		 battery_plot = (XYPlot) view.findViewById(R.id.xyPlot);
+		 BarFormatter format1 = new BarFormatter(Color.RED,Color.RED);
+		 format1.setPointLabelFormatter(new PointLabelFormatter(Color.WHITE));
 		 
 		 battery_plot.setTicksPerRangeLabel(1);
 		 battery_plot.setRangeLowerBoundary(0, BoundaryMode.FIXED);
 		 battery_plot.setRangeValueFormat(new DecimalFormat("0"));
 		 battery_plot.setTicksPerDomainLabel(1);
 		 
-		 XYSeries series1 = new SimpleXYSeries(result.get("battery"),
+		 XYSeries series1 = new SimpleXYSeries(result1.get("battery"),
 				 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
 				 battery_plot.addSeries(series1, format1);
 		
-		 battery_plot.setRangeBoundaries(0,max+5, BoundaryMode.FIXED);
+		 battery_plot.setRangeBoundaries(0,max+1000, BoundaryMode.FIXED);
 		
-		 battery_plot.setDomainLeftMin(0);
-		 battery_plot.setDomainRightMin(2);
+		 battery_plot.setDomainLeftMin(-1);
+		 battery_plot.setDomainRightMin(4);
 		
 		 battery_plot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 1); //Increment the domain by 1
 	     battery_plot.setDomainValueFormat(new DecimalFormat("0"));
@@ -173,6 +189,14 @@ public class GraphActivity extends Activity {
 		 battery_plot.getBackgroundPaint().setAlpha(0);
 		 battery_plot.getGraphWidget().getBackgroundPaint().setAlpha(0);
 		 battery_plot.getGraphWidget().getGridBackgroundPaint().setAlpha(0);
+		 
+		 //battery_plot.getLayoutManager().remove(battery_plot.getLegendWidget()); // remove legend 
+		 
+		  battery_plot.getGraphWidget().setDomainValueFormat(new GraphXLabelFormat());
+		 
+
+
+		 		 
 	 }
 	 
 	 
@@ -247,5 +271,8 @@ public class GraphActivity extends Activity {
 	public void setResult(HashMap<String, List<Integer>> result) {
 		this.result = result;
 	}
+	
+	
+	
 	
 }
