@@ -27,19 +27,20 @@ public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 	private AlertDialog sendingDialog;
 	private String manuf;
 	private String model;
+	private int tent;
 	
 	public SendResultTask(GraphActivity context){
 		this.context = context;
 		this.activity = context;
 		this.manuf = Build.MANUFACTURER; //Retreive the model and manuf. of device 
 		this.model = Build.MODEL;
-		
+		this.tent=0;
 	}
 	
 	@Override
 	protected void onPreExecute(){
 		//mostriamo il messaggio di testing
-		this.sendingDialog = new AlertDialog.Builder(context).setTitle("Sending").setMessage("Wait please...sending result to server").setIcon(android.R.drawable.ic_dialog_alert).show();
+		this.sendingDialog = new AlertDialog.Builder(context).setTitle("Sending").setMessage("Wait please...sending result to server [tent " + tent + " ]").setIcon(android.R.drawable.ic_dialog_alert).show();
 				
 	}
 
@@ -95,7 +96,13 @@ public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 			this.sendingDialog.dismiss();
 		} else {
 			this.sendingDialog.dismiss();
-			this.sendingDialog = new AlertDialog.Builder(context).setTitle("Error").setMessage("There was an error during sending").setIcon(android.R.drawable.ic_dialog_alert).show();
+			this.sendingDialog = new AlertDialog.Builder(context).setTitle("Error").setMessage("There was an error during sending, we make another try!").setIcon(android.R.drawable.ic_dialog_alert).show();
+		    this.tent++;
+		    if(tent<3)
+		      this.doInBackground();
+		    else
+				this.sendingDialog = new AlertDialog.Builder(context).setTitle("Error").setMessage("Something went wrong with connection...aborting").setIcon(android.R.drawable.ic_dialog_alert).show();
+
 		}
 		
 					

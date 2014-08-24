@@ -6,7 +6,8 @@
     android:alpha="1"
     android:background="@drawable/back"
     android:orientation="vertical"
-    android:padding="@dimen/default_circle_indicator_radius" >
+    android:padding="@dimen/default_circle_indicator_radius"
+    android:keepScreenOn="true" >
 
     <!--
 <EditText 
