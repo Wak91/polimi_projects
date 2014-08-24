@@ -1,6 +1,8 @@
 package app.androbenchmark;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 	protected void onPreExecute(){
 		//mostriamo il messaggio di testing
 		this.sendingDialog = new AlertDialog.Builder(context).setTitle("Sending").setMessage("Wait please...sending result to server ").setIcon(android.R.drawable.ic_dialog_alert).show();
-				
+	
 	}
 
 	@Override
@@ -101,6 +103,5 @@ public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 		
 					
     }
-	
 	
 }

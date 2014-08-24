@@ -15,7 +15,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
-import android.util.Log;
 
 public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String, List<Integer>> > {
 	
@@ -64,6 +63,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		//mostro il loading dialog nel contesto giusto
 		this.loadingDialog = new AlertDialog.Builder(context).setTitle("Executing").setMessage("Wait please...it could take many minutes").setIcon(android.R.drawable.ic_dialog_alert).show();
 		this.loadingDialog.setCancelable(false);
+
 		
 	}
 	
@@ -104,6 +104,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		words.add("ciaoo");
 		words.add("ciaooo");
 		
+		
+	
 		//Log.w("DOINBACK",  "nome "+ Looper.myLooper());
 		 //caso grayscale
 		 if(selected == R.id.radio0){
@@ -245,6 +247,7 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 		
 		result.put("battery", battery_result); // valori della scarica della batteria 
 		//Log.w("ANDROBENCHMARK", "il risultato e " + result.get("battery"));
+				
 		return result;
 	}
 	
@@ -298,6 +301,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	    	    
 	    return lev;	
 	}
+	
+	
 	
 	
 	
