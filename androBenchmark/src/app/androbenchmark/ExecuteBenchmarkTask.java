@@ -73,6 +73,8 @@ public class ExecuteBenchmarkTask extends AsyncTask <Void, Void, HashMap<String,
 	@Override
 	protected HashMap<String, List<Integer> > doInBackground(Void... params) {
 		
+		
+		
 		HashMap<String, List<Integer>> result = new HashMap<String, List<Integer>>();
 		//configurazione iniziale
 		result_j = new ArrayList<Integer>();

@@ -177,7 +177,7 @@ public class GraphActivity extends Activity {
 				 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
 				 battery_plot.addSeries(series1, format1);
 		
-		 battery_plot.setRangeBoundaries(0,max+1500, BoundaryMode.FIXED);
+		 battery_plot.setRangeBoundaries(0,max+2500, BoundaryMode.FIXED);
 		
 		 battery_plot.setDomainLeftMin(-1);
 		 battery_plot.setDomainRightMin(4);

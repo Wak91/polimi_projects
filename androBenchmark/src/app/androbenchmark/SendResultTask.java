@@ -96,7 +96,6 @@ public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 			this.sendingDialog.dismiss();
 		} else { // errore 
 			this.sendingDialog.dismiss();
-			this.sendingDialog = new AlertDialog.Builder(context).setTitle("Error").setMessage("There was an error during sending, we make another try!").setIcon(android.R.drawable.ic_dialog_alert).show();
 		    SendResultTask task = new SendResultTask(this.activity);
 			task.execute();
 		}
