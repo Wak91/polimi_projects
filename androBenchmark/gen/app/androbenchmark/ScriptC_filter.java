@@ -16,7 +16,7 @@
 
 /*
  * This file is auto-generated. DO NOT MODIFY!
- * The source Renderscript file: /home/degrigis/Scrivania/androBenchmark/src/filter.rs
+ * The source Renderscript file: /home/matt/workspaces/polimi/2014_HPPS/gritti-mariani-hpps2014-androbenchmark/androBenchmark/src/filter.rs
  */
 package app.androbenchmark;
 

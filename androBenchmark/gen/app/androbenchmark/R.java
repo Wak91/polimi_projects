@@ -417,8 +417,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int brute=0x7f040000;
         public static final int filter=0x7f040001;
         public static final int rsmatrix=0x7f040002;
-        public static final int rspmatrix=0x7f040003;
-        public static final int sum_elements=0x7f040004;
     }
     public static final class string {
         public static final int action_search=0x7f070006;

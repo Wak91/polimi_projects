@@ -23,7 +23,7 @@ import app.androbenchmark.util.HTTPUtil;
 
 public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 	
-
+	private final String serverUrl = "http://37.187.225.187:3000/insert";
 	private GraphActivity activity;
 	private Context context;
 	private AlertDialog sendingDialog;
@@ -79,7 +79,7 @@ public class SendResultTask extends AsyncTask <Void, Void, Boolean>  {
 		 params.add(new BasicNameValuePair("model", this.model));
 		
 		try {
-			HTTPUtil.sendRequestOverHTTP("http://37.187.225.187:3000/insert", params, HTTPUtil.RequestMethod.POST );
+			HTTPUtil.sendRequestOverHTTP(serverUrl, params, HTTPUtil.RequestMethod.POST );
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			return false;
