@@ -18,6 +18,7 @@
     "connect": "2.7.4",
     "mstranslator": "1.1.0",
     "nodemon": "~1.2.1",
-    "sqlite3": "~3.0.4"
+    "sqlite3": "~3.0.4",
+    "xmlbuilder": "~2.4.5"
   }
 }
