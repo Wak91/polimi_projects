@@ -16,7 +16,8 @@
     "restify": "1.4.x",
     "mongoose": "3.1.0",
     "connect": "2.7.4",
-    "mstranslator":"1.1.0",
-    "nodemon":"~1.2.1"
+    "mstranslator": "1.1.0",
+    "nodemon": "~1.2.1",
+    "sqlite3": "~3.0.4"
   }
 }
