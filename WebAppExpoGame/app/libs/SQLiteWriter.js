@@ -26,14 +26,14 @@ var createDatabase = function(dbFileName){
 
 var insertDataIngredients = function(databaseInstance, dataIngredients){
 	databaseInstance.serialize(function(){
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsTable+" (thing TEXT)");
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsTable+" (name TEXT PRIMARY KEY, imageUrl TEXT, category TEXT, FOREIGN KEY(category) REFERENCES "+mascotsTable+"(category))");
 
 	});
 }
 
 var insertDataMascots = function(databaseInstance, dataMascots){
 	databaseInstance.serialize(function(){
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+mascotsTable+" (thing TEXT)");
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+mascotsTable+" (category TEXT PRIMARY KEY, latitude NUMERIC,longitude NUMERIC, modelUrl TEXT,name TEXT)");
 
 	});
 }
