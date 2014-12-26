@@ -66,6 +66,14 @@ var insertDataDishes = function(databaseInstance, dataDishes){
 
 
 exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDishes){
+	if(!fs.existsSync(path)){
+		fs.mkdirSync(path, 0766, function(err){
+			if(err){ 
+				console.log(err);
+				response.send("ERROR! Can't make the directory! \n");    // echo the result back
+			}
+		});   
+ 	}
 	var name = path+dbFileName+'.sqlite3'
 	var databaseInstance = createDatabase(name);
 
