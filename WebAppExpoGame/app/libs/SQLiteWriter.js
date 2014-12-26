@@ -69,7 +69,7 @@ exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDish
 	var name = path+dbFileName+'.sqlite3'
 	var databaseInstance = createDatabase(name);
 
-
+	console.log("INSERT DATA")
 	insertDataMascots(databaseInstance,dataMascots);
 
 	insertDataIngredients(databaseInstance,dataIngredients);
