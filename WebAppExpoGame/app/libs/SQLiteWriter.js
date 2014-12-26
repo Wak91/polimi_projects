@@ -50,7 +50,7 @@ var insertDataMascots = function(databaseInstance, dataMascots){
 var insertDataDishes = function(databaseInstance, dataDishes){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" (name TEXT PRIMARY KEY,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC)");
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish TEXT PRIMARY KEY, idIngredient TEXT PRIMARY KEY)");
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish TEXT , idIngredient TEXT, PRIMARY KEY(idDish,idIngredient))");
 		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created ) VALUES (?,?,?,?,?,?)");
 		var stmtRelation = databaseInstance.prepare("INSERT INTO "+ingredientsInDishesTable+" (idDish ,idIngredient) VALUES (?,?)");
 		dataDishes.forEach(function(dish){
