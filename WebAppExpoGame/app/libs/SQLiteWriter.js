@@ -5,6 +5,7 @@ var path = '../generated/'
 var ingredientsTable = 'Ingredients'
 var mascotsTable = 'Mascots'
 var dishesTable = 'Dishes'
+var ingredientsInDishesTable = 'IngredientsInDishes'
 
 var createDatabase = function(dbFileName){
 	var exists = fs.existsSync(dbFileName);
@@ -17,8 +18,7 @@ var createDatabase = function(dbFileName){
 	db.run("DROP TABLE IF EXISTS "+ingredientsTable);
 	db.run("DROP TABLE IF EXISTS "+mascotsTable);
 	db.run("DROP TABLE IF EXISTS "+dishesTable);
-
-
+	db.run("DROP TABLE IF EXISTS "+ingredientsInDishesTable);
 
 
 	return db;
@@ -27,21 +27,40 @@ var createDatabase = function(dbFileName){
 var insertDataIngredients = function(databaseInstance, dataIngredients){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsTable+" (name TEXT PRIMARY KEY, imageUrl TEXT, category TEXT, FOREIGN KEY(category) REFERENCES "+mascotsTable+"(category))");
-
+		var stmt = databaseInstance.prepare("INSERT INTO "+ingredientsTable+" (name, imageUrl ,category) VALUES (?,?,?)");
+		dataIngredients.forEach(function(ingredient){
+			stmt.run([ingredient["name"],ingredient["imageUrl"],ingredient["category"]])
+		});
+		stmt.finalize()
 	});
 }
 
 var insertDataMascots = function(databaseInstance, dataMascots){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+mascotsTable+" (category TEXT PRIMARY KEY, latitude NUMERIC,longitude NUMERIC, modelUrl TEXT,name TEXT)");
-
+		var stmt = databaseInstance.prepare("INSERT INTO "+mascotsTable+" (category, latitude ,longitude, modelUrl,name) VALUES (?,?,?,?,?)");
+		stmt.run(["ciao",432,32,"ew","we"])
+		dataMascots.forEach(function(mascot){
+			stmt.run([mascot["category"],mascot["latitude"],mascot["longitude"],mascot["modelUrl"],mascot["name"]])
+		});
+		stmt.finalize();
 	});
 }
 
 var insertDataDishes = function(databaseInstance, dataDishes){
 	databaseInstance.serialize(function(){
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" (thing TEXT)");
-
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" (name TEXT PRIMARY KEY,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC)");
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish TEXT PRIMARY KEY, idIngredient TEXT PRIMARY KEY)");
+		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created ) VALUES (?,?,?,?,?,?)");
+		var stmtRelation = databaseInstance.prepare("INSERT INTO "+ingredientsInDishesTable+" (idDish ,idIngredient) VALUES (?,?)");
+		dataDishes.forEach(function(dish){
+			stmtDish.run([dish["name"],dish["nationality"],dish["imageUrl"],dish["description"],dish["zone"],0])
+			dish["ingredients"].forEach(function(ingredient){
+				stmtRelation.run([dish["name"],ingredient]);
+			});
+		});
+		stmtDish.finalize();
+		stmtRelation.finalize();
 	});
 }
 
