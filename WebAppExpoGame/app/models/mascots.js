@@ -1,7 +1,7 @@
 /*Import to be used in file*/
 var mongoose = require('mongoose');
 var db = require('./dbModels')
-//var translator = require('../libs/translator');
+var translator = require('../libs/translator');
 
 handleError =function(error){
   console.log('error '+error);
@@ -27,7 +27,9 @@ exports.createMascot = function(nome, categoria, latitudine, longitudine, immagi
     image: immagine
 
   },function(err, mascot){
-    if (err) return handleError(err);
+    if (err){
+      return handleError(err);
+    }
     console.log('saved'+mascot);
     callback(mascot);
 
