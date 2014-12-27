@@ -6,14 +6,36 @@ html
 
     title ExpoGame
 
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-
-    link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css')
-
-    script(type='text/javascript', src='https://code.jquery.com/jquery-1.11.2.min.js')
-
-    script(type='text/javascript', src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
+ 
 
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     block content
+
+
+doctype html
+html
+  head
+    title= title
+
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+
+    script(type='text/javascript', src='https://code.jquery.com/jquery-1.11.2.min.js')
+
+
+    link(rel='stylesheet', href='stylesheets/style.css')
+
+    
+    link(rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" )
+    link(rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css")
+    link(rel="stylesheet" type="text/css" href="stylesheets/local.css" )
+
+    script( type="text/javascript" src="bootstrap/js/bootstrap.min.js")
+
+ 
+  body
+    #wrapper
+        block bar
+        #page-wrapper
+            block content
