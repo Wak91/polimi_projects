@@ -1,0 +1,93 @@
+extends layout
+
+block content
+  .container
+    .page-header
+      h1.text-center Mascots List
+      .container
+        .row
+          .col-xs-12.col-sm-12.col-md-6.col-lg-6
+            each item in mascots
+              .row
+                .col-xs-12.col-sm-12.col-md-12.col-lg-12
+                  .panel.panel-default(onclick='return init_map(0);')
+                    .row.padall
+                      .col-xs-12.col-sm-12.col-md-3.col-lg-3
+                        span
+
+                        img(src='/images/darth.jpg')
+
+                      .col-xs-12.col-sm-12.col-md-9.col-lg-9
+                        .clearfix
+                          .pull-left
+                            h3
+                              span.fa.fa-map-marker.icon #{item.name}
+
+
+
+                        div
+                          h4 span #{item.category}
+                          span  lat: #{item.latitude}
+                          br
+                          span lng: #{item.longitude}
+                          button.btn.btn-primary.pull-right Edit
+
+
+
+
+          .col-xs-12.col-sm-12.col-md-6.col-lg-6
+            .row.padbig
+              #map.map
+    script(src='http://maps.google.com/maps/api/js?sensor=false')
+    script(type='text/javascript').
+      var latitudes = [38.885516, 38.898537, 38.8507126, 38.84753];
+      var longitudes = [-77.09327200000001, -77.13208299999997, -77.09903600000001, -77.06577290000001];
+      function init_map(index) {
+      var myLocation = new google.maps.LatLng(latitudes[index], longitudes[index]);
+      var mapOptions = {
+      center: myLocation,
+      zoom: 16
+      };
+      var marker = new google.maps.Marker({
+      position: myLocation,
+      title: "Property Location"
+      });
+      var map = new google.maps.Map(document.getElementById("map"),
+      mapOptions);
+      marker.setMap(map);
+      }
+      init_map(0);
+    style.
+      .gmnoprint img {
+      max-width: none;
+      }
+      .panel:hover {
+      background-color: rgb(237, 245, 252);
+      }
+      .map {
+      min-width: 300px;
+      min-height: 470px;
+      width: 100%;
+      height: 100%;
+      }
+      img {
+      max-width: 110%;
+      height: inherit;
+      }
+      .clearfix {
+      clear: both;
+      }
+      .rowcolor {
+      background-color: #CCCCCC;
+      }
+      .padall {
+      padding: 10px;
+      }
+      .padbig {
+      padding: 20px;
+      }
+      .icon {
+      font-size: 23px;
+      color: #197BB5;
+      }
+    // Real Estate Map Update - END
