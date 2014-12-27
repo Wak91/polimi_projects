@@ -7,6 +7,15 @@ block content
                   form.form-horizontal(action='/mascots',method='post')
                     fieldset
                       legend.text-center.header Mascot
+                      if error_message
+                            .alert.alert-danger(role='alert')
+                                  span.glyphicon.glyphicon-exclamation-sign
+                                    span
+                                    |   #{error_message}
+
+
+
+
                       .form-group
                         .col-md-2.col-md-offset-1
                           label(for='name') Name
@@ -37,7 +46,7 @@ block content
                         .col-md-2.col-md-offset-1
                           label(for='image') Image
                         .col-md-8
-                          input#image.form-control(name='longitude', type='file', placeholder='image')
+                          input#image.form-control(name='image', type='file', placeholder='image')
                      .form-group
                         .col-md-12.text-center
                               button.btn.btn-primary.btn-lg(type='submit') Create

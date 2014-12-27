@@ -16,10 +16,10 @@ var mascotCollection = 'mascots'
 
 var mascot = new mongoose.Schema({
 	category:Array,
-	latitude:Number,
-	longitude:Number,
-	modelUrl:String,
-	name:String
+	latitude:{type: Number, required: true},
+	longitude:{type: Number, required: true},
+	modelUrl:{type: String, required: true},
+	name:{type: String, required: true}
 
 },{collection:mascotCollection});
 
