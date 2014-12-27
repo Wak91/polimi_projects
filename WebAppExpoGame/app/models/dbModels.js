@@ -12,7 +12,6 @@ var ingredient = new mongoose.Schema({
 
 mongoose.model( modelIngredient, ingredient);
 
-var modelMascot = 'mascot'
 var mascotCollection = 'mascots'
 
 var mascot = new mongoose.Schema({
@@ -24,7 +23,7 @@ var mascot = new mongoose.Schema({
 
 },{collection:mascotCollection});
 
-mongoose.model( modelMascot , mascot);
+var modelMascot = mongoose.model( 'mascot' , mascot);
 
 var modelDish = 'dish'
 var dishCollection = 'dishes'
