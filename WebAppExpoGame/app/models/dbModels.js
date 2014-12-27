@@ -25,7 +25,6 @@ var mascot = new mongoose.Schema({
 
 var modelMascot = mongoose.model( 'mascot' , mascot);
 
-var modelDish = 'dish'
 var dishCollection = 'dishes'
 
 var dish = new mongoose.Schema({
@@ -37,7 +36,7 @@ var dish = new mongoose.Schema({
 	zone:String
 },{collection:dishCollection});
 
-mongoose.model( modelDish , dish);
+var modelDish = mongoose.model( 'dish' , dish);
 
 var modelStatistic = 'statistic'
 var statisticCollection = 'statistics'
