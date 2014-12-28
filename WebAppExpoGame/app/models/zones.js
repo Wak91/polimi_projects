@@ -10,24 +10,26 @@ exports.insertZone = function(zone_,callback){
 	db.modelZone.create({
 		zone:zone_
 	},function(err,zone){
+		var error = undefined;
 		if(err){
-			handleError(err);
-		}else{
-			callback(zone);
+			error = handleError(err);
 		}
+		callback(error,zone);
 	});
 }
 
 exports.getZones = function(callback){
 	db.modelZone.find({},function(err,list){
+		var error = undefined;
+		var zoneList = []
 		if(err){
-			handleError(err);
+			error = handleError(err);
 		}else{
-			var zoneList = []
 			for (var i = list.length - 1; i >= 0; i--) {
 				zoneList.push(list[i]['zone'])
 			};
-			callback(zoneList);
+			
 		}
+		callback(error,zoneList);
 	});
 }

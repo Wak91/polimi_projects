@@ -4,16 +4,25 @@ var db = require('./dbModels')
 var translator = require('../libs/translator');
 
 var handleError = function(error){
-	console.log(error);
+	//console.log(error);
+	switch (error.name){
+	    case 'ValidationError':
+	      return 'All the fields are required!';
+	      break;
+	    default:
+	      return 'There was an error submitting your data';
+	      break;
+    }
 }
 
 exports.getDishes = function(callback){
 	db.modelDish.find({},function(err,list){
+		var error = undefined;
 		if(err){
-			handleError(err);
-		}else{
-			callback(list);
+			error = handleError(err);
 		}
+		callback(error,list);
+		
 	});
 }
 
@@ -24,7 +33,7 @@ exports.insertDish = function(name_,nationality_,imageUrl_,description_,ingredie
 	translator.translate(params,function(translation){
 		nameEnglish = translation;
 		var params = {text: description_, from: 'it', to: 'en'};
-		translate.translate(params,function(translation){
+		translator.translate(params,function(translation){
 			db.modelDish.create({
 			    names:[{name:name_,country:'it'},{name:nameEnglish,country:'en'}],
 				nationality:nationality_,
@@ -33,11 +42,12 @@ exports.insertDish = function(name_,nationality_,imageUrl_,description_,ingredie
 				descriptions:[{description:description_,country:'it'},{description:translation,country:'en'}],
 				zone:zone_
 			},function(err, dish){
+				var error = undefined;
 			    if (err){
-			    	return handleError(err);
-			  	}else{
-			  		callback(dish)
+			    	error = handleError(err);
 			  	}
+			  	callback(error,dish)
+			  	
 			});
 		});
 			
@@ -58,4 +68,5 @@ exports.getZones = function(callback){
 			callback(zoneList);
 		}
     });
-}*/
+}
+*/

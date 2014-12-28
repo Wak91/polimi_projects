@@ -5,7 +5,7 @@ var zoneModel = require('../models/zones')
 
 router.post('/',function(req,res){
 	var zone = req.body.zone;
-	zoneModel.insertZone(zone,function(zone){
+	zoneModel.insertZone(zone,function(error,zone){
 		console.log("Created dish "+zone);
     	res.redirect('/dishes');
 	});

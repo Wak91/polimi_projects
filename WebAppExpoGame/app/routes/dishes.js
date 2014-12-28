@@ -5,7 +5,7 @@ var zonesModel = require('../models/zones')
 
 
 router.get('/', function(req, res){
-	dishesModel.getDishes(function(dishes){
+	dishesModel.getDishes(function(error,dishes){
 	    console.log('returned dishes '+dishes);
 	    res.render('dishes', {
 	    title: 'Dishes',
@@ -21,14 +21,24 @@ router.post('/',function(req,res){
 	var description = req.body.description;
 	var ingredients = req.body.ingredients;
 	var zone = req.body.zone;
-	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,function(dish){
+	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,function(error,dish){
+		 if(error){
+		 	console.log(error);
+		 	zonesModel.getZones(function(errorZone,list){
+				res.render('dish', {
+			    title: 'Create Dish',
+			    error_message: error,
+				zones:list});
+			});
+	        return;
+	    }
 		console.log("Created dish "+dish);
     	res.redirect('/dishes');
 	});
 });
 
 router.get('/new', function(req, res){
-	zonesModel.getZones(function(list){
+	zonesModel.getZones(function(error,list){
 		res.render('dish', {
 	    title: 'Create Dish',
 		zones:list});

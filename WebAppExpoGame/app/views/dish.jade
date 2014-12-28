@@ -8,6 +8,12 @@ block content
 					form.form-horizontal(name='insert_form',action='/dishes',onsubmit='return checkField()',method='post')
 						fieldset
 							legend.text-center.header Dish
+								if error_message
+									.alert.alert-danger(role='alert')
+										span.glyphicon.glyphicon-exclamation-sign
+											span #{error_message}
+
+
 							.form-group
 								.col-md-2.col-md-offset-1
 									label(for='name') Name
@@ -38,7 +44,7 @@ block content
 							.form-group
 								.col-md-12.text-center
 									button.btn.btn-primary.btn-lg(type='submit') Create
-
+//
 	script.
 		function checkField() {
 			var name = document.forms["insert_form"]["name"].value;
