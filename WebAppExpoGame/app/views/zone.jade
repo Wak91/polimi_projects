@@ -8,6 +8,11 @@ block content
 					form.form-horizontal(name='insert_zone',action='/zones',onsubmit='return checkField()',method='post')
 						fieldset
 							legend.text-center.header Dish
+								if error_message
+									.alert.alert-danger(role='alert')
+										span.glyphicon.glyphicon-exclamation-sign
+											span #{error_message}
+
 							.form-group
 								.col-md-2.col-md-offset-1
 									label(for='name') Zone
