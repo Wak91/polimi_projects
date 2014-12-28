@@ -2,19 +2,61 @@ extends layout
 
 
 block content
-	.row
-		.col-xs-12.col-sm-12.col-md-12.col-lg-12
-			.row.text-center
-				h1 #{title}
-			.row
-				.col-sm-12.col-md-6.col-lg-6
-					a.btn.btn-lg.btn-primary.btn-circle.btn-xl.marginbig(href='/dishes/new')
-						span.glyphicon.glyphicon-plus
-							br
-							span Dish
 
-				.col-sm-12.col-md-6.col-lg-6
-					a.btn.btn-lg.btn-primary.btn-circle.btn-xl.marginbig(href='/zones/new')
-						span.glyphicon.glyphicon-plus
-							br
-							span Zone
+	.row
+		.row.text-center
+				h2 #{title}
+
+		.col-sm-12.col-md-3.col-lg-3
+			a.btn.btn-lg.btn-primary.btn-circle.btn-xl.marginbig(href='/dishes/new')
+				span.glyphicon.glyphicon-plus
+					br
+					span Dish
+
+		.col-sm-12.col-md-3.col-lg-3
+			a.btn.btn-lg.btn-primary.btn-circle.btn-xl.marginbig(href='/zones/new')
+				span.glyphicon.glyphicon-plus
+					br
+					span Zone
+	br
+	.row
+		.col-md-12
+			.row
+				.form-group.input-group
+					input#searchDish.form-control(type='text')
+					| 
+					span.input-group-btn
+						button.btn.btn-default(type='button')
+							i.fa.fa-search
+			
+			.row.panel.panel-default.scrollable(style='max-height: 500px;overflow-y: auto;overflow-x: hidden;')
+				each dish in dishes
+					.row.padall
+						.panel.panel-default
+							.col-xs-3.col-sm-3.col-md-3.col-lg-3
+								h3
+									.span.dish #{dish["name"]}
+									.span #{dish["nationality"]}
+									.span #{dish["imageUrl"]}
+									.span #{dish["zone"]}
+							.col-xs-3.col-sm-3.col-md-3.col-lg-3
+
+								.panel.panel-default.scrollable(style='max-height: 300px;overflow-y: auto;overflow-x: hidden;')
+									h3 #{dish["descriptions"][0]["description"]}
+
+
+								
+
+	script.
+		$("#searchDish").keyup(function(){
+			filter = $(this).val();
+			console.log("call");
+			$(".dish").each(function(key,value){
+				console.log($(value).text());
+				if($(value).text().indexOf(filter) != 0){
+					$(value).parent().parent().parent().hide();
+				}else{
+					$(value).parent().parent().parent().show();
+				}
+			})
+		})

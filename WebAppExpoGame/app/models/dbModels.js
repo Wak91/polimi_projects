@@ -28,11 +28,11 @@ var modelMascot = mongoose.model( 'mascot' , mascot);
 var dishCollection = 'dishes'
 
 var dish = new mongoose.Schema({
-	names:Array,
+	name:{type:String, required: true},
 	nationality:{type:String, required: true},
 	imageUrl:{type:String, required: true},
-	descriptions:Array,
-	ingredients:Array,
+	descriptions:{type:Array,required:true},
+	ingredients:{type:Array,required:true},
 	zone:{type:String, required: true}
 },{collection:dishCollection});
 
@@ -41,7 +41,7 @@ var modelDish = mongoose.model( 'dish' , dish);
 var zoneCollection = 'zones'
 
 var zone = new mongoose.Schema({
-	zone:{type:String, required:true}
+	zones:{type:Array, required:true}
 },{collection:zoneCollection});
 
 var modelZone = mongoose.model('zone',zone);

@@ -28,14 +28,11 @@ exports.getDishes = function(callback){
 
 
 exports.insertDish = function(name_,nationality_,imageUrl_,description_,ingredients_,zone_,callback){
-	var nameEnglish;
-	var params = {text: name_, from: 'it', to: 'en'};
-	translator.translate(params,function(translation){
-		nameEnglish = translation;
+	
 		var params = {text: description_, from: 'it', to: 'en'};
 		translator.translate(params,function(translation){
 			db.modelDish.create({
-			    names:[{name:name_,country:'it'},{name:nameEnglish,country:'en'}],
+			    name:name_,
 				nationality:nationality_,
 				imageUrl:imageUrl_,
 				ingredients:ingredients_,
@@ -51,7 +48,6 @@ exports.insertDish = function(name_,nationality_,imageUrl_,description_,ingredie
 			});
 		});
 			
-	});
 }
 
 /*

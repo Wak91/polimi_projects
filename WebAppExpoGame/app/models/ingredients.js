@@ -20,3 +20,32 @@ exports.getIngredients = function getIngredients(callback){
 	});
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*add by andre as stub*/
+exports.getIngredientsNames = function getIngredientsNames(callback){
+	var ingredients = mongoose.model(db.modelIngredient);
+	ingredients.find({},function (err,list){
+		if(err){
+			console.log(err);
+		}else{
+			var listIngredients = []
+			for (var i = list.length - 1; i >= 0; i--) {
+				listIngredients.push(list[i]["names"][0]["name"]);
+			};
+			console.log(listIngredients);
+			callback(listIngredients);
+		}
+	});
+}

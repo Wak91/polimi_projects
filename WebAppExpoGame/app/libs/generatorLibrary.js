@@ -4,7 +4,7 @@ var createSQLiteDatabase = function(){
 }
 
 var createXmlFiles = function(){
-	return true;
+	return true;2
 }
 
 exports.generateAppFiles = function(callback){
