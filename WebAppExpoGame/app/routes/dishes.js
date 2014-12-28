@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var dishesModel = require('../models/dishes')
+var zonesModel = require('../models/zones')
 
 
 router.get('/', function(req, res){
@@ -27,7 +28,7 @@ router.post('/',function(req,res){
 });
 
 router.get('/new', function(req, res){
-	dishesModel.getZones(function(list){
+	zonesModel.getZones(function(list){
 		res.render('dish', {
 	    title: 'Create Dish',
 		zones:list});

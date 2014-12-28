@@ -44,7 +44,7 @@ exports.insertDish = function(name_,nationality_,imageUrl_,description_,ingredie
 	});
 }
 
-
+/*
 exports.getZones = function(callback){
 	db.modelDish.aggregate({ $group: { _id: '$zone'}},{ $project: { zone: 1}},function(err, list) {
         if(err){
@@ -58,4 +58,4 @@ exports.getZones = function(callback){
 			callback(zoneList);
 		}
     });
-}
+}*/

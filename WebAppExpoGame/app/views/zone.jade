@@ -1,0 +1,28 @@
+extends layout
+
+block content
+	.row
+		.col-xs-12.col-sm-12.col-md-12.col-lg-12
+			.col-md-8.col-md-offset-2
+				.well.well-sm
+					form.form-horizontal(name='insert_zone',action='/zones',onsubmit='return checkField()',method='post')
+						fieldset
+							legend.text-center.header Dish
+							.form-group
+								.col-md-2.col-md-offset-1
+									label(for='name') Zone
+								.col-md-8
+									input#name.form-control(name='zone', type='text', placeholder='Insert zone...')
+
+							.form-group
+								.col-md-12.text-center
+									button.btn.btn-primary.btn-lg(type='submit') Create
+
+	script.
+		function checkField() {
+			var zone = document.forms["insert_zone"]["zone"].value;
+			if (zone==null || zone=="") {
+				return false;
+			}
+			return true;
+		}
