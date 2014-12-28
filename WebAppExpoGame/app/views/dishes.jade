@@ -23,26 +23,36 @@ block content
 		.col-md-12
 			.row
 				.form-group.input-group
-					input#searchDish.form-control(type='text')
+					input#searchDish.form-control(type='text',placeholder='Insert name...')
 					| 
 					span.input-group-btn
 						button.btn.btn-default(type='button')
 							i.fa.fa-search
 			
-			.row.panel.panel-default.scrollable(style='max-height: 500px;overflow-y: auto;overflow-x: hidden;')
+			.row.panel.panel-default.scrollable(style='max-height: 800px;overflow-y: auto;overflow-x: hidden;')
 				each dish in dishes
 					.row.padall
-						.panel.panel-default
+						.panel.panel-default(style='min-height: 150px;')
 							.col-xs-3.col-sm-3.col-md-3.col-lg-3
-								h3
-									.span.dish #{dish["name"]}
+								h4.dish
+									.span #{dish["name"]}
+								h4
 									.span #{dish["nationality"]}
+								h4
 									.span #{dish["imageUrl"]}
+								h4
 									.span #{dish["zone"]}
-							.col-xs-3.col-sm-3.col-md-3.col-lg-3
-
-								.panel.panel-default.scrollable(style='max-height: 300px;overflow-y: auto;overflow-x: hidden;')
-									h3 #{dish["descriptions"][0]["description"]}
+							.col-xs-5.col-sm-5.col-md-5.col-lg-5
+								h4 Description
+								.panel.panel-default.scrollable(style='max-height: 130px;overflow-y: auto;overflow-x: hidden;padding-top:10px;')
+									.text-justify.col-md-offset-1
+									| #{dish["descriptions"][0]["description"]}
+							
+							.col-xs-4.col-sm-4.col-md-4.col-lg-4
+								h4 Ingredients
+								.panel.panel-default.scrollable(style='max-height: 130px;overflow-y: auto;overflow-x: hidden;padding-top:10px;')
+									each ingredient in dish["ingredients"]
+										h5.col-md-offset-1	#{ingredient}
 
 
 								
@@ -54,9 +64,9 @@ block content
 			$(".dish").each(function(key,value){
 				console.log($(value).text());
 				if($(value).text().indexOf(filter) != 0){
-					$(value).parent().parent().parent().hide();
+					$(value).parent().parent().hide();
 				}else{
-					$(value).parent().parent().parent().show();
+					$(value).parent().parent().show();
 				}
 			})
 		})

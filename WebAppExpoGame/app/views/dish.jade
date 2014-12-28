@@ -45,14 +45,15 @@ block content
 								.col-md-2.col-md-offset-1
 									label(for='components') Ingredients
 								.col-md-8
-									.panel.panel-default.scrollable(style='max-height: 200px;overflow-y: auto;overflow-x: hidden;')
-										.col-md-12
-											.form-group.input-group
+									.form-group.input-group.col-md.10
 												input#searchIngredient.form-control(type='text')
 												| 
 												span.input-group-btn
 													button.btn.btn-default(type='button')
 														i.fa.fa-search
+									.panel.panel-default.scrollable(style='max-height: 200px;overflow-y: auto;overflow-x: hidden;')
+										.col-md-12
+											
 											for item in ingredients
 												.row
 													.col-md-1
