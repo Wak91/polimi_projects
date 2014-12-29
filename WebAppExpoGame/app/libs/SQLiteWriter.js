@@ -1,6 +1,8 @@
 var fs = require("fs");
 var sqlite3 = require("sqlite3").verbose();
-var path = '../generated/'
+var dir = require('path');
+
+var path = dir.join(__dirname, 'generated/')
 
 var ingredientsTable = 'Ingredients'
 var mascotsTable = 'Mascots'
@@ -39,7 +41,6 @@ var insertDataMascots = function(databaseInstance, dataMascots){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+mascotsTable+" (category TEXT PRIMARY KEY, latitude NUMERIC,longitude NUMERIC, modelUrl TEXT,name TEXT)");
 		var stmt = databaseInstance.prepare("INSERT INTO "+mascotsTable+" (category, latitude ,longitude, modelUrl,name) VALUES (?,?,?,?,?)");
-		stmt.run(["ciao",432,32,"ew","we"])
 		dataMascots.forEach(function(mascot){
 			stmt.run([mascot["category"],mascot["latitude"],mascot["longitude"],mascot["modelUrl"],mascot["name"]])
 		});
@@ -75,6 +76,7 @@ exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDish
 		});   
  	}
 	var name = path+dbFileName+'.sqlite3'
+	console.log(name);
 	var databaseInstance = createDatabase(name);
 
 	console.log("INSERT DATA")
