@@ -22,9 +22,7 @@ router.post('/',function(req,res){
 	var imageUrl = req.body.imageUrl;
 	var description = req.body.description;
 	var ingredients = req.body.components;
-	if(ingredients == undefined){
-		ingredients = [];
-	}
+	
 	var zone = req.body.zone;
 	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,function(error,dish){
 		 if(error){
