@@ -11,15 +11,23 @@ exports.insertZone = function(zone_,callback){
 	var params = {text: zone_, from: 'it', to: 'en'};
 	translator.translate(params,function(translation){
 		zoneEnglish = translation;
-		db.modelZone.create({
-		zones:[{zone:zone_,country:"it"},{zone:zoneEnglish,country:'en'}]
-		},function(err,zone){
-			var error = undefined;
-			if(err){
-				error = handleError(err);
+		db.modelZone.findOne({"zones.zone":zone_},function(err,zone){
+			if(zone){
+				console.log("already zone in db")
+				callback("The zone is already in the db",zone);
+			}else{
+				db.modelZone.create({
+					zones:[{zone:zone_,country:"it"},{zone:zoneEnglish,country:'en'}]
+					},function(err,zone){
+						var error = undefined;
+						if(err){
+							error = handleError(err);
+						}
+						callback(error,zone);
+					});
 			}
-			callback(error,zone);
 		});
+		
 		
 	});
 	
