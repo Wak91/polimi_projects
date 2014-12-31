@@ -32,7 +32,7 @@ html
 
                 span.icon-bar
 
-              a.navbar-brand(href='/') Admin Panel
+              a.navbar-brand(href='/') Web App Expo Game
 
             .collapse.navbar-collapse.navbar-ex1-collapse
               ul.nav.navbar-nav.side-nav
@@ -49,5 +49,22 @@ html
                 li
                   a(href='/dishes')
                     i.fa.fa-tasks  Dishes
+                li
+                  a(href='/generate')
+                    i.fa.fa-tasks Generate
         #page-wrapper
             block content
+
+    script(type='text/javascript').
+                $("li").click(function(){
+                    //alert("ciao");
+
+                  // If this isn't already active
+                  if (!$(this).hasClass("active")) {
+                    // Remove the class from anything that is active
+                    $("li.active").removeClass("active");
+                    // And make this active
+                    $(this).addClass("active");
+                    //alert("ciao");
+                  }
+                });

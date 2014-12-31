@@ -8,7 +8,9 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var mascots = require('./routes/mascots');
-
+var dishes = require('./routes/dishes');
+var zones = require('./routes/zones');
+var generate = require('./routes/generate')
 var app = express();
 
 // view engine setup
@@ -26,6 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/mascots', mascots);
+app.use('/dishes',dishes);
+app.use('/zones',zones);
+app.use('/generate',generate);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

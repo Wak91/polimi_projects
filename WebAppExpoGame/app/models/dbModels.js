@@ -25,19 +25,26 @@ var mascot = new mongoose.Schema({
 
 var modelMascot = mongoose.model( 'mascot' , mascot);
 
-var modelDish = 'dish'
 var dishCollection = 'dishes'
 
 var dish = new mongoose.Schema({
 	names:Array,
-	nationality:String,
-	imageUrl:String,
+	nationality:{type:String, required: true},
+	imageUrl:{type:String, required: true},
 	descriptions:Array,
 	ingredients:Array,
-	zone:String
+	zone:{type:String, required: true}
 },{collection:dishCollection});
 
-mongoose.model( modelDish , dish);
+var modelDish = mongoose.model( 'dish' , dish);
+
+var zoneCollection = 'zones'
+
+var zone = new mongoose.Schema({
+	zone:{type:String, required:true}
+},{collection:zoneCollection});
+
+var modelZone = mongoose.model('zone',zone);
 
 var modelStatistic = 'statistic'
 var statisticCollection = 'statistics'
@@ -61,3 +68,6 @@ exports.dishes = mongoose.connection.collection(dishCollection)
 
 exports.modelStatistic = modelStatistic
 exports.statistics = mongoose.connection.collection(statisticCollection)
+
+exports.modelZone = modelZone
+exports.zones = mongoose.connection.collection(zoneCollection)
