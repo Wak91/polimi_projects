@@ -3,49 +3,49 @@ var mongoose = require('mongoose');
 var db = require('./dbModels')
 var translator = require('../libs/translator');
 
+var handleError = function(error){
+	//console.log(error);
+	switch (error.name){
+	    case 'ValidationError':
+	      return 'All the fields are required!';
+	      break;
+	    default:
+	      return 'There was an error submitting your data';
+	      break;
+    }
+}
 
-
-
-/*
-Function in order to retrieve all ingredients in the db.
-*/
-exports.getIngredients = function getIngredients(callback){
-	var ingredients = mongoose.model(db.modelIngredient);
-	ingredients.find({},function (err,list){
+exports.getIngredients = function(callback){
+	db.modelIngredient.find({},function(err,list){
+		var error = undefined;
 		if(err){
-			console.log(err);
-		}else{
-			callback(list);
+			error = handleError(err);
 		}
+		callback(error,list);		
+	});
+}
+
+exports.insertIngredient = function(name_,imageUrl_,callback){
+	var nameEnglish;
+	var params = {text: name_, from: 'it', to: 'en'};
+	translator.translate(params,function(translation){
+		nameEnglish = translation;
+		var params = {text: description_, from: 'it', to: 'en'};
+		translator.translate(params,function(translation){
+			db.modelIngredient.create({
+			    names:[{name:name_,country:'it'},{name:nameEnglish,country:'en'}],
+				imageUrl:imageUrl_,
+			},function(err, ingredient){
+				var error = undefined;
+			    if (err){
+			    	error = handleError(err);
+			  	}
+			  	callback(error,ingredient)
+			  	
+			});
+		});
+			
 	});
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*add by andre as stub*/
-exports.getIngredientsNames = function getIngredientsNames(callback){
-	var ingredients = mongoose.model(db.modelIngredient);
-	ingredients.find({},function (err,list){
-		if(err){
-			console.log(err);
-		}else{
-			var listIngredients = []
-			for (var i = list.length - 1; i >= 0; i--) {
-				listIngredients.push(list[i]["names"][0]["name"]);
-			};
-			console.log(listIngredients);
-			callback(listIngredients);
-		}
-	});
-}

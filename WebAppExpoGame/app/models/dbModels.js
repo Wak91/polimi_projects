@@ -1,7 +1,10 @@
 var mongoose = require( 'mongoose' );
 var IP_MONGODB = 'localhost'
 
-var modelIngredient = 'ingredient'
+
+//------INGREDIENT SETUP---------------------
+//Author: @degrigis
+
 var ingredientCollection = 'ingredients'
 
 var ingredient = new mongoose.Schema({
@@ -10,7 +13,12 @@ var ingredient = new mongoose.Schema({
 	category: mongoose.Schema.Types.ObjectId
 },{collection: ingredientCollection});
 
-mongoose.model( modelIngredient, ingredient);
+var modelIngredient = mongoose.model( 'ingredient', ingredient);
+
+//-------------------------------------------
+
+//------MASCOT SETUP---------------------
+//Author: @acorna
 
 var mascotCollection = 'mascots'
 
@@ -25,26 +33,42 @@ var mascot = new mongoose.Schema({
 
 var modelMascot = mongoose.model( 'mascot' , mascot);
 
+//-------------------------------------------
+
+//------DISH SETUP---------------------
+//Author: @acorna
+
 var dishCollection = 'dishes'
 
 var dish = new mongoose.Schema({
-	name:{type:String, required: true},
+	names:Array,
 	nationality:{type:String, required: true},
 	imageUrl:{type:String, required: true},
-	descriptions:{type:Array,required:true},
-	ingredients:{type:Array,required:true},
+	descriptions:Array,
+	ingredients:Array,
 	zone:{type:String, required: true}
 },{collection:dishCollection});
 
 var modelDish = mongoose.model( 'dish' , dish);
 
+//-------------------------------------------
+
+
+//------ZONES SETUP---------------------
+//Author: @acorna
+
 var zoneCollection = 'zones'
 
 var zone = new mongoose.Schema({
-	zones:{type:Array, required:true}
+	zone:{type:String, required:true}
 },{collection:zoneCollection});
 
 var modelZone = mongoose.model('zone',zone);
+
+//-------------------------------------------
+
+//------STATS SETUP---------------------
+//Author: @acorna
 
 var modelStatistic = 'statistic'
 var statisticCollection = 'statistics'
@@ -54,6 +78,10 @@ var statistic = new mongoose.Schema({
 },{collection:statisticCollection});
 
 mongoose.model( modelStatistic , statistic);
+
+//-------------------------------------------
+
+//-----CONNECTTION TO MONGODB-----------------------------------------------
 
 mongoose.connect( 'mongodb://'+IP_MONGODB+'/expogame' );
 
@@ -71,3 +99,5 @@ exports.statistics = mongoose.connection.collection(statisticCollection)
 
 exports.modelZone = modelZone
 exports.zones = mongoose.connection.collection(zoneCollection)
+
+//--------------------------------------------------------------------------
