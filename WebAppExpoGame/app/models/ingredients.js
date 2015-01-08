@@ -28,9 +28,9 @@ exports.getIngredients = function(callback){
 exports.insertIngredient = function(name_,imageUrl_,callback){
 	var nameEnglish;
 	var params = {text: name_, from: 'it', to: 'en'};
+
 	translator.translate(params,function(translation){
 		nameEnglish = translation;
-		var params = {text: description_, from: 'it', to: 'en'};
 		translator.translate(params,function(translation){
 			db.modelIngredient.create({
 			    names:[{name:name_,country:'it'},{name:nameEnglish,country:'en'}],

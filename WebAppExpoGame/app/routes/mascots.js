@@ -25,6 +25,7 @@ router.post('/',function(req,res){
   var image = req.body.image;
   var name = req.body.name;
   console.log('[MascotsRoutes>post]Mascot created:\ncategory '+category+' \nlatitude '+latitude+' \nlongitude '+longitude+' \nimage '+image+' \nname '+name);
+  
   mascotsModel.createMascot(name,category, latitude, longitude, image,function(error,mascot){
 
     //displaying error message which comes from the model validation

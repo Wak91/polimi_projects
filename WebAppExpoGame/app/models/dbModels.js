@@ -8,8 +8,8 @@ var IP_MONGODB = 'localhost'
 var ingredientCollection = 'ingredients'
 
 var ingredient = new mongoose.Schema({
-	names: Array,
-	imageUrl: String,
+	names: {type: Array, required: true ,min: 3},
+	imageUrl: {type: String, required: true},
 	category: mongoose.Schema.Types.ObjectId
 },{collection: ingredientCollection});
 
@@ -18,7 +18,7 @@ var modelIngredient = mongoose.model( 'ingredient', ingredient);
 //-------------------------------------------
 
 //------MASCOT SETUP---------------------
-//Author: @acorna
+//Author: @fonz
 
 var mascotCollection = 'mascots'
 

@@ -1,0 +1,63 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', 'bodyParser' ]
+2 info using npm@1.3.10
+3 info using node@v0.10.25
+4 verbose readDependencies using package.json deps
+5 verbose cache add [ 'bodyParser', null ]
+6 verbose cache add name=undefined spec="bodyParser" args=["bodyParser",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: 'bodyParser',
+7 verbose parsed url   path: 'bodyParser',
+7 verbose parsed url   href: 'bodyParser' }
+8 silly lockFile caa4c3c7-bodyParser bodyParser
+9 verbose lock bodyParser /home/degrigis/.npm/caa4c3c7-bodyParser.lock
+10 silly lockFile caa4c3c7-bodyParser bodyParser
+11 silly lockFile caa4c3c7-bodyParser bodyParser
+12 verbose addNamed [ 'bodyParser', '' ]
+13 verbose addNamed [ null, '*' ]
+14 silly lockFile e0b6bd45-bodyParser bodyParser@
+15 verbose lock bodyParser@ /home/degrigis/.npm/e0b6bd45-bodyParser.lock
+16 silly addNameRange { name: 'bodyParser', range: '*', hasData: false }
+17 verbose url raw bodyParser
+18 verbose url resolving [ 'https://registry.npmjs.org/', './bodyParser' ]
+19 verbose url resolved https://registry.npmjs.org/bodyParser
+20 info trying registry request attempt 1 at 17:21:23
+21 http GET https://registry.npmjs.org/bodyParser
+22 http 404 https://registry.npmjs.org/bodyParser
+23 silly registry.get cb [ 404,
+23 silly registry.get   { date: 'Thu, 08 Jan 2015 16:21:34 GMT',
+23 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+23 silly registry.get     'content-type': 'application/json',
+23 silly registry.get     'cache-control': 'max-age=0',
+23 silly registry.get     'content-length': '52',
+23 silly registry.get     'accept-ranges': 'bytes',
+23 silly registry.get     via: '1.1 varnish',
+23 silly registry.get     age: '0',
+23 silly registry.get     'x-served-by': 'cache-lcy1134-LCY',
+23 silly registry.get     'x-cache': 'MISS',
+23 silly registry.get     'x-cache-hits': '0',
+23 silly registry.get     'x-timer': 'S1420734093.560976,VS0,VE644',
+23 silly registry.get     'keep-alive': 'timeout=10, max=50',
+23 silly registry.get     connection: 'Keep-Alive' } ]
+24 silly lockFile e0b6bd45-bodyParser bodyParser@
+25 silly lockFile e0b6bd45-bodyParser bodyParser@
+26 error 404 'bodyParser' is not in the npm registry.
+26 error 404 You should bug the author to publish it
+26 error 404
+26 error 404 Note that you can also install from a
+26 error 404 tarball, folder, or http url, or git url.
+27 error System Linux 3.13.0-43-generic
+28 error command "/usr/bin/nodejs" "/usr/bin/npm" "install" "bodyParser"
+29 error cwd /home/degrigis/Scrivania/EXPOGAME/WebAppExpoGame/app
+30 error node -v v0.10.25
+31 error npm -v 1.3.10
+32 error code E404
+33 verbose exit [ 1, true ]
