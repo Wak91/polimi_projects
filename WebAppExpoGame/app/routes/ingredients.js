@@ -1,11 +1,30 @@
+//Author @degrigis
+
+/*UTILITY EXPLOITED HERE-------------------------------
+
+-express-validator ( http://blog.ijasoneverett.com/2013/04/form-validation-in-node-js-with-express-validator/ )
+
+*///-----------------------------------------------------
+
+
+
+//INITIAL CONFIGURATION--------------------------------
 var express = require('express');
-
-//A router is an isolated instance of middleware and routes. 
-//Routers can be thought of as "mini" applications, capable only of performing middleware and routing functions.
-
 var router = express.Router();
 var IngredientModel = require('../models/ingredients');
+module.exports = router;
+//-----------------------------------------------------
 
+
+//ROUTE HANDLING ( 3 ) 
+//-----------------------------------------------------
+
+
+/*
+(1)
+Initial route for the page ingredients , it extract all the ingredients
+from mongoDB and save it in 'ingredient' in order to show them later 
+*/
 router.get('/', function(req, res){
 	IngredientModel.getIngredients(function(error,ingredient){
 	    console.log('returned ingredients '+ingredient);
@@ -17,21 +36,30 @@ router.get('/', function(req, res){
 });
 
 
+/*
+(2)
+Route called to access the page to insert a new 
+ingredient ( called from ingredients.jade )
+*/
 router.get('/new', function(req, res){
 		res.render('ingredient');
 	});
 
 
-
-//POST on /ingredients 
+/*
+(3)
+Handling the POST from the page ingredient.jade,
+it checks via express-validator if the values of 
+the forms are ok and then inserts the new ingredient in 
+mongoDB using 'IngredientModel.insertIngredient'
+*/
 router.post('/',function(req,res){
 
 	var name = req.body.name;
 	var imageUrl = req.body.imageUrl;       
     
     //let's exploit the express-validator middleware 
-    //( http://blog.ijasoneverett.com/2013/04/form-validation-in-node-js-with-express-validator/ )
- 	
+ 
  	req.assert('name', 'Name is required').notEmpty(); 
  	req.assert('imageUrl', 'Image is required').notEmpty();    
 
@@ -62,5 +90,4 @@ router.post('/',function(req,res){
 	});
 });
 
-
-module.exports = router;
+//-----------------------------------------------------

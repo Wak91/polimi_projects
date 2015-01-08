@@ -34,7 +34,7 @@ router.post('/',function(req,res){
 		            });
 		        },
 		        function(callback){
-		            ingredientsModel.getIngredientsNames(function(ingredients){
+		            ingredientsModel.getIngredients(function(ingredients){
 		                callback(null, ingredients);
 		            });
 		        }
@@ -66,7 +66,7 @@ router.get('/new', function(req, res){
             });
         },
         function(callback){
-            ingredientsModel.getIngredientsNames(function(ingredients){
+            ingredientsModel.getIngredients(function(ingredients){
                 callback(null, ingredients);
             });
         }
