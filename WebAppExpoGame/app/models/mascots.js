@@ -1,7 +1,8 @@
-/*Import to be used in file*/
+//INITIAL CONFIGURATION--------------------------------
 var mongoose = require('mongoose');
 var db = require('./dbModels')
 var translator = require('../libs/translator');
+//-----------------------------------------------------
 
 
 /*

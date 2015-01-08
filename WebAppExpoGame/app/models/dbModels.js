@@ -8,7 +8,7 @@ var IP_MONGODB = 'localhost'
 var ingredientCollection = 'ingredients'
 
 var ingredient = new mongoose.Schema({
-	names: {type: Array, required: true ,min: 3},
+	names: {type: Array, required: true },
 	imageUrl: {type: String, required: true},
 	category: mongoose.Schema.Types.ObjectId
 },{collection: ingredientCollection});

@@ -2,7 +2,7 @@
 
 /*UTILITY EXPLOITED HERE-------------------------------
 
--express-validator ( http://blog.ijasoneverett.com/2013/04/form-validation-in-node-js-with-express-validator/ )
+- express-validator ( http://blog.ijasoneverett.com/2013/04/form-validation-in-node-js-with-express-validator/ )
 
 *///-----------------------------------------------------
 
