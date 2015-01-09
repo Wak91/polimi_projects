@@ -13,6 +13,7 @@ var dishes = require('./routes/dishes');
 var zones = require('./routes/zones');
 var generate = require('./routes/generate')
 var ingredients = require('./routes/ingredients');
+var api = require('./routes/api')
 
 
 var app = express();
@@ -41,6 +42,7 @@ app.use('/dishes',dishes);
 app.use('/zones',zones);
 app.use('/generate',generate);
 app.use('/ingredients',ingredients);
+app.use('/api',api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
