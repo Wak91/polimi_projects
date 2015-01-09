@@ -8,7 +8,7 @@ var IP_MONGODB = 'localhost'
 var ingredientCollection = 'ingredients'
 
 var ingredient = new mongoose.Schema({
-	names: {type: Array, required: true ,min: 3},
+	name: {type: String, required: true ,min: 3},
 	imageUrl: {type: String, required: true},
 	category: mongoose.Schema.Types.ObjectId
 },{collection: ingredientCollection});
@@ -23,7 +23,7 @@ var modelIngredient = mongoose.model( 'ingredient', ingredient);
 var mascotCollection = 'mascots'
 
 var mascot = new mongoose.Schema({
-	category:Array,
+	category:{type: String, required: true},
 	latitude:{type: Number, required: true},
 	longitude:{type: Number, required: true},
 	modelUrl:{type: String, required: true},
@@ -41,10 +41,10 @@ var modelMascot = mongoose.model( 'mascot' , mascot);
 var dishCollection = 'dishes'
 
 var dish = new mongoose.Schema({
-	names:Array,
+	name:{type: String, required: true},
 	nationality:{type:String, required: true},
 	imageUrl:{type:String, required: true},
-	descriptions:Array,
+	description:{type: String, required: true},
 	ingredients:Array,
 	zone:{type:String, required: true}
 },{collection:dishCollection});
@@ -60,7 +60,7 @@ var modelDish = mongoose.model( 'dish' , dish);
 var zoneCollection = 'zones'
 
 var zone = new mongoose.Schema({
-	zones:{type:Array, required:true}
+	zone:{type: String, required: true}
 },{collection:zoneCollection});
 
 var modelZone = mongoose.model('zone',zone);

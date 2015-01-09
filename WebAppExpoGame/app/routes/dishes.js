@@ -24,6 +24,7 @@ router.post('/',function(req,res){
 	var ingredients = req.body.components;
 	
 	var zone = req.body.zone;
+	console.log(ingredients)
 	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,function(error,dish){
 		 if(error){
 		 	console.log(error);
