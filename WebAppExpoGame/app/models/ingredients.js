@@ -49,26 +49,22 @@ Insert a new ingredient in mongoDB, it performs automatically
 the translation of the name exploiting the libs/translator 
 */
 exports.insertIngredient = function(name_,imageUrl_,callback){
-	var nameEnglish;
-	var params = {text: name_, from: 'it', to: 'en'};
 
-	translator.translate(params,function(translation){
-		nameEnglish = translation;
-		translator.translate(params,function(translation){
-			db.modelIngredient.create({
-			    names:[{name:name_,country:'it'},{name:nameEnglish,country:'en'}],
-				imageUrl:imageUrl_,
-			},function(err, ingredient){
-				var error = undefined;
-			    if (err){
-			    	error = handleError(err);
-			  	}
-			  	callback(error,ingredient)
-			  	
-			});
-		});
-			
+
+	db.modelIngredient.create({
+	    name:name_,
+		imageUrl:imageUrl_,
+	},function(err, ingredient){
+		var error = undefined;
+	    if (err){
+	    	error = handleError(err);
+	  	}
+	  	callback(error,ingredient)
+	  	
 	});
+		
+			
+	
 }
 
 //------------------------------------------

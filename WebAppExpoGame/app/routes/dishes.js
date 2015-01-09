@@ -67,11 +67,7 @@ router.get('/new', function(req, res){
             });
         },
         function(callback){
-<<<<<<< HEAD
-            ingredientsModel.getIngredients(function(ingredients){
-=======
             ingredientsModel.getIngredients(function(error,ingredients){
->>>>>>> bd4ef9f6d4ab3d629f31ba864fc00e9944924234
                 callback(null, ingredients);
             });
         }
