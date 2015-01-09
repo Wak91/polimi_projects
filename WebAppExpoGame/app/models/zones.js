@@ -7,17 +7,15 @@ var handleError = function(error){
 }
 
 exports.insertZone = function(zone_,callback){
-	var zoneEnglish;
-	var params = {text: zone_, from: 'it', to: 'en'};
-	translator.translate(params,function(translation){
-		zoneEnglish = translation;
-		db.modelZone.findOne({"zones.zone":zone_},function(err,zone){
+	
+		
+		db.modelZone.findOne({"zone":zone_},function(err,zone){
 			if(zone){
 				console.log("already zone in db")
 				callback("The zone is already in the db",zone);
 			}else{
 				db.modelZone.create({
-					zones:[{zone:zone_,country:"it"},{zone:zoneEnglish,country:'en'}]
+					zone:zone_
 					},function(err,zone){
 						var error = undefined;
 						if(err){
@@ -27,9 +25,6 @@ exports.insertZone = function(zone_,callback){
 					});
 			}
 		});
-		
-		
-	});
 	
 }
 
@@ -41,7 +36,7 @@ exports.getZones = function(callback){
 			error = handleError(err);
 		}else{
 			for (var i = list.length - 1; i >= 0; i--) {
-				zoneList.push(list[i]['zones'][0]['zone'])
+				zoneList.push(list[i]['zone'])
 			};
 			
 		}

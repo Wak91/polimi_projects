@@ -24,6 +24,7 @@ router.post('/',function(req,res){
 	var ingredients = req.body.components;
 	
 	var zone = req.body.zone;
+	console.log(ingredients)
 	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,function(error,dish){
 		 if(error){
 		 	console.log(error);
@@ -66,7 +67,11 @@ router.get('/new', function(req, res){
             });
         },
         function(callback){
+<<<<<<< HEAD
             ingredientsModel.getIngredients(function(ingredients){
+=======
+            ingredientsModel.getIngredients(function(error,ingredients){
+>>>>>>> bd4ef9f6d4ab3d629f31ba864fc00e9944924234
                 callback(null, ingredients);
             });
         }
