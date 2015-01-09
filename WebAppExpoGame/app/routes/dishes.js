@@ -60,6 +60,7 @@ router.post('/',function(req,res){
 });
 
 router.get('/new', function(req, res){
+	
 	async.parallel([
         function(callback){
             zonesModel.getZones(function(error,list){

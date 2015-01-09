@@ -12,6 +12,7 @@
 var express = require('express');
 var router = express.Router();
 var IngredientModel = require('../models/ingredients');
+var MascotModel = require('../models/mascots')
 module.exports = router;
 //-----------------------------------------------------
 
@@ -39,11 +40,20 @@ router.get('/', function(req, res){
 /*
 (2)
 Route called to access the page to insert a new 
-ingredient ( called from ingredients.jade )
+ingredient ( called from ingredients.jade ),
+it retreive the lists of the existing mascots in order 
+to show them and link an ingredient to one of them
 */
 router.get('/new', function(req, res){
-		res.render('ingredient');
+
+		MascotModel.getMascots(function(mascots){
+	    console.log('returned mascots '+mascots);
+	    res.render('ingredient', {
+	    title: 'Mascots',
+	    mascots: mascots
+	  });
 	});
+});
 
 
 /*
@@ -57,7 +67,9 @@ router.post('/',function(req,res){
 
 	var name = req.body.name;
 	var imageUrl = req.body.imageUrl;       
-    
+    var mascot = req.body.mascots;
+
+    console.log('selected'+mascot);
     //let's exploit the express-validator middleware 
  
  	req.assert('name', 'Name is required').notEmpty(); 
@@ -74,7 +86,7 @@ router.post('/',function(req,res){
 	        return;
        }
 
-	IngredientModel.insertIngredient(name,imageUrl,function(error,ingredient){
+	IngredientModel.insertIngredient(name,imageUrl,mascot,function(error,ingredient){
 
 		 if(error){
 		 	console.log(error);

@@ -48,12 +48,13 @@ exports.getIngredients = function(callback){
 Insert a new ingredient in mongoDB, it performs automatically
 the translation of the name exploiting the libs/translator 
 */
-exports.insertIngredient = function(name_,imageUrl_,callback){
+exports.insertIngredient = function(name_,imageUrl_,mascot_,callback){
 
 
 	db.modelIngredient.create({
 	    name:name_,
 		imageUrl:imageUrl_,
+		category:mascot_
 	},function(err, ingredient){
 		var error = undefined;
 	    if (err){

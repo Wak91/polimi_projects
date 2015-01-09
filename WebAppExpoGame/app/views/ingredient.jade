@@ -25,6 +25,13 @@ block content
 								.col-md-8
 									input#image.form-control(name='imageUrl', type='file', placeholder='Insert image...')
 							.form-group
+								.col-md-2.col-md-offset-1
+									label(for='mascots') Mascots
+								.col-md-8
+									select#mascots.form-control(name='mascots')
+										for mascot in mascots
+											option(value=mascot.name) #{mascot.name}
+							.form-group
 								.col-md-12.text-center
 									button.btn.btn-primary.btn-lg(type='submit') Create
 

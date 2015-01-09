@@ -10,7 +10,7 @@ var ingredientCollection = 'ingredients'
 var ingredient = new mongoose.Schema({
 	name: {type: String, required: true ,min: 3},
 	imageUrl: {type: String, required: true},
-	category: mongoose.Schema.Types.ObjectId
+	category: {type: String, required: true}
 },{collection: ingredientCollection});
 
 var modelIngredient = mongoose.model( 'ingredient', ingredient);
