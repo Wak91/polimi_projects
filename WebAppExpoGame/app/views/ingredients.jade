@@ -4,7 +4,7 @@ extends layout
 block content
 
     .page-header
-      h1.text-center Ingredient List
+      h1.text-center Ingredients List
       .container
         .row
           .col-xs-12.col-sm-12.col-md-6.col-lg-6
@@ -13,11 +13,18 @@ block content
                 br
                 span New
 
+
+
              each result in ingredient
+               hr
                .row
+                br
                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
                   img(src='/images/tomato.png')
                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
-                  span #{result.name}
-                br
+                  span Name: #{result.name} 
+                .col-xs-12.col-sm-12.col-md-12.col-lg-12
+                  span Mascotte: #{result.category} 
+
+
 
