@@ -69,8 +69,6 @@ router.post('/',function(req,res){
 	var imageUrl = req.body.imageUrl.toLowerCase();       
     var mascot = req.body.mascots.toLowerCase(); //mascots is already only the name of the object mascotte
 
-    console.log('selected'+mascot);
-    
     //let's exploit the express-validator middleware 
  
  	req.assert('name', 'Name is required').notEmpty(); 
