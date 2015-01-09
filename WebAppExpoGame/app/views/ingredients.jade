@@ -13,18 +13,39 @@ block content
                 br
                 span New
 
-
-
-             each result in ingredient
-               hr
-               .row
-                br
+        .row
+          br
+          br
+          .form-group.input-group
+            input#searchIngredient.form-control(type='text',placeholder='Insert ingredient name...')
+            |    
+            span.input-group-btn
+              button.btn.btn-default(type='button')
+                i.fa.fa-search
+                  br
+        each result in ingredient 
+            .row
+              .ing
                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
                   img(src='/images/tomato.png')
                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
-                  span Name: #{result.name} 
+                  span #{result["name"]} 
                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
-                  span Mascotte: #{result.category} 
+                  span Mascotte: #{result["category"]} 
+                .col-xs-12.col-sm-12.col-md-12.col-lg-12
+                  hr
 
 
 
+         script.
+          $("#searchIngredient").keyup(function(){
+          filter = $(this).val();
+          $(".ing").each(function(key,value){
+          console.log($(value).text());
+          if($(value).text().indexOf(filter) != 0){
+            $(value).hide();
+            }else{
+            $(value).show();
+               }
+            })
+            })
