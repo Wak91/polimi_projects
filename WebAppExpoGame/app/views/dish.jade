@@ -59,7 +59,7 @@ block content
 													.col-md-1
 														input(type='checkbox', name='components', value=item) 
 													.col-md-11.ingredient
-														| #{item}
+														| #{item["names"][0]["name"]}
 
 							.form-group
 								.col-md-12.text-center

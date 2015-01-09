@@ -28,14 +28,18 @@ exports.getDishes = function(callback){
 
 
 exports.insertDish = function(name_,nationality_,imageUrl_,description_,ingredients_,zone_,callback){
-	
+		var ingredientsList = []
+		for (var i = ingredients_.length - 1; i >= 0; i--) {
+			console.log(ingredients_[i])
+				ingredientsList.push(ingredients_[i]['names'][0]['name'])
+			};
 		var params = {text: description_, from: 'it', to: 'en'};
 		translator.translate(params,function(translation){
 			db.modelDish.create({
 			    name:name_,
 				nationality:nationality_,
 				imageUrl:imageUrl_,
-				ingredients:ingredients_,
+				ingredients:ingredientsList,
 				descriptions:[{description:description_,country:'it'},{description:translation,country:'en'}],
 				zone:zone_
 			},function(err, dish){
