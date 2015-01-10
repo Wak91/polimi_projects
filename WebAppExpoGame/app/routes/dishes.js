@@ -76,6 +76,8 @@ router.get('/new', function(req, res){
     function(err, results){
       if(err){
         console.log(err);
+        res.redirect('/dishes');
+
       }else{
         res.render('dish', {
 		    title: 'Create Dish',
