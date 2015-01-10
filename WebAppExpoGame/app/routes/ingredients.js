@@ -77,7 +77,7 @@ router.post('/',function(req,res){
  	var errors = req.validationErrors();  
 
     if(errors){   //errors found  
-        res.redirect('/ingredients/new');
+        res.redirect('/ingredients/new'); 
 	        return;
        }
 
