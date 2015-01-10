@@ -65,25 +65,25 @@ mongoDB using 'IngredientModel.insertIngredient'
 */
 router.post('/',function(req,res){
 
-	var name = req.body.name.toLowerCase();
-	var imageUrl = req.body.imageUrl.toLowerCase();       
-    var mascot = req.body.mascots.toLowerCase(); //mascots is already only the name of the object mascotte
+	var name = req.body.name;
+	var imageUrl = req.body.imageUrl;       
+    var mascot = req.body.mascots; //mascots is already only the name of the object mascotte
 
     //let's exploit the express-validator middleware 
  
  	req.assert('name', 'Name is required').notEmpty(); 
  	req.assert('imageUrl', 'Image is required').notEmpty();    
 
-
  	var errors = req.validationErrors();  
 
     if(errors){   //errors found  
-        res.render('ingredient', {
-			    title: 'Create Ingredients',
-			    error_message: "All fields required",
-				});
+        res.redirect('/ingredients/new');
 	        return;
        }
+
+     name = name.toLowerCase();
+     imageUrl = imageUrl.toLowerCase();
+     mascot = mascot.toLowerCase();
 
 	IngredientModel.insertIngredient(name,imageUrl,mascot,function(error,ingredient){
 
