@@ -6,7 +6,7 @@ module.exports = router;
 
 router.get("/mascots", function(req, res){
 	mascots.getMascots(function(listMascots){
-		res.json("list":listMascots);
+		res.json({"list":listMascots});
 	});
 });
 
