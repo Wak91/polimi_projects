@@ -57,10 +57,6 @@ var createSQLiteDatabase = function(){
 					return false;
 				}else{
 					console.log("createSQLiteDatabase");
-					console.log(results[0])
-										console.log(results[1])
-					console.log(results[2])
-
 					sqliteWriter.insertData("db",  results[0],results[1],results[2]);
 					return true;
 				}
