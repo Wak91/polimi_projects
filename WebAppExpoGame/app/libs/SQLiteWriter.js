@@ -51,16 +51,30 @@ var insertDataMascots = function(databaseInstance, dataMascots){
 var insertDataDishes = function(databaseInstance, dataDishes){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC)");
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish TEXT , idIngredient TEXT, PRIMARY KEY(idDish,idIngredient))");
 		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created ) VALUES (?,?,?,?,?,?)");
-		var stmtRelation = databaseInstance.prepare("INSERT INTO "+ingredientsInDishesTable+" (idDish ,idIngredient) VALUES (?,?)");
 		dataDishes.forEach(function(dish){
 			stmtDish.run([dish["name"],dish["nationality"],dish["imageUrl"],dish["description"],dish["zone"],0])
-			dish["ingredients"].forEach(function(ingredient){
-				stmtRelation.run([dish["name"],ingredient]);
-			});
+			
 		});
 		stmtDish.finalize();
+	});
+}
+
+var insertIngredientsOfDish = function(databaseInstance,dataDishes){
+	databaseInstance.serialize(function(){
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish INTEGER , idIngredient INTEGER, PRIMARY KEY(idDish,idIngredient))");
+		var stmtRelation = databaseInstance.prepare("INSERT INTO "+ingredientsInDishesTable+" (idDish ,idIngredient) VALUES (?,?)");
+		dataDishes.forEach(function(dish){
+			databaseInstance.each("SELECT _id  FROM "+dishesTable+" WHERE name ='"+dish["name"]+"'",function(err,row){
+				console.log("dish "+row._id);
+				console.log(dish["ingredients"]);
+				dish["ingredients"].forEach(function(ingredient){
+					databaseInstance.each("SELECT _id FROM "+ingredientsTable+" WHERE name ='"+ingredient+"'",function(err,row2){
+						stmtRelation.run(row._id,row2._id);
+					});
+				});
+			});
+		});
 		stmtRelation.finalize();
 	});
 }
@@ -85,6 +99,8 @@ exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDish
 	insertDataIngredients(databaseInstance,dataIngredients);
 
 	insertDataDishes(databaseInstance,dataDishes);
+
+	insertIngredientsOfDish(databaseInstance,dataDishes);
 
 
 	/*db.serialize(function() {
