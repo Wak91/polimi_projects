@@ -42,7 +42,7 @@ var createSQLiteDatabase = function(){
 						}else{
 							dishList = []
 							for (var i = list.length - 1; i >= 0; i--) {
-								object = {"name":list[i]["name"],"nationality":list[i]["nationality"],"imageUrl":list[i]["imageUrl"],"description":list[i]["name"],"zone":list[i]["zone"],"ingredients":list[i]["ingredients"]}
+								object = {"name":list[i]["name"],"nationality":list[i]["nationality"],"imageUrl":list[i]["imageUrl"],"description":list[i]["description"],"zone":list[i]["zone"],"ingredients":list[i]["ingredients"]}
 								dishList.push(object);
 							}
 							callback(null,dishList)
