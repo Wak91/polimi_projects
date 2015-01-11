@@ -25,6 +25,23 @@ router.post('/',function(req,res){
 	
 	var zone = req.body.zone;
 	console.log(ingredients)
+
+	req.assert('name', 'Name is required').notEmpty();
+	req.assert('nationality', 'Nationality is required').notEmpty(); 
+	req.assert('description', 'Description is required').notEmpty();
+    req.assert('imageUrl', 'imageUrl is required').notEmpty();
+    req.assert('zone', 'zone is required').notEmpty(); 
+    req.assert('components', ' components are required').notEmpty(); 
+
+	var errors = req.validationErrors();  
+
+    if(errors){   //errors found  
+    	console.log(errors);
+        res.redirect('/dishes/new'); 
+	        return;
+       }
+
+
 	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,function(error,dish){
 		 if(error){
 		 	console.log(error);

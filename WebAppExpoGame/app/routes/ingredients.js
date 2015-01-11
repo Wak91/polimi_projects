@@ -3,6 +3,7 @@
 /*UTILITY EXPLOITED HERE-------------------------------
 
 - express-validator ( http://blog.ijasoneverett.com/2013/04/form-validation-in-node-js-with-express-validator/ )
+					- https://github.com/chriso/validator.js
 
 *///-----------------------------------------------------
 
@@ -69,14 +70,18 @@ router.post('/',function(req,res){
 	var imageUrl = req.body.imageUrl;       
     var mascot = req.body.mascots; //mascots is already only the name of the object mascotte
 
-    //let's exploit the express-validator middleware 
- 
+    console.log('aaaa'+ req.body.mascots);
+
+    //let's exploit the express-validator middleware,
+    //WARNING: the first attribute of assert is referred to the input object in the .jade view
  	req.assert('name', 'Name is required').notEmpty(); 
- 	req.assert('imageUrl', 'Image is required').notEmpty();    
+ 	req.assert('imageUrl', 'Image is required').notEmpty(); 
+ 	req.assert('mascots', 'Mascot is required').notEmpty();      
 
  	var errors = req.validationErrors();  
 
     if(errors){   //errors found  
+    	console.log(errors);
         res.redirect('/ingredients/new'); 
 	        return;
        }
