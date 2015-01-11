@@ -39,7 +39,7 @@ var insertDataIngredients = function(databaseInstance, dataIngredients){
 
 var insertDataMascots = function(databaseInstance, dataMascots){
 	databaseInstance.serialize(function(){
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+mascotsTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, latitude NUMERIC,longitude NUMERIC, modelUrl TEXT,name TEXT)");
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+mascotsTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, latitude TEXT,longitude TEXT, modelUrl TEXT,name TEXT)");
 		var stmt = databaseInstance.prepare("INSERT INTO "+mascotsTable+" (category, latitude ,longitude, modelUrl,name) VALUES (?,?,?,?,?)");
 		dataMascots.forEach(function(mascot){
 			stmt.run([mascot["category"],mascot["latitude"],mascot["longitude"],mascot["modelUrl"],mascot["name"]])
@@ -76,7 +76,7 @@ exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDish
 			}
 		});   
  	}
-	var name = path+dbFileName+'.sqlite3'
+	var name = path+dbFileName+'.sqlite'
 	console.log(name);
 	var databaseInstance = createDatabase(name);
 

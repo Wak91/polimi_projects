@@ -57,7 +57,7 @@ var createSQLiteDatabase = function(){
 					return false;
 				}else{
 					console.log("createSQLiteDatabase");
-					sqliteWriter.insertData("db",  results[0],results[1],results[2]);
+					sqliteWriter.insertData("locals",  results[0],results[1],results[2]);
 					return true;
 				}
 		    });
