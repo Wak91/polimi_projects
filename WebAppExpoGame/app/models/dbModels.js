@@ -18,6 +18,7 @@ var mascot = new mongoose.Schema({
 	category:Array,
 	latitude:{type: Number, required: true},
 	longitude:{type: Number, required: true},
+	image:{type: String, required: true},
 	modelUrl:{type: String, required: true},
 	name:{type: String, required: true}
 

@@ -4,6 +4,15 @@ var dishesModel = require('../models/dishes')
 var zonesModel = require('../models/zones')
 var ingredientsModel = require('../models/ingredients')
 var async = require('async')
+var multer  = require('multer')
+
+
+var dishesUploader = multer({
+        dest: './public/upload/dishes',
+        rename: function (fieldname, filename) {
+            return filename
+            }
+});
 
 
 router.get('/', function(req, res){
@@ -22,7 +31,7 @@ router.post('/',function(req,res){
 	var imageUrl = req.body.imageUrl;
 	var description = req.body.description;
 	var ingredients = req.body.components;
-	
+
 	var zone = req.body.zone;
 	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,function(error,dish){
 		 if(error){

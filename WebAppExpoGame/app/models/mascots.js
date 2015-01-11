@@ -18,6 +18,21 @@ exports.getMascots = function(callback){
   });
 
 }
+/*
+Function which return a single Mascot
+*/
+exports.getMascot = function(name,callback){
+  db.modelMascot.findOne({name:name},function (err,mascot){
+    if(err){
+      console.log(err);
+    }else{
+      callback(mascot);
+    }
+  });
+
+}
+
+
 
 /*
 function which handles the different errors raised when creating the Mascot and return
@@ -37,17 +52,25 @@ handleError =function(error){
       break;
   }
 }
+
+exports.deleteMascot = function(mascotte,callback){
+  console.log("in models mascot ")
+  db.modelMascot.findOneAndRemove({name:mascotte},callback);
+
+}
+
 /*
 Function which handle the creation of the Mascots
 Errors handled by handleError funcition defined up here
 */
-exports.createMascot = function(nome, categoria, latitudine, longitudine, immagine, callback){
+exports.createMascot = function(nome, categoria, latitudine, longitudine, immagine,modelUrl, callback){
   db.modelMascot.create({
     name: nome,
     category: categoria,
     latitude: parseFloat(latitudine),
     longitude: parseFloat(longitudine),
-    modelUrl: immagine
+    image: immagine,
+    modelUrl:modelUrl
 
   },function(err, mascot){
     var error = undefined;

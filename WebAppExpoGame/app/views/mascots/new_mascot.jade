@@ -1,10 +1,10 @@
-extends layout
+extends ../layout
 block content
       .container
           .row
               .col-md-8.col-md-offset-2
                 .well.well-sm
-                  form.form-horizontal(action='/mascots',method='post')
+                  form.form-horizontal(action='/mascots',method='post',enctype="multipart/form-data")
                     fieldset
                       legend.text-center.header Mascot
                       if error_message
@@ -46,7 +46,12 @@ block content
                         .col-md-2.col-md-offset-1
                           label(for='image') Image
                         .col-md-8
-                          input#image.form-control(name='image', type='file', placeholder='image')
+                          input#image.form-control(type="file", name="image", placeholder='image')
+                      .form-group
+                        .col-md-2.col-md-offset-1
+                          label(for='modelUrl') Zipped model
+                        .col-md-8
+                          input#modelUrl.form-control(type="file", name="modelUrl", placeholder='modelUrl')
                      .form-group
                         .col-md-12.text-center
                               button.btn.btn-primary.btn-lg(type='submit') Create
