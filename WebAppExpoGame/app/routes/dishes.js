@@ -31,7 +31,8 @@ router.post('/',function(req,res){
 	req.assert('description', 'Description is required').notEmpty();
     req.assert('imageUrl', 'imageUrl is required').notEmpty();
     req.assert('zone', 'zone is required').notEmpty(); 
-    req.assert('components', ' components are required').notEmpty(); 
+    req.assert('components', ' components are required').notEmpty();
+    req.assert('components', 'at least two ingredients').len(2,20);
 
 	var errors = req.validationErrors();  
 
