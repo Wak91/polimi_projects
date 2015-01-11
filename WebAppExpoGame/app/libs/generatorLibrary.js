@@ -8,10 +8,32 @@ var async = require('async')
 var createSQLiteDatabase = function(){
 	async.parallel([
 		        function(callback){
-		            callback(null,[])
+		            modelIngredients.getIngredients(function(error,list){
+		            	if(error){
+							console.log(error);
+						}else{
+
+							ingredientsList = [];
+							for (var i = list.length - 1; i >= 0; i--) {
+								object = {"name":list[i]["name"],"imageUrl":list[i]["imageUrl"],"category":list[i]["category"]}
+								ingredientsList.push(object);
+							}
+
+							callback(null,ingredientsList);
+
+						}
+						
+		            });
 		        },
 		        function(callback){
-		            callback(null,[])
+		        	modelMascots.getMascots(function(list){
+		        		mascotsList = [];
+		        		for (var i = list.length - 1; i >= 0; i--) {
+								object = {"category":list[i]["category"],"latitude":list[i]["latitude"],"longitude":list[i]["longitude"],"modelUrl":list[i]["modelUrl"],"name":list[i]["name"]}
+								mascotsList.push(object);
+							}
+						callback(null,mascotsList)
+		        	});
 		        },
 		        function(callback){
 		            modelDishes.getDishes(function(error,list){
@@ -20,7 +42,7 @@ var createSQLiteDatabase = function(){
 						}else{
 							dishList = []
 							for (var i = list.length - 1; i >= 0; i--) {
-								object = {"name":list[i]["name"],"nationality":list[i]["nationality"],"imageUrl":list[i]["imageUrl"],"description":list[i]["name"]+"_description","zone":list[i]["zone"],"ingredients":list[i]["ingredients"]}
+								object = {"name":list[i]["name"],"nationality":list[i]["nationality"],"imageUrl":list[i]["imageUrl"],"description":list[i]["name"],"zone":list[i]["zone"],"ingredients":list[i]["ingredients"]}
 								dishList.push(object);
 							}
 							callback(null,dishList)
@@ -35,8 +57,11 @@ var createSQLiteDatabase = function(){
 					return false;
 				}else{
 					console.log("createSQLiteDatabase");
-					sqliteWriter.insertData("db",  [{"name":"name", "imageUrl":"imageUrl" ,"category":"category"}], 
-						[{"category":"category", "latitude":32 ,"longitude":43, "modelUrl":"modelUrl","name":"name"}],results[2]);
+					console.log(results[0])
+										console.log(results[1])
+					console.log(results[2])
+
+					sqliteWriter.insertData("db",  results[0],results[1],results[2]);
 					return true;
 				}
 		    });
