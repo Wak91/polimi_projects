@@ -98,6 +98,35 @@ router.get('/:id/edit', function(req, res){
 
   });
 
+router.post("/:id/edit",function(req,res){
+  var name = req.params.id
+  var lat = req.body.latitude;
+  var lng = req.body.longitude;
+  console.log("LAt lng in route")
+  console.log(req.body);
+  console.log(lng);
+    console.log(lat);
+
+  console.log("chiamato edit");
+  mascotsModel.updateMascot(name,lat,lng,function(error){
+      console.log("after update in routes edit");
+      if(error){
+        mascotsModel.getMascot(name,function(mascot){
+          res.render('/mascots/edit_mascot', {
+          title: 'Edit Mascot',
+          error_message: error,
+          mascot:mascot
+          });
+        return;
+      });
+
+    }
+    console.log('updated Mascot');
+    res.redirect("/mascots");
+
+  });
+});
+
 
 
 
