@@ -48,6 +48,10 @@ exports.insertDish = function(name_,nationality_,imageUrl_, description_, ingred
 			
 }
 
+exports.deleteDish = function(name,callback){
+	db.modelDish.findOneAndRemove({name:name},callback);
+}
+
 /*
 exports.getZones = function(callback){
 	db.modelDish.aggregate({ $group: { _id: '$zone'}},{ $project: { zone: 1}},function(err, list) {
