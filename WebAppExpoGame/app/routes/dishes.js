@@ -25,20 +25,20 @@ router.get('/', function(req, res){
 	});
 });
 
-router.post('/',function(req,res){
+router.post('/',dishesUploader,function(req,res){
 	var name = req.body.name;
 	var nationality = req.body.nationality;
-	var imageUrl = req.body.imageUrl;
+	var imageUrl = req.files.imageUrl.name;
 	var description = req.body.description;
 	var ingredients = req.body.components;
 
 	var zone = req.body.zone;
-	console.log(ingredients)
+	console.log(req.files)
 
 	req.assert('name', 'Name is required').notEmpty();
 	req.assert('nationality', 'Nationality is required').notEmpty(); 
 	req.assert('description', 'Description is required').notEmpty();
-    req.assert('imageUrl', 'imageUrl is required').notEmpty();
+    //req.assert('imageUrl', 'imageUrl is required').notNull();
     req.assert('zone', 'zone is required').notEmpty(); 
     req.assert('components', ' components are required').notEmpty();
     req.assert('components', 'at least two ingredients').len(2,20);

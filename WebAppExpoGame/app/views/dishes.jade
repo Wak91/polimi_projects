@@ -80,11 +80,12 @@ block content
 				url: "/dishes/"+name,
 				type: "DELETE",
 				success: function (data, textStatus, jqXHR) {
-					console.log("Post resposne:");
-					console.dir(data);
-					console.log(name);
-					console.log($("#"+name))
-					$("#"+name).remove();
-					}
+					
+					$(".dish").each(function(key,value){
+						if($(value).text().indexOf(name) == 0){
+							$(value).parent().parent().remove()
+						}
+					})
+				}
 			});
 		}
