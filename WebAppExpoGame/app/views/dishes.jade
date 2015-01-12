@@ -42,6 +42,8 @@ block content
 									.span #{dish["imageUrl"]}
 								h4
 									.span #{dish["zone"]}
+								button.btn.btn-danger(onclick="delete_mascote('#{dish.name}')") Delete
+
 							.col-xs-5.col-sm-5.col-md-5.col-lg-5
 								h4 Description
 								.panel.panel-default.scrollable(style='max-height: 130px;overflow-y: auto;overflow-x: hidden;padding-top:10px;')
@@ -70,3 +72,19 @@ block content
 				}
 			})
 		})
+
+
+	script(type='text/javascript').
+		function delete_mascote(name){
+			jQuery.ajax({
+				url: "/dishes/"+name,
+				type: "DELETE",
+				success: function (data, textStatus, jqXHR) {
+					console.log("Post resposne:");
+					console.dir(data);
+					console.log(name);
+					console.log($("#"+name))
+					$("#"+name).remove();
+					}
+			});
+		}

@@ -116,5 +116,10 @@ router.get('/new', function(req, res){
 
 
 });
+router.delete('/:id', function(req, res){
+	dishesModel.deleteDish(req.params.id,function(){
+		res.send("ok");
+	})
+});
 
 module.exports = router;
