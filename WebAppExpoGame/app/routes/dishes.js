@@ -36,18 +36,18 @@ router.post('/',dishesUploader,function(req,res){
 	console.log(req.files)
 
 	req.assert('name', 'Name is required').notEmpty();
-	req.assert('nationality', 'Nationality is required').notEmpty(); 
+	req.assert('nationality', 'Nationality is required').notEmpty();
 	req.assert('description', 'Description is required').notEmpty();
     //req.assert('imageUrl', 'imageUrl is required').notNull();
-    req.assert('zone', 'zone is required').notEmpty(); 
+    req.assert('zone', 'zone is required').notEmpty();
     req.assert('components', ' components are required').notEmpty();
     req.assert('components', 'at least two ingredients').len(2,20);
 
-	var errors = req.validationErrors();  
+	var errors = req.validationErrors();
 
-    if(errors){   //errors found  
+    if(errors){   //errors found
     	console.log(errors);
-        res.redirect('/dishes/new'); 
+        res.redirect('/dishes/new');
 	        return;
        }
 
@@ -87,7 +87,7 @@ router.post('/',dishesUploader,function(req,res){
 });
 
 router.get('/new', function(req, res){
-	
+
 	async.parallel([
         function(callback){
             zonesModel.getZones(function(error,list){

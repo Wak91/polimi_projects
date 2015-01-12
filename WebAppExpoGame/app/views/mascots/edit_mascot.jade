@@ -4,7 +4,7 @@ block content
           .row
               .col-md-8.col-md-offset-2
                 .well.well-sm
-                  form.form-horizontal(action='/#{}',method='post',enctype="multipart/form-data")
+                  form.form-horizontal(action='/mascots/#{mascot.name}/edit',method='post')
                     fieldset
                       legend.text-center.header Mascot
                       if error_message

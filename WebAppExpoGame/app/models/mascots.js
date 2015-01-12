@@ -60,6 +60,20 @@ exports.deleteMascot = function(mascotte,callback){
 
 }
 
+exports.updateMascot = function(name,lat,lng,callback){
+  console.log("LATITUDE NAD logintude , [...]")
+  console.log(lat);
+  console.log(lng);
+  var conditions = { name: name },
+        update = { latitude:  parseFloat(lat),
+                        longitude:  parseFloat(lng)};
+  db.modelMascot.update(conditions,update,function(error){
+    console.log("error in update Mascot model")
+    console.log(error);
+    callback(error);
+  });
+}
+
 /*
 Function which handle the creation of the Mascots
 Errors handled by handleError funcition defined up here
