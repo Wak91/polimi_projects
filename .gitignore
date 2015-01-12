@@ -4,3 +4,4 @@ app/generated/*
 generated/
 *.log
 *~
+app/public/upload

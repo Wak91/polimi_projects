@@ -84,4 +84,21 @@ router.get('/new', function(req, res){
 });
 
 
+/* GET /mascots/new show the form for creating a mascot */
+router.get('/:id/edit', function(req, res){
+  console.log("called edit")
+  mascotsModel.getMascot(req.params.id,function(mascot){
+
+
+    res.render('mascots/edit_mascot', {
+      title: 'Edit Mascot',
+      mascot: mascot
+      });
+    });
+
+  });
+
+
+
+
 module.exports = router;
