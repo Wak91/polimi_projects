@@ -1,21 +1,29 @@
 var mongoose = require( 'mongoose' );
 var IP_MONGODB = 'localhost'
 
-var modelIngredient = 'ingredient'
+
+//------INGREDIENT SETUP---------------------
+//Author: @degrigis
+
 var ingredientCollection = 'ingredients'
 
 var ingredient = new mongoose.Schema({
-	names: Array,
-	imageUrl: String,
-	category: mongoose.Schema.Types.ObjectId
+	name: {type: String, required: true ,min: 3},
+	imageUrl: {type: String, required: true},
+	category: {type: String, required: true}
 },{collection: ingredientCollection});
 
-mongoose.model( modelIngredient, ingredient);
+var modelIngredient = mongoose.model( 'ingredient', ingredient);
+
+//-------------------------------------------
+
+//------MASCOT SETUP---------------------
+//Author: @fonz
 
 var mascotCollection = 'mascots'
 
 var mascot = new mongoose.Schema({
-	category:Array,
+	category:{type: String, required: true},
 	latitude:{type: Number, required: true},
 	longitude:{type: Number, required: true},
 	image:{type: String, required: true},
@@ -26,26 +34,42 @@ var mascot = new mongoose.Schema({
 
 var modelMascot = mongoose.model( 'mascot' , mascot);
 
+//-------------------------------------------
+
+//------DISH SETUP---------------------
+//Author: @acorna
+
 var dishCollection = 'dishes'
 
 var dish = new mongoose.Schema({
-	name:{type:String, required: true},
+	name:{type: String, required: true},
 	nationality:{type:String, required: true},
 	imageUrl:{type:String, required: true},
-	descriptions:{type:Array,required:true},
-	ingredients:{type:Array,required:true},
+	description:{type: String, required: true},
+	ingredients:Array,
 	zone:{type:String, required: true}
 },{collection:dishCollection});
 
 var modelDish = mongoose.model( 'dish' , dish);
 
+//-------------------------------------------
+
+
+//------ZONES SETUP---------------------
+//Author: @acorna
+
 var zoneCollection = 'zones'
 
 var zone = new mongoose.Schema({
-	zones:{type:Array, required:true}
+	zone:{type: String, required: true}
 },{collection:zoneCollection});
 
 var modelZone = mongoose.model('zone',zone);
+
+//-------------------------------------------
+
+//------STATS SETUP---------------------
+//Author: @acorna
 
 var modelStatistic = 'statistic'
 var statisticCollection = 'statistics'
@@ -55,6 +79,10 @@ var statistic = new mongoose.Schema({
 },{collection:statisticCollection});
 
 mongoose.model( modelStatistic , statistic);
+
+//-------------------------------------------
+
+//-----CONNECTTION TO MONGODB-----------------------------------------------
 
 mongoose.connect( 'mongodb://'+IP_MONGODB+'/expogame' );
 
@@ -72,3 +100,5 @@ exports.statistics = mongoose.connection.collection(statisticCollection)
 
 exports.modelZone = modelZone
 exports.zones = mongoose.connection.collection(zoneCollection)
+
+//--------------------------------------------------------------------------

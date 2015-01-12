@@ -57,9 +57,9 @@ block content
 											for item in ingredients
 												.row
 													.col-md-1
-														input(type='checkbox', name='components', value=item) 
+														input(type='checkbox', name='components', value=item["name"]) 
 													.col-md-11.ingredient
-														| #{item}
+														| #{item["name"]}
 
 							.form-group
 								.col-md-12.text-center

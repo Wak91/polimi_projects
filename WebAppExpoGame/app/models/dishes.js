@@ -27,26 +27,24 @@ exports.getDishes = function(callback){
 }
 
 
-exports.insertDish = function(name_,nationality_,imageUrl_,description_,ingredients_,zone_,callback){
-	
-		var params = {text: description_, from: 'it', to: 'en'};
-		translator.translate(params,function(translation){
-			db.modelDish.create({
-			    name:name_,
-				nationality:nationality_,
-				imageUrl:imageUrl_,
-				ingredients:ingredients_,
-				descriptions:[{description:description_,country:'it'},{description:translation,country:'en'}],
-				zone:zone_
-			},function(err, dish){
-				var error = undefined;
-			    if (err){
-			    	error = handleError(err);
-			  	}
-			  	callback(error,dish)
-			  	
-			});
+exports.insertDish = function(name_,nationality_,imageUrl_, description_, ingredients, zone_,callback){
+		
+		db.modelDish.create({
+		    name:name_,
+			nationality:nationality_,
+			imageUrl:imageUrl_,
+			ingredients:ingredients,
+			description:description_,
+			zone:zone_
+		},function(err, dish){
+			var error = undefined;
+		    if (err){
+		    	error = handleError(err);
+		  	}
+		  	callback(error,dish)
+		  	
 		});
+	
 			
 }
 
