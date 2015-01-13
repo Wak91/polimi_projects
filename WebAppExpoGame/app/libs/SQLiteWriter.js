@@ -28,10 +28,10 @@ var createDatabase = function(dbFileName){
 
 var insertDataIngredients = function(databaseInstance, dataIngredients){
 	databaseInstance.serialize(function(){
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, imageUrl TEXT, category TEXT, FOREIGN KEY(category) REFERENCES "+mascotsTable+"(category))");
-		var stmt = databaseInstance.prepare("INSERT INTO "+ingredientsTable+" (name, imageUrl ,category) VALUES (?,?,?)");
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, imageUrl TEXT, category TEXT, unlocked NUMERIC, FOREIGN KEY(category) REFERENCES "+mascotsTable+"(category))");
+		var stmt = databaseInstance.prepare("INSERT INTO "+ingredientsTable+" (name, imageUrl ,category, unlocked) VALUES (?,?,?,?)");
 		dataIngredients.forEach(function(ingredient){
-			stmt.run([ingredient["name"],ingredient["imageUrl"],ingredient["category"]])
+			stmt.run([ingredient["name"],ingredient["imageUrl"],ingredient["category"],0])
 		});
 		stmt.finalize()
 	});
