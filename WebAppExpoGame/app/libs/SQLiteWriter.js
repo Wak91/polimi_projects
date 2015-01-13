@@ -43,6 +43,7 @@ var insertDataMascots = function(databaseInstance, dataMascots){
 		var stmt = databaseInstance.prepare("INSERT INTO "+mascotsTable+" (category, latitude ,longitude, modelUrl,name,captured) VALUES (?,?,?,?,?,?)");
 		dataMascots.forEach(function(mascot){
 			stmt.run([mascot["category"],mascot["latitude"],mascot["longitude"],mascot["modelUrl"],mascot["name"],0])
+			
 		});
 		stmt.finalize();
 	});
