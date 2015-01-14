@@ -26,13 +26,13 @@ router.get('/', function(req, res){
 });
 
 router.post('/',dishesUploader,function(req,res){
-	var name = req.body.name;
-	var nationality = req.body.nationality;
-	var imageUrl = req.files.imageUrl.name;
-	var description = req.body.description;
+	var name = req.body.name.toLowerCase();
+	var nationality = req.body.nationality.toLowerCase();
+	var imageUrl = req.files.imageUrl.name.toLowerCase();
+	var description = req.body.description.toLowerCase();
 	var ingredients = req.body.components;
 
-	var zone = req.body.zone;
+	var zone = req.body.zone.toLowerCase();
 	console.log(req.files)
 
 	req.assert('name', 'Name is required').notEmpty();
