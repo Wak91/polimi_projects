@@ -18,20 +18,20 @@ block content
           br
           .form-group.input-group
             input#searchIngredient.form-control(type='text',placeholder='Insert ingredient name...')
-            |    
+
             span.input-group-btn
               button.btn.btn-default(type='button')
                 i.fa.fa-search
                   br
-        each result in ingredient 
+        each result in ingredient
             .row
               .ing
                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
-                  img(src='/images/tomato.png')
+                  img(src='/upload/ingredients/#{result.imageUrl}')
                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
-                  span #{result["name"]} 
+                  span #{result["name"]}
                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
-                  span Mascotte: #{result["category"]} 
+                  span Mascotte: #{result["category"]}
                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
                   hr
 
