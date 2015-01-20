@@ -9,6 +9,9 @@ var mascotsTable = 'Mascots'
 var dishesTable = 'Dishes'
 var ingredientsInDishesTable = 'IngredientsInDishes'
 
+/*
+function used in order to create the database
+*/
 var createDatabase = function(dbFileName){
 	var exists = fs.existsSync(dbFileName);
 	if(!exists) {
@@ -26,6 +29,9 @@ var createDatabase = function(dbFileName){
 	return db;
 }
 
+/*
+insert data ingredients in the sqlite after create ingredients table
+*/
 var insertDataIngredients = function(databaseInstance, dataIngredients){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, imageUrl TEXT, category TEXT, unlocked NUMERIC, FOREIGN KEY(category) REFERENCES "+mascotsTable+"(category))");
@@ -37,6 +43,9 @@ var insertDataIngredients = function(databaseInstance, dataIngredients){
 	});
 }
 
+/*
+insert mascots data after create the mascots table
+*/
 var insertDataMascots = function(databaseInstance, dataMascots){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+mascotsTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, latitude TEXT,longitude TEXT, modelUrl TEXT,name TEXT, captured NUMERIC)");
@@ -49,6 +58,10 @@ var insertDataMascots = function(databaseInstance, dataMascots){
 	});
 }
 
+/*
+insert dishes information in dishes table and create table "IngredientsInDishes" in order
+to support the many to many relation between dish and ingredient
+*/
 var insertDataDishes = function(databaseInstance, dataDishes){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC)");
@@ -67,7 +80,10 @@ var insertDataDishes = function(databaseInstance, dataDishes){
 }
 
 
-
+/*
+exported function the call the prevoius function, create the folder where put the db and 
+finalize the file just created
+*/
 exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDishes){
 	if(!fs.existsSync(path)){
 		fs.mkdirSync(path, 0766, function(err){
@@ -89,27 +105,6 @@ exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDish
 	insertDataDishes(databaseInstance,dataDishes);
 
 
-
-	/*db.serialize(function() {
-	  
-	  db.run("CREATE TABLE IF NOT EXISTS Stuff (thing TEXT)");
-	  
-	  
-	  var stmt = db.prepare("INSERT INTO Stuff VALUES (?)");
-	  
-	//Insert random data
-	  var rnd;
-	  for (var i = 0; i < 10; i++) {
-	    rnd = Math.floor(Math.random() * 10000000);
-	    stmt.run("Thing #" + rnd);
-	  }
-	  
-	stmt.finalize();
-	  db.each("SELECT rowid AS id, thing FROM Stuff", function(err, row) {
-	    console.log(row.id + ": " + row.thing);
-	  });
-	});*/
-	//db.close();
 	databaseInstance.close()
 
 }

@@ -6,7 +6,9 @@ var ingredientsModel = require('../models/ingredients')
 var async = require('async')
 var multer  = require('multer')
 
-
+/*
+Module used to upload a file from the view
+*/
 var dishesUploader = multer({
         dest: './public/upload/dishes',
         rename: function (fieldname, filename) {
@@ -14,7 +16,10 @@ var dishesUploader = multer({
             }
 });
 
-
+/*
+first route used to retrieve the list of all dishes. The information
+are collected from the db and passed in "dishes" variable
+*/
 router.get('/', function(req, res){
 	dishesModel.getDishes(function(error,dishes){
 	    console.log('returned dishes '+dishes);
@@ -25,6 +30,11 @@ router.get('/', function(req, res){
 	});
 });
 
+/*
+route use to receive the data used to create a new dish. Call on dish.jade as a post
+to this url. inside the express-validator check if all field required has been inserted.
+if it is not true, the response is the insert page, otherwise data are saved in the db
+*/
 router.post('/',dishesUploader,function(req,res){
 	var name = req.body.name.toLowerCase();
 	var nationality = req.body.nationality.toLowerCase();
@@ -51,7 +61,9 @@ router.post('/',dishesUploader,function(req,res){
 	        return;
        }
 
-
+    /*
+	use the async model in order to do two different asyncronous call and wait for their results
+    */
 	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,function(error,dish){
 		 if(error){
 		 	console.log(error);
@@ -69,6 +81,7 @@ router.post('/',dishesUploader,function(req,res){
 		    ],
 		    function(err, results){
 		      if(err){
+		      	//we arrive here if AT LEAST one function fails
 		        console.log(err);
 		      }else{
 		        res.render('dish', {
@@ -86,6 +99,9 @@ router.post('/',dishesUploader,function(req,res){
 	});
 });
 
+/*
+route used to show the insert page. we load from the database the ingredients and zones lists
+*/
 router.get('/new', function(req, res){
 
 	async.parallel([
@@ -116,6 +132,10 @@ router.get('/new', function(req, res){
 
 
 });
+
+/*
+route in order to delete a dish
+*/
 router.delete('/:id', function(req, res){
 	dishesModel.deleteDish(req.params.id,function(){
 		res.send("ok");

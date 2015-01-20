@@ -52,19 +52,3 @@ exports.deleteDish = function(name,callback){
 	db.modelDish.findOneAndRemove({name:name},callback);
 }
 
-/*
-exports.getZones = function(callback){
-	db.modelDish.aggregate({ $group: { _id: '$zone'}},{ $project: { zone: 1}},function(err, list) {
-        if(err){
-			console.log(err);
-		}else{
-			console.log(list)
-			var zoneList = []
-			for (var i = list.length - 1; i >= 0; i--) {
-				zoneList.push(list[i]['_id'])
-			};
-			callback(zoneList);
-		}
-    });
-}
-*/
