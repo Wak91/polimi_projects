@@ -4,6 +4,7 @@ var router = express.Router();
 var multer  = require('multer')
 var mascotsModel = require('../models/mascots')
 
+// Handle the upload of the files for the mascots
 var mascotsUploader = multer({
         dest: './public/upload/mascots',
         rename: function (fieldname, filename) {
@@ -54,6 +55,7 @@ router.post('/',mascotsUploader,function(req,res){
 
 
   console.log('[MascotsRoutes>post]Mascot created:\ncategory '+category+' \nlatitude '+latitude+' \nlongitude '+longitude+' \nimage '+image+' \nname '+name);
+  //Save mascots in the model by passing all the parameters
   mascotsModel.createMascot(name,category, latitude, longitude, image,modelUrl,function(error,mascot){
 
     //displaying error message which comes from the model validation
@@ -98,16 +100,12 @@ router.get('/:id/edit', function(req, res){
 
   });
 
+//POST /:id/edit/ edit the latitude and the longitude of a mascot
 router.post("/:id/edit",function(req,res){
   var name = req.params.id
   var lat = req.body.latitude;
   var lng = req.body.longitude;
-  console.log("LAt lng in route")
-  console.log(req.body);
-  console.log(lng);
-    console.log(lat);
-
-  console.log("chiamato edit");
+//updating the model with the new information
   mascotsModel.updateMascot(name,lat,lng,function(error){
       console.log("after update in routes edit");
       if(error){

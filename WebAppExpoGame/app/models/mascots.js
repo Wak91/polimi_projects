@@ -62,8 +62,6 @@ exports.deleteMascot = function(mascotte,callback){
 
 exports.updateMascot = function(name,lat,lng,callback){
   console.log("LATITUDE NAD logintude , [...]")
-  console.log(lat);
-  console.log(lng);
   var conditions = { name: name },
         update = { latitude:  parseFloat(lat),
                         longitude:  parseFloat(lng)};
