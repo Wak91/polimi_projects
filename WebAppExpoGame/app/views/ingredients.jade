@@ -2,7 +2,6 @@ extends layout
 
 
 block content
-
     .page-header
       h1.text-center Ingredients List
       .container
@@ -24,10 +23,7 @@ block content
                   button.btn.btn-default(type='button')
                     i.fa.fa-search
                       br
-                      br
-                      br
-                      br
-                      br
+                   
 
         each result in ingredient
             .row
@@ -36,7 +32,7 @@ block content
                   img(src='/upload/ingredients/#{result.imageUrl}', width=50,height=50)
                 .col-xs-1.col-sm-1.col-md-1.col-lg-2
                   span #{result["name"]}
-                .col-xs-1.col-sm-1.col-md-1.col-lg-4
+                .col-xs-1.col-sm-1.col-md-1.col-lg-3
                   span Mascotte: #{result["category"]}
                 .col-xs-1.col-sm-1.col-md-1.col-lg-1
                   button.btn.btn-danger(onclick="delete_ingredient('#{result.name}')") Delete
