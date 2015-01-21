@@ -4,7 +4,10 @@ var modelMascots = require('../models/mascots');
 var modelDishes = require('../models/dishes');
 var async = require('async')
 
-
+/*
+function used to create the sqlite function. use module async in order to retrieve data from mongodb and
+insert in the sqlite. the last function is called when every request returns
+*/
 var createSQLiteDatabase = function(){
 	async.parallel([
 		        function(callback){
@@ -51,11 +54,14 @@ var createSQLiteDatabase = function(){
 				}
 				
 		    ],
+		    //call when functions before have terminated
 			function(err, results){
 				if(err){
+					//here if AT LEAST one function fails
 					console.log(err);
 					return false;
 				}else{
+					//insert data on sqlite database, defined in sqlitewriter.js
 					console.log("createSQLiteDatabase");
 					sqliteWriter.insertData("locals",  results[0],results[1],results[2]);
 					return true;
@@ -65,11 +71,13 @@ var createSQLiteDatabase = function(){
 	return true;
 }
 
-
+//used to create xml files
 var createXmlFiles = function(){
 	return true;
 }
 
+
+//function used to create the sqlite file for the application and the strings.xml files
 exports.generateAppFiles = function(callback){
 	var error = undefined;
 	resultDatabase = createSQLiteDatabase();

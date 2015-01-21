@@ -6,6 +6,9 @@ var handleError = function(error){
 	console.log(error);
 }
 
+/*
+function used to insert a new zone in the db
+*/
 exports.insertZone = function(zone_,callback){
 	
 		
@@ -28,6 +31,9 @@ exports.insertZone = function(zone_,callback){
 	
 }
 
+/*
+retrieve all the zones
+*/
 exports.getZones = function(callback){
 	db.modelZone.find({},function(err,list){
 		var error = undefined;

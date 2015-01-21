@@ -15,6 +15,7 @@ var handleError = function(error){
     }
 }
 
+//function to retrieve the list of dishes
 exports.getDishes = function(callback){
 	db.modelDish.find({},function(err,list){
 		var error = undefined;
@@ -26,7 +27,7 @@ exports.getDishes = function(callback){
 	});
 }
 
-
+//function used to insert a new dish
 exports.insertDish = function(name_,nationality_,imageUrl_, description_, ingredients, zone_,callback){
 		
 		db.modelDish.create({
@@ -48,6 +49,7 @@ exports.insertDish = function(name_,nationality_,imageUrl_, description_, ingred
 			
 }
 
+//function used to remove a dish from the database
 exports.deleteDish = function(name,callback){
 	db.modelDish.findOneAndRemove({name:name},callback);
 }
