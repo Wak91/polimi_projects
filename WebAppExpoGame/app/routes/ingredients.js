@@ -114,4 +114,16 @@ router.post('/',ingredientsUploader,function(req,res){
 	});
 });
 
+
+
+/*
+(4)
+Handling the DELETE of an ingredient
+*/
+router.delete('/:id', function(req, res){
+	IngredientModel.deleteIngredient(req.params.id,function(){
+		res.send("ok");
+	})
+});
+
 //-----------------------------------------------------

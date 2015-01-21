@@ -62,10 +62,15 @@ exports.insertIngredient = function(name_,imageUrl_,mascot_,callback){
 	  	}
 	  	callback(error,ingredient)
 	  	
-	});
-		
-			
-	
+	});	
+}
+
+/*
+(3)
+Route in order to delete an ingredient
+*/
+exports.deleteIngredient = function(name,callback){
+	db.modelIngredient.findOneAndRemove({name:name},callback);
 }
 
 //------------------------------------------
