@@ -8,6 +8,8 @@ var ingredientsTable = 'Ingredients'
 var mascotsTable = 'Mascots'
 var dishesTable = 'Dishes'
 var ingredientsInDishesTable = 'IngredientsInDishes'
+var crypto = require('crypto')
+
 
 /*
 function used in order to create the database
@@ -64,12 +66,31 @@ to support the many to many relation between dish and ingredient
 */
 var insertDataDishes = function(databaseInstance, dataDishes){
 	databaseInstance.serialize(function(){
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC)");
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC, hash TEXT)");
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish TEXT , idIngredient TEXT, PRIMARY KEY(idDish,idIngredient))");
-		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created ) VALUES (?,?,?,?,?,?)");
+		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created ) VALUES (?,?,?,?,?,?,?)");
 		var stmtRelation = databaseInstance.prepare("INSERT INTO "+ingredientsInDishesTable+" (idDish ,idIngredient) VALUES (?,?)");
 		dataDishes.forEach(function(dish){
-			stmtDish.run([dish["name"],dish["nationality"],dish["imageUrl"],dish["description"],dish["zone"],0])
+			//order ingredients in alphabetical order
+			dish["ingredients"].sort(function(a,b){
+				if(a < b){
+					return -1
+				}else if(a > b){
+					return 1
+				}
+				return 0;
+			});
+			//concatenate ingredients name
+			var stringListIngredient = "";
+			dish["ingredients"].forEach(function(ingredient){
+				stringListIngredient += ingredient;
+				console.log(stringListIngredient)
+
+			});
+			//hash concatenation of ingredients name
+			var hashIngredients = crypto.createHash('md5').update(stringListIngredient).digest('hex')
+			console.log(hashIngredients)
+			stmtDish.run([dish["name"],dish["nationality"],dish["imageUrl"],dish["description"],dish["zone"],0,hashIngredients])
 			dish["ingredients"].forEach(function(ingredient){
 				stmtRelation.run([dish["name"],ingredient]);
 			});
