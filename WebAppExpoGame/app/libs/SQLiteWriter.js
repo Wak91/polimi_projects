@@ -68,7 +68,7 @@ var insertDataDishes = function(databaseInstance, dataDishes){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC, hash TEXT)");
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish TEXT , idIngredient TEXT, PRIMARY KEY(idDish,idIngredient))");
-		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created ) VALUES (?,?,?,?,?,?,?)");
+		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created,hash ) VALUES (?,?,?,?,?,?,?)");
 		var stmtRelation = databaseInstance.prepare("INSERT INTO "+ingredientsInDishesTable+" (idDish ,idIngredient) VALUES (?,?)");
 		dataDishes.forEach(function(dish){
 			//order ingredients in alphabetical order
@@ -80,7 +80,7 @@ var insertDataDishes = function(databaseInstance, dataDishes){
 				}
 				return 0;
 			});
-			
+
 			//concatenate ingredients name
 			var stringListIngredient = "";
 			dish["ingredients"].forEach(function(ingredient){
