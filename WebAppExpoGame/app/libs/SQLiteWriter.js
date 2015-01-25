@@ -80,6 +80,7 @@ var insertDataDishes = function(databaseInstance, dataDishes){
 				}
 				return 0;
 			});
+			
 			//concatenate ingredients name
 			var stringListIngredient = "";
 			dish["ingredients"].forEach(function(ingredient){
