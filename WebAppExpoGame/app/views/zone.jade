@@ -5,7 +5,7 @@ block content
 		.col-xs-12.col-sm-12.col-md-12.col-lg-12
 			.col-md-8.col-md-offset-2
 				.well.well-sm
-					form.form-horizontal(name='insert_zone',action='/zones',onsubmit='return checkField()',method='post')
+					form.form-horizontal(name='insert_zone',action='/zones',onsubmit='return checkField()',method='post',enctype="multipart/form-data")
 						fieldset
 							legend.text-center.header Zone
 								if error_message
@@ -18,6 +18,11 @@ block content
 									label(for='name') Zone
 								.col-md-8
 									input#name.form-control(name='zone', type='text', placeholder='Insert zone...')
+							.form-group
+								.col-md-2.col-md-offset-1
+									label(for='image') Image
+								.col-md-8
+									input#image.form-control(name='imageUrl', type='file', placeholder='Insert image...')
 
 							.form-group
 								.col-md-12.text-center

@@ -9,7 +9,7 @@ var handleError = function(error){
 /*
 function used to insert a new zone in the db
 */
-exports.insertZone = function(zone_,callback){
+exports.insertZone = function(zone_,imageUrl_,callback){
 	
 		
 		db.modelZone.findOne({"zone":zone_},function(err,zone){
@@ -18,7 +18,8 @@ exports.insertZone = function(zone_,callback){
 				callback("The zone is already in the db",zone);
 			}else{
 				db.modelZone.create({
-					zone:zone_
+					zone:zone_,
+					imageUrl:imageUrl_
 					},function(err,zone){
 						var error = undefined;
 						if(err){

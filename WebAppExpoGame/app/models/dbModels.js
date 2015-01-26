@@ -61,7 +61,8 @@ var modelDish = mongoose.model( 'dish' , dish);
 var zoneCollection = 'zones'
 
 var zone = new mongoose.Schema({
-	zone:{type: String, required: true}
+	zone:{type: String, required: true},
+	imageUrl:{type: String, required: true}
 },{collection:zoneCollection});
 
 var modelZone = mongoose.model('zone',zone);
