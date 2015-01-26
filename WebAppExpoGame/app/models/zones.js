@@ -50,3 +50,14 @@ exports.getZones = function(callback){
 		callback(error,zoneList);
 	});
 }
+
+exports.getZonesData = function(callback){
+	db.modelZone.find({},function(err,list){
+		var error = undefined;
+		if(err){
+			error = handleError(err);
+		}
+		callback(error,list);
+		
+	});
+}

@@ -8,6 +8,7 @@ var ingredientsTable = 'Ingredients'
 var mascotsTable = 'Mascots'
 var dishesTable = 'Dishes'
 var ingredientsInDishesTable = 'IngredientsInDishes'
+var zonesTable = "Zones"
 var crypto = require('crypto')
 
 
@@ -26,6 +27,8 @@ var createDatabase = function(dbFileName){
 	db.run("DROP TABLE IF EXISTS "+mascotsTable);
 	db.run("DROP TABLE IF EXISTS "+dishesTable);
 	db.run("DROP TABLE IF EXISTS "+ingredientsInDishesTable);
+	db.run("DROP TABLE IF EXISTS "+zonesTable);
+
 
 
 	return db;
@@ -101,12 +104,24 @@ var insertDataDishes = function(databaseInstance, dataDishes){
 	});
 }
 
+var insertDataZones = function(databaseInstance,dataZones){
+	databaseInstance.serialize(function(){
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+zonesTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, zone TEXT ,imageUrl TEXT)");
+		var stmtZone = databaseInstance.prepare("INSERT INTO "+zonesTable+" (zone ,imageUrl) VALUES (?,?)");
+		dataZones.forEach(function(zone){
+			stmtZone.run(zone["zone"],zone["imageUrl"])
+		});
+		stmtZone.finalize();
+	});
+
+}
+
 
 /*
 exported function the call the prevoius function, create the folder where put the db and 
 finalize the file just created
 */
-exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDishes){
+exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDishes, dataZones){
 	if(!fs.existsSync(path)){
 		fs.mkdirSync(path, 0766, function(err){
 			if(err){ 
@@ -126,6 +141,7 @@ exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDish
 
 	insertDataDishes(databaseInstance,dataDishes);
 
+	insertDataZones(databaseInstance,dataZones);
 
 	databaseInstance.close()
 

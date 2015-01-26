@@ -2,6 +2,7 @@ var sqliteWriter = require('./SQLiteWriter');
 var modelIngredients = require('../models/ingredients');
 var modelMascots = require('../models/mascots');
 var modelDishes = require('../models/dishes');
+var modelZones = require('../models/zones');
 var async = require('async')
 
 /*
@@ -51,6 +52,20 @@ var createSQLiteDatabase = function(){
 							callback(null,dishList)
 						}
 					});
+				},
+				function(callback){
+		            modelZones.getZonesData(function(error,list){
+						if(error){
+							console.log(error);
+						}else{
+							zoneList = []
+							for (var i = list.length - 1; i >= 0; i--) {
+								object = {"zone":list[i]["zone"],"imageUrl":list[i]["imageUrl"]}
+								zoneList.push(object);
+							}
+							callback(null,zoneList)
+						}
+					});
 				}
 				
 		    ],
@@ -63,7 +78,7 @@ var createSQLiteDatabase = function(){
 				}else{
 					//insert data on sqlite database, defined in sqlitewriter.js
 					console.log("createSQLiteDatabase");
-					sqliteWriter.insertData("locals",  results[0],results[1],results[2]);
+					sqliteWriter.insertData("locals",  results[0],results[1],results[2],results[3]);
 					return true;
 				}
 		    });

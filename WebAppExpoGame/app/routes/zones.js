@@ -16,7 +16,7 @@ var dishesUploader = multer({
 
 
 router.post('/',dishesUploader,function(req,res){
-	var zone = req.body.zone;
+	var zone = req.body.zone.toLowerCase();
 	console.log(req.files)
 	var imageUrl = req.files.imageUrl.name.toLowerCase();
 
