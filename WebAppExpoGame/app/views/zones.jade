@@ -8,10 +8,10 @@ block content
 				h1 #{title}
 
 		.col-sm-12.col-md-3.col-lg-3
-			a.btn.btn-lg.btn-primary.btn-circle.btn-xl.marginbig(href='/dishes/new')
+			a.btn.btn-lg.btn-primary.btn-circle.btn-xl.marginbig(href='/zones/new')
 				span.glyphicon.glyphicon-plus
 					br
-					span Dish
+					span Zone
 
 		
 	br
@@ -26,31 +26,18 @@ block content
 							i.fa.fa-search
 			
 			.row.panel.panel-default.scrollable(style='max-height: 800px;overflow-y: auto;overflow-x: hidden;')
-				each dish in dishes
+				each dish in zones
 					.row.padall
 						.panel.panel-default(style='min-height: 150px;')
 							.col-xs-3.col-sm-3.col-md-3.col-lg-3
-								h4.dish
-									.span #{dish["name"]}
-								h4
-									.span #{dish["nationality"]}
+								h4.zone
+									.span #{dish["zone"]}
 								h4
 									.span #{dish["imageUrl"]}
-								h4
-									.span #{dish["zone"]}
-								button.btn.btn-danger(onclick="delete_mascote('#{dish.name}')") Delete
 
-							.col-xs-5.col-sm-5.col-md-5.col-lg-5
-								h4 Description
-								.panel.panel-default.scrollable(style='max-height: 130px;overflow-y: auto;overflow-x: hidden;padding-top:10px;')
-									.text-justify.col-md-offset-1
-									| #{dish["description"]}
+								button.btn.btn-danger(onclick="delete_zone('#{dish.zone}')") Delete
+
 							
-							.col-xs-4.col-sm-4.col-md-4.col-lg-4
-								h4 Ingredients
-								.panel.panel-default.scrollable(style='max-height: 130px;overflow-y: auto;overflow-x: hidden;padding-top:10px;')
-									each ingredient in dish["ingredients"]
-										h5.col-md-offset-1 #{ingredient}
 
 
 								
@@ -59,7 +46,7 @@ block content
 		$("#searchDish").keyup(function(){
 			filter = $(this).val();
 			console.log("call");
-			$(".dish").each(function(key,value){
+			$(".zone").each(function(key,value){
 				console.log($(value).text());
 				if($(value).text().indexOf(filter) != 0){
 					$(value).parent().parent().hide();
@@ -71,13 +58,13 @@ block content
 
 
 	script(type='text/javascript').
-		function delete_mascote(name){
+		function delete_zone(name){
 			jQuery.ajax({
-				url: "/dishes/"+name,
+				url: "/zones/"+name,
 				type: "DELETE",
 				success: function (data, textStatus, jqXHR) {
 					
-					$(".dish").each(function(key,value){
+					$(".zone").each(function(key,value){
 						if($(value).text().indexOf(name) == 0){
 							$(value).parent().parent().remove()
 						}

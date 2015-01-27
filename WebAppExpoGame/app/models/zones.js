@@ -61,3 +61,7 @@ exports.getZonesData = function(callback){
 		
 	});
 }
+
+exports.deleteZone = function(zone,callback){
+	db.modelZone.findOneAndRemove({zone:zone},callback);
+}

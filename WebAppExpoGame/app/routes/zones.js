@@ -14,6 +14,17 @@ var dishesUploader = multer({
             }
 });
 
+router.get('/', function(req, res){
+	zoneModel.getZonesData(function(error,zones){
+	    console.log('returned dishes '+zones);
+	    res.render('zones', {
+	    title: 'List Zones',
+	    zones: zones
+	  });
+	});
+});
+
+
 
 router.post('/',dishesUploader,function(req,res){
 	var zone = req.body.zone.toLowerCase();
@@ -28,8 +39,8 @@ router.post('/',dishesUploader,function(req,res){
 				error_message:error});
 
 	    }else{
-			console.log("Created dish "+zone);
-	    	res.redirect('/dishes');
+			console.log("Created zone "+zone);
+	    	res.redirect('/zones');
 	    }
 	});
 });
@@ -40,4 +51,9 @@ router.get('/new', function(req, res){
   
 });
 
+router.delete('/:id', function(req, res){
+	zoneModel.deleteZone(req.params.id,function(){
+		res.send("ok");
+	})
+});
 module.exports = router;
