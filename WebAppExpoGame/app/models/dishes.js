@@ -23,30 +23,36 @@ exports.getDishes = function(callback){
 			error = handleError(err);
 		}
 		callback(error,list);
-		
+
 	});
 }
 
 //function used to insert a new dish
-exports.insertDish = function(name_,nationality_,imageUrl_, description_, ingredients, zone_,callback){
-		
+exports.insertDish = function(name_,nationality_,imageUrl_, description_, ingredients, zone_,curiosity_,difficulty_,callback){
+		console.log("inside insert dish")
+		console.log(curiosity_)
+		console.log(parseInt(difficulty_))
+
 		db.modelDish.create({
 		    name:name_,
 			nationality:nationality_,
 			imageUrl:imageUrl_,
 			ingredients:ingredients,
 			description:description_,
-			zone:zone_
+			zone:zone_,
+			curiosity:curiosity_,
+			difficulty:parseInt(difficulty_)
+
 		},function(err, dish){
 			var error = undefined;
 		    if (err){
 		    	error = handleError(err);
 		  	}
 		  	callback(error,dish)
-		  	
+
 		});
-	
-			
+
+
 }
 
 //function used to remove a dish from the database

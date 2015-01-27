@@ -40,7 +40,10 @@ router.post('/',dishesUploader,function(req,res){
 	var nationality = req.body.nationality.toLowerCase();
 	var imageUrl = req.files.imageUrl.name.toLowerCase();
 	var description = req.body.description.toLowerCase();
+      var curiosity = req.body.curiosity.toLowerCase();
+      var difficulty = req.body.difficulty;
 	var ingredients = req.body.components;
+
 
 	var zone = req.body.zone.toLowerCase();
 	console.log(req.files)
@@ -52,6 +55,8 @@ router.post('/',dishesUploader,function(req,res){
     req.assert('zone', 'zone is required').notEmpty();
     req.assert('components', ' components are required').notEmpty();
     //req.assert('components', 'at least two ingredients').len(2,20);
+    req.assert('difficulty', ' difficulty is required').notEmpty();
+    req.assert('curiosity', ' curiosity is required').notEmpty();
 
 	var errors = req.validationErrors();
 
@@ -64,7 +69,7 @@ router.post('/',dishesUploader,function(req,res){
     /*
 	use the async model in order to do two different asyncronous call and wait for their results
     */
-	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,function(error,dish){
+	dishesModel.insertDish(name,nationality,imageUrl,description,ingredients,zone,curiosity,difficulty,function(error,dish){
 		 if(error){
 		 	console.log(error);
 		 	async.parallel([

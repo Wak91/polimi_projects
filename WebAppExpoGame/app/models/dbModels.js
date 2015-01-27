@@ -47,7 +47,9 @@ var dish = new mongoose.Schema({
 	imageUrl:{type:String, required: true},
 	description:{type: String, required: true},
 	ingredients:Array,
-	zone:{type:String, required: true}
+	zone:{type:String, required: true},
+	curiosity:{type: String, required: true},
+	difficulty:{type: Number, required: true}
 },{collection:dishCollection});
 
 var modelDish = mongoose.model( 'dish' , dish);

@@ -22,7 +22,7 @@ var createDatabase = function(dbFileName){
 	  fs.openSync(dbFileName, "w");
 	}
 	var db = new sqlite3.Database(dbFileName);
-	
+
 	db.run("DROP TABLE IF EXISTS "+ingredientsTable);
 	db.run("DROP TABLE IF EXISTS "+mascotsTable);
 	db.run("DROP TABLE IF EXISTS "+dishesTable);
@@ -57,7 +57,7 @@ var insertDataMascots = function(databaseInstance, dataMascots){
 		var stmt = databaseInstance.prepare("INSERT INTO "+mascotsTable+" (category, latitude ,longitude, modelUrl,name,captured) VALUES (?,?,?,?,?,?)");
 		dataMascots.forEach(function(mascot){
 			stmt.run([mascot["category"],mascot["latitude"],mascot["longitude"],mascot["modelUrl"],mascot["name"],0])
-			
+
 		});
 		stmt.finalize();
 	});
@@ -69,9 +69,9 @@ to support the many to many relation between dish and ingredient
 */
 var insertDataDishes = function(databaseInstance, dataDishes){
 	databaseInstance.serialize(function(){
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC, hash TEXT)");
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC, hash TEXT,difficulty NUMERIC,curiosity TEXT)");
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish TEXT , idIngredient TEXT, PRIMARY KEY(idDish,idIngredient))");
-		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created,hash ) VALUES (?,?,?,?,?,?,?)");
+		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created,hash,difficulty,curiosity ) VALUES (?,?,?,?,?,?,?,?,?)");
 		var stmtRelation = databaseInstance.prepare("INSERT INTO "+ingredientsInDishesTable+" (idDish ,idIngredient) VALUES (?,?)");
 		dataDishes.forEach(function(dish){
 			//order ingredients in alphabetical order
@@ -94,7 +94,7 @@ var insertDataDishes = function(databaseInstance, dataDishes){
 			//hash concatenation of ingredients name
 			var hashIngredients = crypto.createHash('md5').update(stringListIngredient).digest('hex')
 			console.log(hashIngredients)
-			stmtDish.run([dish["name"],dish["nationality"],dish["imageUrl"],dish["description"],dish["zone"],0,hashIngredients])
+			stmtDish.run([dish["name"],dish["nationality"],dish["imageUrl"],dish["description"],dish["zone"],0,hashIngredients,dish["difficulty"],dish["curiosity"]])
 			dish["ingredients"].forEach(function(ingredient){
 				stmtRelation.run([dish["name"],ingredient]);
 			});
@@ -118,17 +118,17 @@ var insertDataZones = function(databaseInstance,dataZones){
 
 
 /*
-exported function the call the prevoius function, create the folder where put the db and 
+exported function the call the prevoius function, create the folder where put the db and
 finalize the file just created
 */
 exports.insertData = function(dbFileName, dataIngredients, dataMascots, dataDishes, dataZones){
 	if(!fs.existsSync(path)){
 		fs.mkdirSync(path, 0766, function(err){
-			if(err){ 
+			if(err){
 				console.log(err);
 				response.send("ERROR! Can't make the directory! \n");    // echo the result back
 			}
-		});   
+		});
  	}
 	var name = path+dbFileName+'.sqlite'
 	console.log(name);
