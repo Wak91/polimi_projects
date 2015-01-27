@@ -51,7 +51,7 @@ router.post('/',dishesUploader,function(req,res){
     //req.assert('imageUrl', 'imageUrl is required').notNull();
     req.assert('zone', 'zone is required').notEmpty();
     req.assert('components', ' components are required').notEmpty();
-    req.assert('components', 'at least two ingredients').len(2,20);
+    //req.assert('components', 'at least two ingredients').len(2,20);
 
 	var errors = req.validationErrors();
 
