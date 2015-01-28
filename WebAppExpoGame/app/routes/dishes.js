@@ -36,7 +36,25 @@ to this url. inside the express-validator check if all field required has been i
 if it is not true, the response is the insert page, otherwise data are saved in the db
 */
 router.post('/',dishesUploader,function(req,res){
-	var name = req.body.name.toLowerCase();
+
+    req.assert('name', 'Name is required').notEmpty();
+    req.assert('nationality', 'Nationality is required').notEmpty();
+    req.assert('description', 'Description is required').notEmpty();
+    //req.assert('imageUrl', 'imageUrl is required').notNull();
+    req.assert('zone', 'zone is required').notEmpty();
+    req.assert('components', ' components are required').notEmpty();
+    //req.assert('components', 'at least two ingredients').len(2,20);
+    req.assert('difficulty', ' difficulty is required').notEmpty();
+    req.assert('curiosity', ' curiosity is required').notEmpty();
+    var errors = req.validationErrors();
+
+    if(errors){   //errors found
+      console.log(errors);
+        res.redirect('/dishes/new');
+          return;
+       }
+
+      var name = req.body.name.toLowerCase();
 	var nationality = req.body.nationality.toLowerCase();
 	var imageUrl = req.files.imageUrl.name.toLowerCase();
 	var description = req.body.description.toLowerCase();
@@ -48,23 +66,9 @@ router.post('/',dishesUploader,function(req,res){
 	var zone = req.body.zone.toLowerCase();
 	console.log(req.files)
 
-	req.assert('name', 'Name is required').notEmpty();
-	req.assert('nationality', 'Nationality is required').notEmpty();
-	req.assert('description', 'Description is required').notEmpty();
-    //req.assert('imageUrl', 'imageUrl is required').notNull();
-    req.assert('zone', 'zone is required').notEmpty();
-    req.assert('components', ' components are required').notEmpty();
-    //req.assert('components', 'at least two ingredients').len(2,20);
-    req.assert('difficulty', ' difficulty is required').notEmpty();
-    req.assert('curiosity', ' curiosity is required').notEmpty();
 
-	var errors = req.validationErrors();
 
-    if(errors){   //errors found
-    	console.log(errors);
-        res.redirect('/dishes/new');
-	        return;
-       }
+
 
     /*
 	use the async model in order to do two different asyncronous call and wait for their results
