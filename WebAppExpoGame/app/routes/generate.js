@@ -22,7 +22,7 @@ router.post('/',function(req,res){
 	    }
 
     console.log('created files '+allCorrect);
-    res.redirect('/');
+    res.redirect('/generate');
 
 	});
 });
