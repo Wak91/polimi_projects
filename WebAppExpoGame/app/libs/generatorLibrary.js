@@ -4,6 +4,8 @@ var modelMascots = require('../models/mascots');
 var modelDishes = require('../models/dishes');
 var modelZones = require('../models/zones');
 var async = require('async')
+var targz = require('tar.gz');
+
 
 /*
 function used to create the sqlite function. use module async in order to retrieve data from mongodb and
@@ -92,6 +94,16 @@ var createXmlFiles = function(){
 }
 
 
+var compressFiles = function(){
+var compress = new targz().compress('./public/upload/', './libs/generated/images.tar.gz', function(err){
+    if(err)
+        console.log(err);
+
+    console.log('The compression has ended!');
+});
+}
+
+
 //function used to create the sqlite file for the application and the strings.xml files
 exports.generateAppFiles = function(callback){
 	var error = undefined;
@@ -107,6 +119,7 @@ exports.generateAppFiles = function(callback){
 		callback(error,"all correct");
 
 	}
+	compressFiles();
 	callback(error,"all correct");
 
 

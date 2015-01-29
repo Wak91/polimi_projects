@@ -14,6 +14,7 @@ var zones = require('./routes/zones');
 var generate = require('./routes/generate')
 var ingredients = require('./routes/ingredients');
 var api = require('./routes/api')
+var images = require('./routes/images')
 
 
 var multer  = require('multer')
@@ -46,6 +47,7 @@ app.use('/zones',zones);
 app.use('/generate',generate);
 app.use('/ingredients',ingredients);
 app.use('/api',api);
+app.use('/images',images);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
