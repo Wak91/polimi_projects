@@ -85,12 +85,12 @@ block content
 	script.
 		$("#searchIngredient").keyup(function(){
 			filter = $(this).val();
-			console.log("call");
+			console.log("call "+filter);
 			$(".ingredient").each(function(key,value){
-				console.log($(value).text());
-				if($(value).text().indexOf(filter) != 0){
+				if($(value).text().indexOf(filter) != 1 && $(value).text().indexOf(filter) != 0){
 					$(value).parent().hide();
 				}else{
+
 					$(value).parent().show();
 				}
 			})
