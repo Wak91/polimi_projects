@@ -19,12 +19,15 @@ router.post('/',function(req,res){
 	          error_message: error
 	        });
 	        return;
+	    }else{
+	    	console.log('created files '+allCorrect);
+    		res.redirect('/generate');
+
+			
 	    }
-
-    console.log('created files '+allCorrect);
-    res.redirect('/generate');
-
 	});
+
+    
 });
 
 /*
