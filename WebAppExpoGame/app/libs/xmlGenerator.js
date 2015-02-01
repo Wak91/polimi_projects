@@ -10,6 +10,7 @@ var writeXmlItalian = function(ingredientsList,dishesList,zonesList){
 
 	var rootItalian = builder.create('resources');
 	
+	rootItalian.com("INGREDIENTS NAMES");
 	ingredientsList.forEach(function(ingredient){
 		var item = rootItalian.ele('string');
 		item.att("name",ingredient["name"].replace(" ", "_"));
@@ -18,12 +19,14 @@ var writeXmlItalian = function(ingredientsList,dishesList,zonesList){
 		 
 	});
 
+	rootItalian.com("ZONES NAMES");
 	zoneList.forEach(function(zone){
 		var item = rootItalian.ele('string');
 		item.att("name",zone["zone"].replace(" ", "_"));
 		item.txt(zone["zone"]);
 	});
 
+	rootItalian.com("DISHES NAMES - DESCRIPTIONS - CURIOSITY");
 	dishesList.forEach(function(dish){
 		var nationality = rootItalian.ele('string');
 		nationality.att("name",dish["nationality"].replace(" ", "_"));
