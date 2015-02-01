@@ -5,6 +5,7 @@ var modelDishes = require('../models/dishes');
 var modelZones = require('../models/zones');
 var async = require('async')
 var targz = require('tar.gz');
+var xmlWriter = require('./xmlGenerator')
 
 
 /*
@@ -90,6 +91,68 @@ var createSQLiteDatabase = function(){
 
 //used to create xml files
 var createXmlFiles = function(){
+	async.parallel([
+		        function(callback){
+		            modelIngredients.getIngredients(function(error,list){
+		            	if(error){
+							console.log(error);
+						}else{
+
+							ingredientsList = [];
+							for (var i = list.length - 1; i >= 0; i--) {
+								object = {"name":list[i]["name"],"imageUrl":list[i]["imageUrl"],"category":list[i]["category"]}
+								ingredientsList.push(object);
+							}
+
+							callback(null,ingredientsList);
+
+						}
+
+		            });
+		        },
+		        function(callback){
+		            modelDishes.getDishes(function(error,list){
+						if(error){
+							console.log(error);
+						}else{
+							dishList = []
+							for (var i = list.length - 1; i >= 0; i--) {
+								object = {"name":list[i]["name"],"nationality":list[i]["nationality"],"imageUrl":list[i]["imageUrl"],"description":list[i]["description"],"zone":list[i]["zone"],"ingredients":list[i]["ingredients"],"curiosity":list[i]["curiosity"],"difficulty":list[i]["difficulty"]}
+								dishList.push(object);
+							}
+							callback(null,dishList)
+						}
+					});
+				},
+				function(callback){
+		            modelZones.getZonesData(function(error,list){
+						if(error){
+							console.log(error);
+						}else{
+							zoneList = []
+							for (var i = list.length - 1; i >= 0; i--) {
+								object = {"zone":list[i]["zone"],"imageUrl":list[i]["imageUrl"]}
+								zoneList.push(object);
+							}
+							callback(null,zoneList)
+						}
+					});
+				}
+
+		    ],
+		    //call when functions before have terminated
+			function(err, results){
+				if(err){
+					//here if AT LEAST one function fails
+					console.log(err);
+					return false;
+				}else{
+					//write xml files
+					console.log("create xml");
+					xmlWriter.writeXml(results[0],results[1],results[2]);
+					return true;
+				}
+		    });
 	return true;
 }
 
