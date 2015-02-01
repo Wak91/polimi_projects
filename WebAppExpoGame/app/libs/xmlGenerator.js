@@ -1,5 +1,7 @@
 var builder = require('xmlbuilder');
 var fs = require('fs');
+var dir = require('path');
+var path = dir.join(__dirname, 'generated/xmls/')
 
 
 
@@ -38,7 +40,7 @@ var writeXmlItalian = function(ingredientsList,dishesList,zonesList){
 	});
 
 
-	fs.writeFile('./libs/generated/strings_ita.xml', rootItalian.doc().end({pretty: true, indent: '  ', newline: '\n' }), function (err) {
+	fs.writeFile('./libs/generated/xmls/strings_ita.xml', rootItalian.doc().end({pretty: true, indent: '  ', newline: '\n' }), function (err) {
 	  if (err) throw err;
 	  console.log('It\'s saved!');
 	});
@@ -50,7 +52,7 @@ var writeXmlEnglish = function(ingredientsList,dishesList,zonesList){
 
 	var rootEnglish = builder.create('resources');
 
-	fs.writeFile('./libs/generated/strings_en.xml', rootEnglish.doc().end({pretty: true, indent: '  ', newline: '\n' }), function (err) {
+	fs.writeFile('./libs/generated/xmls/strings_en.xml', rootEnglish.doc().end({pretty: true, indent: '  ', newline: '\n' }), function (err) {
 	  if (err) throw err;
 	  console.log('It\'s saved!');
 	});
@@ -59,6 +61,15 @@ var writeXmlEnglish = function(ingredientsList,dishesList,zonesList){
 
 
 exports.writeXml = function(ingredientsList,dishesList,zonesList){
+
+	if(!fs.existsSync(path)){
+		fs.mkdirSync(path, 0766, function(err){
+			if(err){
+				console.log(err);
+				response.send("ERROR! Can't make the directory! \n");    // echo the result back
+			}
+		});
+ 	}
 	writeXmlItalian(ingredientsList,dishesList,zonesList);
 
 	writeXmlEnglish(ingredientsList,dishesList,zonesList);

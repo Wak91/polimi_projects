@@ -158,12 +158,18 @@ var createXmlFiles = function(){
 
 
 var compressFiles = function(){
-var compress = new targz().compress('./public/upload/', './libs/generated/images.tar.gz', function(err){
-    if(err)
-        console.log(err);
+	var compress = new targz().compress('./public/upload/', './libs/generated/images.tar.gz', function(err){
+	    if(err)
+	        console.log(err);
 
-    console.log('The compression has ended!');
-});
+	    console.log('The compression has ended!');
+	});
+	var compress = new targz().compress('./libs/generated/xmls/', './libs/generated/xmlFiles.tar.gz', function(err){
+	    if(err)
+	        console.log(err);
+
+	    console.log('The compression has ended!');
+	});
 }
 
 

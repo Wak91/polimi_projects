@@ -45,4 +45,15 @@ router.post('/download',function(req,res){
 	
 });
 
+router.post('/download/xml',function(req,res){
+  
+  res.download('./libs/generated/xmlFiles.tar.gz', 'xmlFiles.tar.gz', function(err){
+  if (err) {
+  	console.log("ERROR, no file to download");
+	res.redirect('/generate');
+  }
+});
+	
+});
+
 module.exports = router;
