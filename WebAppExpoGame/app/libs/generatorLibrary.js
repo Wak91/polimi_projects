@@ -137,7 +137,17 @@ var createXmlFiles = function(){
 							callback(null,zoneList)
 						}
 					});
-				}
+				},
+				function(callback){
+		        	modelMascots.getMascots(function(list){
+		        		mascotsList = [];
+		        		for (var i = list.length - 1; i >= 0; i--) {
+								object = {"category":list[i]["category"],"latitude":list[i]["latitude"],"longitude":list[i]["longitude"],"modelUrl":list[i]["modelUrl"],"name":list[i]["name"]}
+								mascotsList.push(object);
+							}
+						callback(null,mascotsList)
+		        	});
+		        }
 
 		    ],
 		    //call when functions before have terminated
@@ -149,7 +159,7 @@ var createXmlFiles = function(){
 				}else{
 					//write xml files
 					console.log("create xml");
-					xmlWriter.writeXml(results[0],results[1],results[2]);
+					xmlWriter.writeXml(results[0],results[1],results[2],results[3]);
 					return true;
 				}
 		    });

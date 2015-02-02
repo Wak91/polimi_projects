@@ -6,7 +6,7 @@ var path = dir.join(__dirname, 'generated/xmls/')
 
 
 
-var writeXmlItalian = function(ingredientsList,dishesList,zonesList){
+var writeXmlItalian = function(ingredientsList,dishesList,zonesList,mascotsList){
 
 	var rootItalian = builder.create('resources');
 	
@@ -42,6 +42,13 @@ var writeXmlItalian = function(ingredientsList,dishesList,zonesList){
 
 	});
 
+	rootItalian.com("MASCOTS CATEGORIES")
+	mascotsList.forEach(function(mascot){
+		var item = rootItalian.ele('string');
+		item.att("name",mascot["category"].replace(" ","_"))
+		item.txt(mascot["category"]);
+	});
+
 
 	fs.writeFile('./libs/generated/xmls/strings_ita.xml', rootItalian.doc().end({pretty: true, indent: '  ', newline: '\n' }), function (err) {
 	  if (err) throw err;
@@ -51,7 +58,7 @@ var writeXmlItalian = function(ingredientsList,dishesList,zonesList){
 
 }
 
-var writeXmlEnglish = function(ingredientsList,dishesList,zonesList){
+var writeXmlEnglish = function(ingredientsList,dishesList,zonesList,mascotsList){
 
 	var rootEnglish = builder.create('resources');
 
@@ -63,7 +70,7 @@ var writeXmlEnglish = function(ingredientsList,dishesList,zonesList){
 }
 
 
-exports.writeXml = function(ingredientsList,dishesList,zonesList){
+exports.writeXml = function(ingredientsList,dishesList,zonesList,mascotsList){
 
 	if(!fs.existsSync(path)){
 		fs.mkdirSync(path, 0766, function(err){
@@ -73,9 +80,9 @@ exports.writeXml = function(ingredientsList,dishesList,zonesList){
 			}
 		});
  	}
-	writeXmlItalian(ingredientsList,dishesList,zonesList);
+	writeXmlItalian(ingredientsList,dishesList,zonesList,mascotsList);
 
-	writeXmlEnglish(ingredientsList,dishesList,zonesList);
+	writeXmlEnglish(ingredientsList,dishesList,zonesList,mascotsList);
 
 	
 
