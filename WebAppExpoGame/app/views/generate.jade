@@ -14,10 +14,14 @@ block content
 
 
 
-				form.form-horizontal(name='generate',action='/generate',method='post')
+				form.form-horizontal(name='generate',action='/generate/db',method='post')
 					.form-group
 						.col-md-12.text-center
-							button.btn.btn-primary.btn-lg(type='submit') Generate
+							button.btn.btn-primary.btn-lg(type='submit') Generate DB and Images
+				form.form-horizontal(name='generate',action='/generate/xml',method='post')
+					.form-group
+						.col-md-12.text-center
+							button.btn.btn-primary.btn-lg(type='submit') Generate Xml
 				form.form-horizontal(name='download',action='generate/download',method='post')
 					.form-group
 						.col-md-12.text-center

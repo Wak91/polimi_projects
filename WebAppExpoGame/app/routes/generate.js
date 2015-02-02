@@ -10,9 +10,9 @@ router.get('/',function(req,res){
 
 router.get
 
-router.post('/',function(req,res){
+router.post('/db',function(req,res){
 	console.log("generate");
-	generator.generateAppFiles(function(error,allCorrect){
+	generator.generateDbImagesFiles(function(error,allCorrect){
 		if(error){
 	        res.render('generate', {
 	          title: 'Generate Files',
@@ -21,6 +21,26 @@ router.post('/',function(req,res){
 	        return;
 	    }else{
 	    	console.log('created files '+allCorrect);
+    		res.redirect('/generate');
+
+			
+	    }
+	});
+
+    
+});
+
+router.post('/xml',function(req,res){
+	console.log("generate");
+	generator.generateXmlFiles(function(error,allCorrect){
+		if(error){
+	        res.render('generate', {
+	          title: 'Generate Files',
+	          error_message: error
+	        });
+	        return;
+	    }else{
+	    	console.log('created files xml '+allCorrect);
     		res.redirect('/generate');
 
 			

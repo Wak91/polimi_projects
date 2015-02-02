@@ -157,13 +157,17 @@ var createXmlFiles = function(){
 }
 
 
-var compressFiles = function(){
+var compressImages = function(){
 	var compress = new targz().compress('./public/upload/', './libs/generated/images.tar.gz', function(err){
 	    if(err)
 	        console.log(err);
 
 	    console.log('The compression has ended!');
 	});
+	
+}
+
+var compressXmls = function(){
 	var compress = new targz().compress('./libs/generated/xmls/', './libs/generated/xmlFiles.tar.gz', function(err){
 	    if(err)
 	        console.log(err);
@@ -174,7 +178,7 @@ var compressFiles = function(){
 
 
 //function used to create the sqlite file for the application and the strings.xml files
-exports.generateAppFiles = function(callback){
+exports.generateDbImagesFiles = function(callback){
 	var error = undefined;
 	resultDatabase = createSQLiteDatabase();
 	if(!resultDatabase){
@@ -182,14 +186,23 @@ exports.generateAppFiles = function(callback){
 		callback(error,"all correct");
 
 	}
+	
+	compressImages();
+	callback(error,"all correct");
+
+
+}
+
+exports.generateXmlFiles = function(callback){
+	var error = undefined;
 	resultXml = createXmlFiles();
 	if(!resultXml){
 		error = "Error creation XML files";
 		callback(error,"all correct");
 
 	}
-	compressFiles();
+	compressXmls();
 	callback(error,"all correct");
 
-
 }
+
