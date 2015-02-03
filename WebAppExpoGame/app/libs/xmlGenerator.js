@@ -35,11 +35,11 @@ var writeXmlItalian = function(ingredientsList,dishesList,zonesList,mascotsList)
 		nationality.txt(dish["nationality"]);
 
 		var description = rootItalian.ele('string');
-		description.att("name",dish["name"]+"_descr");
+		description.att("name",S(dish["name"]).replaceAll(" ", "_")+"_descr");
 		description.txt(S(dish["description"]).replaceAll("'","\'"));
 
 		var curiosity = rootItalian.ele('string');
-		curiosity.att("name",dish["name"]+"_curiosity");
+		curiosity.att("name",S(dish["name"]).replaceAll(" ", "_")+"_curiosity");
 		curiosity.txt(S(dish["curiosity"]).replaceAll("'","\'"));
 
 	});
