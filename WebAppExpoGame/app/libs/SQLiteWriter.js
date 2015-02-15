@@ -70,9 +70,9 @@ to support the many to many relation between dish and ingredient
 var insertDataDishes = function(databaseInstance, dataDishes){
 	databaseInstance.serialize(function(){
 		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+dishesTable+" ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,nationality TEXT, imageUrl TEXT, description TEXT, zone TEXT,created NUMERIC, hash TEXT,difficulty NUMERIC,curiosity TEXT)");
-		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish TEXT , idIngredient TEXT, PRIMARY KEY(idDish,idIngredient))");
+		databaseInstance.run("CREATE TABLE IF NOT EXISTS "+ingredientsInDishesTable+" (idDish TEXT , idIngredient TEXT, hintGiven NUMERIC, PRIMARY KEY(idDish,idIngredient))");
 		var stmtDish = databaseInstance.prepare("INSERT INTO "+dishesTable+" (name ,nationality , imageUrl , description , zone ,created,hash,difficulty,curiosity ) VALUES (?,?,?,?,?,?,?,?,?)");
-		var stmtRelation = databaseInstance.prepare("INSERT INTO "+ingredientsInDishesTable+" (idDish ,idIngredient) VALUES (?,?)");
+		var stmtRelation = databaseInstance.prepare("INSERT INTO "+ingredientsInDishesTable+" (idDish ,idIngredient,hintGiven) VALUES (?,?,?)");
 		dataDishes.forEach(function(dish){
 			//order ingredients in alphabetical order
 			dish["ingredients"].sort(function(a,b){
@@ -96,7 +96,7 @@ var insertDataDishes = function(databaseInstance, dataDishes){
 			console.log(hashIngredients)
 			stmtDish.run([dish["name"],dish["nationality"],dish["imageUrl"],dish["description"],dish["zone"],0,hashIngredients,dish["difficulty"],dish["curiosity"]])
 			dish["ingredients"].forEach(function(ingredient){
-				stmtRelation.run([dish["name"],ingredient]);
+				stmtRelation.run([dish["name"],ingredient,0]);
 			});
 		});
 		stmtDish.finalize();
