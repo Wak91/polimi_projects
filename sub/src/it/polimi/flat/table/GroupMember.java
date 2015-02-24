@@ -35,6 +35,9 @@ public class GroupMember extends Thread {
 	private Key publicKey;  //Initial public key
 	private Key privateKey; //Initial private key
 	
+	private Cipher RsaCipher;
+	private Cipher DesCipher;
+	
 	private SecretKey dek;
 	private SecretKey kek0; //KEK for the bit 0 of the ID
 	private SecretKey kek1; //KEK for the bit 1 of the ID
@@ -66,6 +69,37 @@ public class GroupMember extends Thread {
 		KeyPair kp = kpg.genKeyPair();
 		publicKey = kp.getPublic();
 		privateKey = kp.getPrivate();
+		
+		
+		//Initialization of the ciphers
+		//-------------------------------------------------------------
+		
+		try {
+			this.DesCipher = Cipher.getInstance("DES");
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		try {
+			RsaCipher = Cipher.getInstance("RSA");
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    try {
+	    	RsaCipher.init(Cipher.DECRYPT_MODE, privateKey);
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+		//-------------------------------------------------------------
+
+		
+		
+		
 		
 	}
 	
@@ -104,21 +138,14 @@ public class GroupMember extends Thread {
 		byte[] chiperText = incoming.getText();
 		
 		try {
-			c = Cipher.getInstance("DES");
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		try {
-			c.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
+			DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
 			} catch (InvalidKeyException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		
 		 try {
-				decryptedText = c.doFinal(chiperText); //decrypting the message  
+				decryptedText = DesCipher.doFinal(chiperText); //decrypting the message  
 				plainText = new String(decryptedText);
 			} catch (IllegalBlockSizeException | BadPaddingException e) {
 				System.out.println("Something went wrong during decryption of text");
@@ -172,7 +199,6 @@ public class GroupMember extends Thread {
 		ObjectOutputStream oos=null;
 		ObjectInputStream ois = null;
 		StartConfigMessage scm=null;
-	    Cipher c=null;
 	    byte[] decryptedKey=null;
 			
 		try {
@@ -207,25 +233,10 @@ public class GroupMember extends Thread {
 		}
 		
 		
-		byte[] rawDek = scm.getDeK();//extract the string of the dek ( base64 encoded + publicKey encrypted )
+		byte[] rawDek = scm.getDeK();//extract the string of the dek (publicKey encrypted )
 	  
-
-	    
-		try {
-			c = Cipher.getInstance("RSA");
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	    try {
-			c.init(Cipher.DECRYPT_MODE, privateKey);
-		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-	    try {
-			decryptedKey = c.doFinal(rawDek);
+			decryptedKey = RsaCipher.doFinal(rawDek);
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
 			System.out.println("Something went wrong during decryption of DEK");
 			e.printStackTrace();
@@ -235,7 +246,7 @@ public class GroupMember extends Thread {
 		System.out.println("Successfully memorized the DEK of the group");
 		
 		try {
-			decryptedKey = c.doFinal(scm.getKeK0());
+			decryptedKey = RsaCipher.doFinal(scm.getKeK0());
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
 			System.out.println("Something went wrong during decryption of KEK0");
 			e.printStackTrace();
@@ -245,7 +256,7 @@ public class GroupMember extends Thread {
 		System.out.println("Successfully memorized the KEK0 of the group");
 		
 		try {
-			decryptedKey = c.doFinal(scm.getKeK1());
+			decryptedKey = RsaCipher.doFinal(scm.getKeK1());
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
 			System.out.println("Something went wrong during decryption of KEK1");
 			e.printStackTrace();
@@ -256,7 +267,7 @@ public class GroupMember extends Thread {
 		
 		
 		try {
-			decryptedKey = c.doFinal(scm.getKeK2());
+			decryptedKey = RsaCipher.doFinal(scm.getKeK2());
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
 			System.out.println("Something went wrong during decryption of KEK2");
 			e.printStackTrace();
@@ -265,9 +276,9 @@ public class GroupMember extends Thread {
 		this.kek2 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
 		System.out.println("Successfully memorized the KEK2 of the group");
 		
-		/*
+		
 		try {
-			byte[] decryptedTest = c.doFinal(scm.getTest());
+			byte[] decryptedTest = RsaCipher.doFinal(scm.getTest());
 			String testtt = new String(decryptedTest);
 			System.out.println("test decrypted is:"+testtt);
 
@@ -275,7 +286,7 @@ public class GroupMember extends Thread {
 			System.out.println("Something went wrong during decryption of test");
 			e.printStackTrace();
 		}
-		*/
+		
 		
 	}
 	
@@ -288,22 +299,15 @@ public class GroupMember extends Thread {
 		
 		CommMessage msg = new CommMessage();
 		msg.setIdSender(this.nodeId);
-		
-		Cipher c=null;
+
 		try {
-			c = Cipher.getInstance("DES");
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			c.init(Cipher.ENCRYPT_MODE, this.dek);
+			DesCipher.init(Cipher.ENCRYPT_MODE, this.dek);
 		} catch (InvalidKeyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	    try {
-			byte[] encryptedText = c.doFinal(textToSend.getBytes());
+			byte[] encryptedText = DesCipher.doFinal(textToSend.getBytes());
 			msg.setText(encryptedText);
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
 			// TODO Auto-generated catch block

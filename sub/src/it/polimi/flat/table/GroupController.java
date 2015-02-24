@@ -39,11 +39,15 @@ public class GroupController extends Thread {
 	private Integer port=56520;
 	private ServerSocket mySocket;
 	
+	private Cipher RsaCipher; //the RsaCipher used to encrypt the DEK on Boot of new group members
+	private Cipher DesCipher; //the DES cipher used to encrypt all the message for the group member once they join
+	
 	private SecretKey dek; //the DEK of the group
 	private HashMap <String,SecretKey> table; //hashmap that store the flatTable 
 	private HashMap <String,NetInfoGroupMember> group; //table to keep track of the 'sockets' of the member in the group
-	private Integer lock; //this lock handle the concurrency on the group structure 
 	
+	private Integer DynLock; //this lock handle the concurrency on the group structure 
+	private Integer BroadcastLock;
 	/*
 	 * Constructor of the GroupController, it creates the first
 	 * GroupKey with DES and populate the table with the KEK of every bit.
@@ -68,7 +72,8 @@ public class GroupController extends Thread {
 				
 		group = new HashMap <String,NetInfoGroupMember>();
 		table = new HashMap<String,SecretKey>();
-		lock=0;
+		DynLock=0;
+		BroadcastLock=0;
 		
 		KeyGenerator keyGen=null;
 		
@@ -83,6 +88,26 @@ public class GroupController extends Thread {
 		String tableIndex="";
 		
 		dek = keyGen.generateKey(); //Generate the group key 
+		
+		try {
+			DesCipher = Cipher.getInstance("DES");
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
+			} catch (InvalidKeyException e) {
+				e.printStackTrace();
+			}
+		
+		try {
+			RsaCipher = Cipher.getInstance("RSA");
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		
 		//Initialize the centralized flat table with the keys
 		for(int i=0;i<2;i++)
@@ -109,6 +134,7 @@ public class GroupController extends Thread {
 			Socket clientSocket = null;
 			ObjectInputStream ois = null;
 			ObjectOutputStream oos = null;
+		    Message m=null;
 			
 			  try {
 				  clientSocket = mySocket.accept(); //wait untill a client connect 				  
@@ -129,7 +155,6 @@ public class GroupController extends Thread {
 				e.printStackTrace();
 			}
 		    
-		    Message m=null;
 		    
 			try {
 				m = (Message)ois.readObject();
@@ -138,37 +163,22 @@ public class GroupController extends Thread {
 			}
 		    
 		    if(m.getClass().isInstance(BootMessage.class)){
-		    	//TODO somebody is trying to enter the group 
+		    	//TODO HANDLE ADD OF A GROUP MEMBER 
 		    }
 		    
 		    else //is an ActionMessage ( leave, getGroup, common )
 		    	if(m.getClass().isInstance(ActionMessage.class)){
 		    		
 		    		ActionMessage am = (ActionMessage)m;
-		    		Cipher c=null;
-		    		
-		    		try {
-		    			c = Cipher.getInstance("DES");
-		    		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-		    			// TODO Auto-generated catch block
-		    			e.printStackTrace();
-		    		}
-		    		
-		    		try {
-		    			c.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
-		    			} catch (InvalidKeyException e) {
-		    				// TODO Auto-generated catch block
-		    				e.printStackTrace();
-		    			}
 		    		
 		    		String nodeId = "";
 		    		String action="";
 		    		
 		    		 try {
-		    				byte[] decryptedId = c.doFinal(am.getnodeId()); //decrypting the message  
+		    				byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
 		    				nodeId = new String(decryptedId);
 		    				
-		    				byte[] decryptedAction = c.doFinal(am.getAction()); //decrypting the message  
+		    				byte[] decryptedAction = DesCipher.doFinal(am.getAction()); //decrypting the message  
 		    				action = new String(decryptedAction);
 		    				
 		    			} catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -181,6 +191,7 @@ public class GroupController extends Thread {
 		    		 case "leave": //Handle leaving member
 		    		 case "getGroup": //handle get of the current view of the group
 		    		 case "common": //a common text message 
+		    		 case "broadcastdone": //signal a broadcastdone and decrement BroadcastLock
 		    		 
 		    		 }
 		    		
@@ -204,6 +215,8 @@ public class GroupController extends Thread {
 		
 		mySocket=null;
 		Socket clientSocket=null;
+		byte[] raw;
+		
 		try {
 			mySocket = new ServerSocket(port);
 		} catch (IOException e) {
@@ -237,21 +250,20 @@ public class GroupController extends Thread {
 		group.put(""+bootMessage.getId(),bootMessage.getNigm());
 
 				
-		Cipher c = Cipher.getInstance("RSA");
-		c.init(Cipher.ENCRYPT_MODE, bootMessage.getPublicKey());
+		RsaCipher.init(Cipher.ENCRYPT_MODE, bootMessage.getPublicKey());
 		
 		StartConfigMessage scm = new StartConfigMessage();
 		
 		 //TO TEST IF PUBLIC KEY WORKS
-		 //byte[] raw = c.doFinal("prova".getBytes());
-		 //scm.setTest(raw);
+		 raw = RsaCipher.doFinal(("prova"+bootMessage.getId()).getBytes());
+		 scm.setTest(raw);
 		
 		// ----------------------------------------
 		// send the encrypted KEY GROUP(DeK) to the node 
 		// ----------------------------------------
 		System.out.println("Sending the encrypted DEK to the node "+bootMessage.getId());
 	    
-	    byte [] raw = c.doFinal(dek.getEncoded());
+	    raw = RsaCipher.doFinal(dek.getEncoded());
 	    scm.setDeK(raw);
 		// ----------------------------------------
 	    
@@ -263,7 +275,7 @@ public class GroupController extends Thread {
 	    //System.out.println("binary id is " +binaryId);
 	    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
 	    
-	    raw = c.doFinal(table.get(mapKey).getEncoded()); 
+	    raw = RsaCipher.doFinal(table.get(mapKey).getEncoded()); 
 	    scm.setKeK0(raw);
 	    // ----------------------------------------
 	    
@@ -275,7 +287,7 @@ public class GroupController extends Thread {
 	    binaryId = bootMessage.getId();
 	    mapKey = ""+binaryId.charAt(1)+"1";
 	    
-	    raw = c.doFinal(table.get(mapKey).getEncoded()); 
+	    raw = RsaCipher.doFinal(table.get(mapKey).getEncoded()); 
 	    scm.setKeK1(raw);
 	    
 		// ----------------------------------------
@@ -288,7 +300,7 @@ public class GroupController extends Thread {
 	    binaryId = bootMessage.getId();
 	    mapKey = binaryId.charAt(0)+"2";
 	    
-	    raw = c.doFinal(table.get(mapKey).getEncoded()); 
+	    raw = RsaCipher.doFinal(table.get(mapKey).getEncoded()); 
 	    scm.setKeK2(raw);
 	    
 		// ----------------------------------------
@@ -307,12 +319,12 @@ public class GroupController extends Thread {
 	
 	
 	
-	public synchronized void HandleLeavingMember(){
+	public synchronized void HandleAddMember(){
 		
 		/*
-		 * If a lock is ON that means I must wait to leave. ( somebody is sending message and I am in the group view )
+		 * If a lock is ON that means I must wait to enter. ( somebody is sending message and I am not, or somebody is leaving in the group view )
 		 * */
-		while(lock==1){ 
+		while(BroadcastLock!=0 || DynLock==1){ //sono in corso dei broadcast nel gruppo o è in corso un leaving
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -320,30 +332,76 @@ public class GroupController extends Thread {
 			}
 		}
 		
-		lock=1;
+		DynLock=1;
+		
+		//TODO HANDLE HERE THE NEW MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
+		
+		
+		
+		
+		
+		
+		
+		//DynLock=0;REMEMBER!
+		
+		
+		
+	}
+	
+	
+	public synchronized void HandleLeavingMember(){
+		
+		/*
+		 * If a lock is ON that means I must wait to leave. ( somebody is sending message and I am in the group view )
+		 * */
+		while(BroadcastLock!=0 || DynLock==1){ 
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		DynLock=1;
 		
 		//TODO HANDLE HERE THE LEAVING MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
 		
+		
+		
+		
+		
+		
+		//DynLock=0;REMEMBER!
+
 		
 	}
 	
 	/*
 	 * This method returns the current viewGroup and lock all every possible modify
 	 * on it.
+	 * Thanks to the two different lock, two getGroup request don't block each other,
+	 * the lock are only for the functions that want modify the group structure.
 	 * */
 	public synchronized HashMap <String,NetInfoGroupMember> GetGroup(){
 		
-		while(lock==1){
+		while(DynLock==1){ // ci sono in corso operazioni che stanno modificando il gruppo
 			try {
 				wait();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		lock=1;
-		return group;
+		BroadcastLock++;
+		return group; //return the group view 
+		
+	}
+	
+	//Once a member send a broadcast to all the group, remember to call this
+	//method
+	public void SignalBroadcastDone(){
+		
+		BroadcastLock--;
 		
 	}
 }
