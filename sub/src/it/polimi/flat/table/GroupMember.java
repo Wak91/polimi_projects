@@ -53,6 +53,8 @@ public class GroupMember extends Thread {
 		
 		mySocket=null;
 		nodeId = Integer.toBinaryString(id);
+		
+		System.out.println("MY ID: " + nodeId+"\n");
 		if(nodeId.length()==1){
 			nodeId = "00"+nodeId;
 		}
@@ -61,7 +63,7 @@ public class GroupMember extends Thread {
 				nodeId="0"+nodeId;
 			}
 		
-		System.out.println("my id is " +nodeId);
+		//System.out.println("my id is " +nodeId);
 		myPort = ListenPort;
 		
 		//Initialize the public and private key of this node 
@@ -157,7 +159,7 @@ public class GroupMember extends Thread {
 			}
 		 
 		 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
-		 
+		 guestSocket.close();
 		 //TODO Continue from here!
 		
 			
@@ -188,7 +190,7 @@ public class GroupMember extends Thread {
 	private Socket connectToGroupController(){
 			
 		Socket socket = null;
-		System.out.println("Connecting to the GroupController: localhost:5620");
+		//sSystem.out.println("Connecting to the GroupController: localhost:5620");
 		try {
 			socket = new Socket("localhost",56520);			
 		} catch (IOException e) {
@@ -212,7 +214,7 @@ public class GroupMember extends Thread {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Sending id and my publicKey...");
+		//System.out.println("Sending id and my publicKey...");
 
 		
 		try {
@@ -252,7 +254,7 @@ public class GroupMember extends Thread {
 		}
 	    
 	    this.dek = new SecretKeySpec(decryptedKey, 0, decryptedKey.length, "DES");
-		System.out.println("Successfully memorized the DEK of the group");
+		//System.out.println("Successfully memorized the DEK of the group");
 		
 		try {
 			decryptedKey = RsaCipher.doFinal(scm.getKeK0());
@@ -262,7 +264,7 @@ public class GroupMember extends Thread {
 		}
 		
 		this.kek0 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
-		System.out.println("Successfully memorized the KEK0 of the group");
+		//System.out.println("Successfully memorized the KEK0 of the group");
 		
 		try {
 			decryptedKey = RsaCipher.doFinal(scm.getKeK1());
@@ -272,7 +274,7 @@ public class GroupMember extends Thread {
 		}
 		
 		this.kek1 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
-		System.out.println("Successfully memorized the KEK1 of the group");
+		//System.out.println("Successfully memorized the KEK1 of the group");
 		
 		
 		try {
@@ -283,9 +285,9 @@ public class GroupMember extends Thread {
 		}
 		
 		this.kek2 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
-		System.out.println("Successfully memorized the KEK2 of the group");
+		//System.out.println("Successfully memorized the KEK2 of the group");
 		
-		
+		/*
 		try {
 			byte[] decryptedTest = RsaCipher.doFinal(scm.getTest());
 			String testtt = new String(decryptedTest);
@@ -295,7 +297,7 @@ public class GroupMember extends Thread {
 			System.out.println("Something went wrong during decryption of test");
 			e.printStackTrace();
 		}
-		
+		*/
 		
 		//-------Let's wait for the OK LET'S START FROM SERVER---------------------------
 		System.out.println("Waiting for 'start' from GroupController");
@@ -372,13 +374,13 @@ public class GroupMember extends Thread {
 					
 					HashMap <String,NetInfoGroupMember> group = (HashMap <String,NetInfoGroupMember>)oiss2.readObject();
 					
-					System.out.println("Ricevuta view group attuale");
+					//System.out.println("Ricevuta view group attuale");
 					
 					if(this.nodeId.equals("001")){
 					for(NetInfoGroupMember nigm : group.values()){
 												
 						//broadcast test from node 001
-						System.out.println("received port " + nigm.getPort() + " my port " + this.myPort);
+						//System.out.println("received port " + nigm.getPort() + " my port " + this.myPort);
 						
 						if(nigm.getPort().intValue() != this.myPort.intValue()){
 

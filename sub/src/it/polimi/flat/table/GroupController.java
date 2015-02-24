@@ -265,8 +265,8 @@ public class GroupController extends Thread {
 		StartConfigMessage scm = new StartConfigMessage();
 		
 		 //TO TEST IF PUBLIC KEY WORKS
-		 raw = RsaCipher.doFinal(("prova"+bootMessage.getId()).getBytes());
-		 scm.setTest(raw);
+		 //raw = RsaCipher.doFinal(("prova"+bootMessage.getId()).getBytes());
+		 //scm.setTest(raw);
 		
 		// ----------------------------------------
 		// send the encrypted KEY GROUP(DeK) to the node 
