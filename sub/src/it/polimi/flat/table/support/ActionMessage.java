@@ -1,7 +1,13 @@
 package it.polimi.flat.table.support;
 
-public class ActionMessage implements Message {
+import java.io.Serializable;
+
+public class ActionMessage implements Serializable,Message {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7954886678926904742L;
 	private byte[] nodeId;
 	private byte[] action; //action that a member want to perform: "leave", "common", "getMember"
 	

@@ -1,5 +1,6 @@
 package it.polimi.flat.table;
 
+import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
 import it.polimi.flat.table.support.CommMessage;
 import it.polimi.flat.table.support.NetInfoGroupMember;
@@ -10,12 +11,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -23,8 +24,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
 
 public class GroupMember extends Thread {
 	
@@ -53,7 +52,16 @@ public class GroupMember extends Thread {
 	public GroupMember(Integer id,Integer ListenPort){
 		
 		mySocket=null;
-		nodeId = String.format("%03d", id);
+		nodeId = Integer.toBinaryString(id);
+		if(nodeId.length()==1){
+			nodeId = "00"+nodeId;
+		}
+		else
+			if(nodeId.length()==2){
+				nodeId="0"+nodeId;
+			}
+		
+		System.out.println("my id is " +nodeId);
 		myPort = ListenPort;
 		
 		//Initialize the public and private key of this node 
@@ -88,12 +96,7 @@ public class GroupMember extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    try {
-	    	RsaCipher.init(Cipher.DECRYPT_MODE, privateKey);
-		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 	    
 		//-------------------------------------------------------------
 
@@ -120,9 +123,10 @@ public class GroupMember extends Thread {
 	*/
 	while(true){ //listen forever
 	try {
-		Cipher c=null;
+
 		byte[] decryptedText=null;
 		String plainText="";
+		
 		
 		//---------------
 		//Waiting for an incoming connection for a message 
@@ -232,6 +236,11 @@ public class GroupMember extends Thread {
 			e.printStackTrace();
 		}
 		
+	    try {
+	    	RsaCipher.init(Cipher.DECRYPT_MODE, privateKey);
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		}
 		
 		byte[] rawDek = scm.getDeK();//extract the string of the dek (publicKey encrypted )
 	  
@@ -288,6 +297,126 @@ public class GroupMember extends Thread {
 		}
 		
 		
+		//-------Let's wait for the OK LET'S START FROM SERVER---------------------------
+		System.out.println("Waiting for 'start' from GroupController");
+		
+		Socket guestSocket;
+		ObjectInputStream oiss=null;
+		
+		try {
+			guestSocket = mySocket.accept();
+			oiss = new ObjectInputStream(guestSocket.getInputStream()); 
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
+		
+		ActionMessage am=null;
+		
+		try {
+			am = (ActionMessage)oiss.readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String nodeId = "";
+		String action="";
+		
+		 try {
+				DesCipher.init(Cipher.DECRYPT_MODE, this.dek);
+
+				byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
+				nodeId = new String(decryptedId);
+				
+				byte[] decryptedAction = DesCipher.doFinal(am.getAction()); //decrypting the message  
+				action = new String(decryptedAction);
+				
+			} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
+				System.out.println("Something went wrong during decryption of text");
+				e.printStackTrace();
+			}
+		 
+		 if(action.equals("start")){
+			
+			 try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			 
+				try {
+					DesCipher.init(Cipher.ENCRYPT_MODE,dek); //initialize the cipher with the dek 
+					} catch (InvalidKeyException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				am = new ActionMessage();
+				try {
+					am.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
+					am.setAction(DesCipher.doFinal("getGroup".getBytes()));
+				} catch (IllegalBlockSizeException | BadPaddingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				Socket sock = this.connectToGroupController();
+				ObjectOutputStream ooss;
+				try {
+					ooss = new ObjectOutputStream(sock.getOutputStream());
+					ObjectInputStream oiss2 = new ObjectInputStream(sock.getInputStream());
+					ooss.writeObject(am);
+					
+					HashMap <String,NetInfoGroupMember> group = (HashMap <String,NetInfoGroupMember>)oiss2.readObject();
+					
+					System.out.println("Ricevuta view group attuale");
+					
+					if(this.nodeId.equals("001")){
+					for(NetInfoGroupMember nigm : group.values()){
+												
+						//broadcast test from node 001
+						System.out.println("received port " + nigm.getPort() + " my port " + this.myPort);
+						
+						if(nigm.getPort().intValue() != this.myPort.intValue()){
+
+							Socket newsocket = new Socket(nigm.getIpAddress(),nigm.getPort());
+						ooss = new ObjectOutputStream(newsocket.getOutputStream());
+						CommMessage comm = new CommMessage();
+						comm.setIdSender(this.nodeId);
+						try {
+							comm.setText(DesCipher.doFinal("test broadcast".getBytes()));
+						} catch (IllegalBlockSizeException
+								| BadPaddingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						ooss.writeObject(comm);
+						newsocket.close();
+						
+						
+						}
+					}
+				 }	
+				 
+				} catch (IOException | ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			 	
+			 return; //return to run method and start the group and start the comunication
+			 
+		 }
+		 else
+		 {
+			 System.exit(-1);
+		 }
+
+				
 	}
 	
 	/*

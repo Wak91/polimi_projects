@@ -14,17 +14,13 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
-import org.apache.commons.codec.binary.Base64;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
@@ -44,10 +40,11 @@ public class GroupController extends Thread {
 	
 	private SecretKey dek; //the DEK of the group
 	private HashMap <String,SecretKey> table; //hashmap that store the flatTable 
-	private HashMap <String,NetInfoGroupMember> group; //table to keep track of the 'sockets' of the member in the group
 	
-	private Integer DynLock; //this lock handle the concurrency on the group structure 
-	private Integer BroadcastLock;
+	private HashMap <String,NetInfoGroupMember> group; //table to keep track of the 'sockets' of the member in the group, this will be passed in response to a GetGroup request from members
+	
+	private Integer DynLock; //this lock handle the concurrency AddMember and LeavingMember on the group structure 
+	private Integer BroadcastLock; 
 	/*
 	 * Constructor of the GroupController, it creates the first
 	 * GroupKey with DES and populate the table with the KEK of every bit.
@@ -95,16 +92,11 @@ public class GroupController extends Thread {
 			e.printStackTrace();
 		}
 		
-		try {
-			DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
-			} catch (InvalidKeyException e) {
-				e.printStackTrace();
-			}
+	
 		
 		try {
 			RsaCipher = Cipher.getInstance("RSA");
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -143,6 +135,7 @@ public class GroupController extends Thread {
 				e.printStackTrace();
 			}
 			  
+			//System.out.println("received a connection"); 
 			   
 			try {
 				ois = new ObjectInputStream(clientSocket.getInputStream());
@@ -154,25 +147,32 @@ public class GroupController extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		    
-		    
+		     
 			try {
 				m = (Message)ois.readObject();
 			} catch (ClassNotFoundException | IOException e) {	
 				e.printStackTrace();
 			}
+			
+			//System.out.println(m.getClass());
+
 		    
-		    if(m.getClass().isInstance(BootMessage.class)){
+		    if(m.getClass().getSimpleName().equals("BootMessage")){
 		    	//TODO HANDLE ADD OF A GROUP MEMBER 
 		    }
 		    
 		    else //is an ActionMessage ( leave, getGroup, common )
-		    	if(m.getClass().isInstance(ActionMessage.class)){
-		    		
+		    	if(m.getClass().getSimpleName().equals("ActionMessage")){
 		    		ActionMessage am = (ActionMessage)m;
 		    		
 		    		String nodeId = "";
 		    		String action="";
+		    		
+		    		try {
+		    			DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
+		    			} catch (InvalidKeyException e) {
+		    				e.printStackTrace();
+		    			}
 		    		
 		    		 try {
 		    				byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
@@ -180,6 +180,7 @@ public class GroupController extends Thread {
 		    				
 		    				byte[] decryptedAction = DesCipher.doFinal(am.getAction()); //decrypting the message  
 		    				action = new String(decryptedAction);
+		    				System.out.println("action is " + action);
 		    				
 		    			} catch (IllegalBlockSizeException | BadPaddingException e) {
 		    				System.out.println("Something went wrong during decryption of text");
@@ -189,7 +190,18 @@ public class GroupController extends Thread {
 		    		 switch(action){
 		    		 
 		    		 case "leave": //Handle leaving member
-		    		 case "getGroup": //handle get of the current view of the group
+		    		 case "getGroup": {
+		    			 
+		    			 HashMap <String,NetInfoGroupMember> group = this.GetGroup();
+		    			 try {
+							oos.writeObject(group); //send in plain the group structure 
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		    			 
+		    		 };break;
+		    		 
 		    		 case "common": //a common text message 
 		    		 case "broadcastdone": //signal a broadcastdone and decrement BroadcastLock
 		    		 
@@ -203,15 +215,13 @@ public class GroupController extends Thread {
 	}
 	
 	
-
-
 	/*
 	 * This method start the GroupController, it wait n° MemberGroup and perform the first
 	 * handshake with them
 	 * */
 	private void startServer() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
 		
-		int cont=2; //wait untill all 8 clients connect to server 
+		int cont=3; //wait untill all 8 clients connect to server 
 		
 		mySocket=null;
 		Socket clientSocket=null;
@@ -272,9 +282,9 @@ public class GroupController extends Thread {
 		// ----------------------------------------
 		System.out.println("Sending the encrypted KEK0 to the node "+bootMessage.getId());
 	    String binaryId = bootMessage.getId();
-	    //System.out.println("binary id is " +binaryId);
+	    System.out.println("binary id is " +binaryId);
 	    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
-	    
+	    System.out.println("map key is " + mapKey);
 	    raw = RsaCipher.doFinal(table.get(mapKey).getEncoded()); 
 	    scm.setKeK0(raw);
 	    // ----------------------------------------
@@ -307,6 +317,8 @@ public class GroupController extends Thread {
 	    
 	    oos.writeObject(scm);
 	    
+	    clientSocket.close();
+	    
    } //handle the handshake for all the pre-configured clients ( 8 times for this demo )
 		
 	System.out.println("[INFO] Correctly configured all the members of the group");
@@ -314,7 +326,23 @@ public class GroupController extends Thread {
 	for(NetInfoGroupMember nigm : group.values()){
 		System.out.println("member ip: "+nigm.getIpAddress()+" port: "+nigm.getPort());
 	}
-		  
+	
+	ActionMessage am = new ActionMessage();
+	
+	DesCipher.init(Cipher.ENCRYPT_MODE, dek);
+	
+	am.setnodeId(DesCipher.doFinal("-1".getBytes()));
+	am.setAction(DesCipher.doFinal("start".getBytes()));
+	
+	System.out.println("Sending 'start' message to members of the group");
+	
+	for(NetInfoGroupMember nigm : group.values()){
+		Socket s = new Socket(nigm.getIpAddress(),nigm.getPort());
+		ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+		oos.writeObject(am);
+		s.close();
+	}
+	
 	} // end StartServer
 	
 	
