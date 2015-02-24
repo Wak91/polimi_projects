@@ -13,6 +13,7 @@ public class StartConfigMessage implements Serializable {
 	private byte[] kek0;
 	private byte[] kek1;
 	private byte[] kek2;
+	//private byte[] test; [DEBUG] To test if pubic key work
 
 
 	public StartConfigMessage() {
@@ -55,9 +56,16 @@ public class StartConfigMessage implements Serializable {
 	public byte[] getKeK2() {
 		return kek2;
 	}
-	
-	
-	
-	
+
+	/*
+	public byte[] getTest() {
+		return test;
+	}
+
+
+	public void setTest(byte[] test) {
+		this.test = test;
+	}
+	*/
 
 }

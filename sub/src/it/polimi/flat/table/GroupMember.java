@@ -126,6 +126,8 @@ public class GroupMember extends Thread {
 			}
 		 
 		 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
+		 
+		 //TODO Continue from here!
 		
 			
 	} catch (IOException | ClassNotFoundException e) {
@@ -262,6 +264,19 @@ public class GroupMember extends Thread {
 		
 		this.kek2 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
 		System.out.println("Successfully memorized the KEK2 of the group");
+		
+		/*
+		try {
+			byte[] decryptedTest = c.doFinal(scm.getTest());
+			String testtt = new String(decryptedTest);
+			System.out.println("test decrypted is:"+testtt);
+
+		} catch (IllegalBlockSizeException | BadPaddingException e) {
+			System.out.println("Something went wrong during decryption of test");
+			e.printStackTrace();
+		}
+		*/
+		
 	}
 	
 	/*

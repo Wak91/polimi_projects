@@ -3,6 +3,11 @@ package it.polimi.flat.table.support;
 import java.io.Serializable;
 import java.net.InetAddress;
 
+/*
+ * This message is sent from the group member 
+ * to the group controller in order to inform it 
+ * of its own listening socket
+ * */
 public class NetInfoGroupMember implements Serializable {
 
 	/**

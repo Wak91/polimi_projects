@@ -2,7 +2,7 @@ package it.polimi.flat.table.support;
 
 import java.io.Serializable;
 
-public class CommMessage implements Serializable,Message{
+public class CommMessage implements Serializable{
 
 	private String idSender; //this will not be encrypted
 	private byte[] text; //this will be encrypted

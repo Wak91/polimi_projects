@@ -1,5 +1,6 @@
 package it.polimi.flat.table;
 
+import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
 import it.polimi.flat.table.support.CommMessage;
 import it.polimi.flat.table.support.Message;
@@ -120,13 +121,11 @@ public class GroupController extends Thread {
 			try {
 				ois = new ObjectInputStream(clientSocket.getInputStream());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 		    try {
 				oos = new ObjectOutputStream(clientSocket.getOutputStream());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		    
@@ -134,31 +133,71 @@ public class GroupController extends Thread {
 		    
 			try {
 				m = (Message)ois.readObject();
-			} catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
+			} catch (ClassNotFoundException | IOException e) {	
 				e.printStackTrace();
 			}
 		    
 		    if(m.getClass().isInstance(BootMessage.class)){
-		    	//somebody is trying to enter the group 
+		    	//TODO somebody is trying to enter the group 
 		    }
 		    
-		    else
-		    	if(m.getClass().isInstance(CommMessage.class)){
-		    		//request for an action ( decrypt the text and see what the group member want  ) 
+		    else //is an ActionMessage ( leave, getGroup, common )
+		    	if(m.getClass().isInstance(ActionMessage.class)){
+		    		
+		    		ActionMessage am = (ActionMessage)m;
+		    		Cipher c=null;
+		    		
+		    		try {
+		    			c = Cipher.getInstance("DES");
+		    		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+		    			// TODO Auto-generated catch block
+		    			e.printStackTrace();
+		    		}
+		    		
+		    		try {
+		    			c.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
+		    			} catch (InvalidKeyException e) {
+		    				// TODO Auto-generated catch block
+		    				e.printStackTrace();
+		    			}
+		    		
+		    		String nodeId = "";
+		    		String action="";
+		    		
+		    		 try {
+		    				byte[] decryptedId = c.doFinal(am.getnodeId()); //decrypting the message  
+		    				nodeId = new String(decryptedId);
+		    				
+		    				byte[] decryptedAction = c.doFinal(am.getAction()); //decrypting the message  
+		    				action = new String(decryptedAction);
+		    				
+		    			} catch (IllegalBlockSizeException | BadPaddingException e) {
+		    				System.out.println("Something went wrong during decryption of text");
+		    				e.printStackTrace();
+		    			}
+		    		 
+		    		 switch(action){
+		    		 
+		    		 case "leave": //Handle leaving member
+		    		 case "getGroup": //handle get of the current view of the group
+		    		 case "common": //a common text message 
+		    		 
+		    		 }
+		    		
 		    		
 		    	}
-			  
-			
-			
-			
-			
-			
+		    	
 		}
 			
 	}
 	
 	
+
+
+	/*
+	 * This method start the GroupController, it wait n° MemberGroup and perform the first
+	 * handshake with them
+	 * */
 	private void startServer() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
 		
 		int cont=2; //wait untill all 8 clients connect to server 
@@ -203,12 +242,16 @@ public class GroupController extends Thread {
 		
 		StartConfigMessage scm = new StartConfigMessage();
 		
+		 //TO TEST IF PUBLIC KEY WORKS
+		 //byte[] raw = c.doFinal("prova".getBytes());
+		 //scm.setTest(raw);
+		
 		// ----------------------------------------
 		// send the encrypted KEY GROUP(DeK) to the node 
 		// ----------------------------------------
 		System.out.println("Sending the encrypted DEK to the node "+bootMessage.getId());
 	    
-	    byte[] raw = c.doFinal(dek.getEncoded());
+	    byte [] raw = c.doFinal(dek.getEncoded());
 	    scm.setDeK(raw);
 		// ----------------------------------------
 	    
@@ -261,6 +304,28 @@ public class GroupController extends Thread {
 	}
 		  
 	} // end StartServer
+	
+	
+	
+	public synchronized void HandleLeavingMember(){
+		
+		/*
+		 * If a lock is ON that means I must wait to leave. ( somebody is sending message and I am in the group view )
+		 * */
+		while(lock==1){ 
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		lock=1;
+		
+		//TODO HANDLE HERE THE LEAVING MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
+		
+		
+	}
 	
 	/*
 	 * This method returns the current viewGroup and lock all every possible modify
