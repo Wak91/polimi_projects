@@ -14,8 +14,8 @@ public class SetupGroupMember {
 		//System.out.println("Creating the GroupMember");
 		GroupMember gm = new GroupMember(Integer.parseInt("2"),5556);
 		gm.run();
-		//GroupMember gm1 = new GroupMember(Integer.parseInt("1"),5556);
-		//gm1.start();
+
+		
 		/*
 	    Integer id = 4;
 	    String binaryId = id.toBinaryString(id);
