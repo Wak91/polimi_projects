@@ -92,7 +92,6 @@ public class GroupMember {
 		try {
 			this.DesCipher = Cipher.getInstance("DES");
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -100,7 +99,6 @@ public class GroupMember {
 		try {
 			RsaCipher = Cipher.getInstance("RSA");
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -145,7 +143,9 @@ public class GroupMember {
 		ObjectInputStream ois = new ObjectInputStream(guestSocket.getInputStream()); 
 
 		//---------------
-
+		//TODO for now it is only a commMessage, but if the server need to send us new dek,kek
+		//I have to check previously what kind of message is in order to understand what to do 
+		
 		CommMessage incoming = (CommMessage)ois.readObject();
 		
 		//now decrypt the incoming message with the group key 
@@ -154,7 +154,6 @@ public class GroupMember {
 		try {
 			DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
 			} catch (InvalidKeyException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		
@@ -168,11 +167,9 @@ public class GroupMember {
 		 
 		 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
 		 guestSocket.close();
-		 //TODO Continue from here!
 		
 			
 	} catch (IOException | ClassNotFoundException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	
@@ -317,7 +314,6 @@ public class GroupMember {
 			guestSocket = mySocket.accept();
 			oiss = new ObjectInputStream(guestSocket.getInputStream()); 
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		
@@ -327,7 +323,6 @@ public class GroupMember {
 		try {
 			am = (ActionMessage)oiss.readObject();
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -377,7 +372,6 @@ public class GroupMember {
 			am.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
 			am.setAction(DesCipher.doFinal("getGroup".getBytes()));
 		} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -386,14 +380,12 @@ public class GroupMember {
 		try {
 			DesCipher.init(Cipher.ENCRYPT_MODE, this.dek);
 		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	    try {
 			byte[] encryptedText = DesCipher.doFinal(textToSend.getBytes());
 			msg.setText(encryptedText);
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	   
@@ -423,9 +415,10 @@ public class GroupMember {
 				ooss.writeObject(msg);
 				newsocket.close();
 				}catch(ConnectException ce){	
+					//In case somebody crashes...
 					System.out.println("The group member with IP: " + nigm.getIpAddress() +"and PORT: " +nigm.getPort() +" seems crashed...");
 					System.out.println("Let's continue with the other members...");
-					//TODO the server has to handle this and change the view group
+					//TODO the server has to handle this and change the view group!
 				}
 				finally{
 					continue;
@@ -463,7 +456,6 @@ public class GroupMember {
 		try {
 			ooss = new ObjectOutputStream(sock.getOutputStream());
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		
@@ -474,14 +466,12 @@ public class GroupMember {
 			am.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
 			am.setAction(DesCipher.doFinal("broadcastdone".getBytes()));
 		} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		try {
 			ooss.writeObject(am); //Signal the groupController of a broadcastDone.
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -498,7 +488,7 @@ public class GroupMember {
 	}
 	
 	/*
-	 * This is used in order top provide an interface where you can 
+	 * This is used in order to provide an interface where you can 
 	 * write and see the broadcast communication between the 
 	 * groupmember
 	 * */
@@ -520,7 +510,6 @@ public class GroupMember {
 			try {
 				line = br.readLine();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			gm.BroadcastMessage(line);

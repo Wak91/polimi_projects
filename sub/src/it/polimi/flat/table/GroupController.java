@@ -196,7 +196,6 @@ public class GroupController {
 		    			 try {
 							oos.writeObject(group); //send in plain the group structure 
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 		    			 
