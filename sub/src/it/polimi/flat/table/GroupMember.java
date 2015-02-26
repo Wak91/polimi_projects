@@ -354,11 +354,7 @@ public class GroupMember {
 			} catch (InterruptedException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
-			}
-			 
-			if(this.nodeId.equals("000")){
-				this.BroadcastMessage("testMessageBroadcast");
-			} 
+			}		 
 		}	
 			 
 		 else
@@ -408,7 +404,8 @@ public class GroupMember {
 	   
 	    
 	    Socket sock = this.connectToGroupController();
-		ObjectOutputStream ooss;
+		ObjectOutputStream ooss=null;
+		
 		try {
 			ooss = new ObjectOutputStream(sock.getOutputStream());
 			ObjectInputStream oiss2 = new ObjectInputStream(sock.getInputStream());
@@ -420,7 +417,6 @@ public class GroupMember {
 	    
 			for(NetInfoGroupMember nigm : group.values()){
 				
-				//broadcast test from node 001
 				//System.out.println("received port " + nigm.getPort() + " my port " + this.myPort);
 				
 				if(nigm.getPort().intValue() != this.myPort.intValue()){
@@ -439,10 +435,44 @@ public class GroupMember {
 			e.printStackTrace();
 		}
 		
-		
-		//TODO REMEMBER TO ACK THE GROUPCONTROLLER ABOUT THE BROADCAST END! 
-
+		this.NotifyGroupController();
+	}
 	
+	/*
+	 * Notify the controller about the broadcast end 
+	 * in order to decrease the lock 
+	 * */
+	private void NotifyGroupController(){
+		
+		Socket sock = this.connectToGroupController();
+		ObjectOutputStream ooss=null;
+		try {
+			ooss = new ObjectOutputStream(sock.getOutputStream());
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
+		ActionMessage am = new ActionMessage();
+		
+		try {
+			DesCipher.init(Cipher.ENCRYPT_MODE,dek); //initialize the cipher with the dek 
+			am.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
+			am.setAction(DesCipher.doFinal("broadcastdone".getBytes()));
+		} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			ooss.writeObject(am); //Signal the groupController of a broadcastDone.
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return;
+		
 	}
 	
 	/*

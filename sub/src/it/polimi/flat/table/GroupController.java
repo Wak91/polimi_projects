@@ -203,16 +203,16 @@ public class GroupController {
 		    		 };break;
 		    		 
 		    		 case "common": //a common text message 
-		    		 case "broadcastdone": //signal a broadcastdone and decrement BroadcastLock
+		    		 case "broadcastdone":{ //signal a broadcastdone and decrement BroadcastLock
+		    			 
+		    			 this.BroadcastLock--; // remove a broadcastlock 
+		    			 System.out.println("BroadcastLock is " + BroadcastLock);
+		    		 } 
 		    		 
-		    		 }
-		    		
-		    		
-		    	}
-		    	
-		}
-			
-	}
+		    	 }//end switch   			
+		    	} //end ActionMessage if 	
+		       }//end while(true)		
+          	  }
 	
 	
 	/*
@@ -421,6 +421,7 @@ public class GroupController {
 		}
 		
 		BroadcastLock++;
+		System.out.println("BroadcastLock is " + BroadcastLock);
 		return group; //return the group view 
 		
 	}
