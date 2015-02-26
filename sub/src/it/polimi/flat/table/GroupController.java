@@ -29,7 +29,7 @@ import java.util.HashMap;
  * It handle all the join and leaving of 
  * the group member.
  * */
-public class GroupController extends Thread {
+public class GroupController {
 	
 	
 	private Integer port=56520;

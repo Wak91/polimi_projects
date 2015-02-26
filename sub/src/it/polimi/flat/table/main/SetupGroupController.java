@@ -9,7 +9,7 @@ public class SetupGroupController {
 		
 		System.out.println("Creating the GroupController");
 		GroupController gc = new GroupController();
-		gc.start();
+		gc.run();
 		
 		/*
 	    Integer id = 4;

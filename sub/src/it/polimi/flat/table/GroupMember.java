@@ -6,7 +6,9 @@ import it.polimi.flat.table.support.CommMessage;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.StartConfigMessage;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -25,7 +27,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-public class GroupMember extends Thread {
+public class GroupMember {
 	
 	private String nodeId; //Identifier of the node 
 	private Integer myPort;
@@ -55,6 +57,8 @@ public class GroupMember extends Thread {
 		nodeId = Integer.toBinaryString(id);
 		
 		System.out.println("MY ID: " + nodeId+"\n");
+		
+		//Patch the nodeID on 3 bits
 		if(nodeId.length()==1){
 			nodeId = "00"+nodeId;
 		}
@@ -102,27 +106,30 @@ public class GroupMember extends Thread {
 	    
 		//-------------------------------------------------------------
 
-		
-		
-		
-		
 	}
 	
 	
 	public void run(){
 	
 	Socket socket = this.connectToGroupController();
+	
 	this.spawnListener(); //spawn a listen socket in order to receive messages from others, the generated socket goes into mySocket attribute.
 	
 	System.out.println("[INFO]Started initial handshake with the group controller");
 	this.InitialHandshake(socket);
 	System.out.println("[INFO]Ended initial handshake with the group controller");
+
 	/*
 	System.out.println("["+this.nodeId+"] Hash of the dek is"+dek.hashCode());
 	System.out.println("["+this.nodeId+"] Hash of the kek0 is"+kek0.hashCode());
 	System.out.println("["+this.nodeId+"] Hash of the kek1 is"+kek1.hashCode());
 	System.out.println("["+this.nodeId+"] Hash of the kek2 is"+kek2.hashCode());
 	*/
+	
+	InputThread it = new InputThread(this);
+	Thread t = new Thread(it);
+	t.start();
+	
 	while(true){ //listen forever
 	try {
 
@@ -185,7 +192,7 @@ public class GroupMember extends Thread {
 			e.printStackTrace();
 		}
 	}
-
+	
 
 	private Socket connectToGroupController(){
 			
@@ -349,73 +356,14 @@ public class GroupMember extends Thread {
 				e2.printStackTrace();
 			}
 			 
-				try {
-					DesCipher.init(Cipher.ENCRYPT_MODE,dek); //initialize the cipher with the dek 
-					} catch (InvalidKeyException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
-				am = new ActionMessage();
-				try {
-					am.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
-					am.setAction(DesCipher.doFinal("getGroup".getBytes()));
-				} catch (IllegalBlockSizeException | BadPaddingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				Socket sock = this.connectToGroupController();
-				ObjectOutputStream ooss;
-				try {
-					ooss = new ObjectOutputStream(sock.getOutputStream());
-					ObjectInputStream oiss2 = new ObjectInputStream(sock.getInputStream());
-					ooss.writeObject(am);
-					
-					HashMap <String,NetInfoGroupMember> group = (HashMap <String,NetInfoGroupMember>)oiss2.readObject();
-					
-					//System.out.println("Ricevuta view group attuale");
-					
-					if(this.nodeId.equals("001")){
-					for(NetInfoGroupMember nigm : group.values()){
-												
-						//broadcast test from node 001
-						//System.out.println("received port " + nigm.getPort() + " my port " + this.myPort);
-						
-						if(nigm.getPort().intValue() != this.myPort.intValue()){
-
-							Socket newsocket = new Socket(nigm.getIpAddress(),nigm.getPort());
-						ooss = new ObjectOutputStream(newsocket.getOutputStream());
-						CommMessage comm = new CommMessage();
-						comm.setIdSender(this.nodeId);
-						try {
-							comm.setText(DesCipher.doFinal("test broadcast".getBytes()));
-						} catch (IllegalBlockSizeException
-								| BadPaddingException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-						ooss.writeObject(comm);
-						newsocket.close();
-						
-						
-						}
-					}
-				 }	
-				 
-				} catch (IOException | ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			 	
-			 return; //return to run method and start the group and start the comunication
+			if(this.nodeId.equals("000")){
+				this.BroadcastMessage("testMessageBroadcast");
+			} 
+		}	
 			 
-		 }
 		 else
 		 {
-			 System.exit(-1);
+			 System.exit(-1); //Something strange from server, go home we are drunk...
 		 }
 
 				
@@ -428,7 +376,20 @@ public class GroupMember extends Thread {
 	 * */
 	private void BroadcastMessage(String textToSend){
 		
+	
+		ActionMessage am = new ActionMessage(); //to request the viewgroup from groupcontroller
 		CommMessage msg = new CommMessage();
+	
+		try {
+			
+			DesCipher.init(Cipher.ENCRYPT_MODE,dek); //initialize the cipher with the dek 
+			am.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
+			am.setAction(DesCipher.doFinal("getGroup".getBytes()));
+		} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		msg.setIdSender(this.nodeId);
 
 		try {
@@ -444,10 +405,44 @@ public class GroupMember extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	   
 	    
+	    Socket sock = this.connectToGroupController();
+		ObjectOutputStream ooss;
+		try {
+			ooss = new ObjectOutputStream(sock.getOutputStream());
+			ObjectInputStream oiss2 = new ObjectInputStream(sock.getInputStream());
+			ooss.writeObject(am);
+			
+			HashMap <String,NetInfoGroupMember> group = (HashMap <String,NetInfoGroupMember>)oiss2.readObject();
+			
+			//System.out.println("Ricevuta view group attuale");
 	    
+			for(NetInfoGroupMember nigm : group.values()){
+				
+				//broadcast test from node 001
+				//System.out.println("received port " + nigm.getPort() + " my port " + this.myPort);
+				
+				if(nigm.getPort().intValue() != this.myPort.intValue()){
+
+				Socket newsocket = new Socket(nigm.getIpAddress(),nigm.getPort());
+				ooss = new ObjectOutputStream(newsocket.getOutputStream());
+				
+				ooss.writeObject(msg);
+				newsocket.close();
+				
+				}
+			} //end foreach
+		}
+		catch(Exception e){
+			System.out.println("Something went wrong during the broadcast of the message...");
+			e.printStackTrace();
+		}
 		
 		
+		//TODO REMEMBER TO ACK THE GROUPCONTROLLER ABOUT THE BROADCAST END! 
+
+	
 	}
 	
 	/*
@@ -458,5 +453,38 @@ public class GroupMember extends Thread {
 		
 	}
 	
+	/*
+	 * This is used in order top provide an interface where you can 
+	 * write and see the broadcast communication between the 
+	 * groupmember
+	 * */
+	private class InputThread implements Runnable{
+
+		private GroupMember gm;
+		
+		public InputThread(GroupMember gm){
+			this.gm = gm;
+		}
+		
+		@Override
+		public void run() {
+			
+			while(true){
+			String line="";
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println("Waiting for something to broadcast...");
+			try {
+				line = br.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			gm.BroadcastMessage(line);
+			}
+			
+		}
+		
+		
+	}
 	
 }
