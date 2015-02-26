@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.InvalidKeyException;
@@ -348,13 +349,7 @@ public class GroupMember {
 			}
 		 
 		 if(action.equals("start")){
-			
-			 try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}		 
+			 return;
 		}	
 			 
 		 else
@@ -421,14 +416,33 @@ public class GroupMember {
 				
 				if(nigm.getPort().intValue() != this.myPort.intValue()){
 
+				try{
 				Socket newsocket = new Socket(nigm.getIpAddress(),nigm.getPort());
 				ooss = new ObjectOutputStream(newsocket.getOutputStream());
 				
 				ooss.writeObject(msg);
 				newsocket.close();
+				}catch(ConnectException ce){	
+					System.out.println("The group member with IP: " + nigm.getIpAddress() +"and PORT: " +nigm.getPort() +" seems crashed...");
+					System.out.println("Let's continue with the other members...");
+					//TODO the server has to handle this and change the view group
+				}
+				finally{
+					continue;
+				}
 				
 				}
 			} //end foreach
+			
+			//POC OF THE SECRET OF THE CONVERSATION ( send the message also to a MITM )
+			//-----------------------------------------------------
+			Socket newsocket = new Socket("localhost",9000);
+			ooss = new ObjectOutputStream(newsocket.getOutputStream());
+			ooss.writeObject(msg);
+			newsocket.close();	
+			//-----------------------------------------------------
+
+			
 		}
 		catch(Exception e){
 			System.out.println("Something went wrong during the broadcast of the message...");
@@ -440,7 +454,7 @@ public class GroupMember {
 	
 	/*
 	 * Notify the controller about the broadcast end 
-	 * in order to decrease the lock 
+	 * in order to decrease the BroadcasLock 
 	 * */
 	private void NotifyGroupController(){
 		
