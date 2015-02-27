@@ -13,6 +13,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,6 +40,8 @@ public class GroupController {
 	private Cipher DesCipher; //the DES cipher used to encrypt all the message for the group member once they join
 	
 	private SecretKey dek; //the DEK of the group
+	private SecretKey oldDek; //the DEK of the group
+
 	private HashMap <String,SecretKey> table; //hashmap that store the flatTable 
 	
 	private HashMap <String,NetInfoGroupMember> group; //table to keep track of the 'sockets' of the member in the group, this will be passed in response to a GetGroup request from members
@@ -159,6 +162,9 @@ public class GroupController {
 		    
 		    if(m.getClass().getSimpleName().equals("BootMessage")){
 		    	//TODO HANDLE ADD OF A GROUP MEMBER 
+		    	System.out.println("BOOT FROM A MEMBER");
+		    	BootMessage bm = (BootMessage)m;
+		    	HandleAddMember(bm);
 		    }
 		    
 		    else //is an ActionMessage ( leave, getGroup, common )
@@ -346,12 +352,14 @@ public class GroupController {
 	
 	
 	
-	public synchronized void HandleAddMember(){
+	public synchronized void HandleAddMember(BootMessage msg){
 		
 		/*
 		 * If a lock is ON that means I must wait to enter. ( somebody is sending message and I am not, or somebody is leaving in the group view )
 		 * */
-		while(BroadcastLock!=0 || DynLock==1){ //sono in corso dei broadcast nel gruppo o è in corso un leaving
+		while(BroadcastLock!=0 || DynLock==1 || group.keySet().size() >= 4){ //sono in corso dei broadcast nel gruppo o è in corso un leaving
+			System.out.println("ASPETTO TROPPA GENTE");
+
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -362,17 +370,239 @@ public class GroupController {
 		DynLock=1;
 		
 		//TODO HANDLE HERE THE NEW MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
+		group.put(""+msg.getId(),msg.getNigm());
+		changeKeys(msg);
+		sendNewKeys(msg);
+		oldDek = null;
 		
 		
 		
 		
+		DynLock=0;//REMEMBER!
 		
 		
 		
-		//DynLock=0;REMEMBER!
+	}
+	
+	private void changeKeys(BootMessage msg){
+		try {
+			DesCipher.init(Cipher.ENCRYPT_MODE, dek);
+			oldDek = dek;
+			dek = new SecretKeySpec(DesCipher.doFinal(dek.getEncoded()), "DES");
+			
+			
+		    String binaryId = msg.getId();
+
+			
+			// ----------------------------------------
+			// change the encrypted KEK0 referenced byt the new participant
+			//	signing it with the previous value.
+			// ----------------------------------------
+
+			System.out.println("Change kek0 for new entry "+msg.getId());
+		    System.out.println("binary id is " +binaryId);
+		    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
+		    System.out.println("map key is " + mapKey);
+			RsaCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
+			table.put(mapKey, new SecretKeySpec(RsaCipher.doFinal(table.get(mapKey).getEncoded()), "DES"));
+			
+			// ----------------------------------------
+			// change the encrypted KEK1 referenced by the new participant
+			//	signing it with the previous value.
+			// ----------------------------------------
+
+			System.out.println("Change kek1 for new entry "+msg.getId());
+		    mapKey = ""+binaryId.charAt(1)+"1";
+		    System.out.println("map key is " + mapKey);
+			RsaCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
+			table.put(mapKey, new SecretKeySpec(RsaCipher.doFinal(table.get(mapKey).getEncoded()), "DES"));
+			
+			// ----------------------------------------
+			// change the encrypted KEK2 referenced by the new participant
+			//	signing it with the previous value.
+			// ----------------------------------------
+
+			System.out.println("Change kek2 for new entry "+msg.getId());
+		    mapKey = binaryId.charAt(0)+"2";
+		    System.out.println("map key is " + mapKey);
+			RsaCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
+			table.put(mapKey, new SecretKeySpec(RsaCipher.doFinal(table.get(mapKey).getEncoded()), "DES"));
+
+			
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void sendNewKeys(BootMessage msg){
+		//send in broadcast to old group
+		for(String idMember : group.keySet()){
+			if(!msg.getId().equals(idMember)){
+				sendConfiguration(idMember);
+			}
+		}
 		
+	    try {
+	    	//send to new group member with his public key
+			byte[] raw;
+			//------------------------------------------------------
+		    //HANDSHAKE WITH THE GROUP MEMBER:
+			//get its publicKey and send them the group key encrypted 
+			//------------------------------------------------------	
+			Socket clientSocket = new Socket(group.get(msg.getId()).getIpAddress(),group.get(msg.getId()).getPort());
+			System.out.println("ADRESS NEW MEMBER "+msg.getId() + " "+group.get(msg.getId()).getIpAddress()+" "+group.get(msg.getId()).getPort());
+			ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+
+							
+			RsaCipher.init(Cipher.ENCRYPT_MODE, msg.getPublicKey());
+			
+			StartConfigMessage scm = new StartConfigMessage();
 		
+			// ----------------------------------------
+			// send the encrypted KEY GROUP(DeK) to the node 
+			// ----------------------------------------
+			System.out.println("Sending the encrypted DEK to the node "+msg.getId());
+		    
+		    raw = RsaCipher.doFinal(dek.getEncoded());
+		    scm.setDeK(raw);
+			// ----------------------------------------
+		    
+			// ----------------------------------------
+			// send the encrypted KEK0 to the node 
+			// ----------------------------------------
+			System.out.println("Sending the encrypted KEK0 to the node "+msg.getId());
+		    String binaryId = msg.getId();
+		    System.out.println("binary id is " +binaryId);
+		    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
+		    System.out.println("map key is " + mapKey);
+		    raw = RsaCipher.doFinal(table.get(mapKey).getEncoded()); 
+		    scm.setKeK0(raw);
+		    // ----------------------------------------
+		    
+			// ----------------------------------------
+			// send the encrypted KEK1 to the node 
+			// ----------------------------------------
+
+			System.out.println("Sending the encrypted KEK1 to the node "+msg.getId());
+		    binaryId = msg.getId();
+		    mapKey = ""+binaryId.charAt(1)+"1";
+		    
+		    raw = RsaCipher.doFinal(table.get(mapKey).getEncoded()); 
+		    scm.setKeK1(raw);
+		    
+			// ----------------------------------------
+		    
+			// ----------------------------------------
+			// send the encrypted KEK2 to the node 
+			// ----------------------------------------
+		    
+			System.out.println("Sending the encrypted KEK2 to the node "+msg.getId());
+		    binaryId = msg.getId();
+		    mapKey = binaryId.charAt(0)+"2";
+		    
+			raw = RsaCipher.doFinal(table.get(mapKey).getEncoded());
+			scm.setKeK2(raw);
+			    
+			// ----------------------------------------
+		    
+		    oos.writeObject(scm);
+		    
+		    clientSocket.close();
+		} catch (IllegalBlockSizeException | BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	   
 		
+	}
+	
+	private void sendConfiguration(String id){
+		StartConfigMessage scm = new StartConfigMessage();
+		byte[] raw;
+		
+	    try {
+	    
+			DesCipher.init(Cipher.ENCRYPT_MODE, oldDek);
+
+			// ----------------------------------------
+			// send the encrypted KEY GROUP(DeK) to the node 
+			// ----------------------------------------
+			System.out.println("Sending the encrypted DEK to the node "+id);
+			raw = DesCipher.doFinal(dek.getEncoded());
+			
+			scm.setDeK(raw);
+			// ----------------------------------------
+		    
+			// ----------------------------------------
+			// send the encrypted KEK0 to the node 
+			// ----------------------------------------
+			System.out.println("Sending the encrypted KEK0 to the node "+id);
+		    String binaryId = id;
+		    System.out.println("binary id is " +binaryId);
+		    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
+		    System.out.println("map key is " + mapKey);
+		    raw = DesCipher.doFinal(table.get(mapKey).getEncoded()); 
+		    scm.setKeK0(raw);
+		    // ----------------------------------------
+		    
+			// ----------------------------------------
+			// send the encrypted KEK1 to the node 
+			// ----------------------------------------
+
+			System.out.println("Sending the encrypted KEK1 to the node "+id);
+		    binaryId = id;
+		    mapKey = ""+binaryId.charAt(1)+"1";
+		    
+		    raw = DesCipher.doFinal(table.get(mapKey).getEncoded()); 
+		    scm.setKeK1(raw);
+		    
+			// ----------------------------------------
+		    
+			// ----------------------------------------
+			// send the encrypted KEK2 to the node 
+			// ----------------------------------------
+		    
+			System.out.println("Sending the encrypted KEK2 to the node "+id);
+		    binaryId = id;
+		    mapKey = binaryId.charAt(0)+"2";
+		    raw = DesCipher.doFinal(table.get(mapKey).getEncoded());
+		    
+		    scm.setKeK2(raw);
+		    
+			// ----------------------------------------
+		    Socket s = new Socket(group.get(id).getIpAddress(),group.get(id).getPort());
+			ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+
+		    oos.writeObject(scm);
+		    
+		    s.close();
+		} catch (IllegalBlockSizeException | BadPaddingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	 
+	    
 	}
 	
 	
