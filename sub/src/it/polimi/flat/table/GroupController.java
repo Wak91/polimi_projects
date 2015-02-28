@@ -3,6 +3,7 @@ package it.polimi.flat.table;
 import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
 import it.polimi.flat.table.support.CommMessage;
+import it.polimi.flat.table.support.CrashReportMessage;
 import it.polimi.flat.table.support.Message;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.StartConfigMessage;
@@ -21,6 +22,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
@@ -162,7 +164,7 @@ public class GroupController {
 		    }
 		    
 		    else //is an ActionMessage ( leave, getGroup, common )
-		    	if(m.getClass().getSimpleName().equals("ActionMessage")){
+		    	if(m.getClass().getSimpleName().equals("ActionMessage") || m.getClass().getSimpleName().equals("CrashReportMessage")){
 		    		ActionMessage am = (ActionMessage)m;
 		    		
 		    		String nodeId = "";
@@ -201,12 +203,18 @@ public class GroupController {
 		    			 
 		    		 };break;
 		    		 
-		    		 case "common": //a common text message 
 		    		 case "broadcastdone":{ //signal a broadcastdone and decrement BroadcastLock
 		    			 
 		    			 this.BroadcastLock--; // remove a broadcastlock 
 		    			 System.out.println("BroadcastLock is " + BroadcastLock);
-		    		 } 
+		    		 };break;
+		    		 
+		    		 case "crashreport":{    			 
+		    			 CrashReportMessage crm = (CrashReportMessage)am;
+		    			 ArrayList <NetInfoGroupMember> crashedMember = crm.getCrashedMembers();
+		    			 System.out.println("Received a report");
+		    			 this.HandleCrashedMembers(crashedMember);			 
+		    		 };break;
 		    		 
 		    	 }//end switch   			
 		    	} //end ActionMessage if 	
@@ -214,6 +222,44 @@ public class GroupController {
           	  }
 	
 	
+	/*
+	 * This method is exploited in order to remove
+	 * the member from the view group that are reported 
+	 * crashed after a broadcast from another member.
+	 * If two members report the crash of the same member this
+	 * method is called two times, but the second times this for will
+	 * not do anything.
+	 * */
+	private void HandleCrashedMembers(ArrayList<NetInfoGroupMember> crashedMember) {
+		
+		System.out.println("In handle crash, the size of crashed member is " + crashedMember.size());
+		ArrayList <NetInfoGroupMember> toDelete = new ArrayList <NetInfoGroupMember>();
+		
+		DynLock=1; //block potentially other GetGroup for a moment! 
+		for(NetInfoGroupMember nigm : crashedMember){
+			System.out.println("the info of the crash" + nigm.getIpAddress() + "  "  +nigm.getPort());
+			
+			for(NetInfoGroupMember nigm2 : this.group.values()){
+				if(nigm2.getPort().equals(nigm.getPort()) && nigm2.getIpAddress().equals(nigm.getIpAddress())){
+					toDelete.add(nigm2);
+				}
+			}						
+		}
+		
+		for(NetInfoGroupMember nigm3 : toDelete){
+			this.group.values().remove(nigm3);
+		}
+		
+		for(NetInfoGroupMember nigm2 : this.group.values()){
+			System.out.println(" member " +nigm2.getIpAddress() + " " + nigm2.getPort());
+			
+		}
+		
+		DynLock=0;
+		
+	}
+
+
 	/*
 	 * This method start the GroupController, it wait n° MemberGroup and perform the first
 	 * handshake with them

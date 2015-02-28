@@ -3,6 +3,7 @@ package it.polimi.flat.table;
 import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
 import it.polimi.flat.table.support.CommMessage;
+import it.polimi.flat.table.support.CrashReportMessage;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.StartConfigMessage;
 
@@ -19,6 +20,7 @@ import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.crypto.BadPaddingException;
@@ -392,6 +394,7 @@ public class GroupMember {
 	    
 	    Socket sock = this.connectToGroupController();
 		ObjectOutputStream ooss=null;
+		ArrayList <NetInfoGroupMember> crashedMembers = new ArrayList<NetInfoGroupMember>();
 		
 		try {
 			ooss = new ObjectOutputStream(sock.getOutputStream());
@@ -418,7 +421,7 @@ public class GroupMember {
 					//In case somebody crashes...
 					System.out.println("The group member with IP: " + nigm.getIpAddress() +"and PORT: " +nigm.getPort() +" seems crashed...");
 					System.out.println("Let's continue with the other members...");
-					//TODO the server has to handle this and change the view group!
+					crashedMembers.add(nigm); //keep track of the crashed member in order to inform the group controller 
 				}
 				finally{
 					continue;
@@ -426,7 +429,7 @@ public class GroupMember {
 				
 				}
 			} //end foreach
-			
+						
 			//POC OF THE SECRET OF THE CONVERSATION ( send the message also to a MITM )
 			//-----------------------------------------------------
 			Socket newsocket = new Socket("localhost",9000);
@@ -442,14 +445,66 @@ public class GroupMember {
 			e.printStackTrace();
 		}
 		
-		this.NotifyGroupController();
+		this.NotifyGroupController(crashedMembers);
+		
 	}
 	
+	
+	
+	/*
+	 * This method is exploited in order to
+	 * signal to the group controller the crashed members, so it can
+	 * delete them from the group view 
+	 * */
+	private void notifyCrashedMembers(ArrayList <NetInfoGroupMember> crashed) {
+		
+		Socket sock = this.connectToGroupController();
+		ObjectOutputStream ooss=null;
+		try {
+			ooss = new ObjectOutputStream(sock.getOutputStream());
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
+		
+		CrashReportMessage crm = new CrashReportMessage();
+		
+		try {
+			DesCipher.init(Cipher.ENCRYPT_MODE,dek); //initialize the cipher with the dek 
+			crm.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
+			crm.setAction(DesCipher.doFinal("crashreport".getBytes()));
+		} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e1) {
+			e1.printStackTrace();
+		}
+		
+		//System.out.println("The crashed members are"+crashed.size());
+		crm.setCrashedMembers(crashed);
+		
+		try {
+			ooss.writeObject(crm); //Signal the groupController of a broadcastDone.
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+				
+		return;
+		
+	}
+
+
 	/*
 	 * Notify the controller about the broadcast end 
 	 * in order to decrease the BroadcasLock 
 	 * */
-	private void NotifyGroupController(){
+	private void NotifyGroupController(ArrayList <NetInfoGroupMember> crashedMembers){
+		
+		/*
+		 * If i discover that somebody is crashed, let's notify the controller about this, without remove
+		 * our broadcast lock!
+		 * */
+		if(crashedMembers.size()!=0){
+			//System.out.println("Hey now I'm calling notify crashed");
+			this.notifyCrashedMembers(crashedMembers);
+		}
+		
 		
 		Socket sock = this.connectToGroupController();
 		ObjectOutputStream ooss=null;

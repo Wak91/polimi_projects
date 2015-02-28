@@ -7,9 +7,9 @@ public class ActionMessage implements Serializable,Message {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7954886678926904742L;
-	private byte[] nodeId;
-	private byte[] action; //action that a member want to perform: "leave", "common", "getMember"
+	protected static final long serialVersionUID = 7954886678926904742L;
+	protected byte[] nodeId;
+	protected byte[] action; //action that a member want to perform: "leave", "common", "getMember"
 	
 	public ActionMessage(){
 		

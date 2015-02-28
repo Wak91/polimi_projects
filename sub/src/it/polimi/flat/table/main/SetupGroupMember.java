@@ -8,11 +8,11 @@ import it.polimi.flat.table.GroupMember;
  * (MAX 8)
  * */
 public class SetupGroupMember {
-	
+
 	public static void main (String args[]){
 		
 		//System.out.println("Creating the GroupMember");
-		GroupMember gm = new GroupMember(Integer.parseInt("2"),5556);
+		GroupMember gm = new GroupMember(Integer.parseInt("2"),5558);
 		gm.run();
 
 		
