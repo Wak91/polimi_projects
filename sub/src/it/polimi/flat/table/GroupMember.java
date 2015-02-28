@@ -141,35 +141,89 @@ public class GroupMember {
 		
 		Socket guestSocket = mySocket.accept();
 		ObjectInputStream ois = new ObjectInputStream(guestSocket.getInputStream()); 
-
+		Object message = ois.readObject();
+		
+		 if(message.getClass().getSimpleName().equals("CommMessage")){
+			 CommMessage incoming = (CommMessage)ois.readObject();
+				
+			//now decrypt the incoming message with the group key 
+			byte[] chiperText = incoming.getText();
+			
+			try {
+				DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
+				} catch (InvalidKeyException e) {
+					e.printStackTrace();
+				}
+			
+			 try {
+					decryptedText = DesCipher.doFinal(chiperText); //decrypting the message  
+					plainText = new String(decryptedText);
+				} catch (IllegalBlockSizeException | BadPaddingException e) {
+					System.out.println("Something went wrong during decryption of text");
+					e.printStackTrace();
+				}
+			 
+			 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
+			 
+		    }
 		//---------------
 		//TODO for now it is only a commMessage, but if the server need to send us new dek,kek
 		//I have to check previously what kind of message is in order to understand what to do 
-		
-		CommMessage incoming = (CommMessage)ois.readObject();
-		
-		//now decrypt the incoming message with the group key 
-		byte[] chiperText = incoming.getText();
-		
-		try {
+		 else if(message.getClass().getSimpleName().equals("StartConfigMessage")){
+			 System.out.println("NODEID => "+nodeId + " RECEIVE STARTCONFIGMESSAGE");
+			 //aggiornare le chiavi
+			StartConfigMessage scm = (StartConfigMessage)message;
 			DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
-			} catch (InvalidKeyException e) {
-				e.printStackTrace();
-			}
-		
-		 try {
-				decryptedText = DesCipher.doFinal(chiperText); //decrypting the message  
-				plainText = new String(decryptedText);
+			byte[] rawDek = scm.getDeK();//extract the string of the dek (publicKey encrypted )
+			byte[] decryptedKey = null;
+		    try {
+				decryptedKey = DesCipher.doFinal(rawDek);
 			} catch (IllegalBlockSizeException | BadPaddingException e) {
-				System.out.println("Something went wrong during decryption of text");
+				System.out.println("Something went wrong during decryption of DEK");
 				e.printStackTrace();
 			}
-		 
-		 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
+		    
+		    this.dek = new SecretKeySpec(decryptedKey, 0, decryptedKey.length, "DES");
+		    try {
+				decryptedKey = DesCipher.doFinal(scm.getKeK0());
+			} catch (IllegalBlockSizeException | BadPaddingException e) {
+				System.out.println("Something went wrong during decryption of KEK0");
+				e.printStackTrace();
+			}
+			
+			this.kek0 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
+			
+			try {
+				decryptedKey = DesCipher.doFinal(scm.getKeK1());
+			} catch (IllegalBlockSizeException | BadPaddingException e) {
+				System.out.println("Something went wrong during decryption of KEK1");
+				e.printStackTrace();
+			}
+			
+			this.kek1 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
+			//System.out.println("Successfully memorized the KEK1 of the group");
+			
+			
+			try {
+				decryptedKey = DesCipher.doFinal(scm.getKeK2());
+			} catch (IllegalBlockSizeException | BadPaddingException e) {
+				System.out.println("Something went wrong during decryption of KEK2");
+				e.printStackTrace();
+			}
+			
+			this.kek2 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
+			
+		 }
 		 guestSocket.close();
+		
+		
+		
 		
 			
 	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	} catch (InvalidKeyException e) {
+		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	
@@ -234,7 +288,7 @@ public class GroupMember {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		System.out.println("WAITING FOR STARTCONFIGMESSAGE");
 		
 		try {
 			scm = (StartConfigMessage)ois.readObject();
@@ -242,6 +296,8 @@ public class GroupMember {
 			System.out.println("Something went wrong while reading the startConfigMessage from GroupController");
 			e.printStackTrace();
 		}
+		System.out.println("RECEIVE  STARTCONFIGMESSAGE");
+
 		
 	    try {
 	    	RsaCipher.init(Cipher.DECRYPT_MODE, privateKey);

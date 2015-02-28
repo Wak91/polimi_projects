@@ -370,7 +370,7 @@ public class GroupController {
 		DynLock=1;
 		
 		//TODO HANDLE HERE THE NEW MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
-		group.put(""+msg.getId(),msg.getNigm());
+		//group.put(""+msg.getId(),msg.getNigm());
 		changeKeys(msg);
 		sendNewKeys(msg);
 		oldDek = null;
@@ -388,7 +388,7 @@ public class GroupController {
 		try {
 			DesCipher.init(Cipher.ENCRYPT_MODE, dek);
 			oldDek = dek;
-			dek = new SecretKeySpec(DesCipher.doFinal(dek.getEncoded()), "DES");
+			dek = new SecretKeySpec(DesCipher.doFinal(dek.getEncoded()),0,dek.getEncoded().length, "DES");
 			
 			
 		    String binaryId = msg.getId();
@@ -403,8 +403,8 @@ public class GroupController {
 		    System.out.println("binary id is " +binaryId);
 		    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
 		    System.out.println("map key is " + mapKey);
-			RsaCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
-			table.put(mapKey, new SecretKeySpec(RsaCipher.doFinal(table.get(mapKey).getEncoded()), "DES"));
+		    DesCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
+			table.put(mapKey, new SecretKeySpec(DesCipher.doFinal(table.get(mapKey).getEncoded()),0,table.get(mapKey).getEncoded().length, "DES"));
 			
 			// ----------------------------------------
 			// change the encrypted KEK1 referenced by the new participant
@@ -414,8 +414,8 @@ public class GroupController {
 			System.out.println("Change kek1 for new entry "+msg.getId());
 		    mapKey = ""+binaryId.charAt(1)+"1";
 		    System.out.println("map key is " + mapKey);
-			RsaCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
-			table.put(mapKey, new SecretKeySpec(RsaCipher.doFinal(table.get(mapKey).getEncoded()), "DES"));
+		    DesCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
+			table.put(mapKey, new SecretKeySpec(DesCipher.doFinal(table.get(mapKey).getEncoded()),0,table.get(mapKey).getEncoded().length, "DES"));
 			
 			// ----------------------------------------
 			// change the encrypted KEK2 referenced by the new participant
@@ -425,8 +425,8 @@ public class GroupController {
 			System.out.println("Change kek2 for new entry "+msg.getId());
 		    mapKey = binaryId.charAt(0)+"2";
 		    System.out.println("map key is " + mapKey);
-			RsaCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
-			table.put(mapKey, new SecretKeySpec(RsaCipher.doFinal(table.get(mapKey).getEncoded()), "DES"));
+		    DesCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
+			table.put(mapKey, new SecretKeySpec(DesCipher.doFinal(table.get(mapKey).getEncoded()),0,table.get(mapKey).getEncoded().length, "DES"));
 
 			
 		} catch (InvalidKeyException e) {
@@ -443,23 +443,17 @@ public class GroupController {
 	}
 	
 	private void sendNewKeys(BootMessage msg){
-		//send in broadcast to old group
-		for(String idMember : group.keySet()){
-			if(!msg.getId().equals(idMember)){
-				sendConfiguration(idMember);
-			}
-		}
 		
-	    try {
+		try {
 	    	//send to new group member with his public key
 			byte[] raw;
 			//------------------------------------------------------
 		    //HANDSHAKE WITH THE GROUP MEMBER:
 			//get its publicKey and send them the group key encrypted 
 			//------------------------------------------------------	
-			Socket clientSocket = new Socket(group.get(msg.getId()).getIpAddress(),group.get(msg.getId()).getPort());
-			System.out.println("ADRESS NEW MEMBER "+msg.getId() + " "+group.get(msg.getId()).getIpAddress()+" "+group.get(msg.getId()).getPort());
-			ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+			//Socket clientSocket = new Socket(group.get(msg.getId()).getIpAddress(),group.get(msg.getId()).getPort());
+			//System.out.println("ADRESS NEW MEMBER "+msg.getId() + " "+group.get(msg.getId()).getIpAddress()+" "+group.get(msg.getId()).getPort());
+			//ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
 
 							
 			RsaCipher.init(Cipher.ENCRYPT_MODE, msg.getPublicKey());
@@ -512,24 +506,32 @@ public class GroupController {
 			scm.setKeK2(raw);
 			    
 			// ----------------------------------------
+		    System.out.println("SEND MESSAGE");
+		    //oos.writeObject(scm);
 		    
-		    oos.writeObject(scm);
-		    
-		    clientSocket.close();
+		   // clientSocket.close();
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
+		}catch (InvalidKeyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+		//send in broadcast to old group
+		for(String idMember : group.keySet()){
+			if(!idMember.equals(""+msg.getId())){
+				sendConfiguration(idMember);
+			}
+		}
+		
+	    
 	   
 		
 	}
-	
+	/**
+	 * Send new configuration after view change to older member group
+	 * @param id
+	 */
 	private void sendConfiguration(String id){
 		StartConfigMessage scm = new StartConfigMessage();
 		byte[] raw;
