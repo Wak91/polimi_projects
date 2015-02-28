@@ -215,7 +215,7 @@ public class GroupController {
 		    		 } 
 		    		 
 		    	 }//end switch   			
-		    	} //end ActionMessage if
+		    } //end ActionMessage if
 		    try {
 				clientSocket.close();
 			} catch (IOException e) {
@@ -374,26 +374,21 @@ public class GroupController {
 		}
 		
 		DynLock=1;
-		
-		//TODO HANDLE HERE THE NEW MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
+		//Add new member to the group 
 		group.put(""+msg.getId(),msg.getNigm());
 		changeKeys(msg);
 		sendNewKeys(msg,oos);
 		sendStartMessage();
+		//reset old dek used to communicate new keys
 		oldDek = null;
 		
-		
-		
-		
 		DynLock=0;//REMEMBER!
-		
-		
-		
+			
 	}
 	
 	/**
 	 * change keys after join of a new user
-	 * @param msg
+	 * @param msg - bootmessage that contains information to use to encrypt new keys
 	 */
 	private void changeKeys(BootMessage msg){
 		try {
@@ -453,6 +448,12 @@ public class GroupController {
 
 	}
 	
+	/**
+	 * Send dek and keys to new member(encrypted with his publickey)
+	 * and to old member(encrypted with old dek)
+	 * @param msg - bootmessage with information of new member
+	 * @param oos - ObjectOutputStream where write startconfigurationMessage for new entry
+	 */
 	private void sendNewKeys(BootMessage msg,ObjectOutputStream oos){
 		
 		try {
@@ -519,16 +520,13 @@ public class GroupController {
 		    oos.writeObject(scm);
 		    
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		//send in broadcast to old group
+		//send keks and dek in broadcast to old group
 		for(String idMember : group.keySet()){
 			if(!idMember.equals(""+msg.getId())){
 				System.out.println("UPDATE KEYS "+idMember);
@@ -557,16 +555,12 @@ public class GroupController {
 				s.close();
 			}
 		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalBlockSizeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (BadPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -637,13 +631,10 @@ public class GroupController {
 		    
 		    s.close();
 		} catch (IllegalBlockSizeException | BadPaddingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    

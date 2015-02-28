@@ -167,24 +167,24 @@ public class GroupMember {
 			 
 		    }
 		//---------------
-		//TODO for now it is only a commMessage, but if the server need to send us new dek,kek
 		//I have to check previously what kind of message is in order to understand what to do 
 		 else if(message.getClass().getSimpleName().equals("StartConfigMessage")){
 			 System.out.println("NODEID => "+nodeId + " RECEIVE STARTCONFIGMESSAGE");
-			 //aggiornare le chiavi
+			
+			 //update keys and dek
 			StartConfigMessage scm = (StartConfigMessage)message;
 			DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
-			byte[] rawDek = scm.getDeK();//extract the string of the dek (publicKey encrypted )
+			byte[] rawDek = scm.getDeK();//extract the string of the dek (old dek encrypted )
 			byte[] decryptedKey = null;
-		    try {
+			try {
 				decryptedKey = DesCipher.doFinal(rawDek);
 			} catch (IllegalBlockSizeException | BadPaddingException e) {
 				System.out.println("Something went wrong during decryption of DEK");
 				e.printStackTrace();
 			}
-		    
-		    this.dek = new SecretKeySpec(decryptedKey, 0, decryptedKey.length, "DES");
-		    try {
+			
+			this.dek = new SecretKeySpec(decryptedKey, 0, decryptedKey.length, "DES");
+			try {
 				decryptedKey = DesCipher.doFinal(scm.getKeK0());
 			} catch (IllegalBlockSizeException | BadPaddingException e) {
 				System.out.println("Something went wrong during decryption of KEK0");
@@ -212,13 +212,10 @@ public class GroupMember {
 			}
 			
 			this.kek2 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
+				
+		}
+		guestSocket.close();
 			
-		 }
-		 guestSocket.close();
-		
-		
-		
-		
 			
 	} catch (IOException | ClassNotFoundException e) {
 		e.printStackTrace();
