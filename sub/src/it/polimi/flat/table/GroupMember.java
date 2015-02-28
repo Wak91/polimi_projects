@@ -144,7 +144,7 @@ public class GroupMember {
 		Object message = ois.readObject();
 		
 		 if(message.getClass().getSimpleName().equals("CommMessage")){
-			 CommMessage incoming = (CommMessage)ois.readObject();
+			 CommMessage incoming = (CommMessage)message;
 				
 			//now decrypt the incoming message with the group key 
 			byte[] chiperText = incoming.getText();

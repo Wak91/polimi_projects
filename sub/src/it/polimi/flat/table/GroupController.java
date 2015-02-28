@@ -40,7 +40,7 @@ public class GroupController {
 	private Cipher DesCipher; //the DES cipher used to encrypt all the message for the group member once they join
 	
 	private SecretKey dek; //the DEK of the group
-	private SecretKey oldDek; //the DEK of the group
+	private SecretKey oldDek; //oldDek 
 
 	private HashMap <String,SecretKey> table; //hashmap that store the flatTable 
 	
@@ -370,7 +370,7 @@ public class GroupController {
 		DynLock=1;
 		
 		//TODO HANDLE HERE THE NEW MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
-		//group.put(""+msg.getId(),msg.getNigm());
+		group.put(""+msg.getId(),msg.getNigm());
 		changeKeys(msg);
 		sendNewKeys(msg);
 		oldDek = null;
@@ -451,9 +451,9 @@ public class GroupController {
 		    //HANDSHAKE WITH THE GROUP MEMBER:
 			//get its publicKey and send them the group key encrypted 
 			//------------------------------------------------------	
-			//Socket clientSocket = new Socket(group.get(msg.getId()).getIpAddress(),group.get(msg.getId()).getPort());
-			//System.out.println("ADRESS NEW MEMBER "+msg.getId() + " "+group.get(msg.getId()).getIpAddress()+" "+group.get(msg.getId()).getPort());
-			//ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+			Socket clientSocket = new Socket(group.get(msg.getId()).getIpAddress(),group.get(msg.getId()).getPort());
+			System.out.println("ADRESS NEW MEMBER "+msg.getId() + " "+group.get(msg.getId()).getIpAddress()+" "+group.get(msg.getId()).getPort());
+			ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
 
 							
 			RsaCipher.init(Cipher.ENCRYPT_MODE, msg.getPublicKey());
@@ -507,13 +507,16 @@ public class GroupController {
 			    
 			// ----------------------------------------
 		    System.out.println("SEND MESSAGE");
-		    //oos.writeObject(scm);
+		    oos.writeObject(scm);
 		    
-		   // clientSocket.close();
+		    clientSocket.close();
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
