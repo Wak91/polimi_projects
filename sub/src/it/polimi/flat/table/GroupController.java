@@ -2,7 +2,6 @@ package it.polimi.flat.table;
 
 import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
-import it.polimi.flat.table.support.CommMessage;
 import it.polimi.flat.table.support.Message;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.StartConfigMessage;
@@ -32,6 +31,7 @@ import java.util.HashMap;
  * */
 public class GroupController {
 	
+	private static final int GROUP_MEMBER_NUM = 8;
 	
 	private Integer port=56520;
 	private ServerSocket mySocket;
@@ -161,10 +161,10 @@ public class GroupController {
 
 		    
 		    if(m.getClass().getSimpleName().equals("BootMessage")){
-		    	//TODO HANDLE ADD OF A GROUP MEMBER 
-		    	System.out.println("BOOT FROM A MEMBER");
+		    	//handle join of a new member
+		    	System.out.println("BOOT MESSAGE FROM A MEMBER");
 		    	BootMessage bm = (BootMessage)m;
-		    	HandleAddMember(bm);
+		    	HandleAddMember(bm,oos);
 		    }
 		    
 		    else //is an ActionMessage ( leave, getGroup, common )
@@ -215,7 +215,13 @@ public class GroupController {
 		    		 } 
 		    		 
 		    	 }//end switch   			
-		    	} //end ActionMessage if 	
+		    	} //end ActionMessage if
+		    try {
+				clientSocket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		       }//end while(true)		
           	  }
 	
@@ -352,12 +358,12 @@ public class GroupController {
 	
 	
 	
-	public synchronized void HandleAddMember(BootMessage msg){
+	public synchronized void HandleAddMember(BootMessage msg,ObjectOutputStream oos){
 		
 		/*
 		 * If a lock is ON that means I must wait to enter. ( somebody is sending message and I am not, or somebody is leaving in the group view )
 		 * */
-		while(BroadcastLock!=0 || DynLock==1 || group.keySet().size() >= 4){ //sono in corso dei broadcast nel gruppo o è in corso un leaving
+		while(BroadcastLock!=0 || DynLock==1 || group.keySet().size() >= GROUP_MEMBER_NUM){ //sono in corso dei broadcast nel gruppo o è in corso un leaving
 			System.out.println("ASPETTO TROPPA GENTE");
 
 			try {
@@ -372,7 +378,8 @@ public class GroupController {
 		//TODO HANDLE HERE THE NEW MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
 		group.put(""+msg.getId(),msg.getNigm());
 		changeKeys(msg);
-		sendNewKeys(msg);
+		sendNewKeys(msg,oos);
+		sendStartMessage();
 		oldDek = null;
 		
 		
@@ -384,6 +391,10 @@ public class GroupController {
 		
 	}
 	
+	/**
+	 * change keys after join of a new user
+	 * @param msg
+	 */
 	private void changeKeys(BootMessage msg){
 		try {
 			DesCipher.init(Cipher.ENCRYPT_MODE, dek);
@@ -442,7 +453,7 @@ public class GroupController {
 
 	}
 	
-	private void sendNewKeys(BootMessage msg){
+	private void sendNewKeys(BootMessage msg,ObjectOutputStream oos){
 		
 		try {
 	    	//send to new group member with his public key
@@ -451,9 +462,7 @@ public class GroupController {
 		    //HANDSHAKE WITH THE GROUP MEMBER:
 			//get its publicKey and send them the group key encrypted 
 			//------------------------------------------------------	
-			Socket clientSocket = new Socket(group.get(msg.getId()).getIpAddress(),group.get(msg.getId()).getPort());
 			System.out.println("ADRESS NEW MEMBER "+msg.getId() + " "+group.get(msg.getId()).getIpAddress()+" "+group.get(msg.getId()).getPort());
-			ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
 
 							
 			RsaCipher.init(Cipher.ENCRYPT_MODE, msg.getPublicKey());
@@ -509,7 +518,6 @@ public class GroupController {
 		    System.out.println("SEND MESSAGE");
 		    oos.writeObject(scm);
 		    
-		    clientSocket.close();
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -523,12 +531,45 @@ public class GroupController {
 		//send in broadcast to old group
 		for(String idMember : group.keySet()){
 			if(!idMember.equals(""+msg.getId())){
+				System.out.println("UPDATE KEYS "+idMember);
 				sendConfiguration(idMember);
 			}
 		}
 		
-	    
-	   
+	 }
+	/**
+	 * Send start message to every group member after change dek 
+	 */
+	private void sendStartMessage(){
+		ActionMessage am = new ActionMessage();
+		
+		try {
+			DesCipher.init(Cipher.ENCRYPT_MODE, dek);
+			am.setnodeId(DesCipher.doFinal("-1".getBytes()));
+			am.setAction(DesCipher.doFinal("start".getBytes()));
+			
+			System.out.println("Sending 'start' message to members of the group");
+			
+			for(NetInfoGroupMember nigm : group.values()){
+				Socket s = new Socket(nigm.getIpAddress(),nigm.getPort());
+				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+				oos.writeObject(am);
+				s.close();
+			}
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 	/**
