@@ -162,7 +162,7 @@ public class GroupMember {
 					plainText = new String(decryptedText);
 				} catch (IllegalBlockSizeException | BadPaddingException e) {
 					System.out.println("Something went wrong during decryption of text");
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			 
 			 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
