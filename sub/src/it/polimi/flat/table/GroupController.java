@@ -50,7 +50,8 @@ public class GroupController {
 	private HashMap <String,NetInfoGroupMember> group; //table to keep track of the 'sockets' of the member in the group, this will be passed in response to a GetGroup request from members
 	
 	private Integer DynLock; //this lock handle the concurrency AddMember and LeavingMember on the group structure 
-	private Integer BroadcastLock; 
+	private Integer BroadcastLock;
+	private CommMessage backSecurityCheck;
 	/*
 	 * Constructor of the GroupController, it creates the first
 	 * GroupKey with DES and populate the table with the KEK of every bit.
@@ -114,7 +115,9 @@ public class GroupController {
 				tableIndex = ""+i+""+j; //this is for example 00 01 02 10 11 12 ( first is the KEK for the bit
 									    //0 of the first bit of the key...
 				table.put(tableIndex, key);
-			}	
+			}
+		
+		createBackSecurityMessageCheck();
 	}
 	
 	
@@ -426,6 +429,14 @@ public class GroupController {
 		changeKeys(msg);
 		sendNewKeys(msg,oos);
 		sendStartMessage();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sendCheckMessage(""+msg.getId());
+		createBackSecurityMessageCheck();
 		//reset old dek used to communicate new keys
 		oldDek = null;
 		
@@ -745,5 +756,46 @@ public class GroupController {
 		
 		BroadcastLock--;
 		
+	}
+	
+	private void createBackSecurityMessageCheck(){
+		backSecurityCheck = new CommMessage();
+		
+		
+		backSecurityCheck.setIdSender("-1");
+
+		try {
+			DesCipher.init(Cipher.ENCRYPT_MODE, this.dek);
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		}		
+	    try {
+			byte[] encryptedText = DesCipher.doFinal("Check back security".getBytes());
+			backSecurityCheck.setText(encryptedText);
+		} catch (IllegalBlockSizeException | BadPaddingException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Send common message to new entry in order to check back security
+	 * @param nodeId - node id of new entry
+	 */
+	private void sendCheckMessage(String nodeId){
+		
+		Socket newsocket;
+		try {
+			newsocket = new Socket(group.get(nodeId).getIpAddress(),group.get(nodeId).getPort());
+			ObjectOutputStream ooss = new ObjectOutputStream(newsocket.getOutputStream());
+			
+			ooss.writeObject(backSecurityCheck);
+			newsocket.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
 	}
 }

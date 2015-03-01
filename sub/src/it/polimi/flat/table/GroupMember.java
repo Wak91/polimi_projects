@@ -162,7 +162,7 @@ public class GroupMember {
 					plainText = new String(decryptedText);
 				} catch (IllegalBlockSizeException | BadPaddingException e) {
 					System.out.println("Something went wrong during decryption of text");
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			 
 			 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
@@ -214,7 +214,13 @@ public class GroupMember {
 			}
 			
 			this.kek2 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
-				
+			
+			//-------Let's wait for the OK LET'S START FROM SERVER---------------------------
+			System.out.println("Waiting for 'start' from GroupController");
+			waitingForStartMessage();
+			System.out.println("Receive 'start' from GroupController");
+			System.out.println("Waiting for something to broadcast...");
+
 		}
 		guestSocket.close();
 			
@@ -361,7 +367,16 @@ public class GroupMember {
 		
 		//-------Let's wait for the OK LET'S START FROM SERVER---------------------------
 		System.out.println("Waiting for 'start' from GroupController");
+		waitingForStartMessage();
 		
+				
+	}
+	
+	/**
+	 * Method that wait the start message coming from the group manager after have joined 
+	 * the group
+	 */
+	private void waitingForStartMessage(){
 		Socket guestSocket;
 		ObjectInputStream oiss=null;
 		
@@ -407,7 +422,6 @@ public class GroupMember {
 			 System.exit(-1); //Something strange from server, go home we are drunk...
 		 }
 
-				
 	}
 	
 	/*
