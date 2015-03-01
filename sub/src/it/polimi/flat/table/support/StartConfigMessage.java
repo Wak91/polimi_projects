@@ -13,7 +13,7 @@ public class StartConfigMessage implements Serializable {
 	private byte[] kek0;
 	private byte[] kek1;
 	private byte[] kek2;
-	//private byte[] test; //[DEBUG] To test if pubic key work
+	//private byte[] test; //[DEBUG] To test if public key work
 
 
 	public StartConfigMessage() {
