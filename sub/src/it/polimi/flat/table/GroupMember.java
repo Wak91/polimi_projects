@@ -8,6 +8,7 @@ import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.StartConfigMessage;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -127,7 +128,7 @@ public class GroupMember {
 	System.out.println("["+this.nodeId+"] Hash of the kek2 is"+kek2.hashCode());
 	*/
 	
-	InputThread it = new InputThread(this);
+	InputThread it = new InputThread(this,0);
 	Thread t = new Thread(it);
 	t.start();
 	
@@ -617,14 +618,18 @@ public class GroupMember {
 	private class InputThread implements Runnable{
 
 		private GroupMember gm;
+		private int mode; //0= read from BufferedReader ( user mode input )
+						  //1= read from file ( auto comunication modality between members ) 
 		
-		public InputThread(GroupMember gm){
+		public InputThread(GroupMember gm , int mode){
 			this.gm = gm;
+			this.mode=mode;
 		}
 		
 		@Override
 		public void run() {
 			
+			if(mode==0){
 			while(true){
 			String line="";
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -636,6 +641,16 @@ public class GroupMember {
 			}
 			gm.BroadcastMessage(line);
 			}
+			}
+			else 
+				if(mode==1){ 
+					
+					//in this modality the member comunicate between them without user interaction, 
+					//they produce leave and add event randomly in order to test the whole group comunication.
+					
+					File file = new File("/home/bartak/Scrivania/buzzword.txt");
+					
+				}
 			
 		}
 		
