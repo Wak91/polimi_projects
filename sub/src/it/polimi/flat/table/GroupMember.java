@@ -652,38 +652,43 @@ public class GroupMember {
 			}
 			else 
 				if(mode==1){ 
+					
 					this.currentStatus=1;
-					BufferedReader br=null;
+
 					//in this modality the member comunicate between them without user interaction, 
 					//they produce leave and add event randomly in order to test the whole group comunication.
-					try {
-						br = new BufferedReader(new FileReader("/home/bartak/Scrivania/buzzword.txt"));
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 					
 					try {
 						while(true){ 
 							
 							if(currentStatus==1){
-							String line = br.readLine();
-							gm.BroadcastMessage(line);
-							br.reset();
+							String message = "hey there from " + gm.nodeId + " member";
+							gm.BroadcastMessage(message);
 							Thread.sleep(5000);
 							
-							//LET'S generate a casual number, if it is > 5 perform a leave from the group
+							Double rnd = Math.random()*10;
+							Integer rndint = rnd.intValue();
 							
+							//LET'S generate a casual number, if it is > 6 perform a leave from the group
+							if(rndint > 6){
+								this.gm.ExitGroup(); // remember to close the listen socket and every other things when leave, but don't close the process!
+							  }							
 							}
 							
-							else{
+							else{ //we are out of the group
 								
-								//LET'S generate a casual number, if it is > 5 perform an add to the group
+								Double rnd = Math.random()*10;
+								Integer rndint = rnd.intValue();
+								//LET'S generate a casual number, if it is > 6 perform an add to the group
+								if(rndint > 6){
+									this.gm.run();
+								  }							
+								}
 
 							}
 							
 						}
-					} catch (Exception e) {
+					catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
