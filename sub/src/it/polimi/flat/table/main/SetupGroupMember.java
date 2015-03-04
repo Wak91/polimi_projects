@@ -12,7 +12,7 @@ public class SetupGroupMember {
 	public static void main (String args[]){
 		
 		//System.out.println("Creating the GroupMember");
-		GroupMember gm = new GroupMember(Integer.parseInt("0"),5599);
+		GroupMember gm = new GroupMember(Integer.parseInt("0"),5599,0);
 
 		gm.run();
 

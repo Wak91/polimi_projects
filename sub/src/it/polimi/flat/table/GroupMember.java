@@ -9,6 +9,8 @@ import it.polimi.flat.table.support.StartConfigMessage;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -35,6 +37,7 @@ public class GroupMember {
 	
 	private String nodeId; //Identifier of the node 
 	private Integer myPort;
+	private int inputMode; //User input or automatic simulated behavoir
 	private ServerSocket mySocket; //the socket associated to this groupMember ( the listener for incoming messages )
 	
 	private Key publicKey;  //Initial public key
@@ -48,6 +51,7 @@ public class GroupMember {
 	private SecretKey kek1; //KEK for the bit 1 of the ID
 	private SecretKey kek2; //KEK for the bit 2 of the ID 
 	
+	
 	/*
 	 * Constructor for the GroupMember, it generates its 
 	 * own public and private key for the bootstrap of 
@@ -55,8 +59,9 @@ public class GroupMember {
 	 * ListenPort is the port where this group member will
 	 * listen for incoming messages 
 	 * */
-	public GroupMember(Integer id,Integer ListenPort){
+	public GroupMember(Integer id,Integer ListenPort , int InputMode){
 		
+		this.inputMode = InputMode;
 		mySocket=null;
 		nodeId = Integer.toBinaryString(id);
 		
@@ -128,7 +133,7 @@ public class GroupMember {
 	System.out.println("["+this.nodeId+"] Hash of the kek2 is"+kek2.hashCode());
 	*/
 	
-	InputThread it = new InputThread(this,0);
+	InputThread it = new InputThread(this,this.inputMode);
 	Thread t = new Thread(it);
 	t.start();
 	
@@ -621,6 +626,9 @@ public class GroupMember {
 		private int mode; //0= read from BufferedReader ( user mode input )
 						  //1= read from file ( auto comunication modality between members ) 
 		
+		//this in order to manage the automatic behavoir
+		private int currentStatus; //0=the member is out of the group, 1=the member is in the group
+		
 		public InputThread(GroupMember gm , int mode){
 			this.gm = gm;
 			this.mode=mode;
@@ -644,11 +652,41 @@ public class GroupMember {
 			}
 			else 
 				if(mode==1){ 
-					
+					this.currentStatus=1;
+					BufferedReader br=null;
 					//in this modality the member comunicate between them without user interaction, 
 					//they produce leave and add event randomly in order to test the whole group comunication.
+					try {
+						br = new BufferedReader(new FileReader("/home/bartak/Scrivania/buzzword.txt"));
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					
-					File file = new File("/home/bartak/Scrivania/buzzword.txt");
+					try {
+						while(true){ 
+							
+							if(currentStatus==1){
+							String line = br.readLine();
+							gm.BroadcastMessage(line);
+							br.reset();
+							Thread.sleep(5000);
+							
+							//LET'S generate a casual number, if it is > 5 perform a leave from the group
+							
+							}
+							
+							else{
+								
+								//LET'S generate a casual number, if it is > 5 perform an add to the group
+
+							}
+							
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					
 				}
 			
