@@ -669,7 +669,7 @@ public class GroupMember {
 							Double rnd = Math.random()*10;
 							Integer rndint = rnd.intValue();
 							
-							//LET'S generate a casual number, if it is > 6 perform a leave from the group
+							//LET'S generate a casual number, if it is > 7 perform a leave from the group
 							if(rndint > 7){
 								System.out.println("Wooo, now I want to leave the group!");
 								this.gm.ExitGroup(); // remember to close the listen socket and every other things when leave, but don't close the process!
@@ -680,7 +680,7 @@ public class GroupMember {
 								System.out.println("Wooo, now I want to enter the group!");
 								Double rnd = Math.random()*10;
 								Integer rndint = rnd.intValue();
-								//LET'S generate a casual number, if it is > 6 perform an add to the group
+								//LET'S generate a casual number, if it is > 4 perform an add to the group
 								if(rndint > 4){
 									this.gm.run();
 								  }							
@@ -690,7 +690,7 @@ public class GroupMember {
 							
 						}
 					catch (Exception e) {
-						// TODO Auto-generated catch block
+						System.out.println("Something went wrong in the InputThread");
 						e.printStackTrace();
 					}
 					
