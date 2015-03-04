@@ -637,7 +637,7 @@ public class GroupMember {
 		@Override
 		public void run() {
 			
-			if(mode==0){
+			if(mode==0){ //manual modality 
 			while(true){
 			String line="";
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -651,17 +651,17 @@ public class GroupMember {
 			}
 			}
 			else 
-				if(mode==1){ 
+				if(mode==1){ //automatic modality 
 					
 					this.currentStatus=1;
 
 					//in this modality the member comunicate between them without user interaction, 
-					//they produce leave and add event randomly in order to test the whole group comunication.
-					
+					//they produce leave and add event randomly in order to test the whole group comunication.			
 					try {
 						while(true){ 
 							
-							if(currentStatus==1){
+							if(currentStatus==1)
+							{
 							String message = "hey there from " + gm.nodeId + " member";
 							gm.BroadcastMessage(message);
 							Thread.sleep(5000);
@@ -677,7 +677,7 @@ public class GroupMember {
 							}
 						
 							else{ //we are out of the group
-								System.out.println("Wooo, now I want to enter the group!");
+								System.out.println("I'm feeling alone... now I want to enter the group!");
 								Double rnd = Math.random()*10;
 								Integer rndint = rnd.intValue();
 								//LET'S generate a casual number, if it is > 4 perform an add to the group
