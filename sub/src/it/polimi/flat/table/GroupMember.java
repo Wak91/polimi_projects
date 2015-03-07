@@ -4,7 +4,9 @@ import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
 import it.polimi.flat.table.support.CommMessage;
 import it.polimi.flat.table.support.CrashReportMessage;
+import it.polimi.flat.table.support.Message;
 import it.polimi.flat.table.support.NetInfoGroupMember;
+import it.polimi.flat.table.support.NewDekMessage;
 import it.polimi.flat.table.support.StartConfigMessage;
 
 import java.io.BufferedReader;
@@ -174,6 +176,9 @@ public class GroupMember {
 			 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
 			 
 		    }
+		 else if(message.getClass().getSimpleName().equals("NewDekMessage")){
+			this.retrieveNewDek(message);
+		 }
 		//---------------
 		//I have to check previously what kind of message is in order to understand what to do 
 		 else if(message.getClass().getSimpleName().equals("StartConfigMessage")){
@@ -240,6 +245,57 @@ public class GroupMember {
 	
   } // while listener ended 
 }//end run
+	
+	
+	/**
+	 * cerchiamo di ricavare la nuoa dek in seguito ad un leave di un nodo
+	 * @param message
+	 */
+	private void retrieveNewDek(Object message) {
+		//ricaviamo il messaggio castandolo giusto
+		NewDekMessage incoming = (NewDekMessage) message;
+
+		//ricaviamo la lista di cypher
+		ArrayList<byte[]> newDekList = incoming.getnewDekList();
+		
+		for (int i = 0; i < 3; i++) {
+			//ricaviamo la kek giusta (proviamo con tutte tanto sono poche)
+			try {
+				switch (i) {
+				case 0:
+					DesCipher.init(Cipher.DECRYPT_MODE, kek0);
+					break;
+				case 1:
+					DesCipher.init(Cipher.DECRYPT_MODE, kek1);
+					break;
+				case 2:
+					DesCipher.init(Cipher.DECRYPT_MODE, kek2);
+					break;
+				}
+			}
+			catch (InvalidKeyException e) {
+				e.printStackTrace();
+			}
+			//per ogni cypher proviamo a decriptarlo
+			for (byte[] bs : newDekList) {
+				byte[] decryptedText = null;
+				try {
+					//decrypt (sa gia quando fallisce quindi non ho bisogno di token  cose simili per riconoscere la chiave giusta)
+					decryptedText = DesCipher.doFinal(bs);
+					//settiamo la nuova dek
+					this.dek = new SecretKeySpec(decryptedText, 0, decryptedText.length, "DES");
+					System.out.println("trovata nuova dek!!");
+				} 
+				//se ho un eccezione vuol dire che la chiave non e quella giusta
+				catch (IllegalBlockSizeException | BadPaddingException e) {
+					continue;
+				}
+				
+			}						
+			
+		}
+
+	}
 	
 	
 	/*

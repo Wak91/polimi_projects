@@ -6,6 +6,7 @@ import it.polimi.flat.table.support.CommMessage;
 import it.polimi.flat.table.support.CrashReportMessage;
 import it.polimi.flat.table.support.Message;
 import it.polimi.flat.table.support.NetInfoGroupMember;
+import it.polimi.flat.table.support.NewDekMessage;
 import it.polimi.flat.table.support.StartConfigMessage;
 
 import javax.crypto.BadPaddingException;
@@ -25,6 +26,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /*
  * This is the class for the group controller
@@ -35,7 +37,7 @@ import java.util.HashMap;
 public class GroupController {
 	
 	private static final int GROUP_MEMBER_NUM = 8;
-	
+		
 	private Integer port=56520;
 	private ServerSocket mySocket;
 	
@@ -240,6 +242,28 @@ public class GroupController {
           	  }
 	
 	
+	/**
+	 * genera la chiave di gruppo
+	 */
+	private void dekGeneration(){
+		
+		KeyGenerator keyGen=null;
+		
+		try {
+			keyGen = KeyGenerator.getInstance("DES");
+			keyGen.init(56); //key of 56 bits 
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println("Error no such algorithm for DES");
+			e.printStackTrace();
+		}
+		//salviamo la dek come oldDek 
+		this.oldDek = this.dek; 
+		
+		this.dek = keyGen.generateKey(); 
+
+	}
+	
+	
 	/*
 	 * This method is exploited in order to remove
 	 * the member from the view group that are reported 
@@ -284,7 +308,7 @@ public class GroupController {
 	 * */
 	private void startServer() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
 		
-		int cont=1; //wait untill all 8 clients connect to server 
+		int cont=3; //wait untill all 8 clients connect to server 
 		
 		mySocket=null;
 		Socket clientSocket=null;
@@ -726,9 +750,25 @@ public class GroupController {
 			byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
 		    String nodeId = new String(decryptedId);
 			 
-			System.out.println("il nodo vuole lasciare " +  nodeId );
+			System.out.println("il nodo " +  nodeId  + " vuole lasciare ");
+			//creiamo la nuova dek (K')
+			this.dekGeneration();
+			//costruiamo il messaggio da mandare in broadcast
+			ArrayList<byte[]> dekEncrypted = this.encryptNewDek(nodeId);
+			
+			this.sendNewDekMessage(dekEncrypted);
+			
 		} catch (IllegalBlockSizeException
 				| BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -737,6 +777,79 @@ public class GroupController {
 		
 		//rilasciamo il lock
 		DynLock=0;
+		
+	}
+
+	/**
+	 * identifica le chiavi del odo uscente e cripta la nuova dek saltandp queste chiavi
+	 * ritorna la listadi messaggi criptati contanente la dek da mandare in broadcast
+	 * @param nodeId
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchPaddingException
+	 * @throws InvalidKeyException
+	 * @throws IllegalBlockSizeException
+	 * @throws BadPaddingException
+	 */
+	private ArrayList<byte[]> encryptNewDek(String nodeId) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
+		
+		//es: nodeId = 001
+		//devo togliere le chiavi 02, 01, 10
+		//generiamo un array con le chiavi da evitare con questo trick
+		ArrayList<String> keysLeaveMemberArrayList = new ArrayList<String>();
+		//reversiamo la stringa cosi da avere la convenzione dei bit giusta
+		String reverseNodeId = new StringBuffer(nodeId).reverse().toString();
+		//scorriamo ogni carattere di node id
+		for (int i = 0;i < reverseNodeId.length(); i++){
+		   //prima parte di chiave (valoreBit - posizione come spiegato nella struttura della tabella) 
+		   String strI = "" + i;
+		   //seconda parte di chiave e aggiungo all array list
+		   keysLeaveMemberArrayList.add(reverseNodeId.charAt(i) + strI);
+		}
+		
+		Cipher cipher = Cipher.getInstance("DES");
+		ArrayList<byte[]> dekEncrypted = new ArrayList<byte[]>();
+		//scorriamo le tuple della tabella
+		for (Map.Entry<String,SecretKey> entry : this.table.entrySet()){
+			//se l entry appartiene ad una chiave del nodo uscente allora non criptiamola
+			if(keysLeaveMemberArrayList.contains(entry.getKey())){
+				System.out.println("trovata chiave " + entry.getKey());
+				continue;
+			}
+			else{
+				//prendiamo la chiave del nodo valido considerato
+				cipher.init(Cipher.ENCRYPT_MODE, entry.getValue());
+				//criptiamo la nuova dek e mettiamola nella lista da mandare in broadcast
+				dekEncrypted.add(cipher.doFinal(this.dek.getEncoded()));
+			}
+			
+		}
+		
+		return dekEncrypted;
+		
+	}
+	
+	private void sendNewDekMessage(ArrayList<byte[]> newDekList){
+		NewDekMessage ndm = new NewDekMessage();
+		
+		try {
+			DesCipher.init(Cipher.ENCRYPT_MODE, dek);
+			ndm.setnewDekList(newDekList);
+			
+			System.out.println("Sending newdekmessage....");
+			
+			for(NetInfoGroupMember nigm : group.values()){
+				Socket s = new Socket(nigm.getIpAddress(),nigm.getPort());
+				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+				oos.writeObject(ndm);
+				s.close();
+			}
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
