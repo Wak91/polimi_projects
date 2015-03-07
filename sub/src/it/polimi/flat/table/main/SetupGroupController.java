@@ -7,6 +7,7 @@ public class SetupGroupController {
 	
 	public static void main (String args[]){
 		
+		System.out.println("GROUP CONTROLLER \n");
 		System.out.println("Creating the GroupController");
 		GroupController gc = new GroupController();
 		gc.run();
