@@ -517,12 +517,15 @@ public class GroupMember {
 			} //end foreach
 						
 			//POC OF THE SECRET OF THE CONVERSATION ( send the message also to a MITM )
+			/*
 			//-----------------------------------------------------
 			Socket newsocket = new Socket("localhost",9000);
 			ooss = new ObjectOutputStream(newsocket.getOutputStream());
 			ooss.writeObject(msg);
 			newsocket.close();	
 			//-----------------------------------------------------
+			 * 
+			 */
 
 			
 		}
@@ -590,8 +593,28 @@ public class GroupMember {
 			//System.out.println("Hey now I'm calling notify crashed");
 			this.notifyCrashedMembers(crashedMembers);
 		}
+		//mandiamo il messaggio
+		this.buildAndSendMessage("broadcastdone");
+				
+		return;
 		
+	}
+	
+	/*
+	 * Method used in order to left the group voluntarly 
+	 * */
+	private void ExitGroup(){
+
+		//PROVA
+		this.buildAndSendMessage("leave");
 		
+	}
+	
+	/**
+	 * funzione da chiamare quando abbiamo un messaggio azione e non broadcast
+	 * @param action
+	 */
+	private void buildAndSendMessage(String action){
 		Socket sock = this.connectToGroupController();
 		ObjectOutputStream ooss=null;
 		try {
@@ -605,7 +628,7 @@ public class GroupMember {
 		try {
 			DesCipher.init(Cipher.ENCRYPT_MODE,dek); //initialize the cipher with the dek 
 			am.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
-			am.setAction(DesCipher.doFinal("broadcastdone".getBytes()));
+			am.setAction(DesCipher.doFinal(action.getBytes()));
 		} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e1) {
 			e1.printStackTrace();
 		}
@@ -615,19 +638,8 @@ public class GroupMember {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		return;
-		
 	}
-	
-	/*
-	 * Method used in order to left the group voluntarly 
-	 * */
-	private void ExitGroup(){
 		
-		
-	}
-	
 	/*
 	 * This is used in order to provide an interface where you can 
 	 * write and see the broadcast communication between the 
@@ -660,7 +672,14 @@ public class GroupMember {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			gm.BroadcastMessage(line);
+			//porcata per mantenere la retrocompatibilita - da cambiar quando capisco meglio come funziona - 
+			if(line.equals("leave")){
+				this.gm.ExitGroup();
+			}
+			else{
+				gm.BroadcastMessage(line);	
+			}
+			
 			}
 			}
 			else 

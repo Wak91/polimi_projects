@@ -201,7 +201,9 @@ public class GroupController {
 		    		 
 		    		 switch(action){
 		    		 
-		    		 case "leave": //Handle leaving member
+		    		 case "leave": {
+		    			this.HandleLeavingMember(am);
+		    		 }
 		    		 case "getGroup": {
 		    			 
 		    			 HashMap <String,NetInfoGroupMember> group = this.GetGroup();
@@ -277,12 +279,12 @@ public class GroupController {
 
 
 	/*
-	 * This method start the GroupController, it wait n° MemberGroup and perform the first
+	 * This method start the GroupController, it wait  MemberGroup and perform the first
 	 * handshake with them
 	 * */
 	private void startServer() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
 		
-		int cont=3; //wait untill all 8 clients connect to server 
+		int cont=1; //wait untill all 8 clients connect to server 
 		
 		mySocket=null;
 		Socket clientSocket=null;
@@ -413,7 +415,7 @@ public class GroupController {
 		/*
 		 * If a lock is ON that means I must wait to enter. ( somebody is sending message and I am not, or somebody is leaving in the group view )
 		 * */
-		while(BroadcastLock!=0 || DynLock==1 || group.keySet().size() >= GROUP_MEMBER_NUM){ //sono in corso dei broadcast nel gruppo o è in corso un leaving
+		while(BroadcastLock!=0 || DynLock==1 || group.keySet().size() >= GROUP_MEMBER_NUM){ //sono in corso dei broadcast nel gruppo o in corso un leaving
 			System.out.println("ASPETTO TROPPA GENTE");
 
 			try {
@@ -701,7 +703,7 @@ public class GroupController {
 	}
 	
 	
-	public synchronized void HandleLeavingMember(){
+	public synchronized void HandleLeavingMember(ActionMessage am){
 		
 		/*
 		 * If a lock is ON that means I must wait to leave. ( somebody is sending message and I am in the group view )
@@ -714,17 +716,27 @@ public class GroupController {
 			}
 		}
 		
+		//prendiamo il lock
 		DynLock=1;
 		
 		//TODO HANDLE HERE THE LEAVING MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
 		
+		try {
+			 
+			byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
+		    String nodeId = new String(decryptedId);
+			 
+			System.out.println("il nodo vuole lasciare " +  nodeId );
+		} catch (IllegalBlockSizeException
+				| BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		
-		
-		
-		//DynLock=0;REMEMBER!
-
+		//rilasciamo il lock
+		DynLock=0;
 		
 	}
 	
