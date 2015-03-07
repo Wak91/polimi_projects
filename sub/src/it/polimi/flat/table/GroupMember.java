@@ -251,8 +251,21 @@ public class GroupMember {
 		try {
 			mySocket = new ServerSocket(myPort);
 		} catch (IOException e) {
-			System.out.println("Error while listen on" +myPort);
-			e.printStackTrace();
+			//se abbiamo un errore perche la porta e gia in uso facciamo scegliere un altra porta
+			System.out.println("Error while listen on" + myPort + "\n");
+			System.out.println("Select another port: ");	
+			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+			try {
+				String newPort = bufferRead.readLine();
+				this.myPort = Integer.parseInt(newPort);
+				spawnListener();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
+			//e.printStackTrace();
 		}
 	}
 	
