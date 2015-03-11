@@ -7,6 +7,7 @@ import it.polimi.flat.table.support.CrashReportMessage;
 import it.polimi.flat.table.support.Message;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.NewDekMessage;
+import it.polimi.flat.table.support.NewKekMessage;
 import it.polimi.flat.table.support.StartConfigMessage;
 
 import javax.crypto.BadPaddingException;
@@ -742,9 +743,7 @@ public class GroupController {
 		
 		//prendiamo il lock
 		DynLock=1;
-		
-		//TODO HANDLE HERE THE LEAVING MEMBER ( SEE DOCUMENT IN ORDER TO UNDERSTAND WHAT DO )
-		
+				
 		try {
 			 
 			byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
@@ -755,8 +754,12 @@ public class GroupController {
 			this.dekGeneration();
 			//costruiamo il messaggio da mandare in broadcast
 			ArrayList<byte[]> dekEncrypted = this.encryptNewDek(nodeId);
-			
+			//mandiamo la nuova chiave a tutti
 			this.sendNewDekMessage(dekEncrypted);
+			//cambiamo le KEK del nodo che ha fatto leave
+			ArrayList<byte[]> kekEncrypted = this.changeKek(nodeId);
+			//mandiamo le nuove kek
+			this.sendNewKekMessage(kekEncrypted);
 			
 		} catch (IllegalBlockSizeException
 				| BadPaddingException e) {
@@ -772,9 +775,7 @@ public class GroupController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+				
 		//rilasciamo il lock
 		DynLock=0;
 		
@@ -797,16 +798,8 @@ public class GroupController {
 		//devo togliere le chiavi 02, 01, 10
 		//generiamo un array con le chiavi da evitare con questo trick
 		ArrayList<String> keysLeaveMemberArrayList = new ArrayList<String>();
-		//reversiamo la stringa cosi da avere la convenzione dei bit giusta
-		String reverseNodeId = new StringBuffer(nodeId).reverse().toString();
-		//scorriamo ogni carattere di node id
-		for (int i = 0;i < reverseNodeId.length(); i++){
-		   //prima parte di chiave (valoreBit - posizione come spiegato nella struttura della tabella) 
-		   String strI = "" + i;
-		   //seconda parte di chiave e aggiungo all array list
-		   keysLeaveMemberArrayList.add(reverseNodeId.charAt(i) + strI);
-		}
-		
+		//prendiamo gli id
+		keysLeaveMemberArrayList = this.getKekId(nodeId);		
 		Cipher cipher = Cipher.getInstance("DES");
 		ArrayList<byte[]> dekEncrypted = new ArrayList<byte[]>();
 		//scorriamo le tuple della tabella
@@ -851,6 +844,97 @@ public class GroupController {
 		}
 		
 		
+	}
+	
+	private void sendNewKekMessage(ArrayList<byte[]> newKekList){
+		NewKekMessage ndm = new NewKekMessage();
+		
+		try {
+			ndm.setnewKekList(newKekList);
+			
+			System.out.println("Sending newkekmessage....");
+			
+			for(NetInfoGroupMember nigm : group.values()){
+				Socket s = new Socket(nigm.getIpAddress(),nigm.getPort());
+				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+				oos.writeObject(ndm);
+				s.close();
+			}
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	/**
+	 * genera le nuove chiavi kek e le cripta per essere spedite in broadcast
+	 * @param nodeId
+	 * @return
+	 * @throws IllegalBlockSizeException
+	 * @throws BadPaddingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchPaddingException
+	 * @throws InvalidKeyException
+	 */
+	private ArrayList<byte[]> changeKek(String nodeId) throws IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException{
+		//inizializziamo le librerie di cripto
+		KeyGenerator keyGen=null;
+		try {
+			keyGen = KeyGenerator.getInstance("DES");
+			keyGen.init(56); //key of 56 bits 
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println("Error no such algorithm for DES");
+			e.printStackTrace();
+		}	
+		//array delle chiavi nuove da mandare in broadcast
+		ArrayList<byte[]> kekEncrypted = new ArrayList<byte[]>();
+		//array degli id delle chiavi da cambiare
+		ArrayList<String> keysLeaveMemberArrayList = new ArrayList<String>();
+		//prendiamo gli id
+		keysLeaveMemberArrayList = this.getKekId(nodeId);
+		//cambiamo le chiavi per ogni id
+		for (String mapKey : keysLeaveMemberArrayList) {
+			//creiamo la nuova kek
+			SecretKey newKek = keyGen.generateKey();
+			//criptiamola con la DEK
+			DesCipher.init(Cipher.ENCRYPT_MODE, dek);
+			byte[] desCriptedKek = DesCipher.doFinal(table.get(mapKey).getEncoded());
+			//criptiamola con la vecchia KEK
+			DesCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
+			byte[] kekCriptedKek = DesCipher.doFinal(desCriptedKek);
+			//salviamo la nuova KEK nella tabella
+			table.put(mapKey, newKek);	
+			//aggiungiamo la chiave a quelle da mandare in broadcast
+			kekEncrypted.add(kekCriptedKek);
+		}
+		
+		return kekEncrypted;
+	}
+	
+	
+	/**
+	 * ritorna gli id nella tabella delle ciavi a seconda del nodeId Passato
+	 * es: nodeId = 001
+	 * ritorna 02, 01, 10
+	 * @param nodeId
+	 * @return
+	 */
+	private ArrayList<String> getKekId(String nodeId){
+		//es: nodeId = 001
+		//devo togliere le chiavi 02, 01, 10
+		//generiamo un array con le chiavi da evitare con questo trick
+		ArrayList<String> keysLeaveMemberArrayList = new ArrayList<String>();
+		//reversiamo la stringa cosi da avere la convenzione dei bit giusta
+		String reverseNodeId = new StringBuffer(nodeId).reverse().toString();
+		//scorriamo ogni carattere di node id
+		for (int i = 0;i < reverseNodeId.length(); i++){
+		   //prima parte di chiave (valoreBit - posizione come spiegato nella struttura della tabella) 
+		   String strI = "" + i;
+		   //seconda parte di chiave e aggiungo all array list
+		   keysLeaveMemberArrayList.add(reverseNodeId.charAt(i) + strI);
+		}
+		return keysLeaveMemberArrayList;
 	}
 	
 	/*

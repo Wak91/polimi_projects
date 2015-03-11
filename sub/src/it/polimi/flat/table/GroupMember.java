@@ -7,6 +7,7 @@ import it.polimi.flat.table.support.CrashReportMessage;
 import it.polimi.flat.table.support.Message;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.NewDekMessage;
+import it.polimi.flat.table.support.NewKekMessage;
 import it.polimi.flat.table.support.StartConfigMessage;
 
 import java.io.BufferedReader;
@@ -176,8 +177,13 @@ public class GroupMember {
 			 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
 			 
 		    }
+		 //caso nuova dek
 		 else if(message.getClass().getSimpleName().equals("NewDekMessage")){
 			this.retrieveNewDek(message);
+		 }
+		 //caso nuove kek
+		 else if(message.getClass().getSimpleName().equals("NewKekMessage")){
+				this.retrieveNewDek(message);
 		 }
 		//---------------
 		//I have to check previously what kind of message is in order to understand what to do 
@@ -284,6 +290,74 @@ public class GroupMember {
 					decryptedText = DesCipher.doFinal(bs);
 					//settiamo la nuova dek
 					this.dek = new SecretKeySpec(decryptedText, 0, decryptedText.length, "DES");
+					System.out.println("trovata nuova dek!!");
+				} 
+				//se ho un eccezione vuol dire che la chiave non e quella giusta
+				catch (IllegalBlockSizeException | BadPaddingException e) {
+					continue;
+				}
+				
+			}						
+			
+		}
+
+	}
+	
+	private void retrieveNewKek(Object message) {
+		//ricaviamo il messaggio castandolo giusto
+		NewKekMessage incoming = (NewKekMessage) message;
+
+		//ricaviamo la lista di cypher
+		ArrayList<byte[]> newDekList = incoming.getnewKekList();
+		
+		for (int i = 0; i < 3; i++) {
+			//ricaviamo la kek giusta (proviamo con tutte tanto sono poche)
+			try {
+				switch (i) {
+				case 0:
+					DesCipher.init(Cipher.DECRYPT_MODE, kek0);
+					break;
+				case 1:
+					DesCipher.init(Cipher.DECRYPT_MODE, kek1);
+					break;
+				case 2:
+					DesCipher.init(Cipher.DECRYPT_MODE, kek2);
+					break;
+				}
+			}
+			catch (InvalidKeyException e) {
+				e.printStackTrace();
+			}
+			//per ogni cypher proviamo a decriptarlo
+			for (byte[] bs : newDekList) {
+				byte[] decryptedDek = null;
+				byte[] decryptedKek = null;
+				try {
+					//decrypt (sa gia quando fallisce quindi non ho bisogno di token  cose simili per riconoscere la chiave giusta)
+					decryptedDek = DesCipher.doFinal(bs);
+					//setto gia qui tanto non ho casi in cui la stessa kek decripta 2 messaggi
+					try {
+						DesCipher.init(Cipher.DECRYPT_MODE, dek);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					//settiamo la nuova kek
+					decryptedKek = DesCipher.doFinal(bs);
+					//porcata clamorosa
+					switch (i) {
+						case 0:
+							this.kek0 = new SecretKeySpec(decryptedKek, 0, decryptedKek.length, "DES");
+							break;
+						case 1:
+							this.kek1 = new SecretKeySpec(decryptedKek, 0, decryptedKek.length, "DES");
+							break;
+						case 2:
+							this.kek2 = new SecretKeySpec(decryptedKek, 0, decryptedKek.length, "DES");
+							break;
+
+					}
+					
 					System.out.println("trovata nuova dek!!");
 				} 
 				//se ho un eccezione vuol dire che la chiave non e quella giusta
