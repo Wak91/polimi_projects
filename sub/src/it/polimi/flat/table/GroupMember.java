@@ -183,7 +183,7 @@ public class GroupMember {
 		 }
 		 //caso nuove kek
 		 else if(message.getClass().getSimpleName().equals("NewKekMessage")){
-				this.retrieveNewDek(message);
+				this.retrieveNewKek(message);
 		 }
 		//---------------
 		//I have to check previously what kind of message is in order to understand what to do 
@@ -342,8 +342,9 @@ public class GroupMember {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					System.out.println("TROVATA NUOVA KEK!!");
 					//settiamo la nuova kek
-					decryptedKek = DesCipher.doFinal(bs);
+					decryptedKek = DesCipher.doFinal(decryptedDek);
 					//porcata clamorosa
 					switch (i) {
 						case 0:
