@@ -278,9 +278,11 @@ public class GroupController {
 	private void HandleCrashedMembers(ArrayList<NetInfoGroupMember> crashedMember) {
 		
 		System.out.println("In handle crash, the size of crashed member is " + crashedMember.size());
-		ArrayList <NetInfoGroupMember> toDelete = new ArrayList <NetInfoGroupMember>();
+		ArrayList <String> toDelete = new ArrayList <String>();
 		
 		DynLock=1; //block potentially other GetGroup for a moment! 
+		
+		/*
 		for(NetInfoGroupMember nigm : crashedMember){
 			System.out.println("the info of the crash" + nigm.getIpAddress() + "  "  +nigm.getPort());
 			
@@ -299,8 +301,29 @@ public class GroupController {
 			System.out.println(" member " +nigm2.getIpAddress() + " " + nigm2.getPort());
 			
 		}
+		*/
+		//ricaviamo gli id dei membri crashati
+		for(NetInfoGroupMember nigm : crashedMember){
+			System.out.println("the info of the crash" + nigm.getIpAddress() + "  "  +nigm.getPort());
+			
+			for (Map.Entry<String,NetInfoGroupMember> entry : this.group.entrySet()){
+				if(entry.getValue().getPort().equals(nigm.getPort()) && entry.getValue().getIpAddress().equals(nigm.getIpAddress())){
+					System.out.println("id of the crashed memeber: " +  entry.getKey());
+					//this.group.values().remove(entry.getValue());
+					toDelete.add(entry.getKey());
+				}
+			}						
+		}
 		
 		DynLock=0;
+		
+		//rimuoviamo i mebri 
+		for (String id : toDelete) {
+			System.out.println("entrato");
+			this.HandleLeavingMember(id);
+		}
+		
+		
 		
 	}
 
@@ -782,6 +805,48 @@ public class GroupController {
 		DynLock=0;
 		
 	}
+	
+public synchronized void HandleLeavingMember(String nodeId){
+		
+		
+		//prendiamo il lock
+		DynLock=1;
+				
+		try {
+			 
+			 
+			System.out.println("il nodo " +  nodeId  + " vuole lasciare ");
+			//creiamo la nuova dek (K')
+			this.dekGeneration();
+			//costruiamo il messaggio da mandare in broadcast
+			ArrayList<byte[]> dekEncrypted = this.encryptNewDek(nodeId);
+			//mandiamo la nuova chiave a tutti
+			this.sendNewDekMessage(dekEncrypted);
+			//cambiamo le KEK del nodo che ha fatto leave
+			ArrayList<byte[]> kekEncrypted = this.changeKek(nodeId);
+			//mandiamo le nuove kek
+			this.sendNewKekMessage(kekEncrypted);
+			
+		} catch (IllegalBlockSizeException
+				| BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		//rilasciamo il lock
+		DynLock=0;
+		
+	}
+	
 
 	/**
 	 * identifica le chiavi del odo uscente e cripta la nuova dek saltandp queste chiavi
