@@ -829,22 +829,25 @@ public class GroupMember {
 							gm.BroadcastMessage(message);
 							Thread.sleep(5000);
 							
+							
 							Double rnd = Math.random()*10;
 							Integer rndint = rnd.intValue();
 							
 							//LET'S generate a casual number, if it is > 7 perform a leave from the group
 							if(rndint > 7){
 								System.out.println("Wooo, now I want to leave the group!");
+								this.currentStatus=0;
 								this.gm.ExitGroup(); // remember to close the listen socket and every other things when leave, but don't close the process!
 							  }							
 							}
 						
 							else{ //we are out of the group
-								System.out.println("I'm feeling alone... now I want to enter the group!");
 								Double rnd = Math.random()*10;
 								Integer rndint = rnd.intValue();
 								//LET'S generate a casual number, if it is > 4 perform an add to the group
 								if(rndint > 4){
+									System.out.println("I'm feeling alone... now I want to enter the group!");
+									this.currentStatus=1;
 									this.gm.run();
 								  }							
 								}

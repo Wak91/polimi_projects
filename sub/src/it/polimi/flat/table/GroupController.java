@@ -34,6 +34,8 @@ import java.util.Map;
  * of the centralized flat table.
  * It handle all the join and leaving of 
  * the group member.
+ * 
+ * TODO Handle the changing of the key also when a member crashes 
  * */
 public class GroupController {
 	
