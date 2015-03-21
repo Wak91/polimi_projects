@@ -19,6 +19,10 @@ import org.apache.hadoop.mapred.Reporter;
  * If yes we are going to put in K2 the date of the request and in v2 'one'.
  * So the reducer are going to receive the 'one' of a specific date and can aggregate them.
  * 
+ * <(1 May 2003), 1>
+ * <(2 May 2003), 1>
+ * [ ... ]
+ * 
  * */
 public class PageCountMap extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable> {
 
@@ -31,24 +35,23 @@ public class PageCountMap extends MapReduceBase implements Mapper<LongWritable, 
 		
 		String line = value.toString();
 		String date="";
-		
-		//TODO here let's perform the filter
-		
+				
 		StringTokenizer tokenizer = new StringTokenizer(line);
 		while (tokenizer.hasMoreTokens()) {
 			
 			String text="";
 			text = tokenizer.nextToken();
 			
+			//regex in order to match the date token
 			if(text.matches("\\[\\d{2}/\\w{3}/\\d{4}.*")){
 				
-				date = text.substring(1,12);		
+				date = text.substring(1,12);	//filter only what we need 	
 			}
 			
 			//it will be always a GET on the waxy.org page 
 			if(text.contains("GET")){
 				word.set(date);
-				output.collect(word, one);				
+				output.collect(word, one); //send to the reducers 				
 			}			
 		}
 		
