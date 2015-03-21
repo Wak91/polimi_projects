@@ -22,11 +22,13 @@ import org.apache.hadoop.mapred.Reporter;
 /*
  * Waxy.org total pageviews per day in the entire time range 
  * 
- * The mappers filter the line in order to understand if it is 
- * a valid GET on a waxy.org page.
- * If yes we are going to put in K2 the date of the request and in v2 'one'.
- * So the reducer are going to receive the 'one' of a specific date and can aggregate them.
+ * The mappers filter the lines in order to understand if it is 
+ * in the dates range prefixed and if it is a valid referring domains.
+ * If it is, it send to the reducers the pairs:
  * 
+ * ( www.google.it 1 )
+ * ( www.yahoo.it 1  )
+ * [ ... ]
  * */
 public class RefersCountMap extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable> {
 
@@ -45,6 +47,9 @@ public class RefersCountMap extends MapReduceBase implements Mapper<LongWritable
 		Date begin=null;
 		Date end=null;
 		
+		//Let's create the begin and the end date in 
+		//order to filter the data in this range
+		
 		try {
 			begin = formatter.parse("22/Apr/2003");
 			end = formatter.parse("30/May/2003");
@@ -53,24 +58,21 @@ public class RefersCountMap extends MapReduceBase implements Mapper<LongWritable
 			e1.printStackTrace();
 		}
 		
-		
-		
-		//TODO here let's perform the filter
-		
 		StringTokenizer tokenizer = new StringTokenizer(line);
 		while (tokenizer.hasMoreTokens()) {
 			
 			String text="";
 			text = tokenizer.nextToken();
 			
+			//if the actual token match a date
 			if(text.matches("\\[\\d{2}/\\w{3}/\\d{4}.*")){
-				
-				
+						
 				try {
 					Date data = formatter.parse(text.substring(1,12));
 					
 					if(data.before(begin) || data.after(end)){
-						error=1;
+						error=1; //if the date isn't in the prefixed range signal an error to prevent this log to be sent to the reducers
+								 //otherwise error will be 0 and we will send it to them
 					}
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
@@ -80,21 +82,21 @@ public class RefersCountMap extends MapReduceBase implements Mapper<LongWritable
 			
 			
 			
-			//it will be always a GET on the waxy.org page 
+			//if the actual token contain a referring different from waxy, in the dates range prefixed 
 			if( (text.contains("http://") || text.contains("https://")) && (!text.contains("waxy.org")) && (error==0) ){
 												
-				Pattern pat = Pattern.compile("\\b" + "(http://|https://)(\\w|\\.)+" + "\\b");
+				Pattern pat = Pattern.compile("\\b" + "(http://|https://)(\\w|\\.)+" + "\\b"); //remove some junk and extract the domanin in a cleaner format
 				
 				Matcher mat = pat.matcher(text);
 				
 				while(mat.find()){
 					
 					String s = mat.group();
-					String [] a  = s.split("//");
+					String [] a  = s.split("//"); //removing the 'http://'
 					word2.set(a[a.length-1]);
 				}
 								
-				output.collect(word2, one);				
+				output.collect(word2, one);	//send a '1' for this domain to the reducers 
 			}			
 		}
 			

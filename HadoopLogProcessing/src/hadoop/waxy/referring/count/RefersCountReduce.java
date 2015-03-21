@@ -12,6 +12,21 @@ import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
+/*
+ * The reducer will receive:
+ * 
+ * (www.google.it , [1,1,1,1,1,1,1,...])
+ * (www.yahoo.it , [1,1,1,1,1,...])
+ * [ ... ]
+ * 
+ * it will sum up all the list of '1' and write on the hdfs the final statistic 
+ * of how many times a domain act as a referrer in the period analyzed 
+ * 
+ * www.google.it 7777
+ * www.yahooi.it 2324
+ * [ ... ]
+ * 
+ * */
 public class RefersCountReduce extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable> { 
 	
 	
@@ -21,9 +36,9 @@ public class RefersCountReduce extends MapReduceBase implements Reducer<Text, In
 		int sum=0;
 		
 		while (values.hasNext()) {
-			  values.next();
+			  values.next(); //to the next element
 			  sum++;
 		}
-		output.collect(key, new IntWritable(sum)); //that is right with an IntWritable 
+		output.collect(key, new IntWritable(sum)); //writing on hdfs 
 	}
 }
