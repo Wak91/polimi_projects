@@ -14,10 +14,12 @@ import org.apache.hadoop.mapred.Reporter;
 /*
  * Waxy.org total pageviews per day in the entire time range 
  * 
- * The mappers filter the line in order to understand if it is 
- * a valid GET on a waxy.org page.
- * If yes we are going to put in K2 the date of the request and in v2 'one'.
- * So the reducer are going to receive the 'one' of a specific date and can aggregate them.
+ * This mapper filter the lines where there is a download of the video and when it found
+ * a valid line it will send to the reducer:
+ * 
+ * <(1 May 2003), 1>
+ * <(2 May 2003), 1>
+ * [ ... ]
  * 
  * */
 public class VideoCountMap extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable> {
@@ -31,9 +33,7 @@ public class VideoCountMap extends MapReduceBase implements Mapper<LongWritable,
 		
 		String line = value.toString();
 		String date="";
-		
-		//TODO here let's perform the filter
-		
+				
 		StringTokenizer tokenizer = new StringTokenizer(line);
 		while (tokenizer.hasMoreTokens()) {
 			
@@ -45,17 +45,11 @@ public class VideoCountMap extends MapReduceBase implements Mapper<LongWritable,
 				date = text.substring(1,12);		
 			}
 			
-			//it will be always a GET on the waxy.org page 
+			//check if the line contains a .wmv
 			if(text.contains(".wmv")){
 				word.set(date);
 				output.collect(word, one);				
 			}			
 		}
-		
-		
-		
-		
-		
 	}
-
 }

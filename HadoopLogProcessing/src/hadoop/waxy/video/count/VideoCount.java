@@ -14,62 +14,44 @@ import org.apache.hadoop.mapred.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+/*
+ * This job will count the Video downloads (wmv files) per day in the entire time range. (Aggregating the two video versions - normal and remixed) 
+ * It will write on the hdfs:
+ * 
+ * 1 May 2003 6363 ( where 6363 is the total number of video's download in that day ) 
+ * 2 May 2003 2311
+ * [ ... ] 
+ * 
+ * */
 public class VideoCount  extends Configured implements Tool  {
 
 	@Override
 	public int run(String[] args) throws Exception {
 		
-Configuration conf = getConf();
+		Configuration conf = getConf();
 		
 		//Creation of a new Job for the HDFS
         JobConf job = new JobConf(conf,VideoCount.class);
-       
-        //----CONFIGURATION OF THE NEW JOB
-        
+           
         //Name of the job
-        job.setJobName("viewcount");
+        job.setJobName("videocount");
 		
-        //Define the class of the key of the reduced tuples
         job.setOutputKeyClass(Text.class);
-        
-        //Define the class of the value of the reduced tuples 
         job.setOutputValueClass(IntWritable.class);
 		
-        
-        
-        //Who is the mapper of this job?
         job.setMapperClass(VideoCountMap.class);
-        
-        //Who is the combiner of this job?
-        job.setCombinerClass(VideoCountReduce.class);
-        
-        //Who is the reducer of this job?
+        job.setCombinerClass(VideoCountReduce.class);        
         job.setReducerClass(VideoCountReduce.class);
 		
-        /*
-         * The input format define how the input file is splitted and readed by Hadoop,
-         * in this case the TextInputFormat indicates that each line in the file is a record, and
-         the key is the byte offset of the line, and value is the content of the line */
+
         job.setInputFormat(TextInputFormat.class);
-        
-        /*This define how you are going to write on the HDFS, in this case 
-         * the tuple <V3,K3> is converted toString and separated by a \t 
-         * */
         job.setOutputFormat(TextOutputFormat.class);
 		
-        //where the input will be
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
-		
-		//where you want the output
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
-		
-        //----CONFIGURATION OF THE NEW JOB
-
 		
 		
 		JobClient.runJob(job);
-		
-		
 		
 		return 0;
 	}
@@ -77,12 +59,6 @@ Configuration conf = getConf();
 public static void main(String[] args) throws Exception {
 		
 		int res = ToolRunner.run(new Configuration(), new VideoCount(), args);
-        System.exit(res);
-		
-		
-		
-
+        System.exit(res);		
 	}
-
-
 }

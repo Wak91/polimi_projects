@@ -10,6 +10,20 @@ import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
+/*
+ * The reducers will receive:
+ * 
+ * <(1 May 2003), (1,1,1,1,1,1,[...])>
+ * <(2 May 2003), (1,1,1,1,1,1,[...])>
+ * [ ... ]
+ * 
+ * It basically aggregate the list and write on hdfs:
+ * 
+ * 1 May 2003 3456
+ * 2 May 2003 2341
+ * [ ... ]
+ * 
+ * */
 public class VideoCountReduce extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable> { 
 	
 	@Override
