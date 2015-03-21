@@ -18,12 +18,15 @@ import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
 
 /*
- * Waxy.org total pageviews per day in the entire time range 
+ * This mapper will filter the lines based on the dates range.
+ * If the range it's matched and it is a valid referr ( no autoreferring from waxy.org )
+ * it will send this to the reducers:
  * 
- * The mappers filter the line in order to understand if it is 
- * a valid GET on a waxy.org page.
- * If yes we are going to put in K2 the date of the request and in v2 'one'.
- * So the reducer are going to receive the 'one' of a specific date and can aggregate them.
+ * <(1 May 2003), www.google.it >
+ * <(2 May 2003), www.yahoo.it >
+ * [ ... ]
+ * 
+ * 
  * 
  * */
 public class ReferringCountMap extends MapReduceBase implements Mapper<LongWritable, Text, Text, Text> {
@@ -51,10 +54,7 @@ public class ReferringCountMap extends MapReduceBase implements Mapper<LongWrita
 			e1.printStackTrace();
 		}
 		
-		
-		
-		//TODO here let's perform the filter
-		
+				
 		StringTokenizer tokenizer = new StringTokenizer(line);
 		while (tokenizer.hasMoreTokens()) {
 			
@@ -77,24 +77,14 @@ public class ReferringCountMap extends MapReduceBase implements Mapper<LongWrita
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				
-				date = text.substring(1,12);
-
-				
-				
+						
+				date = text.substring(1,12);	
 			}
-			
-			
-			
+				
 			//it will be always a GET on the waxy.org page 
 			if( (text.contains("http://") || text.contains("https://")) && (!text.contains("waxy.org")) && (error==0) ){
 								
 				word.set(date);
-				//word2.set(text);
-				
-				//UNTILL HERE ALL RIGHT
-
 				
 				Pattern pat = Pattern.compile("\\b" + "(http://|https://)(\\w|\\.)+" + "\\b");
 				
@@ -108,7 +98,7 @@ public class ReferringCountMap extends MapReduceBase implements Mapper<LongWrita
 				}
 				
 							
-				output.collect(word, word2);				
+				output.collect(word, word2);	//send the tuple to the reducers 			
 			}			
 		}
 			

@@ -13,6 +13,16 @@ import org.apache.hadoop.mapred.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+
+/*
+ * This job will count the number of  ,different, referring domains per day (between the 22nd of April and the 30th of May).
+ * so for example it will write on the hdfs:
+ * 
+ * 1/May/2003 4000
+ * 2/May/2003 2134
+ * [ ... ] 
+ * 
+ * */
 public class ReferringCount extends Configured implements Tool  {
 
 	@Override
@@ -32,7 +42,7 @@ public class ReferringCount extends Configured implements Tool  {
         
         
         job.setMapperClass( ReferringCountMap.class);  
-        //job.setCombinerClass(ReferringCountReduce.class); //Stupid combiner see http://stackoverflow.com/questions/11021478
+        //job.setCombinerClass(ReferringCountReduce.class); //No combiner, see http://stackoverflow.com/questions/11021478
         job.setReducerClass( ReferringCountReduce.class);
 		
         job.setOutputKeyClass(Text.class);
@@ -44,9 +54,6 @@ public class ReferringCount extends Configured implements Tool  {
 		
 		//where you want the output
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
-		
-        //----CONFIGURATION OF THE NEW JOB
-
 		
 		
 		JobClient.runJob(job);
@@ -61,9 +68,6 @@ public static void main(String[] args) throws Exception {
 		int res = ToolRunner.run(new Configuration(), new ReferringCount(), args);
         System.exit(res);
 		
-		
-		
-
 	}
 
 
