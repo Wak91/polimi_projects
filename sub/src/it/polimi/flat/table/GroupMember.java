@@ -40,7 +40,6 @@ public class GroupMember {
 	
 	private String nodeId; //Identifier of the node 
 	private Integer myPort;
-	private int inputMode; //User input or automatic simulated behavoir
 	private ServerSocket mySocket; //the socket associated to this groupMember ( the listener for incoming messages )
 	
 	private Key publicKey;  //Initial public key
@@ -62,9 +61,8 @@ public class GroupMember {
 	 * ListenPort is the port where this group member will
 	 * listen for incoming messages 
 	 * */
-	public GroupMember(Integer id,Integer ListenPort , int InputMode){
+	public GroupMember(Integer id,Integer ListenPort){
 		
-		this.inputMode = InputMode;
 		mySocket=null;
 		nodeId = Integer.toBinaryString(id);
 		
@@ -123,7 +121,7 @@ public class GroupMember {
 	
 	Socket socket = this.connectToGroupController();
 	
-	this.spawnListener(); //spawn a listen socket in order to receive messages from others, the generated socket goes into mySocket attribute.
+	this.spawnListener(this.myPort); //spawn a listen socket in order to receive messages from others, the generated socket goes into mySocket attribute.
 	
 	System.out.println("[INFO]Started initial handshake with the group controller");
 	this.InitialHandshake(socket);
@@ -136,7 +134,7 @@ public class GroupMember {
 	System.out.println("["+this.nodeId+"] Hash of the kek2 is"+kek2.hashCode());
 	*/
 	
-	InputThread it = new InputThread(this,this.inputMode);
+	InputThread it = new InputThread(this,1); //1= node start alive obviously
 	Thread t = new Thread(it);
 	t.start();
 	
@@ -282,7 +280,7 @@ public class GroupMember {
 			catch (InvalidKeyException e) {
 				e.printStackTrace();
 			}
-			//per ogni cypher proviamo a decriptarlo
+			//per ogni cipher proviamo a decriptarlo
 			for (byte[] bs : newDekList) {
 				byte[] decryptedText = null;
 				try {
@@ -377,10 +375,10 @@ public class GroupMember {
 	 * Listener for this group member in order to receive messages 
 	 * from other group members
 	 * */
-	private void spawnListener() {
+	private void spawnListener(Integer port) {
 				
 		try {
-			mySocket = new ServerSocket(myPort);
+			mySocket = new ServerSocket(port);
 		} catch (IOException e) {
 			//se abbiamo un errore perche la porta e gia in uso facciamo scegliere un altra porta
 			System.out.println("Error while listen on" + myPort + "\n");
@@ -389,7 +387,8 @@ public class GroupMember {
 			try {
 				String newPort = bufferRead.readLine();
 				this.myPort = Integer.parseInt(newPort);
-				spawnListener();
+				port = this.myPort;
+				spawnListener(port);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -648,17 +647,19 @@ public class GroupMember {
 			} //end foreach
 						
 			//POC OF THE SECRET OF THE CONVERSATION ( send the message also to a MITM )
-			/*
+			
 			//-----------------------------------------------------
+			try{
 			Socket newsocket = new Socket("localhost",9000);
 			ooss = new ObjectOutputStream(newsocket.getOutputStream());
 			ooss.writeObject(msg);
-			newsocket.close();	
+			newsocket.close();
+			}
+			catch(ConnectException ce){
+				System.out.println("No MITM for the PoC...");
+			}
 			//-----------------------------------------------------
-			 * 
-			 */
-
-			
+			  		
 		}
 		catch(Exception e){
 			System.out.println("Something went wrong during the broadcast of the message...");
@@ -738,6 +739,16 @@ public class GroupMember {
 
 		//PROVA
 		this.buildAndSendMessage("leave");
+		try {
+			this.mySocket.close(); // close the current socket 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.spawnListener(6666); //Port of the death! ( the members will listen here to prove forward security )
+		InputThread it = new InputThread(this,0);
+		Thread t = new Thread(it);
 		
 	}
 	
@@ -779,12 +790,9 @@ public class GroupMember {
 	private class InputThread implements Runnable{
 
 		private GroupMember gm;
-		private int mode; //0= read from BufferedReader ( user mode input )
-						  //1= read from file ( auto comunication modality between members ) 
-		
-		//this in order to manage the automatic behavoir
-		private int currentStatus; //0=the member is out of the group, 1=the member is in the group
-		
+		private int mode; //0= node dead, permi only an 'add' to rejoin the group
+						  //1= node alive! give complete terminal
+				
 		public InputThread(GroupMember gm , int mode){
 			this.gm = gm;
 			this.mode=mode;
@@ -793,78 +801,51 @@ public class GroupMember {
 		@Override
 		public void run() {
 			
-			if(mode==0){ //manual modality 
+			if(this.mode==1){
 			while(true){
-			String line="";
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Waiting for something to broadcast...");
-			try {
-				line = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			//porcata per mantenere la retrocompatibilita - da cambiar quando capisco meglio come funziona - 
-			if(line.equals("leave")){
-				this.gm.ExitGroup();
-			}
-			else{
-				gm.BroadcastMessage(line);	
-			}
+				String line="";
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				System.out.println("Waiting for something to broadcast...");
+				try {
+					line = br.readLine();
+				}catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				if(line.equals("leave")){
+					this.gm.ExitGroup();	
+					break; //terminate this thread
+				}
+				
+				else{
+					gm.BroadcastMessage(line);	
+				}
 			
-			}
-			}
-			else 
-				if(mode==1){ //automatic modality 
+			} //end while(true)			
+		  }
+			else{ //dead mode, give only the possibility to rejoin from the terminal
+				while(true){
 					
-					this.currentStatus=1;
-
-					//in this modality the member comunicate between them without user interaction, 
-					//they produce leave and add event randomly in order to test the whole group comunication.			
+					String line="";
+					BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+					System.out.println("Waiting for something to broadcast...");
 					try {
-						while(true){ 
-							
-							if(currentStatus==1)
-							{
-							String message = "hey there from " + gm.nodeId + " member";
-							gm.BroadcastMessage(message);
-							Thread.sleep(5000);
-							
-							
-							Double rnd = Math.random()*10;
-							Integer rndint = rnd.intValue();
-							
-							//LET'S generate a casual number, if it is > 7 perform a leave from the group
-							if(rndint > 7){
-								System.out.println("Wooo, now I want to leave the group!");
-								this.currentStatus=0;
-								this.gm.ExitGroup(); // remember to close the listen socket and every other things when leave, but don't close the process!
-							  }							
-							}
-						
-							else{ //we are out of the group
-								Double rnd = Math.random()*10;
-								Integer rndint = rnd.intValue();
-								//LET'S generate a casual number, if it is > 4 perform an add to the group
-								if(rndint > 4){
-									System.out.println("I'm feeling alone... now I want to enter the group!");
-									this.currentStatus=1;
-									this.gm.run();
-								  }							
-								}
-
-							}
-							
-						}
-					catch (Exception e) {
-						System.out.println("Something went wrong in the InputThread");
+						line = br.readLine();
+					}catch (IOException e) {
 						e.printStackTrace();
 					}
 					
-				}
-			
+					if(line.equals("join")){
+						this.gm.run();	
+						break; //terminate this thread
+					}
+					
+					else{
+						System.out.println("If you want to speak with the group you ahve to perform a 'join'");
+					}
+				
+				} //end while(true)				
+			}
 		}
-		
-		
 	}
-	
 }

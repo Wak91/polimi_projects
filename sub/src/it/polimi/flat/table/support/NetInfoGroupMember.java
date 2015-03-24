@@ -37,6 +37,15 @@ public class NetInfoGroupMember implements Serializable {
 	
 	
 	
+	public void setIpAddress(InetAddress ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+
+	public void setPort(Integer port) {
+		this.port = port;
+	}
+	
 	
 
 	

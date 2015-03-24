@@ -319,7 +319,6 @@ public class GroupController {
 		
 		//rimuoviamo i mebri 
 		for (String id : toDelete) {
-			System.out.println("entrato");
 			this.HandleLeavingMember(id);
 		}
 		
@@ -775,6 +774,11 @@ public class GroupController {
 		    String nodeId = new String(decryptedId);
 			 
 			System.out.println("il nodo " +  nodeId  + " vuole lasciare ");
+			
+			NetInfoGroupMember leavingNetInfo = group.get(nodeId);	
+			leavingNetInfo.setPort(6666);
+			group.put(nodeId, leavingNetInfo); //change the info of this node ( for the PoC forward sec )
+			
 			//creiamo la nuova dek (K')
 			this.dekGeneration();
 			//costruiamo il messaggio da mandare in broadcast
@@ -801,6 +805,8 @@ public class GroupController {
 			e.printStackTrace();
 		}
 				
+		
+		
 		//rilasciamo il lock
 		DynLock=0;
 		
