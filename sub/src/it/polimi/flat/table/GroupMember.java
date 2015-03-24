@@ -121,7 +121,9 @@ public class GroupMember {
 	
 	Socket socket = this.connectToGroupController();
 	
-	this.spawnListener(this.myPort); //spawn a listen socket in order to receive messages from others, the generated socket goes into mySocket attribute.
+	if(mySocket==null){
+	this.spawnListener(this.myPort);
+	} //spawn a listen socket in order to receive messages from others, the generated socket goes into mySocket attribute.
 	
 	System.out.println("[INFO]Started initial handshake with the group controller");
 	this.InitialHandshake(socket);
@@ -739,16 +741,11 @@ public class GroupMember {
 
 		//PROVA
 		this.buildAndSendMessage("leave");
-		try {
-			this.mySocket.close(); // close the current socket 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		this.spawnListener(6666); //Port of the death! ( the members will listen here to prove forward security )
+		//this.spawnListener(6666); //Port of the death! ( the members will listen here to prove forward security )
 		InputThread it = new InputThread(this,0);
 		Thread t = new Thread(it);
+		t.start();
 		
 	}
 	
@@ -828,7 +825,7 @@ public class GroupMember {
 					
 					String line="";
 					BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-					System.out.println("Waiting for something to broadcast...");
+					System.out.println("\n[!!!]RESTRICTED TERMINAL[!!!]");
 					try {
 						line = br.readLine();
 					}catch (IOException e) {
@@ -841,7 +838,7 @@ public class GroupMember {
 					}
 					
 					else{
-						System.out.println("If you want to speak with the group you ahve to perform a 'join'");
+						System.out.println("If you want to speak with the group you have to perform a 'join'");
 					}
 				
 				} //end while(true)				

@@ -279,7 +279,9 @@ public class GroupController {
 		
 		System.out.println("In handle crash, the size of crashed member is " + crashedMember.size());
 		ArrayList <String> toDelete = new ArrayList <String>();
-		
+		ArrayList <NetInfoGroupMember> toDelete2 = new ArrayList <NetInfoGroupMember>();
+
+		this.BroadcastLock--; // after a report crash a broadcast is surely finished 
 		DynLock=1; //block potentially other GetGroup for a moment! 
 		
 		/*
@@ -313,6 +315,20 @@ public class GroupController {
 					toDelete.add(entry.getKey());
 				}
 			}						
+		}
+		
+		for(NetInfoGroupMember nigm : crashedMember){
+			System.out.println("the info of the crash" + nigm.getIpAddress() + "  "  +nigm.getPort());
+			
+			for(NetInfoGroupMember nigm2 : this.group.values()){
+				if(nigm2.getPort().equals(nigm.getPort()) && nigm2.getIpAddress().equals(nigm.getIpAddress())){
+					toDelete2.add(nigm2);
+				}
+			}						
+		}
+		
+		for(NetInfoGroupMember nigm3 : toDelete2){
+			this.group.values().remove(nigm3);
 		}
 		
 		DynLock=0;
@@ -465,7 +481,7 @@ public class GroupController {
 		 * If a lock is ON that means I must wait to enter. ( somebody is sending message and I am not, or somebody is leaving in the group view )
 		 * */
 		while(BroadcastLock!=0 || DynLock==1 || group.keySet().size() >= GROUP_MEMBER_NUM){ //sono in corso dei broadcast nel gruppo o in corso un leaving
-			System.out.println("ASPETTO TROPPA GENTE");
+			System.out.println(" BL = "+BroadcastLock + " and DL = " + DynLock);
 
 			try {
 				wait();
@@ -767,17 +783,14 @@ public class GroupController {
 		
 		//prendiamo il lock
 		DynLock=1;
+		String nodeId="";
 				
 		try {
 			 
 			byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
-		    String nodeId = new String(decryptedId);
+		    nodeId = new String(decryptedId);
 			 
 			System.out.println("il nodo " +  nodeId  + " vuole lasciare ");
-			
-			NetInfoGroupMember leavingNetInfo = group.get(nodeId);	
-			leavingNetInfo.setPort(6666);
-			group.put(nodeId, leavingNetInfo); //change the info of this node ( for the PoC forward sec )
 			
 			//creiamo la nuova dek (K')
 			this.dekGeneration();
@@ -805,8 +818,10 @@ public class GroupController {
 			e.printStackTrace();
 		}
 				
-		
-		
+		//NetInfoGroupMember leavingNetInfo = group.get(nodeId);	
+		//leavingNetInfo.setPort(6666);
+		//group.put(nodeId, leavingNetInfo); //change the info of this node ( for the PoC forward sec )
+			
 		//rilasciamo il lock
 		DynLock=0;
 		
