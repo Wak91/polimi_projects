@@ -122,6 +122,7 @@ public class GroupMember {
 	Socket socket = this.connectToGroupController();
 	
 	if(mySocket==null){
+	System.out.println("my socket is null, let's define it");
 	this.spawnListener(this.myPort);
 	} //spawn a listen socket in order to receive messages from others, the generated socket goes into mySocket attribute.
 	
@@ -153,7 +154,7 @@ public class GroupMember {
 		Socket guestSocket = mySocket.accept();
 		ObjectInputStream ois = new ObjectInputStream(guestSocket.getInputStream()); 
 		Object message = ois.readObject();
-		
+				
 		 if(message.getClass().getSimpleName().equals("CommMessage")){
 			 CommMessage incoming = (CommMessage)message;
 				
@@ -415,6 +416,10 @@ public class GroupMember {
 		return socket;
 	}
 	
+	/*
+	 * Perform the first handshake with the group controller
+	 * @socket is the socket opened with the controller 
+	 * */
 	private void InitialHandshake(Socket socket){
 		
 		ObjectOutputStream oos=null;
@@ -435,7 +440,7 @@ public class GroupMember {
 		try {
 			oos.writeObject(new BootMessage(this.nodeId,publicKey,new NetInfoGroupMember(mySocket.getInetAddress(),mySocket.getLocalPort())));
 		} catch (IOException e) {
-			System.out.println("An error occurd during the communication with the group controller");
+			System.out.println("An error occur during the communication with the group controller");
 			e.printStackTrace();
 		}
 		
@@ -528,6 +533,9 @@ public class GroupMember {
 	 * the group
 	 */
 	private void waitingForStartMessage(){
+		
+		System.out.println("in waiting start message");
+		
 		Socket guestSocket;
 		ObjectInputStream oiss=null;
 		
@@ -560,11 +568,12 @@ public class GroupMember {
 				action = new String(decryptedAction);
 				
 			} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
-				System.out.println("Something went wrong during decryption of text");
+				System.out.println("Something went wrong during decryption of start message");
 				e.printStackTrace();
 			}
 		 
 		 if(action.equals("start")){
+			 System.out.println(""+action);
 			 return;
 		}	
 			 
@@ -743,7 +752,7 @@ public class GroupMember {
 		//PROVA
 		this.buildAndSendMessage("leave");
 		
-		//this.spawnListener(6666); //Port of the death! ( the members will listen here to prove forward security )
+		//this.spawnListener(9999); //Port of the death! ( the members will listen here to prove forward security )
 		InputThread it = new InputThread(this,0);
 		Thread t = new Thread(it);
 		t.start();
@@ -811,7 +820,7 @@ public class GroupMember {
 				}
 				
 				if(line.equals("leave")){
-					this.gm.ExitGroup();	
+					this.gm.ExitGroup();
 					break; //terminate this thread
 				}
 				
@@ -835,8 +844,8 @@ public class GroupMember {
 					}
 					
 					if(line.equals("join")){
-						this.gm.run();	
-						break; //terminate this thread
+						this.gm.run();
+						break;
 					}
 					
 					else{

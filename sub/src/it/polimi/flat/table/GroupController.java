@@ -473,7 +473,11 @@ public class GroupController {
 	am.setnodeId(DesCipher.doFinal("-1".getBytes()));
 	am.setAction(DesCipher.doFinal("start".getBytes()));
 	
-	System.out.println("Sending 'start' message to members of the group");
+	System.out.println("Sending 'start' message to members of the group:");
+	
+	for(NetInfoGroupMember nigm : group.values()){
+		System.out.println("IP: "+ nigm.getIpAddress() + " PORT: " + nigm.getPort());
+	}
 	
 	for(NetInfoGroupMember nigm : group.values()){
 		Socket s = new Socket(nigm.getIpAddress(),nigm.getPort());
@@ -685,6 +689,9 @@ public class GroupController {
 			System.out.println("Sending 'start' message to members of the group");
 			
 			for(NetInfoGroupMember nigm : group.values()){
+				
+				System.out.println("IP: " + nigm.getIpAddress() + " PORT:  " + nigm.getPort());
+				
 				Socket s = new Socket(nigm.getIpAddress(),nigm.getPort());
 				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
 				oos.writeObject(am);
