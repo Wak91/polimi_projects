@@ -345,7 +345,7 @@ public class GroupMember {
 					System.out.println("TROVATA NUOVA KEK!!");
 					//settiamo la nuova kek
 					decryptedKek = DesCipher.doFinal(decryptedDek);
-					//porcata clamorosa
+
 					switch (i) {
 						case 0:
 							this.kek0 = new SecretKeySpec(decryptedKek, 0, decryptedKek.length, "DES");
@@ -670,6 +670,7 @@ public class GroupMember {
 		
 		this.NotifyGroupController(crashedMembers);
 		
+		
 	}
 	
 	
@@ -815,6 +816,7 @@ public class GroupMember {
 				}
 				
 				else{
+					System.out.println("chiamo broadcast message");
 					gm.BroadcastMessage(line);	
 				}
 			

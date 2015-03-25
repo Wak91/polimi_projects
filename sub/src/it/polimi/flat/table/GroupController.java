@@ -207,9 +207,17 @@ public class GroupController {
 		    		 switch(action){
 		    		 
 		    		 case "leave": {
+			    			//System.out.println(" before handling leave member : BL= "+this.BroadcastLock); 
+
 		    			this.HandleLeavingMember(am);
-		    		 }
+		    			
+		    			//System.out.println(" after handling leave member : BL= "+this.BroadcastLock); 
+
+		    		 };break;
+		    		 
 		    		 case "getGroup": {
+		    			 
+		    			 System.out.println("in getGroup");
 		    			 
 		    			 HashMap <String,NetInfoGroupMember> group = this.GetGroup();
 		    			 try {
@@ -263,6 +271,9 @@ public class GroupController {
 		this.oldDek = this.dek; 
 		
 		this.dek = keyGen.generateKey(); 
+		
+		System.out.println("In DeK generation : BL= "+this.BroadcastLock); 
+
 
 	}
 	
@@ -951,6 +962,8 @@ public synchronized void HandleLeavingMember(String nodeId){
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		
 		
 		
 	}
