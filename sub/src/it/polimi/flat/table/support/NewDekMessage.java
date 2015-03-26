@@ -9,7 +9,7 @@ public class NewDekMessage implements Serializable,Message {
 	 * 
 	 */
 	protected static final long serialVersionUID = 7954886678926904742L;
-	protected ArrayList<byte[]> newDekList; //action that a member want to perform: "leave", "common", "getMember"
+	protected ArrayList<byte[]> newDekList; 
 	
 	public NewDekMessage(){
 		

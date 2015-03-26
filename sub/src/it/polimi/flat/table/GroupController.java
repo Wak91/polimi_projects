@@ -304,6 +304,7 @@ public class GroupController {
 		ArrayList <NetInfoGroupMember> toDelete2 = new ArrayList <NetInfoGroupMember>();
 
 		this.BroadcastLock--; // after a report crash a broadcast is surely finished 
+		
 		DynLock=1; //block potentially other GetGroup for a moment! 
 		
 		/*
@@ -353,12 +354,14 @@ public class GroupController {
 			this.group.values().remove(nigm3);
 		}
 		
-		DynLock=0;
-		
 		//rimuoviamo i membri 
 		for (String id : toDelete) {
 			this.HandleLeavingMember(id);
 		}		
+		
+		DynLock=0;
+		notifyAll();
+
 	}
 
 
@@ -531,6 +534,8 @@ public class GroupController {
 		oldDek = null;
 		
 		DynLock=0;//REMEMBER!
+		notifyAll();
+
 			
 	}
 	
@@ -846,7 +851,8 @@ public class GroupController {
 				
 		//rilasciamo il lock
 		DynLock=0;
-		
+		notifyAll();
+
 	}
 	
 public synchronized void HandleLeavingMember(String nodeId){
@@ -856,8 +862,6 @@ public synchronized void HandleLeavingMember(String nodeId){
 		DynLock=1;
 				
 		try {
-			 
-			 
 			System.out.println("[INFO]The member " +  nodeId  + " wants to leave the group ");
 			//creiamo la nuova dek (K')
 			this.dekGeneration();
@@ -887,6 +891,8 @@ public synchronized void HandleLeavingMember(String nodeId){
 				
 		//rilasciamo il lock
 		DynLock=0;
+		notifyAll(); //wake up possibly broadcast requests pending
+
 		
 	}
 	
@@ -1066,6 +1072,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 	//method
 	public void SignalBroadcastDone(){
 		BroadcastLock--;
+		notifyAll();
 	}
 	
 	private void createBackSecurityMessageCheck(){
