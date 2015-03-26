@@ -283,7 +283,6 @@ public class GroupMember {
 				try {
 					DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
 					} catch (InvalidKeyException e) {
-						e.printStackTrace();
 					}
 				
 				 try {
@@ -292,7 +291,6 @@ public class GroupMember {
 						System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
 					} catch (IllegalBlockSizeException | BadPaddingException e) {
 						System.out.println("Something went wrong during decryption of text");
-						//e.printStackTrace();
 					}				 
 		 }
 		 else if (message.getClass().getSimpleName().equals("WakeUpMessage")){ 
@@ -843,7 +841,7 @@ public class GroupMember {
 			socket.close();
 
 		} catch (Exception e) {
-			System.out.println("An error occured during the sending of the stop message");
+			System.out.println("An error occured during the sending of the wake up message");
 			e.printStackTrace();
 		}		
 	}
@@ -916,7 +914,7 @@ public class GroupMember {
 				}
 				
 				else{
-					//System.out.println("chiamo broadcast message");
+					System.out.println("chiamo broadcast message");
 					gm.BroadcastMessage(line);	
 				}
 			

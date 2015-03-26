@@ -168,7 +168,7 @@ public class GroupController {
 				e.printStackTrace();
 			}
 			
-			//System.out.println(m.getClass());
+			//System.out.println("received a message from " + clientSocket.getPort());
 
 		    
 		    if(m.getClass().getSimpleName().equals("BootMessage")){
@@ -180,7 +180,10 @@ public class GroupController {
 		    
 		    else //is an ActionMessage ( leave, getGroup, common )
 		    	if(m.getClass().getSimpleName().equals("ActionMessage") || m.getClass().getSimpleName().equals("CrashReportMessage")){
+		    		
 		    		ActionMessage am = (ActionMessage)m;
+		    		
+		    		System.out.println("message is a " + m.getClass().getSimpleName());
 		    		
 		    		String nodeId = "";
 		    		String action="";
@@ -238,7 +241,15 @@ public class GroupController {
 		    			 CrashReportMessage crm = (CrashReportMessage)am;
 		    			 ArrayList <NetInfoGroupMember> crashedMember = crm.getCrashedMembers();
 		    			 System.out.println("[INFO]Received a crash report from a member");
-		    			 this.HandleCrashedMembers(crashedMember);			 
+		    			 this.HandleCrashedMembers(crashedMember);	
+		    			 System.out.println("Ended crash report\n Now group is: \n");
+		    			 
+		    			 for(NetInfoGroupMember nigm : group.values()){
+		    				 
+		    				 System.out.println("IP: "+nigm.getIpAddress()+ "PORT:  " +nigm.getPort() + "\n");
+		    				 
+		    			 }
+		    			 
 		    		 };break;
 		    		 
 		    	 }//end switch   			
@@ -342,13 +353,10 @@ public class GroupController {
 		
 		DynLock=0;
 		
-		//rimuoviamo i mebri 
+		//rimuoviamo i membri 
 		for (String id : toDelete) {
 			this.HandleLeavingMember(id);
-		}
-		
-		
-		
+		}		
 	}
 
 
@@ -834,10 +842,6 @@ public class GroupController {
 			e.printStackTrace();
 		}
 				
-		//NetInfoGroupMember leavingNetInfo = group.get(nodeId);	
-		//leavingNetInfo.setPort(6666);
-		//group.put(nodeId, leavingNetInfo); //change the info of this node ( for the PoC forward sec )
-			
 		//rilasciamo il lock
 		DynLock=0;
 		
@@ -952,7 +956,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 		try {
 			ndm.setnewKekList(newKekList);
 			
-			System.out.println("Sending newkekmessage....");
+			//System.out.println("Sending newkekmessage....");
 			
 			for(NetInfoGroupMember nigm : group.values()){
 				Socket s = new Socket(nigm.getIpAddress(),nigm.getPort());
@@ -1059,9 +1063,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 	//Once a member send a broadcast to all the group, remember to call this
 	//method
 	public void SignalBroadcastDone(){
-		
 		BroadcastLock--;
-		
 	}
 	
 	private void createBackSecurityMessageCheck(){
