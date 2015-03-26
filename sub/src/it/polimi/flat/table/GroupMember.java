@@ -413,7 +413,7 @@ public class GroupMember {
 
 					}
 					
-					System.out.println("trovata nuova dek!!");
+					//System.out.println("trovata nuova dek!!");
 				} 
 				//se ho un eccezione vuol dire che la chiave non e quella giusta
 				catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -790,7 +790,7 @@ public class GroupMember {
 			this.notifyCrashedMembers(crashedMembers);
 		}
 		//mandiamo il messaggio
-		this.buildAndSendMessage("broadcastdone");
+		//this.buildAndSendMessage("broadcastdone");
 				
 		return;
 		

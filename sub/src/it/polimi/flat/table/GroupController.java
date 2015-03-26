@@ -185,6 +185,8 @@ public class GroupController {
 		    		
 		    		System.out.println("message is a " + m.getClass().getSimpleName());
 		    		
+		    		
+		    		
 		    		String nodeId = "";
 		    		String action="";
 		    		
@@ -248,8 +250,7 @@ public class GroupController {
 		    				 
 		    				 System.out.println("IP: "+nigm.getIpAddress()+ "PORT:  " +nigm.getPort() + "\n");
 		    				 
-		    			 }
-		    			 
+		    			 }			 
 		    		 };break;
 		    		 
 		    	 }//end switch   			
