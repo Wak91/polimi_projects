@@ -177,15 +177,20 @@ public class GroupMember {
 			 
 			 System.out.println("-------------------NEW MESSAGE!-------------------");
 			 System.out.println("GroupMember " + incoming.getIdSender() +" says: " + plainText);
-			 System.out.println("--------------------------------------------------");
+			 System.out.println("--------------------------------------------------\n");
+			 
+			 System.out.println("[INFO]Waiting for something to broadcast...");
+
 			 
 		    }
 		 //caso nuova dek
 		 else if(message.getClass().getSimpleName().equals("NewDekMessage")){
+			System.out.println("[INFO]New DeK has been received");
 			this.retrieveNewDek(message);
 		 }
 		 //caso nuove kek
 		 else if(message.getClass().getSimpleName().equals("NewKekMessage")){
+				System.out.println("[INFO]New KeKs has been received");
 				this.retrieveNewKek(message);
 		 }
 		 
@@ -246,7 +251,7 @@ public class GroupMember {
 			System.out.println("[INFO]Waiting for 'start' from GroupController");
 			waitingForStartMessage();
 			System.out.println("[INFO]Received 'start' from GroupController");
-			System.out.println("Waiting for something to broadcast...");
+			System.out.println("[INFO]Waiting for something to broadcast...");
 
 		}
 		guestSocket.close();
@@ -342,7 +347,7 @@ public class GroupMember {
 					decryptedText = DesCipher.doFinal(bs);
 					//settiamo la nuova dek
 					this.dek = new SecretKeySpec(decryptedText, 0, decryptedText.length, "DES");
-					System.out.println("trovata nuova dek!!");
+					//System.out.println("trovata nuova dek!!");
 				} 
 				//se ho un eccezione vuol dire che la chiave non e quella giusta
 				catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -393,7 +398,7 @@ public class GroupMember {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					System.out.println("TROVATA NUOVA KEK!!");
+					//System.out.println("TROVATA NUOVA KEK!!");
 					//settiamo la nuova kek
 					decryptedKek = DesCipher.doFinal(decryptedDek);
 
@@ -898,7 +903,7 @@ public class GroupMember {
 			while(true){
 				String line="";
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				System.out.println("Waiting for something to broadcast...");
+				System.out.println("[INFO]Waiting for something to broadcast...");
 				try {
 					line = br.readLine();
 				}catch (IOException e) {
@@ -911,7 +916,7 @@ public class GroupMember {
 				}
 				
 				else{
-					System.out.println("chiamo broadcast message");
+					//System.out.println("chiamo broadcast message");
 					gm.BroadcastMessage(line);	
 				}
 			
@@ -937,7 +942,7 @@ public class GroupMember {
 					}
 					
 					else{
-						System.out.println("If you want to speak with the group you have to perform a 'join'");
+						System.out.println("[INFO]If you want to speak with the group you have to perform a 'join'");
 					}
 				
 				} //end while(true)				

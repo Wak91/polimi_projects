@@ -90,7 +90,7 @@ public class GroupController {
 			keyGen = KeyGenerator.getInstance("DES");
 			keyGen.init(56); //key of 56 bits 
 		} catch (NoSuchAlgorithmException e) {
-			System.out.println("Error no such algorithm for DES");
+			System.out.println("[ERROR]Error no such algorithm for DES");
 			e.printStackTrace();
 		}
 		SecretKey key = null;
@@ -131,7 +131,7 @@ public class GroupController {
 		try {
 			startServer();
 		} catch (IOException | ClassNotFoundException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
-			System.out.println("Something went wrong in the server startup");
+			System.out.println("[ERROR]Something went wrong in the server startup");
 			e.printStackTrace();
 		}
 		
@@ -145,7 +145,7 @@ public class GroupController {
 			  try {
 				  clientSocket = mySocket.accept(); //wait untill a client connect 				  
 			} catch (IOException e) {
-				System.out.println("An error during the accept has occured");
+				System.out.println("[ERROR]An error during the accept has occured");
 				e.printStackTrace();
 			}
 			  
@@ -173,7 +173,7 @@ public class GroupController {
 		    
 		    if(m.getClass().getSimpleName().equals("BootMessage")){
 		    	//handle join of a new member
-		    	System.out.println("BOOT MESSAGE FROM A MEMBER");
+		    	System.out.println("[INFO]A boot message has been received");
 		    	BootMessage bm = (BootMessage)m;
 		    	HandleAddMember(bm,oos);
 		    }
@@ -197,10 +197,10 @@ public class GroupController {
 		    				
 		    				byte[] decryptedAction = DesCipher.doFinal(am.getAction()); //decrypting the message  
 		    				action = new String(decryptedAction);
-		    				System.out.println("action is " + action);
+		    				//System.out.println("action is " + action);
 		    				
 		    			} catch (IllegalBlockSizeException | BadPaddingException e) {
-		    				System.out.println("Something went wrong during decryption of text");
+		    				System.out.println("[ERROR]Something went wrong during decryption of text");
 		    				e.printStackTrace();
 		    			}
 		    		 
@@ -217,7 +217,7 @@ public class GroupController {
 		    		 
 		    		 case "getGroup": {
 		    			 
-		    			 System.out.println("in getGroup");
+		    			 //System.out.println("in getGroup");
 		    			 
 		    			 HashMap <String,NetInfoGroupMember> group = this.GetGroup();
 		    			 try {
@@ -231,13 +231,13 @@ public class GroupController {
 		    		 case "broadcastdone":{ //signal a broadcastdone and decrement BroadcastLock
 		    			 
 		    			 this.BroadcastLock--; // remove a broadcastlock 
-		    			 System.out.println("BroadcastLock is " + BroadcastLock);
+		    			 //System.out.println("BroadcastLock is " + BroadcastLock);
 		    		 };break;
 		    		 
 		    		 case "crashreport":{    			 
 		    			 CrashReportMessage crm = (CrashReportMessage)am;
 		    			 ArrayList <NetInfoGroupMember> crashedMember = crm.getCrashedMembers();
-		    			 System.out.println("Received a report");
+		    			 System.out.println("[INFO]Received a crash report from a member");
 		    			 this.HandleCrashedMembers(crashedMember);			 
 		    		 };break;
 		    		 
@@ -264,7 +264,7 @@ public class GroupController {
 			keyGen = KeyGenerator.getInstance("DES");
 			keyGen.init(56); //key of 56 bits 
 		} catch (NoSuchAlgorithmException e) {
-			System.out.println("Error no such algorithm for DES");
+			System.out.println("[ERROR]Error no such algorithm for DES");
 			e.printStackTrace();
 		}
 		//salviamo la dek come oldDek 
@@ -272,9 +272,7 @@ public class GroupController {
 		
 		this.dek = keyGen.generateKey(); 
 		
-		System.out.println("In DeK generation : BL= "+this.BroadcastLock); 
-
-
+		//System.out.println("In DeK generation : BL= "+this.BroadcastLock); 
 	}
 	
 	
@@ -288,7 +286,7 @@ public class GroupController {
 	 * */
 	private void HandleCrashedMembers(ArrayList<NetInfoGroupMember> crashedMember) {
 		
-		System.out.println("In handle crash, the size of crashed member is " + crashedMember.size());
+		//System.out.println("In handle crash, the size of crashed member is " + crashedMember.size());
 		ArrayList <String> toDelete = new ArrayList <String>();
 		ArrayList <NetInfoGroupMember> toDelete2 = new ArrayList <NetInfoGroupMember>();
 
@@ -321,7 +319,7 @@ public class GroupController {
 			
 			for (Map.Entry<String,NetInfoGroupMember> entry : this.group.entrySet()){
 				if(entry.getValue().getPort().equals(nigm.getPort()) && entry.getValue().getIpAddress().equals(nigm.getIpAddress())){
-					System.out.println("id of the crashed memeber: " +  entry.getKey());
+					//System.out.println("id of the crashed memeber: " +  entry.getKey());
 					//this.group.values().remove(entry.getValue());
 					toDelete.add(entry.getKey());
 				}
@@ -329,7 +327,7 @@ public class GroupController {
 		}
 		
 		for(NetInfoGroupMember nigm : crashedMember){
-			System.out.println("the info of the crash" + nigm.getIpAddress() + "  "  +nigm.getPort());
+			//System.out.println("the info of the crash" + nigm.getIpAddress() + "  "  +nigm.getPort());
 			
 			for(NetInfoGroupMember nigm2 : this.group.values()){
 				if(nigm2.getPort().equals(nigm.getPort()) && nigm2.getIpAddress().equals(nigm.getIpAddress())){
@@ -369,20 +367,20 @@ public class GroupController {
 		try {
 			mySocket = new ServerSocket(port);
 		} catch (IOException e) {
-			System.out.println("Error while listen on" +port);
+			System.out.println("[ERROR]Error while listen on" +port);
 			e.printStackTrace();
 		}
 		
-		System.out.println("Now listening for the node of the group...");
+		System.out.println("[INFO]Now listening for the node of the group...");
 		
 		while(cont!=0){ //wait for 8 clients
 	    try {
 			  clientSocket = mySocket.accept(); //wait untill a client connect 
 			  cont--;
-			  System.out.println("A node joined! missing "+cont);
+			  System.out.println("[INFO]A node joined! missing "+cont);
 			  
 		} catch (IOException e) {
-			System.out.println("An error during the accept has occured");
+			System.out.println("[ERROR]An error during the accept has occured");
 			e.printStackTrace();
 		}
 	    
@@ -410,7 +408,7 @@ public class GroupController {
 		// ----------------------------------------
 		// send the encrypted KEY GROUP(DeK) to the node 
 		// ----------------------------------------
-		System.out.println("Sending the encrypted DEK to the node "+bootMessage.getId());
+		System.out.println("[INFO]Sending the encrypted DEK to the node "+bootMessage.getId());
 	    
 	    raw = RsaCipher.doFinal(dek.getEncoded());
 	    scm.setDeK(raw);
@@ -419,11 +417,11 @@ public class GroupController {
 		// ----------------------------------------
 		// send the encrypted KEK0 to the node 
 		// ----------------------------------------
-		System.out.println("Sending the encrypted KEK0 to the node "+bootMessage.getId());
+		System.out.println("[INFO]Sending the encrypted KEK0 to the node "+bootMessage.getId());
 	    String binaryId = bootMessage.getId();
-	    System.out.println("binary id is " +binaryId);
+	    //System.out.println("binary id is " +binaryId);
 	    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
-	    System.out.println("map key is " + mapKey);
+	    //System.out.println("map key is " + mapKey);
 	    raw = RsaCipher.doFinal(table.get(mapKey).getEncoded()); 
 	    scm.setKeK0(raw);
 	    // ----------------------------------------
@@ -432,7 +430,7 @@ public class GroupController {
 		// send the encrypted KEK1 to the node 
 		// ----------------------------------------
 
-		System.out.println("Sending the encrypted KEK1 to the node "+bootMessage.getId());
+		System.out.println("[INFO]Sending the encrypted KEK1 to the node "+bootMessage.getId());
 	    binaryId = bootMessage.getId();
 	    mapKey = ""+binaryId.charAt(1)+"1";
 	    
@@ -445,7 +443,7 @@ public class GroupController {
 		// send the encrypted KEK2 to the node 
 		// ----------------------------------------
 	    
-		System.out.println("Sending the encrypted KEK2 to the node "+bootMessage.getId());
+		System.out.println("[INFO]Sending the encrypted KEK2 to the node "+bootMessage.getId());
 	    binaryId = bootMessage.getId();
 	    mapKey = binaryId.charAt(0)+"2";
 	    
@@ -473,7 +471,7 @@ public class GroupController {
 	am.setnodeId(DesCipher.doFinal("-1".getBytes()));
 	am.setAction(DesCipher.doFinal("start".getBytes()));
 	
-	System.out.println("Sending 'start' message to members of the group:");
+	System.out.println("[INFO]Sending 'start' message to members of the group:\n----------------\n");
 	
 	for(NetInfoGroupMember nigm : group.values()){
 		System.out.println("IP: "+ nigm.getIpAddress() + " PORT: " + nigm.getPort());
@@ -545,10 +543,10 @@ public class GroupController {
 			//	signing it with the previous value.
 			// ----------------------------------------
 
-			System.out.println("Change kek0 for new entry "+msg.getId());
-		    System.out.println("binary id is " +binaryId);
+			System.out.println("[INFO]Change kek0 for new entry "+msg.getId());
+		    //System.out.println("binary id is " +binaryId);
 		    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
-		    System.out.println("map key is " + mapKey);
+		    //System.out.println("map key is " + mapKey);
 		    DesCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
 			table.put(mapKey, new SecretKeySpec(DesCipher.doFinal(table.get(mapKey).getEncoded()),0,table.get(mapKey).getEncoded().length, "DES"));
 			
@@ -557,9 +555,9 @@ public class GroupController {
 			//	signing it with the previous value.
 			// ----------------------------------------
 
-			System.out.println("Change kek1 for new entry "+msg.getId());
+			System.out.println("[INFO]Change kek1 for new entry "+msg.getId());
 		    mapKey = ""+binaryId.charAt(1)+"1";
-		    System.out.println("map key is " + mapKey);
+		    //System.out.println("map key is " + mapKey);
 		    DesCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
 			table.put(mapKey, new SecretKeySpec(DesCipher.doFinal(table.get(mapKey).getEncoded()),0,table.get(mapKey).getEncoded().length, "DES"));
 			
@@ -568,9 +566,9 @@ public class GroupController {
 			//	signing it with the previous value.
 			// ----------------------------------------
 
-			System.out.println("Change kek2 for new entry "+msg.getId());
+			System.out.println("[INFO]Change kek2 for new entry "+msg.getId());
 		    mapKey = binaryId.charAt(0)+"2";
-		    System.out.println("map key is " + mapKey);
+		    //System.out.println("map key is " + mapKey);
 		    DesCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
 			table.put(mapKey, new SecretKeySpec(DesCipher.doFinal(table.get(mapKey).getEncoded()),0,table.get(mapKey).getEncoded().length, "DES"));
 
@@ -613,7 +611,7 @@ public class GroupController {
 			// ----------------------------------------
 			// send the encrypted KEY GROUP(DeK) to the node 
 			// ----------------------------------------
-			System.out.println("Sending the encrypted DEK to the node "+msg.getId());
+			System.out.println("[INFO]Sending the encrypted DEK to the node "+msg.getId());
 		    
 		    raw = RsaCipher.doFinal(dek.getEncoded());
 		    scm.setDeK(raw);
@@ -622,7 +620,7 @@ public class GroupController {
 			// ----------------------------------------
 			// send the encrypted KEK0 to the node 
 			// ----------------------------------------
-			System.out.println("Sending the encrypted KEK0 to the node "+msg.getId());
+			System.out.println("[INFO]Sending the encrypted KEK0 to the node "+msg.getId());
 		    String binaryId = msg.getId();
 		    System.out.println("binary id is " +binaryId);
 		    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
@@ -635,7 +633,7 @@ public class GroupController {
 			// send the encrypted KEK1 to the node 
 			// ----------------------------------------
 
-			System.out.println("Sending the encrypted KEK1 to the node "+msg.getId());
+			System.out.println("[INFO]Sending the encrypted KEK1 to the node "+msg.getId());
 		    binaryId = msg.getId();
 		    mapKey = ""+binaryId.charAt(1)+"1";
 		    
@@ -648,7 +646,7 @@ public class GroupController {
 			// send the encrypted KEK2 to the node 
 			// ----------------------------------------
 		    
-			System.out.println("Sending the encrypted KEK2 to the node "+msg.getId());
+			System.out.println("[INFO]Sending the encrypted KEK2 to the node "+msg.getId());
 		    binaryId = msg.getId();
 		    mapKey = binaryId.charAt(0)+"2";
 		    
@@ -656,7 +654,7 @@ public class GroupController {
 			scm.setKeK2(raw);
 			    
 			// ----------------------------------------
-		    System.out.println("SEND MESSAGE");
+		    //System.out.println("SEND MESSAGE");
 		    oos.writeObject(scm);
 		    
 		} catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -669,7 +667,7 @@ public class GroupController {
 		//send keks and dek in broadcast to old group
 		for(String idMember : group.keySet()){
 			if(!idMember.equals(""+msg.getId())){
-				System.out.println("UPDATE KEYS "+idMember);
+				//System.out.println("UPDATE KEYS "+idMember);
 				sendConfiguration(idMember);
 			}
 		}
@@ -686,7 +684,7 @@ public class GroupController {
 			am.setnodeId(DesCipher.doFinal("-1".getBytes()));
 			am.setAction(DesCipher.doFinal("start".getBytes()));
 			
-			System.out.println("Sending 'start' message to members of the group");
+			System.out.println("[INFO]Sending 'start' message to members of the group");
 			
 			for(NetInfoGroupMember nigm : group.values()){
 				
@@ -724,7 +722,7 @@ public class GroupController {
 			// ----------------------------------------
 			// send the encrypted KEY GROUP(DeK) to the node 
 			// ----------------------------------------
-			System.out.println("Sending the encrypted DEK to the node "+id);
+			System.out.println("[INFO]Sending the encrypted DEK to the node "+id);
 			raw = DesCipher.doFinal(dek.getEncoded());
 			
 			scm.setDeK(raw);
@@ -733,11 +731,11 @@ public class GroupController {
 			// ----------------------------------------
 			// send the encrypted KEK0 to the node 
 			// ----------------------------------------
-			System.out.println("Sending the encrypted KEK0 to the node "+id);
+			System.out.println("[INFO]Sending the encrypted KEK0 to the node "+id);
 		    String binaryId = id;
-		    System.out.println("binary id is " +binaryId);
+		    //System.out.println("binary id is " +binaryId);
 		    String mapKey = ""+binaryId.charAt(2)+"0"; //charAt(2) is the 0s bit of the Id
-		    System.out.println("map key is " + mapKey);
+		    //System.out.println("map key is " + mapKey);
 		    raw = DesCipher.doFinal(table.get(mapKey).getEncoded()); 
 		    scm.setKeK0(raw);
 		    // ----------------------------------------
@@ -746,7 +744,7 @@ public class GroupController {
 			// send the encrypted KEK1 to the node 
 			// ----------------------------------------
 
-			System.out.println("Sending the encrypted KEK1 to the node "+id);
+			System.out.println("[INFO]Sending the encrypted KEK1 to the node "+id);
 		    binaryId = id;
 		    mapKey = ""+binaryId.charAt(1)+"1";
 		    
@@ -759,7 +757,7 @@ public class GroupController {
 			// send the encrypted KEK2 to the node 
 			// ----------------------------------------
 		    
-			System.out.println("Sending the encrypted KEK2 to the node "+id);
+			System.out.println("[INFO]Sending the encrypted KEK2 to the node "+id);
 		    binaryId = id;
 		    mapKey = binaryId.charAt(0)+"2";
 		    raw = DesCipher.doFinal(table.get(mapKey).getEncoded());
@@ -808,7 +806,7 @@ public class GroupController {
 			byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
 		    nodeId = new String(decryptedId);
 			 
-			System.out.println("il nodo " +  nodeId  + " vuole lasciare ");
+			System.out.println("[INFO]The member " +  nodeId  + " wants to leave the group ");
 			
 			//creiamo la nuova dek (K')
 			this.dekGeneration();
@@ -854,7 +852,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 		try {
 			 
 			 
-			System.out.println("il nodo " +  nodeId  + " vuole lasciare ");
+			System.out.println("[INFO]The member " +  nodeId  + " wants to leave the group ");
 			//creiamo la nuova dek (K')
 			this.dekGeneration();
 			//costruiamo il messaggio da mandare in broadcast
@@ -912,7 +910,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 		for (Map.Entry<String,SecretKey> entry : this.table.entrySet()){
 			//se l entry appartiene ad una chiave del nodo uscente allora non criptiamola
 			if(keysLeaveMemberArrayList.contains(entry.getKey())){
-				System.out.println("trovata chiave " + entry.getKey());
+				//System.out.println("trovata chiave " + entry.getKey());
 				continue;
 			}
 			else{
@@ -935,7 +933,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 			DesCipher.init(Cipher.ENCRYPT_MODE, dek);
 			ndm.setnewDekList(newDekList);
 			
-			System.out.println("Sending newdekmessage....");
+			//System.out.println("Sending newdekmessage....");
 			
 			for(NetInfoGroupMember nigm : group.values()){
 				Socket s = new Socket(nigm.getIpAddress(),nigm.getPort());
@@ -1053,7 +1051,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 		}
 		
 		BroadcastLock++;
-		System.out.println("BroadcastLock is " + BroadcastLock);
+		//System.out.println("BroadcastLock is " + BroadcastLock);
 		return group; //return the group view 
 		
 	}
