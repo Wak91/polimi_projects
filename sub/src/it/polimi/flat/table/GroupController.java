@@ -250,7 +250,7 @@ public class GroupController {
 				e.printStackTrace();
 			}
 		       }//end while(true)		
-          	  }
+          }
 	
 	
 	/**
@@ -944,12 +944,8 @@ public synchronized void HandleLeavingMember(String nodeId){
 				s.close();
 			}
 		} catch (InvalidKeyException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
+	  }
 	}
 	
 	private void sendNewKekMessage(ArrayList<byte[]> newKekList){
@@ -966,13 +962,8 @@ public synchronized void HandleLeavingMember(String nodeId){
 				oos.writeObject(ndm);
 				s.close();
 			}
-		}catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
-		
-		
+		}catch (Exception e) {
+		}		
 	}
 	
 	/**
@@ -1112,7 +1103,5 @@ public synchronized void HandleLeavingMember(String nodeId){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-
 	}
 }

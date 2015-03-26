@@ -4,16 +4,14 @@ import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
 import it.polimi.flat.table.support.CommMessage;
 import it.polimi.flat.table.support.CrashReportMessage;
-import it.polimi.flat.table.support.Message;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.NewDekMessage;
 import it.polimi.flat.table.support.NewKekMessage;
 import it.polimi.flat.table.support.StartConfigMessage;
+import it.polimi.flat.table.support.StopMessage;
+import it.polimi.flat.table.support.WakeUpMessage;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -41,6 +39,7 @@ public class GroupMember {
 	private String nodeId; //Identifier of the node 
 	private Integer myPort;
 	private ServerSocket mySocket; //the socket associated to this groupMember ( the listener for incoming messages )
+	private int idle;
 	
 	private Key publicKey;  //Initial public key
 	private Key privateKey; //Initial private key
@@ -63,10 +62,11 @@ public class GroupMember {
 	 * */
 	public GroupMember(Integer id,Integer ListenPort){
 		
+		idle=1;
 		mySocket=null;
 		nodeId = Integer.toBinaryString(id);
 		
-		System.out.println("MY ID: " + nodeId+"\n");
+		//System.out.println("MY ID: " + nodeId+"\n");
 		
 		//Patch the nodeID on 3 bits
 		if(nodeId.length()==1){
@@ -116,16 +116,16 @@ public class GroupMember {
 
 	}
 	
-	
+		
 	public void run(){
 	
 	Socket socket = this.connectToGroupController();
 	
 	if(mySocket==null){
-	System.out.println("my socket is null, let's define it");
+	//System.out.println("my socket is null, let's define it");
 	this.spawnListener(this.myPort);
 	} //spawn a listen socket in order to receive messages from others, the generated socket goes into mySocket attribute.
-	
+
 	System.out.println("[INFO]Started initial handshake with the group controller");
 	this.InitialHandshake(socket);
 	System.out.println("[INFO]Ended initial handshake with the group controller");
@@ -140,10 +140,10 @@ public class GroupMember {
 	InputThread it = new InputThread(this,1); //1= node start alive obviously
 	Thread t = new Thread(it);
 	t.start();
-	
-	while(true){ //listen forever
+			
+	while(idle==0){
 	try {
-
+		
 		byte[] decryptedText=null;
 		String plainText="";
 		
@@ -171,11 +171,13 @@ public class GroupMember {
 					decryptedText = DesCipher.doFinal(chiperText); //decrypting the message  
 					plainText = new String(decryptedText);
 				} catch (IllegalBlockSizeException | BadPaddingException e) {
-					System.out.println("Something went wrong during decryption of text");
+					System.out.println("[ERROR]Something went wrong during decryption of text");
 					//e.printStackTrace();
 				}
 			 
-			 System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
+			 System.out.println("-------------------NEW MESSAGE!-------------------");
+			 System.out.println("GroupMember " + incoming.getIdSender() +" says: " + plainText);
+			 System.out.println("--------------------------------------------------");
 			 
 		    }
 		 //caso nuova dek
@@ -186,10 +188,17 @@ public class GroupMember {
 		 else if(message.getClass().getSimpleName().equals("NewKekMessage")){
 				this.retrieveNewKek(message);
 		 }
+		 
+		 else if(message.getClass().getSimpleName().equals("StopMessage")){
+			 
+			 //System.out.println("Stop message arrived");
+			 this.idle=1;	 
+		 }
 		//---------------
 		//I have to check previously what kind of message is in order to understand what to do 
 		 else if(message.getClass().getSimpleName().equals("StartConfigMessage")){
-			 System.out.println("NODEID => "+nodeId + " RECEIVE STARTCONFIGMESSAGE");
+			 
+			 //System.out.println("NODEID => "+nodeId + " RECEIVE STARTCONFIGMESSAGE");
 			
 			 //update keys and dek
 			StartConfigMessage scm = (StartConfigMessage)message;
@@ -199,7 +208,7 @@ public class GroupMember {
 			try {
 				decryptedKey = DesCipher.doFinal(rawDek);
 			} catch (IllegalBlockSizeException | BadPaddingException e) {
-				System.out.println("Something went wrong during decryption of DEK");
+				System.out.println("[ERROR]Something went wrong during decryption of DEK");
 				e.printStackTrace();
 			}
 			
@@ -207,7 +216,7 @@ public class GroupMember {
 			try {
 				decryptedKey = DesCipher.doFinal(scm.getKeK0());
 			} catch (IllegalBlockSizeException | BadPaddingException e) {
-				System.out.println("Something went wrong during decryption of KEK0");
+				System.out.println("[ERROR]Something went wrong during decryption of KEK0");
 				e.printStackTrace();
 			}
 			
@@ -216,7 +225,7 @@ public class GroupMember {
 			try {
 				decryptedKey = DesCipher.doFinal(scm.getKeK1());
 			} catch (IllegalBlockSizeException | BadPaddingException e) {
-				System.out.println("Something went wrong during decryption of KEK1");
+				System.out.println("[ERROR]Something went wrong during decryption of KEK1");
 				e.printStackTrace();
 			}
 			
@@ -227,16 +236,16 @@ public class GroupMember {
 			try {
 				decryptedKey = DesCipher.doFinal(scm.getKeK2());
 			} catch (IllegalBlockSizeException | BadPaddingException e) {
-				System.out.println("Something went wrong during decryption of KEK2");
+				System.out.println("[ERROR]Something went wrong during decryption of KEK2");
 				e.printStackTrace();
 			}
 			
 			this.kek2 = new SecretKeySpec(decryptedKey,0,decryptedKey.length,"DES");
 			
 			//-------Let's wait for the OK LET'S START FROM SERVER---------------------------
-			System.out.println("Waiting for 'start' from GroupController");
+			System.out.println("[INFO]Waiting for 'start' from GroupController");
 			waitingForStartMessage();
-			System.out.println("Receive 'start' from GroupController");
+			System.out.println("[INFO]Received 'start' from GroupController");
 			System.out.println("Waiting for something to broadcast...");
 
 		}
@@ -246,16 +255,58 @@ public class GroupMember {
 	} catch (IOException | ClassNotFoundException e) {
 		e.printStackTrace();
 	} catch (InvalidKeyException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	
   } // while listener ended 
+
+	//in idle=1 accept only a commMessage or a message that wake up the member
+	while(idle==1){
+		
+		try{
+		Socket guestSocket = mySocket.accept();
+		ObjectInputStream ois = new ObjectInputStream(guestSocket.getInputStream()); 
+		Object message = ois.readObject();
+		byte[] decryptedText=null;
+		String plainText="";
+		
+		 if(message.getClass().getSimpleName().equals("CommMessage")){
+			 CommMessage incoming = (CommMessage)message;
+			//now decrypt the incoming message with the group key 
+				byte[] chiperText = incoming.getText();
+				
+				try {
+					DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
+					} catch (InvalidKeyException e) {
+						e.printStackTrace();
+					}
+				
+				 try {
+						decryptedText = DesCipher.doFinal(chiperText); //decrypting the message  
+						plainText = new String(decryptedText);
+						System.out.println("GroupMember " + incoming.getIdSender() +" says " + plainText);
+					} catch (IllegalBlockSizeException | BadPaddingException e) {
+						System.out.println("Something went wrong during decryption of text");
+						//e.printStackTrace();
+					}				 
+		 }
+		 else if (message.getClass().getSimpleName().equals("WakeUpMessage")){ 
+			 this.idle=0;
+			 continue;
+		 }
+		
+		}
+		catch(Exception e){
+			
+		}	
+	} //end while ( idle=1 )
+	
+	System.out.println("end run cycle");
 }//end run
 	
 	
 	/**
-	 * cerchiamo di ricavare la nuoa dek in seguito ad un leave di un nodo
+	 * cerchiamo di ricavare la nuova dek in seguito ad un leave di un nodo
 	 * @param message
 	 */
 	private void retrieveNewDek(Object message) {
@@ -340,7 +391,6 @@ public class GroupMember {
 					try {
 						DesCipher.init(Cipher.DECRYPT_MODE, dek);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					System.out.println("TROVATA NUOVA KEK!!");
@@ -393,7 +443,6 @@ public class GroupMember {
 				port = this.myPort;
 				spawnListener(port);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
@@ -449,7 +498,8 @@ public class GroupMember {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("WAITING FOR STARTCONFIGMESSAGE");
+		
+		//System.out.println("WAITING FOR STARTCONFIGMESSAGE");
 		
 		try {
 			scm = (StartConfigMessage)ois.readObject();
@@ -457,7 +507,8 @@ public class GroupMember {
 			System.out.println("Something went wrong while reading the startConfigMessage from GroupController");
 			e.printStackTrace();
 		}
-		System.out.println("RECEIVE  STARTCONFIGMESSAGE");
+		
+		//System.out.println("RECEIVE  STARTCONFIGMESSAGE");
 
 		
 	    try {
@@ -522,10 +573,8 @@ public class GroupMember {
 		*/
 		
 		//-------Let's wait for the OK LET'S START FROM SERVER---------------------------
-		System.out.println("Waiting for 'start' from GroupController");
-		waitingForStartMessage();
-		
-				
+		System.out.println("[INFO]Waiting for 'start' from group controller");
+		waitingForStartMessage();			
 	}
 	
 	/**
@@ -534,7 +583,7 @@ public class GroupMember {
 	 */
 	private void waitingForStartMessage(){
 		
-		System.out.println("in waiting start message");
+		//System.out.println("in waiting start message");
 		
 		Socket guestSocket;
 		ObjectInputStream oiss=null;
@@ -573,7 +622,7 @@ public class GroupMember {
 			}
 		 
 		 if(action.equals("start")){
-			 System.out.println(""+action);
+			 this.idle=0;
 			 return;
 		}	
 			 
@@ -748,16 +797,53 @@ public class GroupMember {
 	 * Method used in order to left the group voluntarly 
 	 * */
 	private void ExitGroup(){
+		
+		Socket socket = null;
+		try {
+			socket = new Socket("localhost",this.myPort);	
+			ObjectOutputStream ooss = new ObjectOutputStream(socket.getOutputStream());
+			
+			StopMessage sm = new StopMessage();
+		
+			ooss.writeObject(sm);
+			
+			socket.close();
 
-		//PROVA
-		this.buildAndSendMessage("leave");
+		} catch (Exception e) {
+			System.out.println("An error occured during the sending of the stop message");
+			e.printStackTrace();
+		}			
 		
 		//this.spawnListener(9999); //Port of the death! ( the members will listen here to prove forward security )
 		InputThread it = new InputThread(this,0);
 		Thread t = new Thread(it);
 		t.start();
 		
+		//PROVA
+		this.buildAndSendMessage("leave");
+		
 	}
+	
+	public void wakeUp() {
+		
+		Socket socket = null;
+		try {
+			socket = new Socket("localhost",this.myPort);	
+			ObjectOutputStream ooss = new ObjectOutputStream(socket.getOutputStream());
+			
+			WakeUpMessage wm = new WakeUpMessage();
+
+			ooss.writeObject(wm);
+			
+			socket.close();
+
+		} catch (Exception e) {
+			System.out.println("An error occured during the sending of the stop message");
+			e.printStackTrace();
+		}		
+	}
+	
+	
 	
 	/**
 	 * funzione da chiamare quando abbiamo un messaggio azione e non broadcast
@@ -844,6 +930,8 @@ public class GroupMember {
 					}
 					
 					if(line.equals("join")){
+						
+						this.gm.wakeUp(); //wake up the son		
 						this.gm.run();
 						break;
 					}
@@ -856,4 +944,6 @@ public class GroupMember {
 			}
 		}
 	}
+
+	
 }
