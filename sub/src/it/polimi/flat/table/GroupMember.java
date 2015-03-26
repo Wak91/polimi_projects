@@ -175,7 +175,7 @@ public class GroupMember {
 					//e.printStackTrace();
 				}
 			 
-			 System.out.println("-------------------NEW MESSAGE!-------------------");
+			 System.out.println("\n-------------------NEW MESSAGE!-------------------");
 			 System.out.println("GroupMember " + incoming.getIdSender() +" says: " + plainText);
 			 System.out.println("--------------------------------------------------\n");
 			 
@@ -682,7 +682,7 @@ public class GroupMember {
 			
 			HashMap <String,NetInfoGroupMember> group = (HashMap <String,NetInfoGroupMember>)oiss2.readObject();
 			
-			//System.out.println("Ricevuta view group attuale");
+			System.out.println("Ricevuta view group attuale");
 	    
 			for(NetInfoGroupMember nigm : group.values()){
 				
@@ -788,9 +788,12 @@ public class GroupMember {
 		if(crashedMembers.size()!=0){
 			//System.out.println("Hey now I'm calling notify crashed");
 			this.notifyCrashedMembers(crashedMembers);
+			return;
 		}
+		
 		//mandiamo il messaggio
-		//this.buildAndSendMessage("broadcastdone");
+		
+		this.buildAndSendMessage("broadcastdone");
 				
 		return;
 		
@@ -914,7 +917,7 @@ public class GroupMember {
 				}
 				
 				else{
-					System.out.println("chiamo broadcast message");
+					//System.out.println("chiamo broadcast message");
 					gm.BroadcastMessage(line);	
 				}
 			

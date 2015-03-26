@@ -143,13 +143,14 @@ public class GroupController {
 		    Message m=null;
 			
 			  try {
-				  clientSocket = mySocket.accept(); //wait untill a client connect 				  
+				  clientSocket = mySocket.accept(); //wait untill a client connect 	
+				  System.out.println("received a connection"); 
 			} catch (IOException e) {
 				System.out.println("[ERROR]An error during the accept has occured");
 				e.printStackTrace();
 			}
 			  
-			//System.out.println("received a connection"); 
+			  System.out.println("BL= "+this.BroadcastLock +"DL= "+this.DynLock);
 			   
 			try {
 				ois = new ObjectInputStream(clientSocket.getInputStream());
