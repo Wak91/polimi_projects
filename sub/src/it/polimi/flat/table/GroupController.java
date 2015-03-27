@@ -177,6 +177,7 @@ public class GroupController {
 		    	System.out.println("[INFO]A boot message has been received");
 		    	BootMessage bm = (BootMessage)m;
 		    	HandleAddMember(bm,oos);
+		    	System.out.println("[INFO]Correctly added the new member");
 		    }
 		    
 		    else //is an ActionMessage ( leave, getGroup, common )
@@ -215,7 +216,8 @@ public class GroupController {
 
 		    			System.out.println("[INFO]Leave request");
 		    			this.HandleLeavingMember(am);
-		    			
+		    			System.out.println("[INFO]Handle the leave request");
+
 		    			//System.out.println(" after handling leave member : BL= "+this.BroadcastLock); 
 
 		    		 };break;
@@ -231,12 +233,16 @@ public class GroupController {
 							e.printStackTrace();
 						}
 		    			 
+		    			System.out.println("[INFO]Group sended");
+
+		    			 
 		    		 };break;
 		    		 
 		    		 case "broadcastdone":{ //signal a broadcastdone and decrement BroadcastLock
 		    			 
 		    			 this.SignalBroadcastDone(); // remove a broadcastlock 
 		    			 //System.out.println("BroadcastLock is " + BroadcastLock);
+		    			 System.out.println("[INFO]Received a broadcastdone");
 		    		 };break;
 		    		 
 		    		 case "crashreport":{    			 
@@ -1069,7 +1075,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 	
 	//Once a member send a broadcast to all the group, remember to call this
 	//method
-	public void SignalBroadcastDone(){
+	public synchronized void SignalBroadcastDone(){
 		BroadcastLock--;
 		notifyAll();
 	}
