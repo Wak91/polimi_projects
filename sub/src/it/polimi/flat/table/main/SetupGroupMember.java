@@ -17,35 +17,18 @@ public class SetupGroupMember {
 		
 		//System.out.println("Creating the GroupMember");
 		System.out.println("GROUP MEMBER");
-		 
-		try{
-			//ricevamo l id come input			
-		    BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		    System.out.println("\nEnter the process ID: ");			
-		    String id = bufferRead.readLine();
-		    //riceviamo la porta come input
-		    System.out.println("\nEnter the port: ");			
-		    String port = bufferRead.readLine();
-		    //creiamo ilnuovo group member
-		    GroupMember gm = new GroupMember(Integer.parseInt(id),Integer.parseInt(port));
-		    //run
-			gm.run();
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-	
-		
-		/*
-	    Integer id = 4;
-	    String binaryId = id.toBinaryString(id);
-	    
-	    System.out.println(binaryId.charAt(0));
-	    System.out.println(binaryId.charAt(1));
 
-	    System.out.println(binaryId.charAt(2));
-	    */
+		//ricevamo l id come input			
+		//BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+		//System.out.println("\nEnter the process ID: ");			
+		//String id = bufferRead.readLine();
+		//riceviamo la porta come input
+		//System.out.println("\nEnter the port: ");			
+		//String port = bufferRead.readLine();
+		//creiamo ilnuovo group member
+		GroupMember gm = new GroupMember(Integer.parseInt(args[0]),Integer.parseInt(args[1]),Integer.parseInt(args[2]));
+		//run
+		gm.run();
 
 	}
 	

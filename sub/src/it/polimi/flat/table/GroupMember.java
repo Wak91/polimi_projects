@@ -40,6 +40,7 @@ public class GroupMember {
 	private Integer myPort;
 	private ServerSocket mySocket; //the socket associated to this groupMember ( the listener for incoming messages )
 	private int idle;
+	private int inputMode; //0=manual input , 1=autoinput
 	
 	private Key publicKey;  //Initial public key
 	private Key privateKey; //Initial private key
@@ -60,11 +61,13 @@ public class GroupMember {
 	 * ListenPort is the port where this group member will
 	 * listen for incoming messages 
 	 * */
-	public GroupMember(Integer id,Integer ListenPort){
+	public GroupMember(Integer id,Integer ListenPort, int inputmode){
 		
 		idle=1;
 		mySocket=null;
 		nodeId = Integer.toBinaryString(id);
+		
+		this.inputMode=inputmode;
 		
 		//System.out.println("MY ID: " + nodeId+"\n");
 		
@@ -137,9 +140,16 @@ public class GroupMember {
 	System.out.println("["+this.nodeId+"] Hash of the kek2 is"+kek2.hashCode());
 	*/
 	
+	if(this.inputMode==0){
 	InputThread it = new InputThread(this,1); //1= node start alive obviously
 	Thread t = new Thread(it);
 	t.start();
+	}
+	else{
+		AutoThread at = new AutoThread(this,1);
+		Thread t = new Thread(at);
+		t.start();
+	}
 			
 	while(idle==0){
 	try {
@@ -267,6 +277,8 @@ public class GroupMember {
 
 	//in idle=1 accept only a commMessage or a message that wake up the member
 	while(idle==1){
+		
+		System.out.println("Switched in dead socket-mode");
 		
 		try{
 		Socket guestSocket = mySocket.accept();
@@ -682,7 +694,7 @@ public class GroupMember {
 			
 			HashMap <String,NetInfoGroupMember> group = (HashMap <String,NetInfoGroupMember>)oiss2.readObject();
 			
-			System.out.println("Ricevuta view group attuale");
+			//System.out.println("Ricevuta view group attuale");
 	    
 			for(NetInfoGroupMember nigm : group.values()){
 				
@@ -821,9 +833,18 @@ public class GroupMember {
 		}			
 		
 		//this.spawnListener(9999); //Port of the death! ( the members will listen here to prove forward security )
+		if(this.inputMode==0){
 		InputThread it = new InputThread(this,0);
 		Thread t = new Thread(it);
 		t.start();
+		}
+		else{
+			
+			AutoThread at = new AutoThread(this,0);
+			Thread t = new Thread(at);
+			t.start();
+			
+		}
 		
 		//PROVA
 		this.buildAndSendMessage("leave");
@@ -889,7 +910,7 @@ public class GroupMember {
 	private class InputThread implements Runnable{
 
 		private GroupMember gm;
-		private int mode; //0= node dead, permi only an 'add' to rejoin the group
+		private int mode; //0= node dead, permits only an 'add' to rejoin the group
 						  //1= node alive! give complete terminal
 				
 		public InputThread(GroupMember gm , int mode){
@@ -904,7 +925,7 @@ public class GroupMember {
 			while(true){
 				String line="";
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				System.out.println("[INFO]Waiting for something to broadcast...");
+				System.out.println("[INFO]Waiting for something to broadcast...\n type something: ");
 				try {
 					line = br.readLine();
 				}catch (IOException e) {
@@ -949,6 +970,63 @@ public class GroupMember {
 				} //end while(true)				
 			}
 		}
+	}
+	
+	private class AutoThread implements Runnable{
+		
+		private GroupMember gm;
+		private int mode; //0= node dead, permits only an 'add' to rejoin the group
+						  //1= node alive! give complete terminal
+		
+		private String myString;
+				
+		public AutoThread(GroupMember gm , int mode){
+			this.gm = gm;
+			this.mode=mode;
+			this.myString = "Hey there, I am " + gm.nodeId + "!";
+		}
+		
+		@Override
+		public void run() {
+			
+			if(this.mode==1){ //if we are in not dead mode
+			while(true){
+				
+				int rand = (int) ((Math.random()*10));
+				
+				if(rand>=5){ // if the rand is greater than 7 broadcast a message			
+					gm.BroadcastMessage(this.myString);				
+				}
+							
+				rand = (int) ((Math.random()*10));
+				
+				if(rand>7){
+					this.gm.ExitGroup();
+					break; //terminate this thread
+				}
+			} //end while(true)			
+		  }
+			else{ //dead mode, give only the possibility to rejoin from the terminal
+				
+				System.out.println("\n[!!!]RESTRICTED TERMINAL[!!!]");
+				
+				
+				while(true){
+									
+					int rand = (int) ((Math.random()*10));
+					
+					if(rand>=6){
+					this.gm.wakeUp(); //wake up the son		
+					this.gm.run();
+					break;
+					}
+				} //end while(true)				
+			}
+			
+			System.out.println("[INFO]out of input thread");
+
+		}
+		
 	}
 
 	

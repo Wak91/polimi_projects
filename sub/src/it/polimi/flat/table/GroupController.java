@@ -150,7 +150,7 @@ public class GroupController {
 				e.printStackTrace();
 			}
 			  
-			  //System.out.println("BL= "+this.BroadcastLock +"DL= "+this.DynLock);
+			System.out.println("BL= "+this.BroadcastLock +"DL= "+this.DynLock);
 			   
 			try {
 				ois = new ObjectInputStream(clientSocket.getInputStream());
@@ -184,9 +184,7 @@ public class GroupController {
 		    		
 		    		ActionMessage am = (ActionMessage)m;
 		    		
-		    		System.out.println("message is a " + m.getClass().getSimpleName());
-		    		
-		    		
+		    		//System.out.println("message is a " + m.getClass().getSimpleName());
 		    		
 		    		String nodeId = "";
 		    		String action="";
@@ -215,6 +213,7 @@ public class GroupController {
 		    		 case "leave": {
 			    			//System.out.println(" before handling leave member : BL= "+this.BroadcastLock); 
 
+		    			System.out.println("[INFO]Leave request");
 		    			this.HandleLeavingMember(am);
 		    			
 		    			//System.out.println(" after handling leave member : BL= "+this.BroadcastLock); 
@@ -223,7 +222,7 @@ public class GroupController {
 		    		 
 		    		 case "getGroup": {
 		    			 
-		    			 //System.out.println("in getGroup");
+		    			 System.out.println("[INFO]getGroup request");
 		    			 
 		    			 HashMap <String,NetInfoGroupMember> group = this.GetGroup();
 		    			 try {
@@ -236,7 +235,7 @@ public class GroupController {
 		    		 
 		    		 case "broadcastdone":{ //signal a broadcastdone and decrement BroadcastLock
 		    			 
-		    			 this.BroadcastLock--; // remove a broadcastlock 
+		    			 this.SignalBroadcastDone(); // remove a broadcastlock 
 		    			 //System.out.println("BroadcastLock is " + BroadcastLock);
 		    		 };break;
 		    		 

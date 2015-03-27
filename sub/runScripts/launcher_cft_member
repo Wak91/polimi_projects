@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ $# != 3 ]
+   then
+      echo "usage <nodeId> <port> <inputMode>"
+      return 0
+fi
+
+id=$1
+port=$2
+input=$3
+
+java -cp /home/bartak/Scrivania/cft.jar it.polimi.flat.table.main.SetupGroupMember $id $port $input
