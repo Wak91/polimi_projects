@@ -4,6 +4,7 @@ import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
 import it.polimi.flat.table.support.CommMessage;
 import it.polimi.flat.table.support.CrashReportMessage;
+import it.polimi.flat.table.support.GroupMessage;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.NewDekMessage;
 import it.polimi.flat.table.support.NewKekMessage;
@@ -277,9 +278,7 @@ public class GroupMember {
 
 	//in idle=1 accept only a commMessage or a message that wake up the member
 	while(idle==1){
-		
-		System.out.println("Switched in dead socket-mode");
-		
+				
 		try{
 		Socket guestSocket = mySocket.accept();
 		ObjectInputStream ois = new ObjectInputStream(guestSocket.getInputStream()); 
@@ -691,7 +690,9 @@ public class GroupMember {
 			ObjectInputStream oiss2 = new ObjectInputStream(sock.getInputStream());
 			ooss.writeObject(am);
 			
-			HashMap <String,NetInfoGroupMember> group = (HashMap <String,NetInfoGroupMember>)oiss2.readObject();
+			GroupMessage gm = (GroupMessage)oiss2.readObject();
+			
+			HashMap <String,NetInfoGroupMember> group = gm.getGroup();
 			
 			//System.out.println("Ricevuta view group attuale");
 	    
@@ -991,6 +992,13 @@ public class GroupMember {
 			if(this.mode==1){ //if we are in not dead mode
 			while(true){
 				
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				int rand = (int) ((Math.random()*10));
 				
 				if(rand>=5){ // if the rand is greater than 7 broadcast a message			
@@ -998,6 +1006,13 @@ public class GroupMember {
 				}
 							
 				rand = (int) ((Math.random()*10));
+				
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				if(rand>7){
 					this.gm.ExitGroup();
@@ -1013,6 +1028,13 @@ public class GroupMember {
 				while(true){
 									
 					int rand = (int) ((Math.random()*10));
+					
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					
 					if(rand>=6){
 					this.gm.wakeUp(); //wake up the son		

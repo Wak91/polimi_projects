@@ -47,8 +47,6 @@ public class ControllerWorker extends Thread{
 		
 		System.out.println("Thread spawned for taking care of connection");
 		
-		System.out.println("Lggo messaggui");
-
 		ObjectInputStream ois = null;
 		ObjectOutputStream oos = null;
 		
@@ -138,7 +136,10 @@ public class ControllerWorker extends Thread{
 			    			 CrashReportMessage crm = (CrashReportMessage)am;
 			    			 ArrayList <NetInfoGroupMember> crashedMember = crm.getCrashedMembers();
 			    			 System.out.println("[INFO]Received a crash report from a member");
-			    			 this.groupController.HandleCrashedMembers(crashedMember);	
+			    			 
+			    			 ArrayList <String> toDelete = this.groupController.HandleCrashedMembers(crashedMember);					
+			    				//rimuoviamo i membri 
+			    			 this.groupController.HandleLeavingMember(toDelete);
 			    			 System.out.println("Ended crash report\n");  			 		 
 			    		 };break;
 			    		 

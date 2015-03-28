@@ -3,9 +3,6 @@ package it.polimi.flat.table;
 import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
 import it.polimi.flat.table.support.CommMessage;
-import it.polimi.flat.table.support.CrashReportMessage;
-import it.polimi.flat.table.support.GroupMessage;
-import it.polimi.flat.table.support.Message;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.NewDekMessage;
 import it.polimi.flat.table.support.NewKekMessage;
@@ -35,8 +32,7 @@ import java.util.Map;
  * of the centralized flat table.
  * It handle all the join and leaving of 
  * the group member.
- * 
- * TODO Handle the changing of the key also when a member crashes 
+ *  
  * */
 public class GroupController {
 	
@@ -149,9 +145,6 @@ public class GroupController {
 		while(true){
 			
 			Socket clientSocket = null;
-			ObjectInputStream ois = null;
-			ObjectOutputStream oos = null;
-		    Message m=null;
 			
 			  try {
 				  clientSocket = mySocket.accept(); //wait untill a client connect 	
@@ -160,26 +153,7 @@ public class GroupController {
 				System.out.println("[ERROR]An error during the accept has occured");
 				e.printStackTrace();
 			}
-			  			   
-			try {
-				ois = new ObjectInputStream(clientSocket.getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			} 
-		    try {
-				oos = new ObjectOutputStream(clientSocket.getOutputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		     
-			try {
-				m = (Message)ois.readObject();
-			} catch (ClassNotFoundException | IOException e) {	
-				e.printStackTrace();
-			}
 			
-			//System.out.println("received a message from " + clientSocket.getPort());
-
 		    ControllerWorker controllerWorker = new ControllerWorker(this,clientSocket,dek);
 		    controllerWorker.start();
 		   }//end while(true)		
@@ -217,8 +191,8 @@ public class GroupController {
 	 * method is called two times, but the second times this for will
 	 * not do anything.
 	 * */
-	public synchronized void HandleCrashedMembers(ArrayList<NetInfoGroupMember> crashedMember) {
-		
+	public synchronized ArrayList <String> HandleCrashedMembers(ArrayList<NetInfoGroupMember> crashedMember) {
+				
 		//System.out.println("In handle crash, the size of crashed member is " + crashedMember.size());
 		ArrayList <String> toDelete = new ArrayList <String>();
 		ArrayList <NetInfoGroupMember> toDelete2 = new ArrayList <NetInfoGroupMember>();
@@ -250,12 +224,9 @@ public class GroupController {
 			this.group.values().remove(nigm3);
 		}
 		
-		//rimuoviamo i membri 
-		for (String id : toDelete) {
-			this.HandleLeavingMember(id);
-		}		
-
-
+		BroadCastLock--;//wait to notify, we have to handle the crashed member
+		
+		return toDelete;
 	}
 
 
@@ -401,7 +372,6 @@ public class GroupController {
 		try {
 			wait();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		}
@@ -472,13 +442,10 @@ public class GroupController {
 
 			
 		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalBlockSizeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (BadPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -702,6 +669,7 @@ public class GroupController {
 				
 		try {
 			 
+			DesCipher.init(Cipher.DECRYPT_MODE, dek);
 			byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
 		    nodeId = new String(decryptedId);
 			 
@@ -720,16 +688,12 @@ public class GroupController {
 			
 		} catch (IllegalBlockSizeException
 				| BadPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 				
@@ -739,12 +703,24 @@ public class GroupController {
 
 	}
 	
-public synchronized void HandleLeavingMember(String nodeId){
-		
-		
+public synchronized void HandleLeavingMember(ArrayList <String> toDelete){
+	
+	/*
+	 * If a lock is ON that means I must wait to leave. ( somebody is sending message and I am in the group view )
+	 * */
+	while(BroadCastLock!=0 || DynamicLock==1){ 
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 		//prendiamo il lock
 		DynamicLock=1;
 				
+		for(String nodeId : toDelete){
 		try {
 			System.out.println("[INFO]The member " +  nodeId  + " wants to leave the group ");
 			//creiamo la nuova dek (K')
@@ -760,18 +736,15 @@ public synchronized void HandleLeavingMember(String nodeId){
 			
 		} catch (IllegalBlockSizeException
 				| BadPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 				
 		//rilasciamo il lock
 		DynamicLock=0;
@@ -996,7 +969,6 @@ public synchronized void HandleLeavingMember(String nodeId){
 			newsocket.close();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
