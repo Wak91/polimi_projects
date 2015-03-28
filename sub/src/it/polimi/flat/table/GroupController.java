@@ -4,6 +4,7 @@ import it.polimi.flat.table.support.ActionMessage;
 import it.polimi.flat.table.support.BootMessage;
 import it.polimi.flat.table.support.CommMessage;
 import it.polimi.flat.table.support.CrashReportMessage;
+import it.polimi.flat.table.support.GroupMessage;
 import it.polimi.flat.table.support.Message;
 import it.polimi.flat.table.support.NetInfoGroupMember;
 import it.polimi.flat.table.support.NewDekMessage;
@@ -48,15 +49,19 @@ public class GroupController {
 	private Cipher DesCipher; //the DES cipher used to encrypt all the message for the group member once they join
 	
 	private SecretKey dek; //the DEK of the group
+
 	private SecretKey oldDek; //oldDek 
 
 	private HashMap <String,SecretKey> table; //hashmap that store the flatTable 
-	
 	private HashMap <String,NetInfoGroupMember> group; //table to keep track of the 'sockets' of the member in the group, this will be passed in response to a GetGroup request from members
 	
-	private Integer DynLock; //this lock handle the concurrency AddMember and LeavingMember on the group structure 
-	private Integer BroadcastLock;
 	private CommMessage backSecurityCheck;
+	
+	private HashMap <String,ControllerWorker> waitingBroadDone; // this structure says to me which thread is waiting for a broaddone from whom
+	
+	private int BroadCastLock;
+	private int DynamicLock;
+		
 	/*
 	 * Constructor of the GroupController, it creates the first
 	 * GroupKey with DES and populate the table with the KEK of every bit.
@@ -81,8 +86,10 @@ public class GroupController {
 				
 		group = new HashMap <String,NetInfoGroupMember>();
 		table = new HashMap<String,SecretKey>();
-		DynLock=0;
-		BroadcastLock=0;
+		waitingBroadDone = new HashMap<String,ControllerWorker>();
+		BroadCastLock=0;
+		DynamicLock=0;
+
 		
 		KeyGenerator keyGen=null;
 		
@@ -123,9 +130,13 @@ public class GroupController {
 			}
 		
 		createBackSecurityMessageCheck();
+		
+		this.run();
+		
+		//------------Server and members configurated at this point----------	
+				
 	}
-	
-	
+
 	public void run(){
 		
 		try {
@@ -149,9 +160,7 @@ public class GroupController {
 				System.out.println("[ERROR]An error during the accept has occured");
 				e.printStackTrace();
 			}
-			  
-			System.out.println("BL= "+this.BroadcastLock +"DL= "+this.DynLock);
-			   
+			  			   
 			try {
 				ois = new ObjectInputStream(clientSocket.getInputStream());
 			} catch (IOException e) {
@@ -171,104 +180,10 @@ public class GroupController {
 			
 			//System.out.println("received a message from " + clientSocket.getPort());
 
-		    
-		    if(m.getClass().getSimpleName().equals("BootMessage")){
-		    	//handle join of a new member
-		    	System.out.println("[INFO]A boot message has been received");
-		    	BootMessage bm = (BootMessage)m;
-		    	HandleAddMember(bm,oos);
-		    	System.out.println("[INFO]Correctly added the new member");
-		    }
-		    
-		    else //is an ActionMessage ( leave, getGroup, common )
-		    	if(m.getClass().getSimpleName().equals("ActionMessage") || m.getClass().getSimpleName().equals("CrashReportMessage")){
-		    		
-		    		ActionMessage am = (ActionMessage)m;
-		    		
-		    		//System.out.println("message is a " + m.getClass().getSimpleName());
-		    		
-		    		String nodeId = "";
-		    		String action="";
-		    		
-		    		try {
-		    			DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
-		    			} catch (InvalidKeyException e) {
-		    				e.printStackTrace();
-		    			}
-		    		
-		    		 try {
-		    				byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
-		    				nodeId = new String(decryptedId);
-		    				
-		    				byte[] decryptedAction = DesCipher.doFinal(am.getAction()); //decrypting the message  
-		    				action = new String(decryptedAction);
-		    				//System.out.println("action is " + action);
-		    				
-		    			} catch (IllegalBlockSizeException | BadPaddingException e) {
-		    				System.out.println("[ERROR]Something went wrong during decryption of text");
-		    				e.printStackTrace();
-		    			}
-		    		 
-		    		 switch(action){
-		    		 
-		    		 case "leave": {
-			    			//System.out.println(" before handling leave member : BL= "+this.BroadcastLock); 
-
-		    			System.out.println("[INFO]Leave request");
-		    			this.HandleLeavingMember(am);
-		    			System.out.println("[INFO]Handle the leave request");
-
-		    			//System.out.println(" after handling leave member : BL= "+this.BroadcastLock); 
-
-		    		 };break;
-		    		 
-		    		 case "getGroup": {
-		    			 
-		    			 System.out.println("[INFO]getGroup request");
-		    			 
-		    			 HashMap <String,NetInfoGroupMember> group = this.GetGroup();
-		    			 try {
-							oos.writeObject(group); //send in plain the group structure 
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-		    			 
-		    			System.out.println("[INFO]Group sended");
-
-		    			 
-		    		 };break;
-		    		 
-		    		 case "broadcastdone":{ //signal a broadcastdone and decrement BroadcastLock
-		    			 
-		    			 this.SignalBroadcastDone(); // remove a broadcastlock 
-		    			 //System.out.println("BroadcastLock is " + BroadcastLock);
-		    			 System.out.println("[INFO]Received a broadcastdone");
-		    		 };break;
-		    		 
-		    		 case "crashreport":{    			 
-		    			 CrashReportMessage crm = (CrashReportMessage)am;
-		    			 ArrayList <NetInfoGroupMember> crashedMember = crm.getCrashedMembers();
-		    			 System.out.println("[INFO]Received a crash report from a member");
-		    			 this.HandleCrashedMembers(crashedMember);	
-		    			 System.out.println("Ended crash report\n Now group is: \n");
-		    			 
-		    			 for(NetInfoGroupMember nigm : group.values()){
-		    				 
-		    				 System.out.println("IP: "+nigm.getIpAddress()+ "PORT:  " +nigm.getPort() + "\n");
-		    				 
-		    			 }			 
-		    		 };break;
-		    		 
-		    	 }//end switch   			
-		    } //end ActionMessage if
-		    try {
-				clientSocket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		       }//end while(true)		
-          }
+		    ControllerWorker controllerWorker = new ControllerWorker(this,clientSocket,dek);
+		    controllerWorker.start();
+		   }//end while(true)		
+       }
 	
 	
 	/**
@@ -302,36 +217,12 @@ public class GroupController {
 	 * method is called two times, but the second times this for will
 	 * not do anything.
 	 * */
-	private void HandleCrashedMembers(ArrayList<NetInfoGroupMember> crashedMember) {
+	public synchronized void HandleCrashedMembers(ArrayList<NetInfoGroupMember> crashedMember) {
 		
 		//System.out.println("In handle crash, the size of crashed member is " + crashedMember.size());
 		ArrayList <String> toDelete = new ArrayList <String>();
 		ArrayList <NetInfoGroupMember> toDelete2 = new ArrayList <NetInfoGroupMember>();
-
-		this.BroadcastLock--; // after a report crash a broadcast is surely finished 
 		
-		DynLock=1; //block potentially other GetGroup for a moment! 
-		
-		/*
-		for(NetInfoGroupMember nigm : crashedMember){
-			System.out.println("the info of the crash" + nigm.getIpAddress() + "  "  +nigm.getPort());
-			
-			for(NetInfoGroupMember nigm2 : this.group.values()){
-				if(nigm2.getPort().equals(nigm.getPort()) && nigm2.getIpAddress().equals(nigm.getIpAddress())){
-					toDelete.add(nigm2);
-				}
-			}						
-		}
-		
-		for(NetInfoGroupMember nigm3 : toDelete){
-			this.group.values().remove(nigm3);
-		}
-		
-		for(NetInfoGroupMember nigm2 : this.group.values()){
-			System.out.println(" member " +nigm2.getIpAddress() + " " + nigm2.getPort());
-			
-		}
-		*/
 		//ricaviamo gli id dei membri crashati
 		for(NetInfoGroupMember nigm : crashedMember){
 			System.out.println("the info of the crash" + nigm.getIpAddress() + "  "  +nigm.getPort());
@@ -363,9 +254,7 @@ public class GroupController {
 		for (String id : toDelete) {
 			this.HandleLeavingMember(id);
 		}		
-		
-		DynLock=0;
-		notifyAll();
+
 
 	}
 
@@ -506,42 +395,31 @@ public class GroupController {
 	
 	
 	
-	public synchronized void HandleAddMember(BootMessage msg,ObjectOutputStream oos){
+	public synchronized void HandleAddMember(BootMessage msg , ObjectOutputStream oos){
 		
-		/*
-		 * If a lock is ON that means I must wait to enter. ( somebody is sending message and I am not, or somebody is leaving in the group view )
-		 * */
-		while(BroadcastLock!=0 || DynLock==1 || group.keySet().size() >= GROUP_MEMBER_NUM){ //sono in corso dei broadcast nel gruppo o in corso un leaving
-			System.out.println(" BL = "+BroadcastLock + " and DL = " + DynLock);
-
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		DynLock=1;
-		//Add new member to the group 
-		group.put(""+msg.getId(),msg.getNigm());
-		changeKeys(msg);
-		sendNewKeys(msg,oos);
-		sendStartMessage();
+		while(BroadCastLock!=0 || DynamicLock==1 ){
 		try {
-			Thread.sleep(1000);
+			wait();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		}
+		
+		DynamicLock=1;
+		
+		group.put(""+msg.getId(),msg.getNigm());
+		changeKeys(msg);
+		sendNewKeys(msg,oos);
+		sendStartMessage();		
 		sendCheckMessage(""+msg.getId());
 		createBackSecurityMessageCheck();
-		//reset old dek used to communicate new keys
-		oldDek = null;
 		
-		DynLock=0;//REMEMBER!
+		//reset old dek used to communicate new keys
+		oldDek = null;	
+		
+		DynamicLock=0;
 		notifyAll();
-
-			
 	}
 	
 	/**
@@ -809,7 +687,7 @@ public class GroupController {
 		/*
 		 * If a lock is ON that means I must wait to leave. ( somebody is sending message and I am in the group view )
 		 * */
-		while(BroadcastLock!=0 || DynLock==1){ 
+		while(BroadCastLock!=0 || DynamicLock==1){ 
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -818,7 +696,8 @@ public class GroupController {
 		}
 		
 		//prendiamo il lock
-		DynLock=1;
+		DynamicLock=1;
+		
 		String nodeId="";
 				
 		try {
@@ -855,7 +734,7 @@ public class GroupController {
 		}
 				
 		//rilasciamo il lock
-		DynLock=0;
+		DynamicLock=0;
 		notifyAll();
 
 	}
@@ -864,7 +743,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 		
 		
 		//prendiamo il lock
-		DynLock=1;
+		DynamicLock=1;
 				
 		try {
 			System.out.println("[INFO]The member " +  nodeId  + " wants to leave the group ");
@@ -895,7 +774,7 @@ public synchronized void HandleLeavingMember(String nodeId){
 		}
 				
 		//rilasciamo il lock
-		DynLock=0;
+		DynamicLock=0;
 		notifyAll(); //wake up possibly broadcast requests pending
 
 		
@@ -1057,9 +936,9 @@ public synchronized void HandleLeavingMember(String nodeId){
 	 * Thanks to the two different lock, two getGroup request don't block each other,
 	 * the lock are only for the functions that want modify the group structure.
 	 * */
-	public synchronized HashMap <String,NetInfoGroupMember> GetGroup(){
-		
-		while(DynLock==1){ // ci sono in corso operazioni che stanno modificando il gruppo
+	public synchronized HashMap <String,NetInfoGroupMember> GetGroup(String nodeId,ControllerWorker cw){
+				
+		while(DynamicLock==1){ // ci sono in corso operazioni che stanno modificando il gruppo
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -1067,7 +946,10 @@ public synchronized void HandleLeavingMember(String nodeId){
 			}
 		}
 		
-		BroadcastLock++;
+		BroadCastLock++;
+		
+		this.waitingBroadDone.put(nodeId, cw);
+		
 		//System.out.println("BroadcastLock is " + BroadcastLock);
 		return group; //return the group view 
 		
@@ -1076,8 +958,8 @@ public synchronized void HandleLeavingMember(String nodeId){
 	//Once a member send a broadcast to all the group, remember to call this
 	//method
 	public synchronized void SignalBroadcastDone(){
-		BroadcastLock--;
-		notifyAll();
+			BroadCastLock--;
+			notifyAll();	
 	}
 	
 	private void createBackSecurityMessageCheck(){
@@ -1118,4 +1000,5 @@ public synchronized void HandleLeavingMember(String nodeId){
 			e.printStackTrace();
 		}
 	}
-}
+ }
+

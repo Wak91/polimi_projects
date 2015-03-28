@@ -189,7 +189,7 @@ public class GroupMember {
 			 System.out.println("GroupMember " + incoming.getIdSender() +" says: " + plainText);
 			 System.out.println("--------------------------------------------------\n");
 			 
-			 System.out.println("[INFO]Waiting for something to broadcast...");
+			 System.out.println("[INFO]Waiting for something to broadcast...\ntype something:");
 
 			 
 		    }
@@ -261,7 +261,7 @@ public class GroupMember {
 			System.out.println("[INFO]Waiting for 'start' from GroupController");
 			waitingForStartMessage();
 			System.out.println("[INFO]Received 'start' from GroupController");
-			System.out.println("[INFO]Waiting for something to broadcast...");
+			System.out.println("[INFO]Waiting for something to broadcast...\n type something: ");
 
 		}
 		guestSocket.close();
@@ -655,7 +655,6 @@ public class GroupMember {
 	 * */
 	private void BroadcastMessage(String textToSend){
 		
-	
 		ActionMessage am = new ActionMessage(); //to request the viewgroup from groupcontroller
 		CommMessage msg = new CommMessage();
 	
