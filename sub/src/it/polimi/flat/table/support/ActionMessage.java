@@ -8,26 +8,26 @@ public class ActionMessage implements Serializable,Message {
 	 * 
 	 */
 	protected static final long serialVersionUID = 7954886678926904742L;
-	protected byte[] nodeId;
-	protected byte[] action; //action that a member want to perform: "leave", "common", "getMember"
+	protected String nodeId;
+	protected String action; //action that a member want to perform: "leave", "common", "getMember"
 	
 	public ActionMessage(){
 		
 	}
 	
-	public byte[] getnodeId(){
+	public String getnodeId(){
 		return this.nodeId;
 	}
 	
-	public void setnodeId(byte[] nodeId){
+	public void setnodeId(String nodeId){
 		this.nodeId = nodeId;
 	}
 
-	public byte[] getAction() {
+	public String getAction() {
 		return action;
 	}
 
-	public void setAction(byte[] action) {
+	public void setAction(String action) {
 		this.action = action;
 	}
 	

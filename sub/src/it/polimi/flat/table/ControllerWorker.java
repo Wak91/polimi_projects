@@ -78,26 +78,11 @@ public class ControllerWorker extends Thread{
 			    		
 			    		String nodeId = "";
 			    		String action="";
-			    		
-			    		try {
-			    			DesCipher.init(Cipher.DECRYPT_MODE,dek); //initialize the cipher with the dek 
-			    			} catch (InvalidKeyException e) {
-			    				e.printStackTrace();
-			    			}
-			    		
-			    		 try {
-			    				byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
-			    				nodeId = new String(decryptedId);
-			    				
-			    				byte[] decryptedAction = DesCipher.doFinal(am.getAction()); //decrypting the message  
-			    				action = new String(decryptedAction);
-			    				//System.out.println("action is " + action);
-			    				
-			    			} catch (IllegalBlockSizeException | BadPaddingException e) {
-			    				System.out.println("[ERROR]Something went wrong during decryption of text");
-			    				e.printStackTrace();
-			    			}
-			    		 
+			    			
+			    		nodeId = am.getnodeId();
+			    		action = am.getAction();
+			    		//System.out.println("action is " + action);
+			    			
 			    		 switch(action){
 			    		 
 			    		 case "leave": {

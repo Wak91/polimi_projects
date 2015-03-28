@@ -91,7 +91,6 @@ public class GroupController {
 		
 		try {
 			keyGen = KeyGenerator.getInstance("DES");
-			keyGen.init(56); //key of 56 bits 
 		} catch (NoSuchAlgorithmException e) {
 			System.out.println("[ERROR]Error no such algorithm for DES");
 			e.printStackTrace();
@@ -236,7 +235,7 @@ public class GroupController {
 	 * */
 	private void startServer() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
 		
-		int cont=3; //wait untill all 8 clients connect to server 
+		int cont=8; //wait untill all 8 clients connect to server 
 		
 		mySocket=null;
 		Socket clientSocket=null;
@@ -346,8 +345,8 @@ public class GroupController {
 	
 	DesCipher.init(Cipher.ENCRYPT_MODE, dek);
 	
-	am.setnodeId(DesCipher.doFinal("-1".getBytes()));
-	am.setAction(DesCipher.doFinal("start".getBytes()));
+	am.setnodeId("-1");
+	am.setAction("start");
 	
 	System.out.println("[INFO]Sending 'start' message to members of the group:\n----------------\n");
 	
@@ -544,33 +543,26 @@ public class GroupController {
 	private void sendStartMessage(){
 		ActionMessage am = new ActionMessage();
 		
-		try {
-			DesCipher.init(Cipher.ENCRYPT_MODE, dek);
-			am.setnodeId(DesCipher.doFinal("-1".getBytes()));
-			am.setAction(DesCipher.doFinal("start".getBytes()));
+		am.setnodeId("-1");
+		am.setAction("start");
 			
-			System.out.println("[INFO]Sending 'start' message to members of the group");
+		System.out.println("[INFO]Sending 'start' message to members of the group");
 			
-			for(NetInfoGroupMember nigm : group.values()){
+		for(NetInfoGroupMember nigm : group.values()){
 				
 				System.out.println("IP: " + nigm.getIpAddress() + " PORT:  " + nigm.getPort());
 				
-				Socket s = new Socket(nigm.getIpAddress(),nigm.getPort());
-				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-				oos.writeObject(am);
-				s.close();
-			}
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+				Socket s;
+				try {
+					s = new Socket(nigm.getIpAddress(),nigm.getPort());
+					ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+					oos.writeObject(am);
+					s.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
 		}
-		
-		
 	}
 	/**
 	 * Send new configuration after view change to older member group
@@ -669,9 +661,7 @@ public class GroupController {
 				
 		try {
 			 
-			DesCipher.init(Cipher.DECRYPT_MODE, dek);
-			byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
-		    nodeId = new String(decryptedId);
+		    nodeId = am.getnodeId();
 			 
 			System.out.println("[INFO]The member " +  nodeId  + " wants to leave the group ");
 			
@@ -848,7 +838,6 @@ public synchronized void HandleLeavingMember(ArrayList <String> toDelete){
 		KeyGenerator keyGen=null;
 		try {
 			keyGen = KeyGenerator.getInstance("DES");
-			keyGen.init(56); //key of 56 bits 
 		} catch (NoSuchAlgorithmException e) {
 			System.out.println("Error no such algorithm for DES");
 			e.printStackTrace();

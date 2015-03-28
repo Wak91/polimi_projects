@@ -618,23 +618,12 @@ public class GroupMember {
 			e.printStackTrace();
 		}
 		
-		String nodeId = "";
+		String nodeid = "";
 		String action="";
-		
-		 try {
-				DesCipher.init(Cipher.DECRYPT_MODE, this.dek);
 
-				byte[] decryptedId = DesCipher.doFinal(am.getnodeId()); //decrypting the message  
-				nodeId = new String(decryptedId);
-				
-				byte[] decryptedAction = DesCipher.doFinal(am.getAction()); //decrypting the message  
-				action = new String(decryptedAction);
-				
-			} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
-				System.out.println("Something went wrong during decryption of start message");
-				e.printStackTrace();
-			}
-		 
+		nodeid = am.getnodeId();				
+		action = am.getAction();
+		
 		 if(action.equals("start")){
 			 this.idle=0;
 			 return;
@@ -652,20 +641,15 @@ public class GroupMember {
 	 * of the groups.It retreive the list of the member from the controller
 	 * and open a socket for each of them sending the CommMessage object
 	 * */
+	@SuppressWarnings("finally")
 	private void BroadcastMessage(String textToSend){
 		
 		ActionMessage am = new ActionMessage(); //to request the viewgroup from groupcontroller
 		CommMessage msg = new CommMessage();
 	
-		try {
-			
-			DesCipher.init(Cipher.ENCRYPT_MODE,dek); //initialize the cipher with the dek 
-			am.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
-			am.setAction(DesCipher.doFinal("getGroup".getBytes()));
-		} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e1) {
-			e1.printStackTrace();
-		}
-		
+		am.setnodeId(this.nodeId);
+		am.setAction("getGroup");
+
 		msg.setIdSender(this.nodeId);
 
 		try {
@@ -765,14 +749,9 @@ public class GroupMember {
 		
 		CrashReportMessage crm = new CrashReportMessage();
 		
-		try {
-			DesCipher.init(Cipher.ENCRYPT_MODE,dek); //initialize the cipher with the dek 
-			crm.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
-			crm.setAction(DesCipher.doFinal("crashreport".getBytes()));
-		} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e1) {
-			e1.printStackTrace();
-		}
-		
+		crm.setnodeId(this.nodeId);
+		crm.setAction("crashreport");
+
 		//System.out.println("The crashed members are"+crashed.size());
 		crm.setCrashedMembers(crashed);
 		
@@ -832,7 +811,6 @@ public class GroupMember {
 			e.printStackTrace();
 		}			
 		
-		//this.spawnListener(9999); //Port of the death! ( the members will listen here to prove forward security )
 		if(this.inputMode==0){
 		InputThread it = new InputThread(this,0);
 		Thread t = new Thread(it);
@@ -887,13 +865,8 @@ public class GroupMember {
 		
 		ActionMessage am = new ActionMessage();
 		
-		try {
-			DesCipher.init(Cipher.ENCRYPT_MODE,dek); //initialize the cipher with the dek 
-			am.setnodeId(DesCipher.doFinal(this.nodeId.getBytes()));
-			am.setAction(DesCipher.doFinal(action.getBytes()));
-		} catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e1) {
-			e1.printStackTrace();
-		}
+		am.setnodeId(this.nodeId);
+		am.setAction(action);
 		
 		try {
 			ooss.writeObject(am); //Signal the groupController of a broadcastDone.
@@ -995,7 +968,6 @@ public class GroupMember {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -1010,11 +982,11 @@ public class GroupMember {
 				try {
 					Thread.sleep(3000);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
 				
-				if(rand>7){
+				if(rand>8){
 					this.gm.ExitGroup();
 					break; //terminate this thread
 				}
@@ -1032,7 +1004,6 @@ public class GroupMember {
 					try {
 						Thread.sleep(3000);
 					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
