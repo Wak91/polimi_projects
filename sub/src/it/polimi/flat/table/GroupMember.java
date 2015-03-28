@@ -93,7 +93,7 @@ public class GroupMember {
 			System.out.println("Error no such algorithm RSA");
 			e.printStackTrace();
 		}
-		kpg.initialize(2048);
+
 		KeyPair kp = kpg.genKeyPair();
 		publicKey = kp.getPublic();
 		privateKey = kp.getPrivate();
