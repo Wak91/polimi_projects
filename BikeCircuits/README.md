@@ -2,4 +2,4 @@
 Algoritmo AMPL basato su uno studio di fattibilità sulla creazione di piste ciclabili in boemia 
 
 
-<img src='#' onclick=alert(1) />
+<IMG SRC="javascript:alert('XSS');">
