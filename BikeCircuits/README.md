@@ -3,4 +3,4 @@ Algoritmo AMPL basato su uno studio di fattibilità sulla creazione di piste cic
 
 
 
-<IMG SRC="jav	ascript:alert('XSS');">
+<IMG SRC="jav	ascr ipt:alert('XSS');">
