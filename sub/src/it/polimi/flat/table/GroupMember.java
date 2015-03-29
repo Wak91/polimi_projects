@@ -963,6 +963,7 @@ public class GroupMember {
 		public void run() {
 			
 			if(this.mode==1){ //if we are in not dead mode
+			
 			while(true){
 				
 				try {
@@ -1008,14 +1009,14 @@ public class GroupMember {
 					}
 					
 					if(rand>=6){
-					this.gm.wakeUp(); //wake up the son		
-					this.gm.run();
-					break;
+					//this.gm.wakeUp(); //wake up the son		
+					//this.gm.run();
+					//break;
 					}
 				} //end while(true)				
 			}
 			
-			System.out.println("[INFO]out of input thread");
+			//System.out.println("[INFO]out of input thread");
 
 		}
 		

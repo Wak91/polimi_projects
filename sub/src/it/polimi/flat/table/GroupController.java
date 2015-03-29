@@ -52,9 +52,7 @@ public class GroupController {
 	private HashMap <String,NetInfoGroupMember> group; //table to keep track of the 'sockets' of the member in the group, this will be passed in response to a GetGroup request from members
 	
 	private CommMessage backSecurityCheck;
-	
-	private HashMap <String,ControllerWorker> waitingBroadDone; // this structure says to me which thread is waiting for a broaddone from whom
-	
+		
 	private int BroadCastLock;
 	private int DynamicLock;
 		
@@ -82,7 +80,7 @@ public class GroupController {
 				
 		group = new HashMap <String,NetInfoGroupMember>();
 		table = new HashMap<String,SecretKey>();
-		waitingBroadDone = new HashMap<String,ControllerWorker>();
+
 		BroadCastLock=0;
 		DynamicLock=0;
 
@@ -168,7 +166,6 @@ public class GroupController {
 		
 		try {
 			keyGen = KeyGenerator.getInstance("DES");
-			keyGen.init(56); //key of 56 bits 
 		} catch (NoSuchAlgorithmException e) {
 			System.out.println("[ERROR]Error no such algorithm for DES");
 			e.printStackTrace();
@@ -898,7 +895,7 @@ public synchronized void HandleLeavingMember(ArrayList <String> toDelete){
 	 * Thanks to the two different lock, two getGroup request don't block each other,
 	 * the lock are only for the functions that want modify the group structure.
 	 * */
-	public synchronized HashMap <String,NetInfoGroupMember> GetGroup(String nodeId,ControllerWorker cw){
+	public synchronized HashMap <String,NetInfoGroupMember> GetGroup(){
 				
 		while(DynamicLock==1){ // ci sono in corso operazioni che stanno modificando il gruppo
 			try {
@@ -909,9 +906,7 @@ public synchronized void HandleLeavingMember(ArrayList <String> toDelete){
 		}
 		
 		BroadCastLock++;
-		
-		this.waitingBroadDone.put(nodeId, cw);
-		
+				
 		//System.out.println("BroadcastLock is " + BroadcastLock);
 		return group; //return the group view 
 		

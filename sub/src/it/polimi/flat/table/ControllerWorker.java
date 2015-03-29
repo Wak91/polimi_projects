@@ -97,7 +97,7 @@ public class ControllerWorker extends Thread{
 			    			 
 			    			 System.out.println("[INFO]getGroup request");
 			    			 
-			    			 GroupMessage gm = new GroupMessage(this.groupController.GetGroup(nodeId,this));
+			    			 GroupMessage gm = new GroupMessage(this.groupController.GetGroup());
 			    			 
 			    			 try {
 								oos.writeObject(gm); //send in plain the group structure 
