@@ -3,4 +3,4 @@ Algoritmo AMPL basato su uno studio di fattibilità sulla creazione di piste cic
 
 
 
-<IMG SRC=/ onerror="alert(String.fromCharCode(88,83,83))"></img>
+<IMG SRC=/ onclick="alert(String.fromCharCode(88,83,83))"></img>
