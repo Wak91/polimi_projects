@@ -8,9 +8,14 @@ osascript -e 'tell application "Terminal" to do script "java -jar $HOME/Desktop/
 
 echo "spawn the groups members..."
 
-for member in $(seq 0 2); do
-
-	osascript -e 'tell application "Terminal" to do script "java -jar $HOME/Desktop/SetupGroupMember.jar"'
+for member in $(seq 1 8); do
+	
+	ID=${member};
+	PORT=${member}${member}${member}${member};
+	COMMAND="java -jar $HOME/Desktop/SetupGroupMember.jar $(echo $ID) $(echo $PORT) 1";
+	echo $COMMAND;
+	
+	osascript -e 'tell application "Terminal" to do script "'"$COMMAND"'"'
 
 done
 
