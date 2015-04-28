@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.InvalidKeyException;
@@ -493,7 +494,7 @@ public class GroupMember {
 
 		
 		try {
-			oos.writeObject(new BootMessage(this.nodeId,publicKey,new NetInfoGroupMember(mySocket.getInetAddress(),mySocket.getLocalPort())));
+			oos.writeObject(new BootMessage(this.nodeId,publicKey,new NetInfoGroupMember(InetAddress.getByName((InetAddress.getLocalHost().getHostAddress())),mySocket.getLocalPort())));
 		} catch (IOException e) {
 			System.out.println("An error occur during the communication with the group controller");
 			e.printStackTrace();
