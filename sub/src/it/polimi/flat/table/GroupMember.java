@@ -19,6 +19,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.InvalidKeyException;
@@ -27,6 +28,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 import javax.crypto.BadPaddingException;
@@ -491,10 +493,29 @@ public class GroupMember {
 		}
 		
 		//System.out.println("Sending id and my publicKey...");
-
-		
+		int end=0;
+		InetAddress i= null;
 		try {
-			oos.writeObject(new BootMessage(this.nodeId,publicKey,new NetInfoGroupMember(InetAddress.getByName((InetAddress.getLocalHost().getHostAddress())),mySocket.getLocalPort())));
+			Enumeration e = NetworkInterface.getNetworkInterfaces();
+			while(e.hasMoreElements())
+			{
+			    NetworkInterface n = (NetworkInterface) e.nextElement();
+			    Enumeration ee = n.getInetAddresses(); 
+			    while (ee.hasMoreElements())
+			    {
+			        i = (InetAddress) ee.nextElement();
+			        if(i.toString().contains("192"))
+			        	{
+			        	  System.out.println(i.getHostAddress());
+			        	  end=1;
+				          break;
+			        	}
+			    }
+			    if(end==1){
+			    	break;
+			    }
+			}
+			oos.writeObject(new BootMessage(this.nodeId,publicKey,new NetInfoGroupMember(i.getHostAddress(),mySocket.getLocalPort())));
 		} catch (IOException e) {
 			System.out.println("An error occur during the communication with the group controller");
 			e.printStackTrace();

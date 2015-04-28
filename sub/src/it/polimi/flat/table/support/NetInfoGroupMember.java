@@ -15,18 +15,18 @@ public class NetInfoGroupMember implements Serializable {
 	 */
 	private static final long serialVersionUID = -2432791115605410018L;
 	
-	private InetAddress ipAddress;
+	private String ipAddress;
 	private Integer port;
 	
 	
-	public NetInfoGroupMember(InetAddress ipAddress, Integer port) {
+	public NetInfoGroupMember(String ipAddress, Integer port) {
 		super();
 		this.ipAddress = ipAddress;
 		this.port = port;
 	}
 	
 	
-	public InetAddress getIpAddress() {
+	public String getIpAddress() {
 		return ipAddress;
 	}
 
@@ -37,7 +37,7 @@ public class NetInfoGroupMember implements Serializable {
 	
 	
 	
-	public void setIpAddress(InetAddress ipAddress) {
+	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
 
