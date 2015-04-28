@@ -36,7 +36,7 @@ import java.util.Map;
  * */
 public class GroupController {
 	
-	private static final int GROUP_MEMBER_NUM = 8;
+	private static final int GROUP_MEMBER_NUM = 4;
 		
 	private Integer port=56520;
 	private ServerSocket mySocket;
@@ -232,7 +232,7 @@ public class GroupController {
 	 * */
 	private void startServer() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
 		
-		int cont=8; //wait untill all 8 clients connect to server 
+		int cont=this.GROUP_MEMBER_NUM; //wait untill all 8 clients connect to server 
 		
 		mySocket=null;
 		Socket clientSocket=null;

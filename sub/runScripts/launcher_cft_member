@@ -2,12 +2,14 @@
 
 if [ $# != 3 ]
    then
-      echo "usage <nodeId> <port> <inputMode>"
+      echo "usage <nodeId> <port> <ControllerIP> <MitmIP>"
       return 0
 fi
 
 id=$1
 port=$2
-input=$3
+ControllerIp=$3
+MitmIp=$4
 
-java -cp /home/bartak/Scrivania/cft.jar it.polimi.flat.table.main.SetupGroupMember $id $port $input
+java -cp /home/bartak/Scrivania/cft.jar it.polimi.flat.table.main.SetupGroupMember $id $port $ControllerIp $MitmIp
+

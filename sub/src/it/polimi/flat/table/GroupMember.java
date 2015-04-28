@@ -37,11 +37,13 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class GroupMember {
 	
+	private String ControllerIp;
+	private String MitmIP;
+	
 	private String nodeId; //Identifier of the node 
 	private Integer myPort;
 	private ServerSocket mySocket; //the socket associated to this groupMember ( the listener for incoming messages )
 	private int idle;
-	private int inputMode; //0=manual input , 1=autoinput
 	
 	private Key publicKey;  //Initial public key
 	private Key privateKey; //Initial private key
@@ -61,14 +63,17 @@ public class GroupMember {
 	 * the group configuration.
 	 * ListenPort is the port where this group member will
 	 * listen for incoming messages 
+	 * 
+	 * For semplicity the Controller is always on the 56520 and the MITM on the 9000
 	 * */
-	public GroupMember(Integer id,Integer ListenPort, int inputmode){
+	public GroupMember(Integer id,Integer ListenPort, String ControllerIp , String MitmIP ){
 		
 		idle=1;
 		mySocket=null;
 		nodeId = Integer.toBinaryString(id);
 		
-		this.inputMode=inputmode;
+		this.ControllerIp = ControllerIp;
+		this.MitmIP = MitmIP;
 		
 		//System.out.println("MY ID: " + nodeId+"\n");
 		
@@ -134,24 +139,11 @@ public class GroupMember {
 	this.InitialHandshake(socket);
 	System.out.println("[INFO]Ended initial handshake with the group controller");
 
-	/*
-	System.out.println("["+this.nodeId+"] Hash of the dek is"+dek.hashCode());
-	System.out.println("["+this.nodeId+"] Hash of the kek0 is"+kek0.hashCode());
-	System.out.println("["+this.nodeId+"] Hash of the kek1 is"+kek1.hashCode());
-	System.out.println("["+this.nodeId+"] Hash of the kek2 is"+kek2.hashCode());
-	*/
-	
-	if(this.inputMode==0){
-	InputThread it = new InputThread(this,1); //1= node start alive obviously
+
+	InputThread it = new InputThread(this,1); 
 	Thread t = new Thread(it);
 	t.start();
-	}
-	else{
-		AutoThread at = new AutoThread(this,1);
-		Thread t = new Thread(at);
-		t.start();
-	}
-			
+	
 	while(idle==0){
 	try {
 		
@@ -471,7 +463,7 @@ public class GroupMember {
 		Socket socket = null;
 		//sSystem.out.println("Connecting to the GroupController: localhost:5620");
 		try {
-			socket = new Socket("localhost",56520);			
+			socket = new Socket(this.ControllerIp,56520);			
 		} catch (IOException e) {
 			System.out.println("An error occured during the connection to the server");
 			e.printStackTrace();
@@ -709,7 +701,7 @@ public class GroupMember {
 			
 			//-----------------------------------------------------
 			try{
-			Socket newsocket = new Socket("localhost",9000);
+			Socket newsocket = new Socket(this.MitmIP,9000); 
 			ooss = new ObjectOutputStream(newsocket.getOutputStream());
 			ooss.writeObject(msg);
 			newsocket.close();
@@ -797,7 +789,7 @@ public class GroupMember {
 		
 		Socket socket = null;
 		try {
-			socket = new Socket("localhost",this.myPort);	
+			socket = new Socket("localhost",this.myPort);	//autoinviamoci un messaggio di stop
 			ObjectOutputStream ooss = new ObjectOutputStream(socket.getOutputStream());
 			
 			StopMessage sm = new StopMessage();
@@ -811,19 +803,10 @@ public class GroupMember {
 			e.printStackTrace();
 		}			
 		
-		if(this.inputMode==0){
 		InputThread it = new InputThread(this,0);
 		Thread t = new Thread(it);
 		t.start();
-		}
-		else{
 			
-			AutoThread at = new AutoThread(this,0);
-			Thread t = new Thread(at);
-			t.start();
-			
-		}
-		
 		//PROVA
 		this.buildAndSendMessage("leave");
 		
@@ -943,84 +926,5 @@ public class GroupMember {
 				} //end while(true)				
 			}
 		}
-	}
-	
-	private class AutoThread implements Runnable{
-		
-		private GroupMember gm;
-		private int mode; //0= node dead, permits only an 'add' to rejoin the group
-						  //1= node alive! give complete terminal
-		
-		private String myString;
-				
-		public AutoThread(GroupMember gm , int mode){
-			this.gm = gm;
-			this.mode=mode;
-			this.myString = "Hey there, I am " + gm.nodeId + "!";
-		}
-		
-		@Override
-		public void run() {
-			
-			if(this.mode==1){ //if we are in not dead mode
-			
-			while(true){
-				
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-				
-				int rand = (int) ((Math.random()*10));
-				
-				if(rand>=5){ // if the rand is greater than 7 broadcast a message			
-					gm.BroadcastMessage(this.myString);				
-				}
-							
-				rand = (int) ((Math.random()*10));
-				
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e1) {
-					
-					e1.printStackTrace();
-				}
-				
-				if(rand>8){
-					this.gm.ExitGroup();
-					break; //terminate this thread
-				}
-			} //end while(true)			
-		  }
-			else{ //dead mode, give only the possibility to rejoin from the terminal
-				
-				System.out.println("\n[!!!]RESTRICTED TERMINAL[!!!]");
-				
-				
-				while(true){
-									
-					int rand = (int) ((Math.random()*10));
-					
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-					
-					if(rand>=6){
-					this.gm.wakeUp(); //wake up the son		
-					this.gm.run();
-					break;
-					}
-				} //end while(true)				
-			}
-			
-			//System.out.println("[INFO]out of input thread");
-
-		}
-		
-	}
-
-	
+	}	
 }

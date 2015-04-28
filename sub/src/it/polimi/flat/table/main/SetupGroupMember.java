@@ -26,7 +26,7 @@ public class SetupGroupMember {
 		//System.out.println("\nEnter the port: ");			
 		//String port = bufferRead.readLine();
 		//creiamo ilnuovo group member
-		GroupMember gm = new GroupMember(Integer.parseInt(args[0]),Integer.parseInt(args[1]),Integer.parseInt(args[2]));
+		GroupMember gm = new GroupMember(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2],args[3]);
 		//run
 		gm.run();
 
