@@ -1009,9 +1009,9 @@ public class GroupMember {
 					}
 					
 					if(rand>=6){
-					//this.gm.wakeUp(); //wake up the son		
-					//this.gm.run();
-					//break;
+					this.gm.wakeUp(); //wake up the son		
+					this.gm.run();
+					break;
 					}
 				} //end while(true)				
 			}

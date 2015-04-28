@@ -670,6 +670,12 @@ public class GroupController {
 			this.sendNewDekMessage(dekEncrypted);
 			//cambiamo le KEK del nodo che ha fatto leave
 			ArrayList<byte[]> kekEncrypted = this.changeKek(nodeId);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//mandiamo le nuove kek
 			this.sendNewKekMessage(kekEncrypted);
 			
@@ -851,7 +857,7 @@ public synchronized void HandleLeavingMember(ArrayList <String> toDelete){
 			SecretKey newKek = keyGen.generateKey();
 			//criptiamola con la DEK
 			DesCipher.init(Cipher.ENCRYPT_MODE, dek);
-			byte[] desCriptedKek = DesCipher.doFinal(table.get(mapKey).getEncoded());
+			byte[] desCriptedKek = DesCipher.doFinal(newKek.getEncoded());
 			//criptiamola con la vecchia KEK
 			DesCipher.init(Cipher.ENCRYPT_MODE, table.get(mapKey));
 			byte[] kekCriptedKek = DesCipher.doFinal(desCriptedKek);
