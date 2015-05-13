@@ -238,7 +238,7 @@ class IfStat(Stat):
 		self.thenpart=thenpart
 		self.elsepart=elsepart
 		self.cond.parent=self
-		self.thenpart.parent=self
+		#self.thenpart.parent=self
 		if self.elsepart : self.elsepart.parent=self
 		self.symtab=symtab
 

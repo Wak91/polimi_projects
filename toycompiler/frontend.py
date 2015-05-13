@@ -55,7 +55,7 @@ def factor(symtab) :  #factor controlla l'operando di un'espressione. ad esempio
 	if accept('number') : return Const(value=value, symtab=symtab) # se è un numero ritorno l'oggetto costante che rappresenta quel numero
 
 	elif accept('lparen') : #se trovo una parentesi devo risolvere la sotto-espressione in modo ricorsivo
-		expr = expression() # una volta risolta 
+		expr = expression(symtab) # una volta risolta 
 		expect('rparen') # mi aspetto un chiusa tonda 
 		return expr
 	else :
@@ -157,7 +157,9 @@ def statement(symtab) : #da qua in poi la symbolTable non può più essere aggio
 		return statement_list
 
 	elif accept('ifsym') :
-		cond=condition()
+		expect('lparen')
+		cond=condition(symtab)
+		expect('rparen')
 		expect('thensym')
 		then=statement(symtab)
 		return IfStat(cond=cond,thenpart=then, symtab=symtab)
@@ -266,12 +268,13 @@ if __name__ == '__main__' :
 
 	res = program() 
 
-	print res
 
 
-	'''
+
 	print '\n', res, '\n'
-			
+
+
+'''			
 	res.navigate(print_stat_list)
 	from support import *
 
@@ -282,6 +285,10 @@ if __name__ == '__main__' :
 	print '\nTotal nodes in IR:', len(node_list), '\n'
 
 	res.navigate(lowering)
+
+
+
+
 
 	node_list=get_node_list(res)
 	print '\n', res, '\n'
