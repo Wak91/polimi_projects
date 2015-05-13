@@ -273,8 +273,7 @@ if __name__ == '__main__' :
 
 	print '\n', res, '\n'
 
-
-'''			
+		
 	res.navigate(print_stat_list)
 	from support import *
 
@@ -287,7 +286,9 @@ if __name__ == '__main__' :
 	res.navigate(lowering)
 
 
+	print res 
 
+	'''
 
 
 	node_list=get_node_list(res)
