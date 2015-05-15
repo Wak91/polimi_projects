@@ -288,9 +288,22 @@ class ForStat(Stat):
 		self.body=body
 		self.cond.parent=self
 		self.body.parent=self
-		self.target.parent=self
+		#self.target.parent=self
 		self.step.parent=self
 		self.symtab=symtab
+
+	def lower(self):
+		cond_label = standard_types['label']()
+		exit_label = standard_types['label']()
+		exit_stat = EmptyStat(self.parent,symtab=self.symtab)
+		exit_stat.setLabel(exit_label)
+		branch = BranchStat(None , self.cond , exit_label , self.symtab )
+		branch.setLabel(cond_label)
+		loop = BranchStat (None , Const(None,1) , cond_label , self.symtab)
+		stat_list = StatList ( self.parent , [self.init, branch , self.body , self.step , loop , exit_stat ] , self.symtab)
+		return self.parent.replace(self,stat_list)
+
+
 
 class AssignStat(Stat):
 	def __init__(self, parent=None, target=None, expr=None, symtab=None):
@@ -299,6 +312,25 @@ class AssignStat(Stat):
 		self.expr=expr
 		self.expr.parent=self
 		self.symtab=symtab
+
+
+	def lower_auxiliary(node):
+		for i in node:
+			if(i.isinstance(BinExpr) || i.isinstance(UnExpr)): # scorriamo array di oggetti relativi a questo BinExpr o UnExpr
+				lower_auxiliary(i.children)
+		if(len(i)==2): # siamo fermi su una unary expression
+			return 
+		return 
+
+
+
+
+
+	def lower:
+		if(self.expr.isinstance(BinExpr)  || self.expr.isinstance (UnExpr)):
+		  lower_auxiliary(self.expr.children)
+
+
 
 	def collect_uses(self):
 		try :	return self.expr.collect_uses()

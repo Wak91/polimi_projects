@@ -144,6 +144,7 @@ def statement(symtab) : #da qua in poi la symbolTable non può più essere aggio
 
 	elif accept('beginsym') :
 
+		print "BEGIN! "
 		statement_list = StatList(symtab=symtab)
 		statement_list.append(statement(symtab))
 
@@ -169,6 +170,26 @@ def statement(symtab) : #da qua in poi la symbolTable non può più essere aggio
 		expect('dosym')
 		body=statement(symtab)
 		return WhileStat(cond=cond, body=body, symtab=symtab)
+
+	elif accept('forsym'):
+		expect('lparen')
+		expect('ident')
+		var_value = value
+		expect('becomes')
+		expect('number')
+		var_const = value
+		new_var = Symbol(var_value, standard_types['int'])
+		symtab.append(new_var)
+		init = AssignStat(target=new_var, expr= Const(value=var_const, symtab=symtab) , symtab=symtab)
+		expect('semicolon')
+		cond = condition(symtab)
+		expect('semicolon')
+		expect('number')
+		step = BinExpr(children=['plus',  Var(var=symtab.find(var_value), symtab=symtab) , Const(value=value, symtab=symtab) ], symtab=symtab)
+		expect('rparen')
+		body = statement(symtab)
+		return ForStat(init=init, cond=cond, step=step, body=body, symtab=symtab)
+
 
 	elif accept('print') :
 		expect('ident')
@@ -269,9 +290,9 @@ if __name__ == '__main__' :
 	res = program() 
 
 
+#	print res 
 
-
-	print '\n', res, '\n'
+#	print '\n', res, '\n'
 
 		
 	res.navigate(print_stat_list)
@@ -289,7 +310,6 @@ if __name__ == '__main__' :
 	print res 
 
 	'''
-
 
 	node_list=get_node_list(res)
 	print '\n', res, '\n'

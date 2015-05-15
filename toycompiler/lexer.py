@@ -37,6 +37,7 @@ symbols =  {
 	'print'			: ['!', 'print'],
 	'lsquare'	: ['['],
 	'rsquare'   : [']'],
+	'forsym'	: ['for']
 
 }
 
