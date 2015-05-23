@@ -1,0 +1,33 @@
+		<class 'ir.AssignStat'> 139680816999120 {
+			expr: 	<class 'ir.BinExpr'> 139680816999056 {
+				children:
+				'plus'
+				<class 'ir.BinExpr'> 139680816998928 {
+					children:
+					'plus'
+					<class 'ir.BinExpr'> 139680816998800 {
+						children:
+						'plus'
+						<class 'ir.UnExpr'> 139680816998672 {
+							children:
+							'minus'
+							<class 'ir.Var'> 139680816998608 {
+								symbol: 	int a5
+							}
+						}
+						<class 'ir.Const'> 139680816998736 {
+							symbol: 	None
+							value: 	'5'
+						}
+					}
+					<class 'ir.Const'> 139680816998864 {
+						symbol: 	None
+						value: 	'3'
+					}
+				}
+				<class 'ir.Var'> 139680816998992 {
+					symbol: 	int x
+				}
+			}
+			symbol: 	int y
+		}

@@ -10,6 +10,8 @@ Includes lowering and flattening functions'''
 basetypes = [ 'Int', 'Float', 'Label', 'Struct', 'Function' , 'Array' ]
 qualifiers = [ 'unsigned' ]
 
+virtual_reg_counter=-1
+
 class Type(object):
 	def __init__(self, name, size, basetype, qualifiers=None):
 		self.name=name
@@ -52,6 +54,11 @@ class LabelType(Type):
 		self.ids+=1
 		return Symbol(name='label'+`self.ids`, stype=self, value=target)
 
+class RegisterType(Type):
+	def __init__(self):
+		self.name='virtual_register'
+
+
 class FunctionType(Type):
 	def __init__(self):
 		self.name='function'
@@ -69,7 +76,17 @@ standard_types = {
 	'float': Type('float', 32, 'Float'),
 	'label': LabelType(),
 	'function' : FunctionType(),
+	'register'  : RegisterType(),
 }
+
+
+
+def new_virtual_reg():
+	virtual_reg_counter = virtual_reg_counter + 1
+	virtual_reg_name = "reg" + str(virtual_reg_counter)
+	return Symbol(  virtual_reg_name , standard_types['register']) 
+
+
 
 class Symbol(object):
 	def __init__(self, name, stype, value=None):
@@ -314,21 +331,67 @@ class AssignStat(Stat):
 		self.symtab=symtab
 
 
-	def lower_auxiliary(node):
+	def lower_auxiliary(node,stat_list):
+
+		stat_list = StatList ( self.parent , [] , self.symtab)
+		regs = []
 		for i in node:
 			if(i.isinstance(BinExpr) || i.isinstance(UnExpr)): # scorriamo array di oggetti relativi a questo BinExpr o UnExpr
-				lower_auxiliary(i.children)
+				stat_list_l , reg = lower_auxiliary(i.children)
+				stat_list.children.append(stat_list_l)
+				regs.append(reg)
 		if(len(i)==2): # siamo fermi su una unary expression
-			return 
-		return 
+				reg = new_virtual_reg()
+				if(len(regs)==0): #vuol dire che è una foglia 
+		    	    load_stat = LoadStat(self, symbol=i[1], register= reg, symtab=symtab) #facciamo la load del simbolo ( var o costante ) all'interno del registro 
+		    		stat_list.children.append(load_stat)
+		    		if(i[0]=='minus'):
+		    			new_reg = new_virtual_reg()
+		    			not_stat = NotStat(self, symbol = reg , register= new_reg ,  symtab = symtab) #row 468 class NOT 
+		    			stat_list.children.append(not_stat)
+		    			return stat_list,new_reg
+		    		else:
+		    			return stat_list, reg 
+		    	else:  #this is not a leaf, but an intermediate UnaryExpression 
+		    		if(i[0]=='minus'):
+		    			new_reg = new_virtual_reg()
+		    			not_stat = NotStat(self, symbol = regs[0] , register= new_reg ,  symtab = symtab) #row 468 class NOT 
+		    			stat_list.children.append(not_stat)
+		    			return stat_list,new_reg
+		    		else:
+		    			return stat_list, regs[0]
+		else: #siamo fermi su una BinaryExpression
+			if(i[1]=='plus'):
+				reg = new_virtual_reg()
+				if(len(regs) == 0):  #è una binary expression tra 2 costanti 
+					load_stat1 = LoadStat(self, symbol=i[0], register= reg, symtab=symtab) #facciamo la load del simbolo ( var o costante ) all'interno del registro 
+					reg = new_virtual_reg()
 
 
 
+
+
+
+
+			    
+		    	   
+		    	
+		    	
+		    	reg = new_reg 
+		    	stat_list.children.append(not_stat)
+		    return stat_list, reg
+		else: #case of binary expression 
+			if(i[1] == 'plus'):
+
+
+
+
+	return 
 
 
 	def lower:
 		if(self.expr.isinstance(BinExpr)  || self.expr.isinstance (UnExpr)):
-		  lower_auxiliary(self.expr.children)
+		  lower_auxiliary(self.expr.children,stat_list)
 
 
 
@@ -383,10 +446,11 @@ class StoreStat(Stat):
 		return [self.symbol]
 
 class LoadStat(Stat):
-	def __init__(self, parent=None, symbol=None, symtab=None):
+	def __init__(self, parent=None, symbol=None, register=None , symtab=None):
 		self.parent=parent
 		self.symbol=symbol
 		self.symtab=symtab
+		self.register = register 
 
 	def collect_uses(self):
 		return []
@@ -452,6 +516,28 @@ class PrintStat(Stat):
 	def collect_uses(self):
 		return [self.symbol]
 	
+
+
+class NotStat(Stat):
+	def __init__(self, parent=None, symbol=None, symtab=None):	
+		self.parent=parent
+		self.symbol=symbol
+		self.symtab=symtab
+
+	def collect_uses(self):
+		return [self.symbol]
+
+#the addstat sum up the two values and store the values in symbol_1 ( the virtual register in symbol_1 ) 
+class AddStat(Stat):
+	def __init__(self, parent=None, symbol_1=None, symbol_2=None, symtab=None):	
+		self.parent=parent
+		self.symbol_1=symbol_1
+		self.symbol_2=symbol_2
+		self.symtab=symtab
+
+	def collect_uses(self):
+		return [self.symbol]
+
 
 #DEFINITIONS
 class Definition(IRNode):
