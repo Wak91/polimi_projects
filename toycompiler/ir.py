@@ -12,6 +12,10 @@ qualifiers = [ 'unsigned' ]
 
 virtual_reg_counter=-1
 
+def get_type(obj):
+	return obj.__class__.__name__
+
+
 class Type(object):
 	def __init__(self, name, size, basetype, qualifiers=None):
 		self.name=name
@@ -330,70 +334,9 @@ class AssignStat(Stat):
 		self.expr.parent=self
 		self.symtab=symtab
 
-
-	def lower_auxiliary(node,stat_list):
-
-		stat_list = StatList ( self.parent , [] , self.symtab)
-		regs = []
-		for i in node:
-			if(i.isinstance(BinExpr) || i.isinstance(UnExpr)): # scorriamo array di oggetti relativi a questo BinExpr o UnExpr
-				stat_list_l , reg = lower_auxiliary(i.children)
-				stat_list.children.append(stat_list_l)
-				regs.append(reg)
-		if(len(i)==2): # siamo fermi su una unary expression
-				reg = new_virtual_reg()
-				if(len(regs)==0): #vuol dire che è una foglia 
-		    	    load_stat = LoadStat(self, symbol=i[1], register= reg, symtab=symtab) #facciamo la load del simbolo ( var o costante ) all'interno del registro 
-		    		stat_list.children.append(load_stat)
-		    		if(i[0]=='minus'):
-		    			new_reg = new_virtual_reg()
-		    			not_stat = NotStat(self, symbol = reg , register= new_reg ,  symtab = symtab) #row 468 class NOT 
-		    			stat_list.children.append(not_stat)
-		    			return stat_list,new_reg
-		    		else:
-		    			return stat_list, reg 
-		    	else:  #this is not a leaf, but an intermediate UnaryExpression 
-		    		if(i[0]=='minus'):
-		    			new_reg = new_virtual_reg()
-		    			not_stat = NotStat(self, symbol = regs[0] , register= new_reg ,  symtab = symtab) #row 468 class NOT 
-		    			stat_list.children.append(not_stat)
-		    			return stat_list,new_reg
-		    		else:
-		    			return stat_list, regs[0]
-		else: #siamo fermi su una BinaryExpression
-			if(i[1]=='plus'):
-				reg = new_virtual_reg()
-				if(len(regs) == 0):  #è una binary expression tra 2 costanti 
-					load_stat1 = LoadStat(self, symbol=i[0], register= reg, symtab=symtab) #facciamo la load del simbolo ( var o costante ) all'interno del registro 
-					reg = new_virtual_reg()
-
-
-
-
-
-
-
-			    
-		    	   
-		    	
-		    	
-		    	reg = new_reg 
-		    	stat_list.children.append(not_stat)
-		    return stat_list, reg
-		else: #case of binary expression 
-			if(i[1] == 'plus'):
-
-
-
-
-	return 
-
-
-	def lower:
-		if(self.expr.isinstance(BinExpr)  || self.expr.isinstance (UnExpr)):
-		  lower_auxiliary(self.expr.children,stat_list)
-
-
+	def lower(self):
+    		if(get_type(self.expr)=="BinExpr" or get_type(self.expr)=="UnExpr"):
+    			print "dio"
 
 	def collect_uses(self):
 		try :	return self.expr.collect_uses()
