@@ -335,8 +335,52 @@ class AssignStat(Stat):
 		self.symtab=symtab
 
 	def lower(self):
-    		if(get_type(self.expr)=="BinExpr" or get_type(self.expr)=="UnExpr"):
-    			print "dio"
+
+		def lower_auxiliary(node):
+			stat_list = []
+			regs = []
+			for child in node.children:
+				if(get_type(child)=="BinExpr" or get_type(child)=="UnExpr" ):
+					stats,reg = lower_auxiliary(child)
+					stat_list.append(stats)
+					regs.append(reg)
+				if(get_type(child)=="Var" or get_type(child)=="Const"):
+					new_reg = new_virtual_reg()
+					load_stat = LoadStat(symbol=child.symbol , register=new_reg , symtab=self.symtab)
+					stat_list.append(load_stat)
+					regs.append(new_reg)
+
+			if(node.children==3 and len(regs)==2): #abbiamo appena finito di ridurre una BinaryExpr
+			   if(node.children[0]=='plus'):
+			   		add_stat = AddStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
+			   		stat_list.append(add_stat)
+			   		return stat_list,regs[0] #return the stat_list and the last reg used 
+			   elif(node.children[0]=='minus'):
+			   		minus_stat = MinusStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
+			   		stat_list.append(add_stat)
+			   		return stat_list,regs[0] #return the stat_list and the last reg used
+			   elif(node.children[0]=='times'):
+			   		minus_stat = TimesStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
+			   		stat_list.append(add_stat)
+			   		return stat_list,regs[0] #return the stat_list and the last reg used
+			   elif(node.children[0]=='slash'):
+			   		minus_stat = DivStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
+			   		stat_list.append(add_stat)
+			   		return stat_list,regs[0] #return the stat_list and the last reg used
+
+			if(node.children==2 and len(regs)==1): #siamo fermi su una unary expression 
+				if(node[0]=='minus'):
+					not_stat = NotStat(symbol=regs[0], symtab=self.symtab)
+					stat_list.append(not_stat)
+				return stat_list 
+
+    	if(get_type(self.expr)=="BinExpr" or get_type(self.expr)=="UnExpr"):
+    			stat_list, reg = lower_auxiliary(self.expr)
+    			store_stat = StoreStat( what= reg , symbol=self.symbol, symtab=self.symtab)
+    			stat_list.append(store_stat)
+    			return self.parent.replace(self,stat_list)
+
+    		  
 
 	def collect_uses(self):
 		try :	return self.expr.collect_uses()
@@ -380,10 +424,11 @@ class EmptyStat(Stat):
 		return []
 
 class StoreStat(Stat):
-	def __init__(self, parent=None, symbol=None, symtab=None):
+	def __init__(self, parent=None, what=None , symbol=None, symtab=None):
 		self.parent=parent
 		self.symbol=symbol
 		self.symtab=symtab
+		self.what = what
 		
 	def collect_uses(self):
 		return [self.symbol]
@@ -472,6 +517,39 @@ class NotStat(Stat):
 
 #the addstat sum up the two values and store the values in symbol_1 ( the virtual register in symbol_1 ) 
 class AddStat(Stat):
+	def __init__(self, parent=None, symbol_1=None, symbol_2=None, symtab=None):	
+		self.parent=parent
+		self.symbol_1=symbol_1
+		self.symbol_2=symbol_2
+		self.symtab=symtab
+
+	def collect_uses(self):
+		return [self.symbol]
+
+#the addstat makes the diff between the two values and store the values in symbol_1 ( the virtual register in symbol_1 ) 
+class MinusStat(Stat):
+	def __init__(self, parent=None, symbol_1=None, symbol_2=None, symtab=None):	
+		self.parent=parent
+		self.symbol_1=symbol_1
+		self.symbol_2=symbol_2
+		self.symtab=symtab
+
+	def collect_uses(self):
+		return [self.symbol]
+
+
+class TimesStat(Stat):
+	def __init__(self, parent=None, symbol_1=None, symbol_2=None, symtab=None):	
+		self.parent=parent
+		self.symbol_1=symbol_1
+		self.symbol_2=symbol_2
+		self.symtab=symtab
+
+	def collect_uses(self):
+		return [self.symbol]
+
+
+class DivStat(Stat):
 	def __init__(self, parent=None, symbol_1=None, symbol_2=None, symtab=None):	
 		self.parent=parent
 		self.symbol_1=symbol_1
