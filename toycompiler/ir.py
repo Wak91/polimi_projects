@@ -336,51 +336,60 @@ class AssignStat(Stat):
 
 	def lower(self):
 
+		stat_list=[]
+
 		def lower_auxiliary(node):
 			stat_list = []
 			regs = []
 			for child in node.children:
-				if(get_type(child)=="BinExpr" or get_type(child)=="UnExpr" ):
+				if get_type(child)=="BinExpr" or get_type(child)=="UnExpr" :
 					stats,reg = lower_auxiliary(child)
 					stat_list.append(stats)
 					regs.append(reg)
-				if(get_type(child)=="Var" or get_type(child)=="Const"):
+				if get_type(child)=="Var" or get_type(child)=="Const" :
 					new_reg = new_virtual_reg()
 					load_stat = LoadStat(symbol=child.symbol , register=new_reg , symtab=self.symtab)
 					stat_list.append(load_stat)
 					regs.append(new_reg)
 
-			if(node.children==3 and len(regs)==2): #abbiamo appena finito di ridurre una BinaryExpr
-			   if(node.children[0]=='plus'):
+			if node.children==3 and len(regs)==2 : #abbiamo appena finito di ridurre una BinaryExpr
+			   if node.children[0]=='plus' :
 			   		add_stat = AddStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
 			   		stat_list.append(add_stat)
 			   		return stat_list,regs[0] #return the stat_list and the last reg used 
-			   elif(node.children[0]=='minus'):
+			   elif node.children[0]=='minus' :
 			   		minus_stat = MinusStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
 			   		stat_list.append(add_stat)
 			   		return stat_list,regs[0] #return the stat_list and the last reg used
-			   elif(node.children[0]=='times'):
+			   elif node.children[0]=='times':
 			   		minus_stat = TimesStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
 			   		stat_list.append(add_stat)
 			   		return stat_list,regs[0] #return the stat_list and the last reg used
-			   elif(node.children[0]=='slash'):
+			   elif node.children[0]=='slash':
 			   		minus_stat = DivStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
 			   		stat_list.append(add_stat)
 			   		return stat_list,regs[0] #return the stat_list and the last reg used
 
-			if(node.children==2 and len(regs)==1): #siamo fermi su una unary expression 
-				if(node[0]=='minus'):
+			if node.children==2 and len(regs)==1: #siamo fermi su una unary expression 
+				if node[0]=='minus':
 					not_stat = NotStat(symbol=regs[0], symtab=self.symtab)
 					stat_list.append(not_stat)
-				return stat_list 
+				return stat_list,regs[0]
 
-    	if(get_type(self.expr)=="BinExpr" or get_type(self.expr)=="UnExpr"):
-    			stat_list, reg = lower_auxiliary(self.expr)
-    			store_stat = StoreStat( what= reg , symbol=self.symbol, symtab=self.symtab)
-    			stat_list.append(store_stat)
-    			return self.parent.replace(self,stat_list)
+		if get_type(self.expr)=="BinExpr" or get_type(self.expr)=="UnExpr":
+			stat_list, reg = lower_auxiliary(self.expr)
+    		store_stat = StoreStat( what= reg , symbol=self.symbol, symtab=self.symtab)
+    		stat_list.append(store_stat)
 
-    		  
+    	elif get_type(self.expr)=="Var" or get_type(self.expr)=="Const":
+    		reg = new_virtual_reg()
+	    	load_stat = LoadStat(symbol= self.expr.symbol , register=reg , symtab=self.symtab)
+	    	store_stat = StoreStat( what= reg , symbol=self.symbol, symtab=self.symtab)
+	    	stat_list.append(load_stat)
+	    	stat_list.append(store_stat)
+    	
+    	return self.parent.replace(self,stat_list)
+    
 
 	def collect_uses(self):
 		try :	return self.expr.collect_uses()
