@@ -31,3 +31,40 @@
 			}
 			symbol: 	int y
 		}
+
+
+
+			<class 'ir.AssignStat'> 139941891551824 {
+			expr: 	<class 'ir.BinExpr'> 139941891551760 {
+				children:
+				'plus'
+				<class 'ir.BinExpr'> 139941891551632 {
+					children:
+					'plus'
+					<class 'ir.BinExpr'> 139941891551504 {
+						children:
+						'plus'
+						<class 'ir.UnExpr'> 139941891551376 {
+							children:
+							'minus'
+							<class 'ir.Var'> 139941891481552 {
+								symbol: 	int a5
+							}
+						}
+						<class 'ir.Const'> 139941891551440 {
+							symbol: 	None
+							value: 	'5'
+						}
+					}
+					<class 'ir.Const'> 139941891551568 {
+						symbol: 	None
+						value: 	'3'
+					}
+				}
+				<class 'ir.Var'> 139941891551696 {
+					symbol: 	int x
+				}
+			}
+			symbol: 	int y
+		}
+
