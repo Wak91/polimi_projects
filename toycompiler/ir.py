@@ -359,15 +359,15 @@ class AssignStat(Stat):
 			   		return stat_list,regs[0] #return the stat_list and the last reg used 
 			   elif node.children[0]=='minus' :
 			   		minus_stat = MinusStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
-			   		stat_list.append(add_stat)
+			   		stat_list.append(minus_stat)
 			   		return stat_list,regs[0] #return the stat_list and the last reg used
 			   elif node.children[0]=='times':
-			   		minus_stat = TimesStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
-			   		stat_list.append(add_stat)
+			   		time_stat = TimesStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
+			   		stat_list.append(time_stat)
 			   		return stat_list,regs[0] #return the stat_list and the last reg used
 			   elif node.children[0]=='slash':
-			   		minus_stat = DivStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
-			   		stat_list.append(add_stat)
+			   		div_stat = DivStat(symbol_1=regs[0], symbol_2=regs[1], symtab=self.symtab)
+			   		stat_list.append(div_stat)
 			   		return stat_list,regs[0] #return the stat_list and the last reg used
 
 			if node.children==2 and len(regs)==1: #siamo fermi su una unary expression 
