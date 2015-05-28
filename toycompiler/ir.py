@@ -134,7 +134,7 @@ class IRNode(object):
 
     def __repr__(self):
         from string import split, join
-        attrs = set(['body','cond', 'value','symbol_1' ,'register' ,'symbol_2','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab' , 'index']) & set(dir(self))
+        attrs = set(['body','cond', 'what' ,'value','symbol_1' ,'register' ,'symbol_2','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab' , 'index']) & set(dir(self))
 
         res=`type(self)`+' '+`id(self)`+' {\n'
         try :
