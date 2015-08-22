@@ -1,0 +1,81 @@
+model boemiav2.mod;
+data boemiav2.dat;
+option solver cplex;
+
+param termination >=0, integer;
+let termination :=0;
+
+param finish >=0, integer;
+param nodocorrente >=0, integer;
+
+set difference default {};
+set attivi default {};
+
+set raggiungibili default {};
+set old_raggiungibili default {} ;
+set old_attivi default {};
+
+
+let nc := 0;
+
+repeat while( termination = 0 )
+{
+ solve;
+ let finish := 0;
+ let ENstn := {};
+ let raggiungibili := {};
+ let attivi := {};
+ 
+ let raggiungibili := { j in City : j!=s and (s,j) in Arcs and x[s,j]>=1 } ;
+ let old_raggiungibili := raggiungibili;
+ repeat while(finish=0)
+              {
+               for{h in old_raggiungibili} 
+                   {
+                    let raggiungibili := raggiungibili union { j in City : j!=h and (h,j) in Arcs and (x[h,j]>=1 or x[j,h]>=1) };
+                   }
+			   let difference := raggiungibili diff old_raggiungibili;
+               #display old_raggiungibili;
+               #display difference;
+               if( card(difference)= 0 ) then
+		          { let finish :=1;} 
+			   else
+				  {
+				    let old_raggiungibili := raggiungibili; 
+				  }
+              } #Dopo questo while ho creato l'insieme dei nodi raggiungibili partendo dalla sorgente
+ let attivi := {};             
+ for{c in City}
+	{
+	let attivi := attivi union { j in City : (c,j) in Arcs and c!=j and ( x[c,j]>=1 or x[j,c]>=1)}; #Insieme di tutti i nodi attivi nella soluzione
+    }
+    let old_attivi := attivi;
+    display attivi;
+    display raggiungibili;
+ if( card( attivi diff raggiungibili ) = 0 ) then # Se gli insiemi sono uguali allora tutto è connesso
+   {
+    let termination := 1;
+   } 
+ else #Altrimenti assegno Nstn ed Nst e richiamo il solver
+ {
+ let nc := nc+1;
+ let nstn_cut[nc] :=  attivi diff {raggiungibili}; 
+ let nst_cut[nc] :=  City diff nstn_cut[nc];
+ let ENstn := { (i,j) in Edge : i in nstn_cut[nc] and j in nstn_cut[nc] }; #Insieme degli edge temporaneo
+ 
+ let edges[nc] := card(ENstn); #Calcolo del numero degli edge, utilizzato nel vincolo 4 del .mod s
+
+ display nc;
+ display nstn_cut[nc];
+ display nst_cut[nc];
+ 
+ #if(nc > 1 ) then
+ #{display nstn_cut[1];
+ #display nst_cut[1];
+ #}
+ }
+}
+display z;
+display x;
+
+
