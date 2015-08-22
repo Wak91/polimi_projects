@@ -1,0 +1,28 @@
+#define _GNU_SOURCE
+#include <unistd.h>
+#include <stdio.h>
+#include <linux/kernel.h>
+#include <sys/syscall.h>
+#define __NR_sys_fabio_call 351
+
+
+long fabiocall(void)
+{
+    return syscall(__NR_sys_fabio_call , 1 );
+}
+
+int main(int argc, char *argv[])
+{
+  int retval=4;
+  int ret;
+  printf("Il valore iniziale di retval e' %d\n" , retval);
+  ret =  fabiocall();
+  printf("dalla syscallmia ricevo : %d \n ", ret);
+  retval+=ret;
+  printf("il valore sommato tra ret e retval e' %d\n", retval);
+  if(retval < 0)
+  {
+    perror("My system call returned with an error code.");
+  }
+}
+    
