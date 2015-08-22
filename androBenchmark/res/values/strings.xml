@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">androBenchmark</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_message">Enter a message!</string>
+    <string name="button_send">Send</string>
+    <string name="title_activity_display_message">App-SmS</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_search">Action Bar</string>
+    <string name="welcome">Welcome to my first app</string>
+    <string name="button_gray_scale">Gray scale the image</string>
+    <string name="button_matrix">Do a matrix mul</string>
+    <string name="button_matrix_jni">Do a matrix mul(jni)</string>
+    <string name="button_gray_render">GrayScale.rs</string>
+    <string name="button_hello_render"> Hello.rs</string>
+    <string name="button_gray_jni">Gray(jni)</string>
+    <string name="button_matrix_rs">Matrix.rs</string>
+    <string name="button_bruteforce_java">Bruteforce</string>
+    <string name="button_bruteforce_jni">Bruteforce (JNI)</string>
+    <string name="button_bruteforce_rs">Bruteforce (RS)</string>
+    <string name="title_activity_graph">GraphActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+</resources>
