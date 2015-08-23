@@ -29,5 +29,9 @@ An augmented reality cooking game for android realized for Expo 2015 <br>
 9- <b>WebAppExpoGame</b> - <i>[Javascript]</i> <br>
 The server of the ExpoChef game 
 
+10- <b>STM32_wireless-communication</b> - <i>[C/C++]</i> <br>
+We implemented a driver for nRF24L01P RF transceiver in MiOSx on the STM32F4 board.
+The whole project was to develop a prototype of a social-fitness device.
+
 <br><br>
 <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/c23.23.291.291/s160x160/604043_207222906086168_752356469_n.jpg?oh=623f57e1b53e305cbe801c0b5f81e5ef&oe=5676791C&__gda__=1449967049_f59075e074fb93ee1aa4428e1e60fd4c">
