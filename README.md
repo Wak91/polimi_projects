@@ -1,6 +1,6 @@
 <h1>WIKI</h1>
 
-1- <b>androBenchmark</b> - <i>[Java-Jni-Renderscript]</i> <br>
+1- <b>androBenchmark</b> - <i>[Java-C-Renderscript]</i> <br>
 This is an android application that test the performance of different
 tasks ( the benchmarks ) performed by pure java,jni and renderscript.
 The application plots some graphs in order to understand better the relation among the different execution's time and battery consumption of the three solutions.
