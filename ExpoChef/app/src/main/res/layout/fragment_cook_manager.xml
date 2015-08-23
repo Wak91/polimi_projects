@@ -1,0 +1,109 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="it.polimi.expogame.fragments.cook.CookManagerFragment"
+    android:id="@+id/cook_manager_fragment"
+    android:background="@drawable/tovaglia">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+       >
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/external"
+            >
+
+
+            <ImageView
+
+                android:id="@+id/imageView1"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+
+                android:src="@drawable/kitchen_table"
+                android:layout_gravity="center_horizontal|right"
+                android:adjustViewBounds="false" />
+
+
+            <Button
+                android:id="@+id/cook_button"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/cookbutton"
+                android:layout_gravity="right"
+                />
+
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/wasterbin"
+                android:layout_gravity="left|top"
+                android:src="@drawable/wasterbin" />
+
+
+            <GridView
+                android:layout_width="159dp"
+                android:layout_height="150dp"
+                android:id="@+id/cooker"
+                android:numColumns="2"
+                android:columnWidth="50dp"
+                android:verticalSpacing="0dp"
+                android:horizontalSpacing="0dp"
+                android:stretchMode="spacingWidthUniform"
+                android:layout_gravity="center"
+                />
+
+            <ImageView
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:id="@+id/cookingcloud"
+                android:layout_gravity="center"
+                 />
+
+
+        </FrameLayout>
+        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/ingredient_table"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:columnWidth="90dp"
+            android:numColumns="5"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            android:layout_weight="1"
+            />
+
+
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cooker_image"/>
+    <TextView
+        android:layout_width="210dp"
+        android:layout_height="154dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/start_text_tutorial_cook"
+        android:id="@+id/speak"
+        android:layout_gravity="left|top"
+        android:background="@drawable/nuvola"
+        android:layout_margin="5dp"
+        android:gravity="center_horizontal|clip_horizontal|clip_vertical"
+        android:autoText="false"
+        android:paddingTop="30dp" />
+
+
+</FrameLayout>

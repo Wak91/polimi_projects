@@ -1,0 +1,202 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="it.polimi.expogame.fragments.info.DetailsFragment"
+    android:background="@drawable/tovaglia"
+   >
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+
+        >
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|top"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            style="@style/DetailsFragmentTiles"
+
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="PIZZA MARGHERITA"
+                android:id="@+id/nameDishLabel"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#ffce8e2c"
+                android:textColorHighlight="#ff989898"
+                android:textStyle="bold"
+                android:textAllCaps="true"/>
+
+
+            <ImageView
+                android:layout_width="fill_parent"
+
+                android:layout_height="0dp"
+                android:layout_weight="0.7"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+
+                android:id="@+id/imageDish"
+                android:src="@drawable/dish_pizza"
+
+                android:layout_gravity="center_horizontal" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/difficulty"
+                    android:id="@+id/textDifficulty"
+                    android:textAllCaps="true"
+                    android:textSize="14dp"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="13dp"
+                    android:id="@+id/imageDifficulty"
+                    android:src="@drawable/stars1"
+                    android:layout_below="@id/textDifficulty"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignLeft="@+id/textDifficulty"
+                    android:layout_alignRight="@+id/textDifficulty"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="italy"
+                    android:id="@+id/nationality_dish"
+                    android:textAllCaps="true"
+                    android:textSize="14dp"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="13dp"
+                    android:id="@+id/imageFlag"
+                    android:src="@drawable/italia"
+                    android:layout_below="@id/nationality_dish"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignLeft="@+id/nationality_dish"
+                    android:layout_alignRight="@+id/nationality_dish"
+                    android:layout_marginBottom="5dp"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"
+            style="@style/DetailsFragmentTiles"
+            >
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/labreceipe"
+                android:text="@string/label_receipe"
+                style="@style/DetailsFragmentsTitles"
+                />
+
+
+
+          <LinearLayout
+              android:orientation="horizontal"
+              android:id="@+id/ingredients_list_images"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content">
+          </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25"
+        style="@style/DetailsFragmentTiles"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelIngredients"
+            android:text="@string/label_description"
+            style="@style/DetailsFragmentsTitles"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="No description available"
+            android:id="@+id/description_dish"
+            android:textSize="14dp"
+            android:textColor="#ff2b2b2b"
+            />
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25"
+        style="@style/DetailsFragmentTiles"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelCuriosity"
+            android:text="@string/label_curiosity"
+            style="@style/DetailsFragmentsTitles"
+            />
+
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="No curiosity available able  available"
+            android:id="@+id/curiosity_dish"
+            android:textSize="14dp"
+            android:textColor="#ff2b2b2b"
+            />
+
+    </LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:expoChef="http://schemas.android.com/apk/res-auto"
+    >
+    <item android:id="@+id/action_start_map" android:title="Start map"
+        android:icon="@drawable/mappa_icon_button"
+        expoChef:showAsAction="always"
+       />
+    <item android:id="@+id/action_start_capture" android:title="Start capture"
+        android:icon="@drawable/retino"
+        expoChef:showAsAction="always"/>
+
+
+    <item android:id="@+id/options" android:title="@string/string_options"
+        expoChef:showAsAction="withText"/>
+
+
+</menu>

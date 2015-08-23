@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="it.polimi.expogame" >
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <!-- remember to put always the uses-permission above the application tag -->
+    <!-- PERMISSION HERE -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.PRIORITY_HIGH_ACCURACY" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
+    <!-- END PERMISSION -->
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".activities.MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.ARActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_ar" >
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".providers.IngredientsProvider"
+            android:authorities="it.polimi.expogame.ingredientsprovider"
+            android:enabled="true"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".providers.DishesProvider"
+            android:authorities="it.polimi.expogame.dishesprovider"
+            android:enabled="true"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".providers.MascotsProvider"
+            android:authorities="it.polimi.expogame.mascotsprovider"
+            android:enabled="true"
+            android:exported="false" >
+        </provider>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCZkWYcWGl7pcO3vf5AJu6VLS24XuJtEKc" />
+
+        <activity
+            android:name=".activities.DetailsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_details"
+            android:noHistory="true"
+             >
+        </activity>
+        <activity
+            android:name=".activities.ZoneActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_zone"
+             >
+        </activity>
+        <activity
+            android:name=".activities.FacebookShareActivity"
+            android:configChanges="orientation|screenSize"
+            android:icon="@drawable/icon_facebook_activity"
+            android:label="@string/title_activity_facebook_share"
+            android:theme="@style/AppTheme" >
+
+            <!-- Using icon from facebook app as of 23/05/14 -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_facebook_login"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
+        <activity
+            android:name=".activities.WorldMapActivity"
+            android:label="@string/title_activity_world_map" >
+        </activity>
+        <activity
+            android:name=".activities.OptionsActivity"
+            android:label="@string/title_activity_options" >
+        </activity>
+    </application>
+
+</manifest>

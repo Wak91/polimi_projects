@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="it.polimi.expogame.activities.DetailsActivity">
+
+    <item android:id="@+id/action_facebook"
+        android:icon="@drawable/facebook"
+        android:title="Share on facebook"
+        app:showAsAction="ifRoom"  />
+
+    <item android:id="@+id/action_google_plus"
+        android:title="Share on G+"
+        android:icon="@drawable/google_plus_icon"
+        app:showAsAction="ifRoom"/>
+</menu>
