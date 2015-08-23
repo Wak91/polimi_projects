@@ -1,0 +1,74 @@
+extends layout
+
+
+block content
+    .page-header
+      h1.text-center Ingredients List
+      .container
+        .row
+          .col-xs-12.col-sm-12.col-md-6.col-lg-6
+            a.btn.btn-lg.btn-primary.btn-circle.btn-xl.marginbig(href='/ingredients/new')
+              span.glyphicon.glyphicon-plus
+                br
+                span New
+
+        .row
+          br
+          br
+          .col-md-8
+            .row
+              .form-group.input-group
+                input#searchIngredient.form-control(type='text',placeholder='Insert ingredient name...')
+                span.input-group-btn
+                  button.btn.btn-default(type='button')
+                    i.fa.fa-search
+                      br
+                   
+
+        each result in ingredient
+            .row
+              .ing
+                .col-xs-1.col-sm-1.col-md-1.col-lg-1
+                  img(src='/upload/ingredients/#{result.imageUrl}', width=50,height=50)
+                .col-xs-1.col-sm-1.col-md-1.col-lg-2
+                  span #{result["name"]}
+                .col-xs-1.col-sm-1.col-md-1.col-lg-3
+                  span Mascotte: #{result["category"]}
+                .col-xs-1.col-sm-1.col-md-1.col-lg-1
+                  button.btn.btn-danger(onclick="delete_ingredient('#{result.name}')") Delete
+
+
+
+
+         script.
+          $("#searchIngredient").keyup(function(){
+          filter = $(this).val();
+          $(".ing").each(function(key,value){
+          console.log($(value).text());
+          if($(value).text().indexOf(filter) != 0){
+            $(value).hide();
+            }else{
+            $(value).show();
+               }
+            })
+            })
+
+
+          script
+            function delete_ingredient(name){
+                jQuery.ajax({
+                  url: "/ingredients/"+name,
+                  type: "DELETE",
+                  success: function (data, textStatus, jqXHR) {    
+
+                  $(".ing").each(function(key,value){
+                  if($(value).text().indexOf(name) == 0){
+                  $(value).remove()
+                  }
+                  })
+                  }
+                })
+            }
+            
+
+  

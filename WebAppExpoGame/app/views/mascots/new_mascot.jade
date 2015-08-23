@@ -1,0 +1,60 @@
+extends ../layout
+block content
+      .container
+          .row
+              .col-md-8.col-md-offset-2
+                .well.well-sm
+                  form.form-horizontal(action='/mascots',method='post',enctype="multipart/form-data")
+                    fieldset
+                      legend.text-center.header Mascot
+                      if error_message
+                            .alert.alert-danger(role='alert')
+                                  span.glyphicon.glyphicon-exclamation-sign
+                                    span
+                                    |   #{error_message}
+
+
+
+
+                      .form-group
+                        .col-md-2.col-md-offset-1
+                          label(for='name') Name
+                        .col-md-8
+                          input#name.form-control(name='name', type='text', placeholder='Name')
+
+
+
+                      .form-group
+                        .col-md-2.col-md-offset-1
+                          label(for='category') Category
+                        .col-md-8
+                          input#category.form-control(name='category', type='text', placeholder='Category')
+
+                      .form-group
+                        .col-md-2.col-md-offset-1
+                          label(for='latitude') Latitude
+                        .col-md-8
+                          input#latitude.form-control(name='latitude', type='text', placeholder='Latitude')
+
+                      .form-group
+                        .col-md-2.col-md-offset-1
+                          label(for='longitude') Longitude
+                        .col-md-8
+                          input#longitude.form-control(name='longitude', type='text', placeholder='Longitude')
+
+                      .form-group
+                        .col-md-2.col-md-offset-1
+                          label(for='image') Image
+                        .col-md-8
+                          input#image.form-control(type="file", name="image", placeholder='image')
+                      .form-group
+                        .col-md-2.col-md-offset-1
+                          label(for='modelUrl') Zipped model
+                        .col-md-8
+                          input#modelUrl.form-control(type="file", name="modelUrl", placeholder='modelUrl')
+                     .form-group
+                        .col-md-12.text-center
+                              button.btn.btn-primary.btn-lg(type='submit') Create
+
+
+

@@ -1,0 +1,74 @@
+extends layout
+
+
+block content
+
+	.row
+		.row.text-center
+				h1 #{title}
+
+		.col-sm-12.col-md-3.col-lg-3
+			a.btn.btn-lg.btn-primary.btn-circle.btn-xl.marginbig(href='/zones/new')
+				span.glyphicon.glyphicon-plus
+					br
+					span Zone
+
+		
+	br
+	.row
+		.col-md-12
+			.row
+				.form-group.input-group
+					input#searchDish.form-control(type='text',placeholder='Insert name...')
+					| 
+					span.input-group-btn
+						button.btn.btn-default(type='button')
+							i.fa.fa-search
+			
+			.row.panel.panel-default.scrollable(style='max-height: 800px;overflow-y: auto;overflow-x: hidden;')
+				each dish in zones
+					.col-xs-3.col-sm-3.col-md-3.col-lg-3
+						.panel.panel-default(style='min-height: 250px;')
+							
+								h4.zone
+									.span #{dish["zone"]}
+								h4
+									img(src='/upload/zones/#{dish["imageUrl"]}', width=100,height=100)
+
+								button.btn.btn-danger(onclick="delete_zone('#{dish.zone}')") Delete
+
+							
+
+
+								
+
+	script.
+		$("#searchDish").keyup(function(){
+			filter = $(this).val();
+			console.log("call");
+			$(".zone").each(function(key,value){
+				console.log($(value).text());
+				if($(value).text().indexOf(filter) != 0){
+					$(value).parent().parent().hide();
+				}else{
+					$(value).parent().parent().show();
+				}
+			})
+		})
+
+
+	script(type='text/javascript').
+		function delete_zone(name){
+			jQuery.ajax({
+				url: "/zones/"+name,
+				type: "DELETE",
+				success: function (data, textStatus, jqXHR) {
+					
+					$(".zone").each(function(key,value){
+						if($(value).text().indexOf(name) == 0){
+							$(value).parent().parent().remove()
+						}
+					})
+				}
+			});
+		}

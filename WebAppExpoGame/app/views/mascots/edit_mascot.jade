@@ -1,0 +1,35 @@
+extends ../layout
+block content
+      .container
+          .row
+              .col-md-8.col-md-offset-2
+                .well.well-sm
+                  form.form-horizontal(action='/mascots/#{mascot.name}/edit',method='post')
+                    fieldset
+                      legend.text-center.header Mascot
+                      if error_message
+                            .alert.alert-danger(role='alert')
+                                  span.glyphicon.glyphicon-exclamation-sign
+                                    span
+                                    |   #{error_message}
+
+
+
+                      .form-group
+                        .col-md-2.col-md-offset-1
+                          label(for='latitude') Latitude
+                        .col-md-8
+                          input#latitude.form-control(name='latitude', type='text', placeholder='Latitude')
+
+                      .form-group
+                        .col-md-2.col-md-offset-1
+                          label(for='longitude') Longitude
+                        .col-md-8
+                          input#longitude.form-control(name='longitude', type='text', placeholder='Longitude')
+
+                     .form-group
+                        .col-md-12.text-center
+                              button.btn.btn-primary.btn-lg(type='submit') Edit
+
+
+

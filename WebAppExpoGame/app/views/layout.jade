@@ -1,0 +1,73 @@
+doctype html
+html
+  head
+    title= title
+
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+
+    script(type='text/javascript', src='https://code.jquery.com/jquery-1.11.2.min.js')
+
+
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+
+    link(rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css" )
+    link(rel="stylesheet" type="text/css" href="/font-awesome/css/font-awesome.min.css")
+    link(rel="stylesheet" type="text/css" href="/stylesheets/local.css" )
+
+    script( type="text/javascript" src="/bootstrap/js/bootstrap.min.js")
+
+
+  body
+    #wrapper
+      nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+            .navbar-header
+              button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
+                span.sr-only Toggle navigation
+
+                span.icon-bar
+
+                span.icon-bar
+
+                span.icon-bar
+
+              a.navbar-brand(href='/') Web App Expo Game
+
+            .collapse.navbar-collapse.navbar-ex1-collapse
+              ul.nav.navbar-nav.side-nav
+                li
+                  a(href='/')
+                    i.fa.fa-bullseye Dashboard
+
+                li
+                  a(href='/ingredients')
+                    i.fa.fa-tasks  Ingredients
+                li
+                  a(href='/mascots')
+                    i.fa.fa-tasks  Mascots
+                li
+                  a(href='/dishes')
+                    i.fa.fa-tasks  Dishes
+                li
+                  a(href='/zones')
+                    i.fa.fa-tasks  Zones
+                li
+                  a(href='/generate')
+                    i.fa.fa-tasks Generate
+        #page-wrapper
+            block content
+
+    script(type='text/javascript').
+                $("li").click(function(){
+                    //alert("ciao");
+
+                  // If this isn't already active
+                  if (!$(this).hasClass("active")) {
+                    // Remove the class from anything that is active
+                    $("li.active").removeClass("active");
+                    // And make this active
+                    $(this).addClass("active");
+                    //alert("ciao");
+                  }
+                });
