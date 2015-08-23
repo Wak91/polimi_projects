@@ -1,32 +1,32 @@
 <h1>WIKI</h1>
 
-1- <b>androBenchmark</b> <i>[Java-Jni-Renderscript]</i> <br>
+1- <b>androBenchmark</b> - <i>[Java-Jni-Renderscript]</i> <br>
 This is an android application that test the performance of different
 tasks ( the benchmarks ) performed by pure java,jni and renderscript.
 The application plots some graphs in order to understand better the relation among the different execution's time and battery consumption of the three solutions.
 
-2- <b>BikeCircuits</b><i>[AMPL]</i> <br>
+2- <b>BikeCircuits</b> - <i>[AMPL]</i> <br>
 An algorithm written in AMPL in order to create the best bike circuits in Boemia given a set of constraints on money/turists satisfaction.
 
-3- <b>CentralizedFlatTable</b><i>[Java]</i> <br>
+3- <b>CentralizedFlatTable</b> - <i>[Java]</i> <br>
 A java implementation of the Centralized Flat Table mechanism in order to provide confidentiality of communications among different process in a group.
 
-4- <b>HadoopLogProcessing</b><i>[JAVA]</i> <br>
+4- <b>HadoopLogProcessing</b> - <i>[JAVA]</i> <br>
 Some map-reduce jobs written to extract information from the log of waxy.org about the star wars kid
 
-5- <b>syscallArm</b><i>[C]</i> <br>
+5- <b>syscallArm</b> - <i>[C]</i> <br>
 Implementation of a simple new system call in the linux-rpi.3.6.y kernel.
 
-6- <b>toycompiler</b><i>[Python]</i> <br>
+6- <b>toycompiler</b> - <i>[Python]</i> <br>
 A very simple implementation of a compiler written in python ( actually credits go to professor @Giovanni Agosta, we've only modified it a bit )
 
-7- <b>TravelDream</b><i>[JAVA]</i> <br>
+7- <b>TravelDream</b> - <i>[JAVA]</i> <br>
 A web application for a travel company written in JEE
 
-8- <b>ExpoChef</b><i>[JAVA]</i> <br>
+8- <b>ExpoChef</b> - <i>[JAVA]</i> <br>
 An augmented reality cooking game for android realized for Expo 2015 <br>
 
-9- <b>WebAppExpoGame</b><i>[Javascript]</i> <br>
+9- <b>WebAppExpoGame</b> - <i>[Javascript]</i> <br>
 The server of the ExpoChef game 
 
 <br><br>
