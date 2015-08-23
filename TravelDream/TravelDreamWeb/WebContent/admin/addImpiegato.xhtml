@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+      
+      	<ui:composition template="Template.xhtml">
+      
+			<ui:define name="content">
+<p:tabMenu activeIndex="2">  
+     <p:menuitem value="Account" url="adminhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Lista impiegati" url="adminlist.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Add impiegato" url="addImpiegato.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>
+ <h:form id="form">
+		<p:panel header="Aggiunta Impiegato">
+			<h:panelGrid columns="3" id="regGrid">
+				
+			    <h:outputLabel for="username">Username:</h:outputLabel>
+				<p:inputText id="username" value="#{userBean.user.username}" validator="#{userBean.validateUsername}" />
+				<p:message for="username" />
+				
+				<h:outputLabel for="nome">Nome:</h:outputLabel>
+				<p:inputText id="nome" value="#{userBean.user.firstName}" />
+				<p:message for="nome" />
+				
+				<h:outputLabel for="cognome">Cognome:</h:outputLabel>
+				<p:inputText id="cognome" value="#{userBean.user.lastName}" />
+				<p:message for="cognome" />
+				
+				<h:outputLabel for="password">Password:</h:outputLabel>
+				<p:password id="password" value="#{userBean.user.password}"
+					feedback="true" match="pwd2" label="Password"/>
+				<p:message for="password" />
+				
+				<h:outputLabel for="pwd2">Conferma Password:</h:outputLabel>
+				<p:password id="pwd2" label="Confirm Password" value="#{userBean.user.password}"/>
+				<p></p>
+				
+				<h:outputLabel for="email">Email:</h:outputLabel>
+				<p:inputText id="email" value="#{userBean.user.email}" />
+				<p:message for="email" />
+				
+				<h:outputLabel for="date">Data di nascita:</h:outputLabel>
+				<p:calendar id="date" value="#{userBean.user.data}" navigator="true" display="inline"/> 
+				<br></br>
+                <h:commandButton value="Aggiungi Impiegato" update="regGrid"
+				action="#{userBean.addImpiegato()}" />
+        </h:panelGrid>
+		</p:panel>
+		
+	</h:form>
+
+
+			</ui:define>
+		
+		</ui:composition>
+
+</html>

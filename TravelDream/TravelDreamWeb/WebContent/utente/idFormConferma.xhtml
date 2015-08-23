@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:composition template="Template.xhtml">
+	 <ui:define name="content">
+<div class="header">
+				<div class="wrap">
+				
+				<div class="logo">
+					<a href="userhome.xhtml"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li><a href="userhome.xhtml">Home</a></li>
+						<li ><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+						<li class="active"><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
+					    <li><h:form>
+								<p:commandLink action="#{userBean.logout}" value="Logout" />
+			                </h:form>
+			            </li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>  
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Conferma inviti</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+					</div>		
+	<h:form>
+		<p:panel>
+			<h:panelGrid columns="2" id="regGrid">
+			
+				<h:outputLabel for="idv" value="Conferma l'invito ricevuto da un amico!"/><br></br> 
+				<h:outputLabel for="idv" value="Inserisci qui l'ID ricevuto: "/> 
+				<h:messages globalOnly="true" />
+            	<p:inputText id="idv" value="#{InvitoBean.id_amico}" label="Idv"/>  
+            	<p:message for="idv"/>  
+            	
+            	<h:outputLabel for="mailv" value="Inserisci qui la tua mail: "/>
+            	<h:messages globalOnly="true"/>
+            	<p:inputText id="mailv" value="#{InvitoBean.mail}" label="Mailv"/>
+            	<p:message for="mailv"/>
+				
+			</h:panelGrid>
+				
+				<p:commandButton value="Send" update="regGrid" icon="ui-icon-check" validateClient="true"
+				action="#{InvitoBean.searchInvForConfirm()}" />
+
+		</p:panel>
+	</h:form>
+	
+		<div class="clear"> </div>
+  				
+  				<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
+				</div>
+			
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> r91motta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+</ui:define>
+</ui:composition>
+</html>

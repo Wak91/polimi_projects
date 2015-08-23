@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>TravelDreamWeb</display-name>
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>/faces/*</url-pattern>
+    <url-pattern>*.xhtml</url-pattern>
+    <url-pattern>*.jsf</url-pattern>
+  </servlet-mapping>
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/login.xhtml</form-login-page>
+      <form-error-page>/loginError.xhtml</form-error-page>
+    </form-login-config>
+  </login-config>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Admins Pages</web-resource-name>
+      <description></description>
+      <url-pattern>/admin/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>AMMINISTRATORE</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Impiegato Pages</web-resource-name>
+      <description></description>
+      <url-pattern>/impiegato/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>IMPIEGATO</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Users Pages</web-resource-name>
+      <description></description>
+      <url-pattern>/utente/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>UTENTE</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <welcome-file-list>
+    <welcome-file>homepage.xhtml</welcome-file>
+  </welcome-file-list>
+<filter>
+  <filter-name>PrimeFaces FileUpload Filter</filter-name>
+  <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+</filter>
+  <filter-mapping>
+  <filter-name>PrimeFaces FileUpload Filter</filter-name>
+  <servlet-name>Faces Servlet</servlet-name>
+</filter-mapping>  
+<context-param>
+    <param-name>uploadDirectory</param-name>
+    <param-value>/var/webapp/images</param-value>
+</context-param>
+    <context-param>  
+        <param-name>primefaces.THEME</param-name>  
+        <param-value>cupertino</param-value>  
+    </context-param> 
+<context-param>
+    <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+    <param-value>true</param-value>
+</context-param>
+
+</web-app>

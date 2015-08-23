@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Login</title>
+	<h:outputStylesheet library="css" name="main2.css"  />
+	
+</h:head>
+<h:body>
+<div class="container">
+	<section id="content">
+
+		<form id="login" action='j_security_check'>
+				<h1>Login Form</h1>
+				<div>
+					<input type="text" id="j_username"  name="j_username" />
+				</div>
+				<div>
+				   	<input type="password"  id="j_password" name="j_password" />
+				</div>
+				<div>
+					<input type="submit" value="Login" />
+						
+					<h:link value="Register" outcome="register" rendered="#{param['user']}"/> 
+				</div>
+				
+		</form>
+		<h:form rendered="#{param['user']}">
+			<br></br>
+		    <br></br> <br></br>	
+		<h:link value="Inserisci Codice Gift" outcome="verifycodegift"/>
+		<br></br>
+        <h:link outcome = "amico/idForm" value="Hai ricevuto un id viaggio da un amico?"/>
+        <br></br>
+       </h:form> 
+	</section>
+</div>
+
+</h:body>
+</html>

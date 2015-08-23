@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Login</title>
+    <h:outputStylesheet library="css" name="main2.css"  />
+</h:head>
+<h:body>
+ <div class="container">
+	<section id="content">
+	
+	<h:form>
+	           	<h1>Inserisci invito</h1>
+	
+		<p:panel>
+			<h:panelGrid columns="2" id="regGrid">
+				
+	<center>    <h:outputLabel for="idv" value="Inserisci qui l'ID ricevuto: "/> 
+				<h:messages globalOnly="true" />
+            	<p:inputText id="idv" value="#{InvitoBean.id_amico}" label="Idv"/>  
+            	<p:message for="idv"/>  
+            	
+            	<h:outputLabel for="mailv" value="Inserisci qui la tua mail: "/>
+            	<h:messages globalOnly="true"/>
+            	<p:inputText id="mailv" value="#{InvitoBean.mail}" label="Mailv"/>
+            	<p:message for="mailv"/>
+	</center>				
+			</h:panelGrid>
+				
+				<p:commandButton value="Send" update="regGrid" icon="ui-icon-check" validateClient="true"
+				action="#{InvitoBean.searchInv()}" />
+
+		</p:panel>
+	</h:form>
+	</section>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<ui:composition template="Template.xhtml">
+
+	<ui:define name="content">
+             #{GiftListBean.getGiftList()}
+
+			<div class="header">
+				<div class="wrap">
+				
+				<div class="logo">
+					<a href="userhome.xhtml"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li class="active"><a href="giftlist.xhtml">GiftList</a></li>
+						<li><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
+					    <li><h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			    </h:form></li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>
+										
+		<div class="clear"> </div>
+		       <br></br>
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>La tua gift list</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+					</div>
+		<div class="content">
+			<div class="wrap">
+			<div class="content-grids">
+			<h:form id="form">
+				 <p:dataTable id="Gift" var="gift" value="#{GiftListBean.giftDataModel}" selectionMode="single" selection="#{GiftListBean.selectedGiftListDTO}" paginator="true" rows="35"
+       				rowKey="#{gift.id}" filteredValue="#{GiftListBean.filteredGift}">  
+                                
+                <p:column headerText="Nome Viaggio" style="width:10%"  >  
+                  <h:outputText value="#{gift.viaggio.nome}" />  
+                </p:column>  
+  
+                <p:column headerText="Hotel Pagato" style="width:10%"> 
+                <p:commandButton id="showHotel" update=":form:displayhotel" oncomplete="PF('hotelDialog').show()" icon="ui-icon-search" title="View">  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton> 
+                <h:outputText value="#{gift.hotelPag ==false? 'No' :'Si'}" />  
+                </p:column>  
+  
+                <p:column headerText="Volo Andata Pagato" style="width:10%" > 
+                <p:commandButton id="voloaButton" update=":form:displayvoloa" oncomplete="PF('voloaDialog').show()" icon="ui-icon-search" title="View">  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>   
+                <h:outputText value="#{gift.voloAPag == false? 'No':'Si'}" />    
+                </p:column>  
+                
+                 <p:column headerText="Volo Ritorno Pagato" style="width:10%" >  
+                <p:commandButton id="volorButton" update=":form:displayvolor" oncomplete="PF('volorDialog').show()" icon="ui-icon-search" title="View">  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>   
+                <h:outputText value="#{gift.voloRPag == false? 'No':'Si'}" />    
+                </p:column>  
+                
+                <p:column style="width:4%" headerText="Escursione Pagata">  
+                <p:commandButton id="selectButton" update=":form:display" oncomplete="PF('escDialog').show()" icon="ui-icon-search" title="View" action="#{GiftListBean.setupEscursioniPagatedialog()}">  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>  
+        		</p:column> 
+        		
+        		 <p:column style="width:4%" headerText="Lista Amici">  
+                <p:commandButton id="amiciButton" update=":form:displayamici" oncomplete="PF('amiciDialog').show()" icon="ui-icon-search" title="View" >  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>  
+        		</p:column> 
+        		
+        		<p:column style="width:4%" headerText="Codice Gift">  
+                <p:commandButton id="codiceButton" update=":form:displaycodice" oncomplete="PF('codiceDialog').show()" icon="ui-icon-search" title="View">  
+                <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+            	</p:commandButton>  
+        		</p:column> 
+        		
+        		<p:column style="width:4%" headerText="Elimina">
+        			<p:commandButton id="Elimina" update=":form:Gift" process="@this" action="#{GiftListBean.eliminaGift()}" icon="ui-icon-close">
+                    <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+        			</p:commandButton>
+        		</p:column>
+        		
+
+				<p:column style="width:4%" headerText="Conferma">
+        			<p:commandLink id="Conferma" value ="Conferma" action="#{GiftListBean.confermaGift()}"  ajax="false" immediate="true" process="@this" >
+                    <f:setPropertyActionListener value="#{gift}" target="#{GiftListBean.selectedGiftListDTO}" />  
+        			</p:commandLink>
+        		</p:column>
+              </p:dataTable>
+              
+              <p:dialog  header="Escursioni" widgetVar="escDialog" resizable="false" id="escDlg"  
+                showEffect="fade" hideEffect="explode" modal="true">  
+                              
+                
+       	 		<p:dataTable id="display" value="#{GiftListBean.escursionePagataDatamodel}" var="escpag">
+       	 		<p:column headerText="Nome Escursione" style="width:10%"  >  
+                  <h:outputText value="#{escpag.escursione.nome}" />  
+                </p:column>  
+  
+                <p:column headerText="Pagata" style="width:10%">  
+                <h:outputText value="#{escpag.escPagata ==false? 'No' :'Si'}" />  
+                </p:column>  
+                
+                <p:column headerText="Costo" style="width:10%">  
+                <h:outputText value="#{escpag.escursione.costo} €" />  
+                </p:column>  
+        
+        		</p:dataTable>
+
+               </p:dialog>  
+
+              
+               <p:dialog header="Hotel Detail" widgetVar="hotelDialog" resizable="false" id="hotelDlg"  
+                showEffect="fade"  modal="true">  
+  
+        <h:panelGrid id="displayhotel" columns="2" cellpadding="4" style="margin:0 auto;">  
+  
+            <h:outputText value="Nome" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.hotel.nome}" style="font-weight:bold"/>  
+  
+            <h:outputText value="Stelle:" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.hotel.stelle}" style="font-weight:bold"/>  
+  
+  
+            <h:outputText value="Costo Giornaliero a testa" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.hotel.costo_giornaliero} €" style="font-weight:bold"/>  
+            
+            <h:outputText value="Costo complessivo" />  
+            <h:outputText value="#{GiftListBean.calcolaCostoHotel()} €" style="font-weight:bold"/>  
+  
+
+        </h:panelGrid>  
+  
+    </p:dialog>  
+              
+    
+    
+    <p:dialog header="Volo Andata Detail" widgetVar="voloaDialog" resizable="false" id="voloaDlg"  
+                showEffect="fade"  modal="true">  
+  
+        <h:panelGrid id="displayvoloa" columns="2" cellpadding="4" style="margin:0 auto;">  
+  
+            <h:outputText value="Nome" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.compagnia}" style="font-weight:bold"/>  
+  
+            <h:outputText value="Data Partenza" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.data}" style="font-weight:bold">
+            				  <f:convertDateTime pattern="dd/MM/yyyy"  />
+            </h:outputText>  
+  
+  
+            <h:outputText value="Partenza" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.luogo_partenza}" style="font-weight:bold"/>  
+  
+  			<h:outputText value="Arrivo" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.luogo_arrivo}" style="font-weight:bold"/>  
+  
+  
+  			<h:outputText value="Compagnia" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.compagnia}" style="font-weight:bold"/>  
+  
+  			<h:outputText value="Costo a testa" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_andata.costo} €" style="font-weight:bold"/>  
+  
+			<h:outputText value="Costo complessivo" />  
+            <h:outputText value="#{GiftListBean.calcolaCostoVoloA()} €" style="font-weight:bold"/>  
+  
+			
+        </h:panelGrid>  
+  
+    </p:dialog> 
+  
+  <p:dialog header="Volo Ritorno Detail" widgetVar="volorDialog" resizable="false" id="volorDlg"  
+                showEffect="fade"  modal="true">  
+  
+        <h:panelGrid id="displayvolor" columns="2" cellpadding="4" style="margin:0 auto;">  
+  
+            <h:outputText value="Nome" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.compagnia}" style="font-weight:bold"/>  
+  
+            <h:outputText value="Data Partenza" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.data}" style="font-weight:bold">
+            				  <f:convertDateTime pattern="dd/MM/yyyy"  />
+            </h:outputText>  
+  
+  
+            <h:outputText value="Partenza" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.luogo_partenza}" style="font-weight:bold"/>  
+  
+  			<h:outputText value="Arrivo" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.luogo_arrivo}" style="font-weight:bold"/>  
+  
+  
+  			<h:outputText value="Compagnia" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.compagnia}" style="font-weight:bold"/>  
+  
+  			<h:outputText value="Costo a testa" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.viaggio.volo_ritorno.costo} €" style="font-weight:bold"/>  
+  
+			<h:outputText value="Costo complessivo" />  
+            <h:outputText value="#{GiftListBean.calcolaCostoVoloR()}" style="font-weight:bold"/>  
+  
+
+        </h:panelGrid>  
+    </p:dialog> 
+    
+    <p:dialog  header="Amici" widgetVar="amiciDialog" resizable="false" id="amiciDlg"  
+                showEffect="fade"  modal="true" style="width:25%">  
+                              
+                
+       	 		 <h:panelGrid id="displayamici" columns="2" cellpadding="4" style="margin:0 auto;">  
+  			<ui:repeat var="mailamico" value="#{GiftListBean.selectedGiftListDTO.amico}">
+            	<h:outputText value="Amico: " /> 
+            	<h:outputText value="#{mailamico}" style="font-weight:bold"/> <br/>
+  			</ui:repeat>
+        </h:panelGrid> 
+          
+  </p:dialog>
+  
+  
+       <p:dialog header="Codice Detail" widgetVar="codiceDialog" resizable="false" id="codiceDlg"  
+                showEffect="fade"  modal="true">  
+  
+        <h:panelGrid id="displaycodice" columns="2" cellpadding="4" style="margin:0 auto;">  
+  
+            <h:outputText value="Codice" />  
+            <h:outputText value="#{GiftListBean.selectedGiftListDTO.hash}" style="font-weight:bold"/>  
+  
+           
+
+        </h:panelGrid>  
+  
+    </p:dialog> 
+             
+			</h:form>
+				
+				<div class="clear"> </div>
+			</div>
+			<div class="clear"> </div>
+			</div>
+			</div>	
+			<div class="clear"> </div>
+		<div class="clear"> </div>
+		<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
+				</div>
+			
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> r91motta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+		</ui:define>
+		</ui:composition>
+</html>
+

@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<ui:composition template="Template.xhtml">
+
+	<ui:define name="content">
+	#{PacketBean.initBean()}
+			<div class="header">
+				<div class="wrap">
+				
+				<div class="logo">
+					<a href="userhome.xhtml"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li class="active"><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+						<li><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
+					    <li>
+					        <h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			                </h:form>
+			            </li>
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>
+					<div class="image-slider">
+					    <ul class="rslides" id="slider1">
+					    <li><img src="../images/slider1.jpg" alt=""/>
+					      </li>
+					      <li><img src="../images/slider2.jpg" alt=""/>
+					      </li>
+					      <li><img src="../images/slider3.jpg" alt=""/>
+					      </li>
+					    </ul>
+					</div>
+					
+		<div class="clear"> </div>
+		       <div class="searchbar"> 
+		       	 <h:form>   
+		       	<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />  
+		       	 
+		           <section id="bar">
+				   <h:outputLabel for="where" >DOVE?</h:outputLabel>
+		           <p:inputText id="where" value="#{PacketBean.destinazione_pacchetto}">
+		     		<p:ajax event="keyup" listener="#{PacketBean.filterPacket}" update="@([id$=packetlist])" />  		    
+		           </p:inputText>
+		           &nbsp; &nbsp; &nbsp; 
+				   <h:outputLabel>DA QUANDO?</h:outputLabel>
+				   <p:calendar id="date" value="#{PacketBean.data_inizio_pacchetto}" navigator="true" display="inline" pattern="dd/MM/yyyy" >  
+				   <p:ajax event="dateSelect" listener="#{PacketBean.filterPacket}"   update="@([id$=packetlist])" /> 
+				  <f:convertDateTime pattern="dd/MM/yyyy"  />
+				   </p:calendar> 
+    		       &nbsp; &nbsp; &nbsp; 
+    		       <h:outputLabel>A QUANDO?</h:outputLabel>
+				   <p:calendar id="date2" value="#{PacketBean.data_fine_pacchetto}" navigator="true" display="inline" pattern="dd/MM/yyyy" >  
+				   <p:ajax event="dateSelect" listener="#{PacketBean.filterPacket}"   update="@([id$=packetlist])" /> 
+				   <f:convertDateTime pattern="dd/MM/yyyy"  />
+				   </p:calendar>
+				   &nbsp; &nbsp; &nbsp;
+				   </section>
+				   </h:form>
+		       </div>
+		       <br></br>
+		       <div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>Le nostre offerte</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+					</div>
+		<div class="content">
+			<div class="wrap">
+			<div class="content-grids">
+			<h:panelGroup id="packetlist">
+				<ui:repeat var="pacchetto" value="#{PacketBean.packlist}">
+				
+				<div class="grid">
+					<h:link outcome = "creaviaggio?id=#{pacchetto.id}" >
+					 <h:graphicImage  value="../images/#{pacchetto.pathtoImage}" height="200" width="300"/> 
+                     </h:link>
+                     <br></br>
+					<div class="emphasis">#{pacchetto.nome}</div>
+					<br></br>
+					<h:outputLabel for="username">Destinazione</h:outputLabel> &nbsp; 
+					 #{pacchetto.destinazione}<br></br>
+					<h:outputLabel for="username">Dal</h:outputLabel> &nbsp;  
+				    <h:outputText id="datei" value="#{pacchetto.data_inizio}" >
+				          <f:convertDateTime pattern="dd/MM/yyyy" />
+				    </h:outputText>
+				    <br></br>
+				    <h:outputLabel for="username">Al</h:outputLabel>&nbsp;  
+					  <h:outputText id="datef" value="#{pacchetto.data_fine}" >
+				          <f:convertDateTime pattern="dd/MM/yyyy" />
+				    </h:outputText>
+				    <br></br>
+					<h:link class="button" value="Esplora" outcome = "creaviaggio?id=#{pacchetto.id}" ></h:link>				    
+				</div>
+				</ui:repeat>
+			</h:panelGroup>
+				
+				<div class="clear"> </div>
+			</div>
+			<div class="clear"> </div>
+			</div>	
+			<div class="clear"> </div>
+		</div>
+		<div class="clear"> </div>
+		<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
+				</div>
+			
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> r91motta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+		</ui:define>
+		</ui:composition>
+</html>
+

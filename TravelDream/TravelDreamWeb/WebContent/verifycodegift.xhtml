@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+     <h:head>
+	<title>Login</title>
+	<h:outputStylesheet library="css" name="main2.css"  />
+	
+</h:head>
+<h:body>
+<div class="container"> 
+	<section id="content">
+           <form id="gift">
+           	<h1>Verify gift-code</h1>
+           <p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
+			<h:panelGrid columns="3">
+				<p:outputLabel for="codice" value="Codice Gift" />
+				<p:inputText id="codice" name="codice" binding="#{cod}"/><br/>
+				
+				<h:form>
+				<center>
+				<p:commandButton value="Submit" action="#{answerGift.verifyCode(cod.value)}" />
+				</center>
+				</h:form>
+			</h:panelGrid>
+		</form>
+		</section>
+	</div>
+	</h:body>
+		             
+</ui:composition>

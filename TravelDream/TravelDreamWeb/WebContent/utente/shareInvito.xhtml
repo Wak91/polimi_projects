@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<ui:composition template="Template.xhtml">
+
+	<ui:define name="content">
+			<div class="header">
+				<div class="wrap">
+				       #{InvitoBean.searchInvById(param['id'])}
+				
+				<div class="logo">
+					<a href="userhome.xhtml"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li class="active"><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+						<li><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
+					    <li><h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			                </h:form></li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>			
+		<div class="clear"> </div>
+		
+	
+				  	  <h:form id="form">  
+  
+    <p:growl id="msgs" />  
+    
+    <p:panel header="Riassunto">
+    
+    <p:accordionPanel multiple="true"> 
+    
+    <p:tab title="Destinazione e Periodo">
+        		<h:outputText value="#{InvitoBean.invito.viaggio.hotel.luogo}"></h:outputText><br></br>
+        		<h:outputText value="#{InvitoBean.invito.viaggio.data_inizio}"><br></br>
+        		    <f:convertDateTime pattern="dd/MM/yyyy" />
+        		</h:outputText>
+        		<h:outputText value="-"/>
+        		<h:outputText value="#{InvitoBean.invito.viaggio.data_fine}">
+        		    <f:convertDateTime pattern="dd/MM/yyyy" />
+        		</h:outputText>     
+    </p:tab>
+    
+  
+    
+ 
+    <p:tab title="Hotel">  
+    		Nome: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.hotel.nome}"></h:outputText>  <br></br>
+    		Costo giornaliero: &nbsp; <h:outputText value="#{InvitoBean.invito.viaggio.hotel.costo_giornaliero}"></h:outputText>  <br></br>    
+    		Stelle: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.hotel.stelle}"></h:outputText> <br></br>
+    	    <h:graphicImage  value="../images/#{InvitoBean.invito.viaggio.hotel.hotelImg}" height="90" width="90" />  
+    </p:tab>  
+    
+    <p:tab title="Volo">  
+           <h:outputLabel value="Volo Andata:" for="voloa"></h:outputLabel><br></br>
+    	   Compagnia: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_andata.compagnia}"> </h:outputText><br></br>
+    	   Costo per persona: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_andata.costo}"> &nbsp; € </h:outputText> <br></br>
+    	   Partenza da: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_andata.luogo_partenza}"> </h:outputText>  <br></br>  	   
+           <br></br>
+		   <h:outputLabel value="Volo Ritorno:" for="voloa"></h:outputLabel><br></br>
+    	   Compagnia:&nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_ritorno.compagnia}"> </h:outputText><br></br>
+    	   Costo per persona:&nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_ritorno.costo}"> &nbsp; €</h:outputText><br></br>
+    	   Partenza da:&nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_ritorno.luogo_partenza}"> </h:outputText> <br></br> 
+ 
+    </p:tab>  
+    
+    <p:tab title="Escursioni"> 
+    <ui:repeat var="esc" value="#{InvitoBean.invito.viaggio.lista_escursioni}">
+	   Nome:&nbsp;<h:outputText value="#{esc.nome}"> </h:outputText> <br></br>
+	   Costo:&nbsp;<h:outputText value="#{esc.costo}"> &nbsp; € </h:outputText> <br></br>
+	   Data:&nbsp;<h:outputText value="#{esc.data}">     			        	
+	          <f:convertDateTime pattern="dd/MM/yyyy" />
+	        </h:outputText> 
+	        <br></br>
+	   <br></br>				
+    </ui:repeat> 
+    </p:tab>  
+	</p:accordionPanel>  
+  
+  	</p:panel>
+  	
+  	<br></br>
+  	
+    <p:panel header="Condividi">  
+        <h:panelGrid columns="3" id="grid">  
+            <h:outputLabel value="Email" for="email"></h:outputLabel>  
+            <p:inputText id="email" value="#{InvitoBean.amico}"/>   
+            <f:param name="email" value="#{email}"/>	  				
+            <p:commandButton value="Condividi" action="#{InvitoBean.submit()}"/>                      
+        </h:panelGrid>  
+    </p:panel>  
+      
+    
+	</h:form> 
+
+		<div class="clear"> </div>
+		<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
+				</div>
+			
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> r91motta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+		</ui:define>
+		</ui:composition>
+</html>
+

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+      
+      
+       <h:head>
+	<title>Login</title>
+    <h:outputStylesheet library="css" name="main2.css"  />
+</h:head>
+<h:body>
+ <div class="container">
+        <p:panel header="Gift List">
+           <h:form>
+                  #{answerGift.loadGiftFromHash(param['id'])}
+           
+                  <p:growl id="msg" />  
+           
+           	
+           	
+	           		<h:outputText value="Hotel" /> <br></br>
+	           		<h:outputText value="#{answerGift.giftListDTOAmicoDto.viaggio.hotel.nome}" /> &nbsp;
+	           		<h:outputText value="#{answerGift.calcolaCostoHotel()}€" /> &nbsp;
+	           		<p:selectBooleanCheckbox value="#{answerGift.giftListDTOAmicoDto.hotelPag}" rendered="#{answerGift.currentHotelPag==false}"> 
+	           		</p:selectBooleanCheckbox> 
+	           		<h:outputLabel rendered="#{answerGift.currentHotelPag==true}" value="Già pagata" />
+	           		<br></br>
+	           		<h:outputText value="Volo Andata" /> <br></br>
+	           		<h:outputText value="#{answerGift.giftListDTOAmicoDto.viaggio.volo_andata.compagnia}" /> &nbsp;
+	           		<h:outputText value="#{answerGift.calcolaCostoVoloA()}€" /> &nbsp;
+	           		<p:selectBooleanCheckbox value="#{answerGift.giftListDTOAmicoDto.voloAPag}" rendered="#{answerGift.currentVoloaPag==false}" > 
+	           		</p:selectBooleanCheckbox> 
+	           		<h:outputLabel rendered="#{answerGift.currentVoloaPag==true}" value="Già pagata" />
+	           		<br></br>
+	           		<p:outputLabel value= "Volo Ritorno"/> <br></br>
+	           		<h:outputText value="#{answerGift.giftListDTOAmicoDto.viaggio.volo_ritorno.compagnia}" /> &nbsp;
+	           		<h:outputText value="#{answerGift.calcolaCostoVoloR()}€" /> &nbsp;
+	           		<p:selectBooleanCheckbox value="#{answerGift.giftListDTOAmicoDto.voloRPag}" rendered="#{answerGift.currentVolorPag==false}"> 
+	           		</p:selectBooleanCheckbox> 
+           			<h:outputLabel rendered="#{answerGift.currentVolorPag==true}" value="Già pagata" />
+                    <br></br>
+           <h:dataTable var="escursionepag" value="#{answerGift.giftListDTOAmicoDto.escursionePagata}" style="margin-bottom:10px" cellpadding="5">
+           	  <h:column >
+        		<h:outputText value="Escursione"/> <br></br>
+    		</h:column>
+           	 <h:column >
+        		<h:outputText value="#{escursionepag.escursione.nome}"/> &nbsp;
+    		</h:column>
+    			 <h:column >
+        		<h:outputText value="#{escursionepag.escursione.costo*answerGift.giftListDTOAmicoDto.npersone}"/> &nbsp;
+    		</h:column>
+    		<h:column >
+    			<p:selectBooleanCheckbox value="#{escursionepag.escPagata}" rendered="#{answerGift.renderEsc(escursionepag.id)}"> &nbsp;
+	           		</p:selectBooleanCheckbox> 
+           		<h:outputLabel rendered="#{answerGift.renderEsc(escursionepag.id)==false}" value="Già pagata" />
+    		</h:column>
+           </h:dataTable>
+           <br></br>
+           <p:commandButton value="Paga" action="#{answerGift.paga}"></p:commandButton>
+           </h:form>
+           
+		</p:panel>
+				
+		        
+              
+ </div>
+</h:body>      
+</ui:composition>

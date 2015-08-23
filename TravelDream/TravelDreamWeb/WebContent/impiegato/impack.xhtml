@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="Template.xhtml"
+      > 
+	<ui:define name="content">
+	
+	 <p:tabMenu activeIndex="2">  
+     <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Add" url="addHotel.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>
+	    #{PacketBean.initBean()}
+	    <h:form id="form">
+	    	   	        <p:messages id="messages" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />  
+     	<p:dataTable id="PackList" var="pack" value="#{PacketBean.packModels}" paginator="true" rows="5"  
+                      selectionMode="single"  selection="#{PacketBean.selectedPackDTO}" 
+                      rowKey="#{pack.id}">
+  
+                 <p:column headerText="Nome" style="width:25%" sortBy="nome" filterBy="#{pack.nome}">  
+                 <h:outputText value="#{pack.nome}" />  
+                </p:column>  
+  
+                <p:column headerText="Luogo" style="width:25%" sortBy="luogo" filterBy="#{pack.destinazione}">  
+                <h:outputText value="#{pack.destinazione}" />  
+                </p:column>  
+                
+                 <p:column headerText="Data inizio" style="width:24%" sortBy="data_inizio" filterBy="#{pack.data_inizio}">  
+                 <h:outputText value="#{pack.data_inizio}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+                  
+                </p:column>  
+                
+                 <p:column headerText="Data fine" style="width:24%" sortBy="data_fine" filterBy="#{pack.data_fine}">  
+                 <h:outputText value="#{pack.data_fine}">
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				</p:column> 
+				
+				<p:column headerText="ListaVoli" style="width:25%" sortBy="luogo" >  
+                <p:commandButton id="basic" update="showVoli" value="show voli" oncomplete="PF('dlg').show();" action="#{PacketBean.caricaDialogVoli()}">  
+                 <f:setPropertyActionListener value="#{pack}" target="#{PacketBean.selectedPackDTO}" />
+                 </p:commandButton>  
+                 
+                <p:dialog id="showVoli" header="Voli" widgetVar="dlg" dynamic="true" resizable="true">  
+                <p:dataTable id="displayvoli" var="volo2" value="#{PacketBean.voloModels}" scrollable="true" scrollHeight="150">
+  
+            		       <p:column headerText="Compagnia" style="width:25%"> 
+            		       #{volo2.compagnia}  
+  			               </p:column>  
+  
+                		    <p:column headerText="Data" style="width:25%">  
+                             <h:outputText value="#{volo2.data}">
+    			        	<f:convertDateTime pattern="dd/MM/yyyy" />
+				            </h:outputText>
+               			    </p:column>  
+                
+                  			<p:column headerText="Costo" style="width:24%">  
+                  			#{volo2.costo}
+                            </p:column> 
+                            
+                            <p:column headerText="Partenza da" style="width:24%">  
+                  			#{volo2.luogo_partenza}
+                            </p:column> 
+                            
+                            <p:column headerText="Arrivo a" style="width:24%">  
+                  			#{volo2.luogo_arrivo}
+                            </p:column> 
+                            
+                     </p:dataTable>                
+                </p:dialog>  
+                
+                </p:column>  
+                
+                 <p:column headerText="ListaHotel" style="width:25%">  
+                 <p:commandButton id="basic2" update="showHotel" value="show hotel" oncomplete="PF('dlg3').show();" action="#{PacketBean.caricaDialogHotel()}">  
+                 <f:setPropertyActionListener value="#{pack}" target="#{PacketBean.selectedPackDTO}" />
+                 </p:commandButton>  
+                 
+                 <p:dialog id="showHotel" header="Hotel" widgetVar="dlg3" dynamic="true" resizable="true">  
+                <p:dataTable id="displayhotel" var="hotel2" value="#{PacketBean.hotelModels}" scrollable="true" scrollHeight="150">
+  
+            		       <p:column headerText="Nome" style="width:25%"> 
+            		       #{hotel2.nome}  
+  			               </p:column>  
+  
+                		    <p:column headerText="Data-Inizio" style="width:25%">  
+                             <h:outputText value="#{hotel2.data_inizio}">
+    			        	<f:convertDateTime pattern="dd/MM/yyyy" />
+				            </h:outputText>
+               			    </p:column>  
+               			    
+               			     <p:column headerText="Data-Fine" style="width:25%">  
+                             <h:outputText value="#{hotel2.data_fine}">
+    			        	<f:convertDateTime pattern="dd/MM/yyyy" />
+				            </h:outputText>
+               			    </p:column>  
+               			    
+                
+                  			<p:column headerText="Costo" style="width:24%">  
+                  			#{hotel2.costo_giornaliero}
+                            </p:column> 
+                            
+                            <p:column headerText="Stelle" style="width:24%">  
+                  			#{hotel2.stelle}
+                            </p:column> 
+ 
+                     </p:dataTable>                
+                </p:dialog>  
+                 
+                </p:column>  
+                
+                
+                 <p:column headerText="ListaEscursioni" style="width:25%" >  
+                 <p:commandButton id="basic3" update="showEsc" value="show escursioni" oncomplete="PF('dlg2').show();" action="#{PacketBean.caricaDialogEsc()}">  
+                 <f:setPropertyActionListener value="#{pack}" target="#{PacketBean.selectedPackDTO}" />
+                 </p:commandButton>  
+                 
+                  <p:dialog id="showEsc" header="Escursioni" widgetVar="dlg2" dynamic="true" resizable="true">  
+                <p:dataTable id="displayesc" var="esc2" value="#{PacketBean.escModels}" scrollable="true" scrollHeight="150">
+  
+            		       <p:column headerText="Nome" style="width:25%"> 
+            		       #{esc2.nome}  
+  			               </p:column>  
+  
+                		    <p:column headerText="Data" style="width:25%">  
+                             <h:outputText value="#{esc2.data}">
+    			        	<f:convertDateTime pattern="dd/MM/yyyy" />
+				            </h:outputText>
+               			    </p:column>  
+                
+                  			<p:column headerText="Costo" style="width:24%">  
+                  			#{esc2.costo}
+                            </p:column> 
+                         
+                            
+                     </p:dataTable>                
+                </p:dialog>  
+                 
+                </p:column>  
+                
+  
+                 <p:column headerText="Modifica" style="width:24%" >  
+                    <h:commandLink value="Modifica" action="#{modPacketBean.outcome(pack.id)}" />
+                
+				</p:column> 
+				                   
+                   <p:column headerText="Elimina" style="width:24%" >  				
+				 <p:commandButton value="Elimina"   update="PackList" immediate="true" process="@this" action= "#{PacketBean.deletePacchetto(pack.id)}"  icon="ui-icon-close">
+				   <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
+				 </p:commandButton>
+			   </p:column>        
+		
+   </p:dataTable>
+   
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+       		 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+    	</p:confirmDialog> 
+     </h:form>         
+	</ui:define>
+
+</ui:composition>

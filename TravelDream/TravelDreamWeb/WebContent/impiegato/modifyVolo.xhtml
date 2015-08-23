@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="Template.xhtml">
+       
+       <ui:define name="content">
+       #{modComponentBean.getVoloById()}
+	    <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Account" url="imphome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Componenti" url="toHotel.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Pacchetti" url="impack.xhtml" icon="ui-icon-search"/>  
+     <p:menuitem value="Add" url="addHotel.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>   
+	    <p:tabMenu activeIndex="1">  
+    <p:menuitem value="Cerca e modifica Hotel" url="toHotel.xhtml" icon="ui-icon-star"/>  
+    <p:menuitem value="Cerca e modifica Volo" url="toVolo.xhtml" icon="ui-icon-search" />  
+    <p:menuitem value="Cerca e modifica Escursione" url="toEscursione.xhtml" icon="ui-icon-document"/>  
+    </p:tabMenu> 
+     <h:form enctype="multipart/form-data">
+	    <p:messages id="messages" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />
+		<p:panel header="Volo modification">
+			
+			<h:panelGrid columns="2" id="regGrid">
+			
+				<h:outputLabel for="compagnia">Compagnia volo</h:outputLabel>
+				<p:inputText id="nome" value="#{modComponentBean.volo.compagnia}" />
+				
+				<h:outputLabel for="luogo partenza">Partenza:</h:outputLabel>
+				<p:inputText id="luogop" value="#{modComponentBean.volo.luogo_partenza}" />
+				
+				<h:outputLabel for="luogo arrivo">Arrivo:</h:outputLabel>
+				<p:inputText id="luogoa" value="#{modComponentBean.volo.luogo_arrivo}" />
+				
+				<h:outputLabel for="costo">Costo per persona:</h:outputLabel>
+				<p:inputText id="costo" value="#{modComponentBean.volo.costo}" />
+				
+                <h:outputLabel for="datei">Data partenza</h:outputLabel>
+				<p:calendar id="datei" required="true" value="#{modComponentBean.volo.data}"  pattern="dd/MM/yyyy" navigator="true" display="inline" />
+				
+				  		
+			   <br></br>		
+				
+				</h:panelGrid>
+				
+				 <h:outputLabel for="img">Immagine corrente</h:outputLabel>
+				
+			   <h:graphicImage value="../images/#{modComponentBean.volo.immagine}" height="100" width="100"/> 
+			   <br></br>
+				 <h:outputLabel for="img">Nuova immagine?</h:outputLabel>	 
+				<p:fileUpload value="#{modComponentBean.imgVolo}" mode="simple" />
+			
+					
+				 <h:commandButton value="Modifica Volo" update="regGrid"
+				action="#{modComponentBean.modificaVolo()}" icon="ui-icon-script"/>
+     			<br></br><br></br>
+			    <h:outputLabel for="caution">ATTENZIONE: Modificando date/destinazione potrebbero esserne influenzati alcuni pacchetti</h:outputLabel>	 
+			  
+			
+		</p:panel>
+	   
+	</h:form>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+      	xmlns:h="http://java.sun.com/jsf/html"
+      	xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:p="http://primefaces.org/ui"
+     	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+  <title><ui:insert name="title">Travel Dream</ui:insert></title>
+      <h:outputStylesheet library="css" name="responsiveslides.css"  />
+      <h:outputStylesheet library="css" name="style.css"  />
+      <h:outputScript library="js" name="bootstrap.min.js"  />
+           <h:outputScript library="js" name="jquery.min.js"  />      	
+		<script src="../resources/responsiveslides.min.js"></script>
+		<script> $jQuery.noConflict()</script>
+		  <script>
+		    // You can also use "$(window).load(function() {"
+			    $(function () {
+			      // Slideshow 1
+			      $("#slider1").responsiveSlides({
+			        maxwidth: 2500,
+			        speed: 600
+			      });
+			});
+			
+		  </script>
+		  
+</h:head>
+
+<h:body>
+
+<ui:debug hotkey="x" rendered="#{initParam['javax.faces.FACELETS_DEVELOPMENT']}"/>
+
+<div id="header">
+    <ui:insert name="header">
+      
+    </ui:insert>
+</div>
+
+
+<div id="content">
+  <ui:insert name="content">
+    	<!--  include your content file or uncomment the include below and create content.xhtml in this directory -->
+	  	<!-- <div> -->
+    	<!-- <ui:include src="content.xhtml"/> -->  
+    	<!-- </div> -->
+  </ui:insert>
+</div>
+
+<div id="footer">
+  <ui:insert name="footer">
+  </ui:insert>
+</div>
+
+</h:body>
+
+</html>
+

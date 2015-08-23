@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+<h:head>
+	<title>View Invito</title>
+    <h:outputStylesheet library="css" name="main2.css"  />
+</h:head>
+<h:body>
+ <div class="container">
+	
+	
+	   <h:form id="form">  
+  
+    <p:growl id="msgs" />  
+    
+    <p:panel header="Ecco il tuo invito!">
+    
+    <p:accordionPanel multiple="true"> 
+    
+   <p:tab title="Destinazione e Periodo">
+        		<h:outputText value="#{InvitoBean.invito.viaggio.hotel.luogo}"></h:outputText><br></br>
+        		<h:outputText value="#{InvitoBean.invito.viaggio.data_inizio}"><br></br>
+        		    <f:convertDateTime pattern="dd/MM/yyyy" />
+        		</h:outputText>
+        		<h:outputText value="-"/>
+        		<h:outputText value="#{InvitoBean.invito.viaggio.data_fine}">
+        		    <f:convertDateTime pattern="dd/MM/yyyy" />
+        		</h:outputText>     
+    </p:tab>
+    
+    <p:tab title="Hotel">  
+    		Nome: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.hotel.nome}"></h:outputText>  <br></br>
+    		Costo giornaliero: &nbsp; <h:outputText value="#{InvitoBean.invito.viaggio.hotel.costo_giornaliero}"></h:outputText>  <br></br>    
+    		Stelle: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.hotel.stelle}"></h:outputText> <br></br>
+    	    <h:graphicImage  value="../images/#{InvitoBean.invito.viaggio.hotel.hotelImg}" height="90" width="90" />  
+    </p:tab>  
+    
+    <p:tab title="Volo">  
+           <h:outputLabel value="Volo Andata:" for="voloa"></h:outputLabel><br></br>
+    	   Compagnia: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_andata.compagnia}"> </h:outputText><br></br>
+    	   Costo per persona: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_andata.costo}"> &nbsp; € </h:outputText> <br></br>
+    	   Partenza da: &nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_andata.luogo_partenza}"> </h:outputText>  <br></br>  	   
+           <br></br>
+		   <h:outputLabel value="Volo Ritorno:" for="voloa"></h:outputLabel><br></br>
+    	   Compagnia:&nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_ritorno.compagnia}"> </h:outputText><br></br>
+    	   Costo per persona:&nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_ritorno.costo}"> &nbsp; €</h:outputText><br></br>
+    	   Partenza da:&nbsp;<h:outputText value="#{InvitoBean.invito.viaggio.volo_ritorno.luogo_partenza}"> </h:outputText> <br></br> 
+ 
+    </p:tab>  
+    
+    <p:tab title="Escursioni"> 
+    <ui:repeat var="esc" value="#{InvitoBean.invito.viaggio.lista_escursioni}">
+	   Nome:&nbsp;<h:outputText value="#{esc.nome}"> </h:outputText> <br></br>
+	   Costo:&nbsp;<h:outputText value="#{esc.costo}"> &nbsp; € </h:outputText> <br></br>
+	   Data:&nbsp;<h:outputText value="#{esc.data}">     			        	
+	          <f:convertDateTime pattern="dd/MM/yyyy" />
+	        </h:outputText> 
+	        <br></br>
+	   <br></br>				
+    </ui:repeat> 
+    </p:tab> 
+     
+	</p:accordionPanel>  
+  
+  	</p:panel>
+  	
+  	<br></br>
+  	
+        <h:panelGrid columns="3" id="grid">  
+            <p:button
+            	 value="Login or Register to Confirm" id="tohome" 
+                 outcome="/homepage.xhtml?faces-redirect=true" update="grid" icon="ui-icon-check">   
+            </p:button>
+            <p:button value="Rifiuta" outcome="/homepage.xhtml?faces-redirect=true" icon="ui-icon-cancel">
+            </p:button>                                 
+        </h:panelGrid> 
+         
+      
+    
+	</h:form> 
+       
+ 	</div>	</h:body>
+      
+</ui:composition>

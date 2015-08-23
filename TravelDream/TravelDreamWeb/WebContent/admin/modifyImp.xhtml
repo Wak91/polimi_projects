@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="Template.xhtml">
+
+        <ui:define name="content">
+        
+        <p:tabMenu activeIndex="1">  
+     <p:menuitem value="Account" url="adminhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Lista impiegati" url="adminlist.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Add impiegato" url="addImpiegato.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>
+        #{userBean.getImpByUn(param['id'])}
+        <f:metadata>
+        <f:viewParam name="id" value="#{userBean.user.username}" />
+    	</f:metadata>
+        
+                <h:form>
+                        <p:panel header="MODIFICA">
+                                <h:panelGrid columns="3" id="regGrid">
+                                
+                                      
+                                        <h:outputLabel for="nome">Nome:</h:outputLabel>
+                                        <p:inputText id="nome" value="#{userBean.user.firstName}" />
+                                        <p:message for="nome" />
+
+                                        <h:outputLabel for="cognome">Cognome:</h:outputLabel>
+                                        <p:inputText id="cognome" value="#{userBean.user.lastName}" />
+                                        <p:message for="cognome" />
+
+                                        <h:outputLabel for="data">Data di nascita:</h:outputLabel>
+										<p:calendar id="data" value="#{userBean.user.data}"  required="true"  pattern="dd/MM/yyyy" navigator="true" display="inline" />
+										<p:message for="data"/>
+
+                                        <h:outputLabel for="password">Password:</h:outputLabel>
+                                        <p:password id="password"
+                                                value="#{userBean.user.password}" feedback="true"
+                                                match="pwd2" label="Password" />
+                                        <p:message for="password" />
+
+                                        <h:outputLabel for="pwd2">Confirm Password:</h:outputLabel>
+                                        <p:password id="pwd2" label="Confirm Password"
+                                                value="#{userBean.user.password}" />
+                                         
+                                         <br/>       
+                                        <h:outputLabel for="email">Email:</h:outputLabel>
+                                        <p:inputText id="email" value="#{userBean.user.email}" />
+                                        <p:message for="email" />
+
+                                		</h:panelGrid>
+                                
+                                <h:link value="Indietro" outcome="/admin/adminlist.xhtml"
+                                        class="btn btn-default" />
+                                        
+                                <h:commandLink value="Salva" styleClass="btn btn-default"
+                                        update="@regGrid" action="#{userBean.modificaUtente()}" />
+                                        
+                                
+
+                        </p:panel>
+                </h:form>
+
+
+        </ui:define>
+
+</ui:composition>
+
+</html>

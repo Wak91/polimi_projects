@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+       
+
+	<ui:composition template="Template.xhtml">
+
+		<ui:define name="content">
+	 <p:tabMenu activeIndex="0">  
+     <p:menuitem value="Account" url="adminhome.xhtml" icon="ui-icon-person"/>  
+     <p:menuitem value="Lista impiegati" url="adminlist.xhtml" icon="ui-icon-search" />  
+     <p:menuitem value="Add impiegato" url="addImpiegato.xhtml" icon="ui-icon-wrench"/>  
+     </p:tabMenu>
+	
+			
+     <h:form >
+	 <p:panel header="Home impiegato">
+	 	<h1>Hello #{userBean.userName}, these are your data:</h1><br></br>
+		First name : #{userBean.userFirstName}<br></br>
+	  	Last name  : #{userBean.userLastName}
+	  	<br></br><br></br><br></br>  
+	  	
+	  	
+	<p:commandButton action="#{userBean.logout}" value="Logout" />
+     </p:panel>
+     </h:form>
+		</ui:define>
+
+	</ui:composition>
+
+</html>

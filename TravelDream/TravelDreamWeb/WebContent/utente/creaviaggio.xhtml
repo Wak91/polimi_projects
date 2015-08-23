@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<ui:composition template="Template.xhtml">
+
+
+	<ui:define name="content" >
+       #{ViaggioBean.getPacchettoById(param['id'])}
+
+
+			<div class="header">
+				<div class="wrap">
+				
+				<div class="logo">
+					<a href="userhome.xhtml"><img src="../images/logo.png" title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li class="active"><a href="userhome.xhtml">Home</a></li>
+						<li><a href="personaldata.xhtml">MyAccount</a></li>
+						<li><a href="imieiviaggi.xhtml">ImieiViaggi</a></li>
+						<li><a href="giftlist.xhtml">GiftList</a></li>
+						<li><a href="idFormConferma.xhtml">ConfermaInviti</a></li>
+					    <li>
+					    
+			    <h:form>
+						<p:commandLink action="#{userBean.logout}" value="Logout" />
+			    </h:form></li>
+						
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>
+		<br></br>
+		<div class="specials">
+					<div class="specials-heading">
+						<h5> </h5><h3>#{ViaggioBean.packet.nome}</h3><h5> </h5>
+						<div class="clear"> </div>
+					</div>
+		</div>
+			<div class="clear"> </div>
+			<br></br>
+			<center> 
+				<h:outputText id="datei" value="#{ViaggioBean.packet.data_inizio}" >
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				&nbsp;
+				<h:outputLabel for="datef">-</h:outputLabel>
+				&nbsp;
+				<h:outputText id="datef" value="#{ViaggioBean.packet.data_fine}" >
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				<br></br>
+			</center>
+			<br></br>
+			<table width="100%" align="center">
+                <tr>
+                    <td width="1%" ><div class="searchbar"> 
+		       	      <h:form id="filterform">   
+		       	      
+		              <section id="bar2">
+		              <h:outputLabel>DATE DEL VIAGGIO?*</h:outputLabel><br></br>
+		              <hr></hr>
+				      <h:outputLabel>DA QUANDO?</h:outputLabel><br></br>
+				      <p:calendar id="datei" value="#{ViaggioBean.viaggio.data_inizio}" navigator="true" display="inline" pattern="dd/MM/yyyy" mindate="#{ViaggioBean.packet.data_inizio}" maxdate="#{ViaggioBean.packet.data_fine}">
+				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
+				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
+				      </p:calendar>  
+    		          <br></br>
+    		          <h:outputLabel>A QUANDO?</h:outputLabel><br></br>
+				      <p:calendar id="datef" value="#{ViaggioBean.viaggio.data_fine}" navigator="true" display="inline" pattern="dd/MM/yyyy" mindate="#{ViaggioBean.packet.data_inizio}" maxdate="#{ViaggioBean.packet.data_fine}">
+				      <p:ajax event="dateSelect" listener="#{ViaggioBean.filterViaggio()}"   update="@([id$=viaggioitems])" /> 
+				 	  <f:convertDateTime pattern="dd/MM/yyyy"  />
+				      </p:calendar>  
+				      <br></br>
+				      <br></br>
+				      <h:outputLabel>FILTRA LA TUA RICERCA!</h:outputLabel><br></br>
+				      <hr></hr>
+				      <h:outputLabel>PARTENZA DA?</h:outputLabel><br></br>
+		              <p:inputText id="where" value="#{ViaggioBean.partenza}">
+		              <p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" /> 
+		              </p:inputText>
+    		          <br></br> 
+				      <h:outputLabel for="starts" >STELLE?</h:outputLabel><br></br>
+				      <p:inputText id="stars" value="#{ViaggioBean.stelle}">
+				    	<p:ajax event="keyup" listener="#{ViaggioBean.filterViaggio()}" update="@([id$=viaggioitems])" />
+				      </p:inputText>
+				      
+    		          <br></br> <br></br>
+    		           <p:commandButton value="Mostra tutti" action="#{ViaggioBean.showAll()}" update=":filterform:datef @([id$=viaggioitems]) :filterform:datei "/>
+    		           <br></br> 
+				      </section>
+				     </h:form>	
+		             </div></td>
+                    <td width="70%">
+                       <h:graphicImage  value="../images/#{ViaggioBean.packet.pathtoImage}" height="400" width="100%"/> 
+                  
+                   
+					</td>
+                </tr>
+			</table>
+				     
+		<h:panelGroup id="viaggioitems">
+				<p:messages id="messages2" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" /> 
+					
+    <p:accordionPanel multiple="true" activeIndex="0,1,2,3,4"> 
+		       
+		       <br></br>
+		
+				
+		<div class="content">
+		       
+		    <p:tab title="Hotel">
+		
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="hotel" value="#{ViaggioBean.filteredHotels}" id="hotelrepeat">
+				
+		    
+				<div class="grid2">
+				 <div class="left">
+				  
+					 <h:graphicImage value="../images/#{hotel.hotelImg}" height="90" width="90" /> 
+				</div>
+                     <div class="center">
+                     	#{hotel.nome}<br></br>
+                     <center><p:rating id="stars" align="center" value="#{hotel.stelle}" stars="5" cancel="false" readonly="true"/> </center> 				    
+					 </div>
+					
+					 <div class ="right">
+				    <p:commandButton id="hotelbutton" value="Seleziona" onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.selectedHotels}" value="#{hotel}"/>
+       				 </p:commandButton>
+					 </div>
+					  <div class="rightpay">
+					 #{hotel.costo_giornaliero}&nbsp; €/gg <br></br>
+					 </div>
+				</div>
+				
+				
+				</ui:repeat>
+				</div>
+				</div>
+				</p:tab>
+				
+				
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				
+				
+				<div class="clear"> </div>
+		       <br></br>
+		       		<div class="content">
+		       		
+		        <p:tab title="Voli andata">
+		
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+		       
+		      
+				<ui:repeat var="volo" value="#{ViaggioBean.filteredVolos}">
+				
+				<div class="grid2">
+				<div class="left">
+					 <h:graphicImage  value="../images/#{volo.immagine}" height="90" width="90" /> 
+			         <h:outputLabel for="part">Da </h:outputLabel> &nbsp; 
+					 #{volo.luogo_partenza} <br></br>
+					 <h:outputLabel for="arr">&nbsp; Per </h:outputLabel> &nbsp; 
+					 #{volo.luogo_arrivo} <br></br>
+			    </div>
+			   <div class="center">
+			    
+					#{volo.compagnia}
+					<br></br>
+					 <h:outputText id="datef" value="#{volo.data}"  pattern="dd/MM/yyyy">  
+				     <f:convertDateTime pattern="dd/MM/yyyy"  />
+				     </h:outputText> 
+					 <br></br>
+					 
+					 </div>
+					
+			   
+			   <div class="right">
+				    
+			
+					  <p:commandButton id="voloabutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_a}" value="#{volo}"/>
+       				</p:commandButton>
+       						 
+					 
+			   </div>
+			   
+			   <div class="rightpay">
+					 #{volo.costo} &nbsp; €
+					 <br></br>
+					 </div>
+			   
+				   
+				</div>
+				
+				</ui:repeat>
+				</div>
+				</div>
+				</p:tab>
+			    </div>	
+			    	
+				<div class="clear"> </div>
+		       <br></br>
+		       
+		       
+		       		<div class="content">
+		       
+		       <p:tab title="Voli ritorno">
+		
+		       
+		       <div class="wrap">
+			<div class="content-grids">
+
+				<ui:repeat var="volo" value="#{ViaggioBean.filteredVolosRitorno}">
+				
+				<div class="grid2">
+				<div class="left">
+					 <h:graphicImage  value="../images/#{volo.immagine}" height="90" width="90" /> 
+			         <h:outputLabel for="part">Da </h:outputLabel> &nbsp; 
+					 #{volo.luogo_partenza} <br></br>
+					 <h:outputLabel for="arr">&nbsp; Per </h:outputLabel> &nbsp; 
+					 #{volo.luogo_arrivo} <br></br>
+			    </div>
+			   <div class="center">
+			    
+					#{volo.compagnia}
+					<br></br>
+					 <h:outputText id="datef" value="#{volo.data}"  pattern="dd/MM/yyyy">  
+				     <f:convertDateTime pattern="dd/MM/yyyy"  />
+				     </h:outputText> 
+					 <br></br>
+					 
+					 </div>
+					
+			   
+			   <div class="right">
+				    
+			
+					  <p:commandButton id="volorbutton" value="Seleziona"  onclick="$(this).parent().parent().parent().children().css( 'background-color', '#FFFFFF' );$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.selectedVolo_r}" value="#{volo}"/>
+       				</p:commandButton>
+       						 
+					 
+			   </div>
+			   
+			   <div class="rightpay">
+					 #{volo.costo} &nbsp; €
+					 <br></br>
+					 </div>
+			   
+				   
+				</div>
+				</ui:repeat>
+				</div>
+				</div>
+				</p:tab>
+			
+				<div class="clear"> </div>
+			</div>
+
+		       <br></br>
+		       		<div class="content">
+		       
+		          <p:tab title="Escursioni">
+	
+		       <div class="wrap">
+			<div class="content-grids">
+				<ui:repeat var="esc" value="#{ViaggioBean.filteredEscursiones}">
+				
+				<div class="grid2">
+				 <div class="left">
+					 <h:graphicImage  value="../images/#{esc.immagine}" height="90" width="90" /> 
+  				 </div>		
+  				  <div class="center">		
+					#{esc.nome}
+					<br></br>
+					 <h:outputText id="datef" value="#{esc.data}"  pattern="dd/MM/yyyy">  
+				     <f:convertDateTime pattern="dd/MM/yyyy"  />
+				     </h:outputText>  
+					 <br></br>
+				</div>
+					 
+					
+					 
+					 <div class="right">
+				 
+					 <p:commandButton id="escbutton" value="Aggiungi" action="#{ViaggioBean.selezionaEsc}" onclick="$(this).parent().parent().css( 'background-color', '#FFFFCC' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.esc}" value="#{esc}"/>
+       				 </p:commandButton>
+       				 <p:commandButton id="escdeselect" value="Elimina" action="#{ViaggioBean.deselezionaEsc}" onclick="$(this).parent().parent().css( 'background-color', '#FFFFFF' )">
+            			<f:setPropertyActionListener target="#{ViaggioBean.esc}" value="#{esc}"/>
+       				 </p:commandButton>
+				   </div>
+				    <div class="rightpay">
+					 #{esc.costo} &bnsp; €
+					 <br></br>
+					 </div>
+				   			   
+				</div>
+				</ui:repeat>
+				
+				</div>
+				</div>
+				</p:tab>
+				
+				<div class="clear"> </div>
+				</div>
+			</p:accordionPanel>
+		</h:panelGroup>
+		<br></br>
+			<div class="clear"> </div>
+			<br></br><br></br>
+		
+		<h:form>
+							<center>
+		
+		<h:commandButton value="Acquista viaggio" styleClass="button" 
+			action="#{ViaggioBean.acquista_paga()}" icon="ui-icon-script"/>
+				
+		<h:commandButton value="Aggiungi alla gift list" styleClass="button" 
+				action="#{ViaggioBean.aggiungi_gift()}" icon="ui-icon-script"/>
+				
+		<h:commandButton value="Invita a partecipare" styleClass="button" 
+				action="#{ViaggioBean.invita()}" icon="ui-icon-script"/>
+				<br></br>
+		   </center>   
+		   </h:form>
+		      
+		<div class="clear"> </div>
+		<div class="footer">
+			<div class="wrap">
+			<div class="footer-grids">
+				<div class="footer-grid">
+					<h3>EXTRAS</h3>
+					<p>"Non dirmi quanto tu sei educato…dimmi quanto hai viaggiato"</p>
+				</div>
+			
+				<div class="footer-grid footer-lastgrid">
+					<h3>CONTACT US</h3>
+					<p>Per informazioni contattaci</p>
+					<div class="footer-grid-address">
+						<p>Email: <a class="email-link" href="#"> lord.fontana@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> r91motta@gmail.com</a></p>
+			            <p>Email: <a class="email-link" href="#"> fbi.gritti@gmail.com</a></p>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="copy-right">
+    	<p>TravelDream All right reserved</p>
+		</div>
+		</ui:define>
+		</ui:composition>
+</html>
+
