@@ -1,0 +1,12 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+public class GameOption {
+
+	public static int gui_text;  // 0= text 1= gui
+	public static int sprint_value=1;
+	public static int lunghezza_percorso=13;
+	public static int primo_premio=600;
+	public static int secondo_premio=400;
+	public static int terzo_premio=200;
+	
+}

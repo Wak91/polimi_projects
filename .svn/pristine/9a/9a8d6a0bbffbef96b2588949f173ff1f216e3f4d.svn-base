@@ -1,0 +1,9 @@
+package Gui_Events;
+
+public class letsPayEvent extends HorseFeverEventGui {
+
+	public letsPayEvent() {
+		super(letsPayEvent.class);
+	}
+
+}

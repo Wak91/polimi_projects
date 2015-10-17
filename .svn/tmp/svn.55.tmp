@@ -1,0 +1,280 @@
+package View;
+
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Graphics2D;
+import java.awt.Label;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+
+import Model.Carta_azione;
+import Model.Cavallo;
+import Model.Giocatore;
+
+public class GUI_interface implements User_interface {
+	final Toolkit toolkit ;
+	int xSize;
+	int ySize;
+	private JFrame frame;
+	private  JPanel main_panel;
+	
+	//---------ATTRIBUTI METODI-------> 
+	private int num_giocatori_temp=2;
+	private JLabel image_num_player;
+
+	
+	public GUI_interface() {
+		toolkit = Toolkit.getDefaultToolkit();
+		xSize = ((int) toolkit.getScreenSize().getWidth());  
+		ySize = ((int) toolkit.getScreenSize().getHeight()); 
+		frame = new JFrame();
+		frame.setBounds(0, 0, xSize, ySize);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JPanel top_panel = new JPanel();
+		top_panel.setBounds(0, 0, xSize, ySize/5);
+		frame.getContentPane().add(top_panel);
+		top_panel.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel(new ImageIcon(resizeImage("images/Horse_fever.png", xSize, ySize/7, BufferedImage.TYPE_INT_ARGB)));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(0, 0, xSize, ySize/7);
+		top_panel.add(lblNewLabel);
+		
+		main_panel = new JPanel();
+		main_panel.setBounds(0, ySize/7, xSize, ySize);
+
+		frame.getContentPane().add(main_panel);
+		
+		frame.setVisible(true);
+		
+		frame.setSize(xSize,ySize);  
+		
+	}
+	/**
+	 * Metodo che riceve percorso file  dimensioni e tipo immagine output (esempio BufferedImage.TYPE_INT_RGB o BufferedImage.TYPE_INT_ARGB)
+	 * restituisce una buffered Image ridimensionata che puo essere usata per creare ImageIcon
+	 * @param nome_immagine
+	 * @param width
+	 * @param height
+	 * @param type
+	 * @return
+	 */
+	private BufferedImage resizeImage(String nome_immagine,int width,int height, int type) {  
+	     try {
+			
+	    	File fileIcon = new File(nome_immagine);
+			BufferedImage originalImage = ImageIO.read(fileIcon);
+			BufferedImage resizedImage = new BufferedImage(width, height, type);  
+	        Graphics2D g = resizedImage.createGraphics();  
+	        g.drawImage(originalImage, 0, 0, width, height, null);  
+	        g.dispose();  
+	        return resizedImage;  
+	     } catch (Exception e) {
+				e.printStackTrace();
+			}  
+	     return null;
+    }  
+
+	public int get_num_player() {
+		JButton remove_player = new JButton("REMOVE");
+		JButton add_player = new JButton("ADD");
+		JButton confirm = new JButton("CONFIRM");
+		final HashMap<Integer, String> map_numplayer_image = new HashMap<Integer, String>();
+		
+		map_numplayer_image.put(2, "images/num_giocatori_2.png");
+		map_numplayer_image.put(3, "images/num_giocatori_3.png");
+		map_numplayer_image.put(4, "images/num_giocatori_4.png");
+		map_numplayer_image.put(5, "images/num_giocatori_5.png");
+		map_numplayer_image.put(6, "images/num_giocatori_6.png");
+
+		
+		
+		ImageIcon imgplayer = new ImageIcon("images/num_giocatori_2.png");
+		image_num_player = new JLabel();
+		image_num_player.setIcon(imgplayer);
+		
+		
+		
+		
+		main_panel.add(image_num_player);
+		main_panel.add(remove_player);
+		main_panel.add(add_player);
+		main_panel.add(confirm);
+		
+		add_player.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				if (num_giocatori_temp<=5) {
+					num_giocatori_temp++;
+					image_num_player.setIcon(new ImageIcon(map_numplayer_image.get(num_giocatori_temp)));
+					
+				}
+				else {					
+					
+					BufferedImage imgerror6 = resizeImage("images/num_giocatori_6.png", 150, 150, BufferedImage.TYPE_INT_RGB);
+					JOptionPane.showMessageDialog(null, "Non si possono inserire piu di 6 giocatori","Errore",JOptionPane.INFORMATION_MESSAGE,
+	                        new ImageIcon(imgerror6));
+				}
+			}
+		});
+		remove_player.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				if (num_giocatori_temp>=3) {
+					num_giocatori_temp--;
+					image_num_player.setIcon(new ImageIcon(map_numplayer_image.get(num_giocatori_temp)));
+
+				}
+				else {
+					BufferedImage imgerror2 = resizeImage("images/num_giocatori_2.png", 150, 150, BufferedImage.TYPE_INT_RGB);
+					JOptionPane.showMessageDialog(null,"Ci devono essere almeno 2 giocatori","Errore",JOptionPane.INFORMATION_MESSAGE,
+	                       new ImageIcon(imgerror2));
+				}			
+			}
+		});
+		
+		confirm.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+			return num_giocatori_temp;
+	}
+
+
+
+	public ArrayList<Carta_azione> get_carte_azione() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void show_action_card(Giocatore player) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public String get_cavallo_scommessa(String message) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String get_cavallo_scommessa() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int get_soldi_scommessa(Giocatore player) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public String get_tipo_scommessa() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String get_tipo_scommessa(String messaggio) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void show_all_bet() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void game_over_player(Giocatore player) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public boolean make_seconda_scommessa(Giocatore player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void not_enough_money(String nome) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public int get_action_card_played(Giocatore player) {
+		// TODO Auto-generated method stub
+return 0;
+	}
+
+	public String get_horse_affected() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void show_affected_horse() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void show_corsa(ArrayList<Cavallo> cavalli_in_gioco,
+			int lunghezza_percorso) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void show_classifica(ArrayList<String> classifica) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void show_bad_end_message() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void show_win_money(String nome, int money, int pv) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void show_winner(String vincitore) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+
+	public String get_player() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void show_all_bet(Giocatore player) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void show_action_horse(Cavallo horse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+}

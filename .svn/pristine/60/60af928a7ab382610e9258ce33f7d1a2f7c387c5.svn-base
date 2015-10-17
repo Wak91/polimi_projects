@@ -1,0 +1,33 @@
+package Model;
+
+import java.util.ArrayList;
+
+public interface Model_interface {
+
+	public void init_segnalini();
+	public Giocatore next_giocatore(String senso);
+	public Giocatore get_giocatore_corrente();
+	public Giocatore get_primo_giocatore(String senso);
+	public Carta_personaggio create_player(String nome);
+	public ArrayList <Giocatore> get_giocatori();
+	public void add_card_player(Giocatore player);
+	public boolean check_disp_scuderia(String colore_scommessa);
+	public boolean check_tipo_scommessa(Giocatore player, String bet_type , String colore);
+	public void piazza_scommessa(Giocatore player , int importo_scommessa , String bet_type , String colore_scommessa);
+	public Carta_azione card_at_index(int index, Giocatore player);
+	public Cavallo horse_from_color(String color);
+	public void add_card_horse(Cavallo horse, Carta_azione card);
+	public ArrayList <Cavallo> get_cavalli();
+	public void sub_segnalino_color(String colore);
+	public int getLunghezzaPercorso();
+	public void partenza();
+	public boolean running();
+	public ArrayList <String> getClassifica();
+	public ArrayList <Integer> make_payment_bet(Giocatore player, Scommessa bet);
+	public ArrayList <Integer> make_payment_scud(Giocatore player);
+	public ArrayList<Giocatore> sistema_giocatori(Giocatore player);
+	public boolean sistema_gioco();
+	public ArrayList <Scommessa> get_player_bets(Giocatore player);
+	public void init_turni();
+	
+}

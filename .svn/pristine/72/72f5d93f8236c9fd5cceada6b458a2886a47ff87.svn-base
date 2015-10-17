@@ -1,0 +1,112 @@
+package Model;
+
+import java.io.File;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
+
+import javax.swing.ImageIcon;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.IOException;
+
+public class Carta_azione extends Carta {
+	
+	private String Nome_carta;
+	private char classe;
+	private char stato;   
+	private String descrizione;
+	private String immagine;
+	private String retro;
+	private static final String path_carte="immagini_carte_azione/";
+	
+	/**
+	 * 
+	 * @param nc = nome della carta 
+	 * @param c = classe della carta
+	 * @param s = carta positiva P , negativa N , neutra J
+	 */
+	
+	public Carta_azione(String nc , char c , char s,String description ,String immagine)
+	{
+	 super();
+	 this.Nome_carta = nc;
+	 this.classe = c;
+	 this.stato = s;
+	 this.descrizione= description;
+	 this.immagine = immagine;
+	 String retro = "immagini_carte_azione/retro.jpg";
+	 this.retro = retro;
+	}
+	
+	public String get_string_card()
+	{
+	return "Nome_carta: --> "+ this.Nome_carta+"\nClasse: --> "+this.classe+"\nDescrizione: --> "+this.descrizione+"\n";
+	}
+	
+	public char get_classe() {
+		return this.classe;
+	}
+	
+	public String getNome()
+	{
+		return this.Nome_carta;
+	}
+	
+	public char getStato()
+	{
+		return this.stato;
+		
+	}
+	
+	public String getImmagine()
+	{ return this.immagine;};
+	/**
+	 * Metodo utilizzato per estrarre tutte le carte azione dal file 
+	 * e creare il mazzo di carte azione
+	 * lo stream, i tokenizer e la Carta pulita card sono attributi protected 
+	 * ereditati da Carta.
+	 * @param m: il mazzo "vergine" che diventa mazzo di carte azione
+	 */
+	public static void Extract_all_in(Mazzo m)
+	{
+	  try 
+		   {	
+			File file = new File("Carte_azione.xml");
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
+			Document document = docBuilder.parse(file);
+			
+			document.getDocumentElement().normalize();
+			NodeList  listNode= document.getElementsByTagName("Carta");
+			for (int i=0;i<listNode.getLength();i++)
+			{
+				Node node=listNode.item(i);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					String nome = element.getElementsByTagName("Nome").item(0).getTextContent();
+					char classe = element.getElementsByTagName("Classe").item(0).getTextContent().charAt(0);
+					char stato = element.getElementsByTagName("Stato").item(0).getTextContent().charAt(0);
+					String descrizione =  element.getElementsByTagName("Descrizione").item(0).getTextContent();
+					String immagine = path_carte+element.getElementsByTagName("Immagine").item(0).getTextContent();
+					Carta card = new Carta_azione(nome,classe,stato,descrizione,immagine);
+		          	m.addCard(card);	
+
+				}
+			}
+			m.mischia(); // diamo una mischiata al mazzo corrente 
+		
+		   }
+		
+		catch (Exception e)
+		{
+			System.out.println(e);	
+		}
+		m.mischia(); // diamo una mischiata al mazzo corrente 
+  }
+	@Override
+	public String toString() {
+		return "\n-->Nome carta:"+this.Nome_carta+"\n-->Classe:"+this.classe+"\n-->Stato:"+this.stato; 
+	}
+}

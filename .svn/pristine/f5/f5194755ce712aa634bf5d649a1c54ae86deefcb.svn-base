@@ -1,0 +1,179 @@
+package View;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import Controller_events.TruccaEvent;
+import Model.Carta_azione;
+
+public class TruccaGaraView {
+
+	private GUI_interface gui_interface;
+	private TruccaEvent event;
+	
+	private final Toolkit toolkit ;
+	private int xSize;
+	private int ySize;
+	private JFrame frame;
+	
+	private JLabel JLcarta1;
+	private JLabel JLcarta2;
+	
+	private JLabel JLscudblu;
+	private JLabel JLscudnera;
+	private JLabel JLscudverde;
+	private JLabel JLscudrossa;
+	private JLabel JLscudbianca;
+	private JLabel JLscudgialla;
+	
+	private ImageIcon scud1;
+	private ImageIcon scud2;
+	private ImageIcon scud3;
+	private ImageIcon scud4;
+	private ImageIcon scud5;
+	private ImageIcon scud6;
+	
+	private JPanel console_player;
+	private JPanel lista_scude;
+	
+	private Carta_azione action_card1;
+	private Carta_azione action_card2;
+	
+	private static String carta_azione_selected;
+	private static String scuderia_selected;
+ 
+	public TruccaGaraView(GUI_interface gui , TruccaEvent event)
+	{
+		this.gui_interface = gui;
+		toolkit = Toolkit.getDefaultToolkit();
+		xSize = ((int) toolkit.getScreenSize().getWidth());  
+		ySize = ((int) toolkit.getScreenSize().getHeight()); 
+		frame = gui.get_frame();
+		this.event = event;
+		this.action_card1 = event.getGiocatore().get_action_cards().get(0);
+		this.action_card2 = event.getGiocatore().get_action_cards().get(0);
+		ArrayList <ImageIcon> immagini_scuderie = new ArrayList <ImageIcon>();
+		
+		//brutale, dopo lo sistemo 
+		ImageIcon scud1 = new ImageIcon("immagini_carte_scuderia/bl");
+		scud1 = resizeImage(scud1, xSize/10, ySize/10);
+		ImageIcon scud2 = new ImageIcon("immagini_carte_scuderia/bl");
+		scud2 = resizeImage(scud2, xSize/10, ySize/10);
+		ImageIcon scud3 = new ImageIcon("immagini_carte_scuderia/bl");
+		scud3 = resizeImage(scud3, xSize/10, ySize/10);
+		ImageIcon scud4 = new ImageIcon("immagini_carte_scuderia/bl");
+		scud4 = resizeImage(scud4, xSize/10, ySize/10);
+		ImageIcon scud5 = new ImageIcon("immagini_carte_scuderia/bl");
+		scud5 = resizeImage(scud5, xSize/10, ySize/10);
+		ImageIcon scud6 = new ImageIcon("immagini_carte_scuderia/bl");
+		scud6 = resizeImage(scud6, xSize/10, ySize/10);
+		
+		
+		
+	}
+	
+	
+	public void show()
+	{
+		console_player = new JPanel();
+		frame.getContentPane().add(console_player);
+		console_player.setBounds(xSize-xSize, ySize-ySize, xSize, ySize/3);
+		lista_scude = new JPanel();
+		frame.getContentPane().add(lista_scude);
+		lista_scude.setBounds(xSize-xSize, ySize, xSize, ySize*2/3);
+		ImageIcon card1 = resizeImage(event.getGiocatore().get_action_cards().get(0).getImmagine(), xSize/10, ySize/10);
+		ImageIcon card2 = resizeImage(event.getGiocatore().get_action_cards().get(1).getImmagine(), xSize/10, ySize/10);
+		JLcarta1.setIcon(card1);
+		JLcarta2.setIcon(card2);
+		console_player.add(JLcarta1);
+		console_player.add(JLcarta2);
+		JLcarta1.setBounds(xSize*1/4, ySize-ySize, card1.getIconWidth(), card1.getIconHeight());
+		JLcarta2.setBounds(xSize*1/4, ySize-ySize, card2.getIconWidth(), card2.getIconHeight());
+		
+		JLcarta1.addMouseListener(new MouseListener() {
+			
+			public void mouseClicked(MouseEvent arg0) {
+				
+				JLcarta1.setBounds(xSize*1/4, ySize-( ySize -10 ), JLcarta1.getWidth(), JLcarta2.getHeight()); 
+				carta_azione_selected = action_card1.getNome();
+			}
+
+			public void mouseEntered(MouseEvent arg0) {}
+
+			public void mouseExited(MouseEvent arg0) {}
+
+			public void mousePressed(MouseEvent arg0) {}
+
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+       JLcarta2.addMouseListener(new MouseListener() {
+			
+			public void mouseClicked(MouseEvent arg0) {
+				
+				JLcarta2.setBounds(xSize*1/4, ySize-( ySize -10 ), JLcarta2.getWidth(), JLcarta2.getHeight()); 
+				carta_azione_selected = action_card2.getNome();
+			}
+
+			public void mouseEntered(MouseEvent arg0) {}
+
+			public void mouseExited(MouseEvent arg0) {}
+
+			public void mousePressed(MouseEvent arg0) {}
+
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+       
+       JLscudblu.setIcon(scud1);
+       JLscudnera.setIcon(scud2);
+       JLscudverde.setIcon(scud3);
+       JLscudrossa.setIcon(scud4);
+       JLscudbianca.setIcon(scud5);
+       JLscudgialla.setIcon(scud6);
+	
+       lista_scude.add(JLscudblu);
+       lista_scude.add(JLscudnera);
+       lista_scude.add(JLscudverde);
+       lista_scude.add(JLscudrossa);
+       lista_scude.add(JLscudbianca);
+       lista_scude.add(JLscudgialla);
+       
+       
+       
+	}
+	
+
+	public ImageIcon resizeImage(ImageIcon immagine,int width,int height) {  
+	     try {
+			
+	    	Image img = immagine.getImage();
+			BufferedImage resizedImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);  
+	        Graphics2D g = resizedImage.createGraphics();  
+	        g.drawImage(img, 0, 0, width, height, null);  
+	        g.dispose();  
+	        ImageIcon resized_image = new ImageIcon(resizedImage);
+	        return resized_image;
+	     } catch (Exception e) {
+				e.printStackTrace();
+			}  
+	     return null;
+   }  
+	
+	
+}

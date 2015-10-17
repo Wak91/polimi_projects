@@ -1,0 +1,120 @@
+package Model;
+
+import java.io.File;
+import java.io.Serializable;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+
+/**
+ * Modellizza una carta azione.
+ * Stato serve per capire se è una carta Negativa, Positiva o Neutra.
+ */
+public class Carta_azione extends Carta implements Serializable {
+	
+	private String Nome_carta;
+	private char classe;
+	private char stato;   
+	private String descrizione;
+	private String immagine; //nome dell'immagine della carta
+	private String retro;  //immagine del retro della carta
+	private static final String path_carte="immagini_carte_azione/"; //path assoluto di dove si trovano le carte
+	
+	/**
+	 * 
+	 * @param nc = nome della carta 
+	 * @param c = classe della carta
+	 * @param s = carta positiva P , negativa N , neutra J
+	 */
+	
+	public Carta_azione(String nc , char c , char s,String description ,String immagine)
+	{
+	 super();
+	 this.Nome_carta = nc;
+	 this.classe = c;
+	 this.stato = s;
+	 this.descrizione= description;
+	 this.immagine = immagine;
+	 String retro = path_carte +"retro.jpg"; //il retro viene caricato direttamente nel costruttore e non dall'XML , tanto tutte queste carte ce l'hanno uguale
+	 this.retro = retro;
+	}
+	
+	/**
+	 * ritorna la stringa con tutte le info della carta ( usata per debugging e nella text_interface )
+	 * @return
+	 */
+	public String get_string_card()
+	{
+	return "Nome_carta: --> "+ this.Nome_carta+"\nClasse: --> "+this.classe+"\nDescrizione: --> "+this.descrizione+"\n";
+	}
+	
+	public String get_descrizione()
+	{
+		return this.descrizione;
+	}
+	
+	public char get_classe() {
+		return this.classe;
+	}
+	
+	public String getNome()
+	{
+		return this.Nome_carta;
+	}
+	
+	public char getStato()
+	{
+		return this.stato;
+		
+	}
+	
+	public String getImmagine()
+	{ return this.immagine;};
+	
+	/**
+	 * Metodo utilizzato per estrarre tutte le carte azione dal file XML
+	 * e creare il mazzo di carte azione
+	 * @param m: il mazzo vuoto che diventa mazzo di carte azione
+	 */
+	protected static void Extract_all_in(Mazzo m)
+	{
+	  try 
+		   {	
+			File file = new File("CarteXml/Carte_azione.xml");
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
+			Document document = docBuilder.parse(file);
+			
+			document.getDocumentElement().normalize();
+			NodeList  listNode= document.getElementsByTagName("Carta");
+			for (int i=0;i<listNode.getLength();i++)
+			{
+				Node node=listNode.item(i);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					String nome = element.getElementsByTagName("Nome").item(0).getTextContent();
+					char classe = element.getElementsByTagName("Classe").item(0).getTextContent().charAt(0);
+					char stato = element.getElementsByTagName("Stato").item(0).getTextContent().charAt(0);
+					String descrizione =  element.getElementsByTagName("Descrizione").item(0).getTextContent();
+					String immagine = path_carte+element.getElementsByTagName("Immagine").item(0).getTextContent();
+					Carta card = new Carta_azione(nome,classe,stato,descrizione,immagine);
+		          	m.addCard(card);	
+
+				}
+			}
+			m.mischia(); // diamo una mischiata al mazzo corrente 
+		
+		   }
+		
+		catch (Exception e)
+		{
+			System.out.println(e);	
+		}
+  }
+}

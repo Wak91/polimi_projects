@@ -1,0 +1,12 @@
+package Controller_events;
+
+public class getNumPlayerEvent implements HorseFeverEvent {
+	
+	
+	
+	public getNumPlayerEvent() {
+		
+	}
+	
+
+}

@@ -1,0 +1,14 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+public abstract class Carta {
+
+	//set of the abstract costructor 
+	public Carta ()
+	{}
+		
+	//metodo re-implementato nelle classi che estendono carta per visualizzare correttamente la carta
+	public void visualizza()
+	{}
+	
+}
+

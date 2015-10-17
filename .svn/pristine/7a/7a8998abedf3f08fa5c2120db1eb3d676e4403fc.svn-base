@@ -1,0 +1,49 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+
+public interface User_interface {
+
+	public ArrayList <Giocatore> get_players();
+
+	public ArrayList <Scommessa> get_scommesse();
+	
+	public ArrayList <Carta_azione> get_carte_azione();
+	
+	public void play_action_card(Giocatore player);
+
+	public String[] gara();
+	
+//---------------------------------GIRO SCOMMESSE--------------------------------->
+	
+	public void show_action_card(Giocatore player);
+	
+	public String get_cavallo_scommessa(String message);
+	
+	public String get_cavallo_scommessa();	
+	
+	public int get_soldi_scommessa(Giocatore player);
+	
+	public String get_tipo_scommessa();
+	
+	public void show_all_bet();
+	
+	public void game_over_player(Giocatore player);
+
+//-----------------------------------TRUCCARE CORSA----------------------------------->
+	
+	public Carta_azione get_action_card_played(Giocatore player);
+	
+	public Cavallo get_horse_affected();
+	
+	public void show_affected_horse();
+		
+	
+//-----------------------------------GESTIONE CORSA----------------------------------->
+	
+	public void show_corsa();
+
+	public void show_classifica();
+		
+	
+}

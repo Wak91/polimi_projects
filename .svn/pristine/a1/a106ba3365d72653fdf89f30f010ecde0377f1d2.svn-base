@@ -1,0 +1,88 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import Model.Carta_personaggio;
+import Model.Game;
+import Model.Giocatore;
+import Model.Lavagna;
+import Model.Scommessa;
+
+public class GameTest {
+	
+	int oldLoremoney;
+	int oldPippomoney;
+	int oldPlutomoney;
+
+	ArrayList<Giocatore> elenco_giocatori=new ArrayList<Giocatore>();
+	ArrayList<String> classifica =new ArrayList<String>();
+	Game gmGame = new Game();
+	final int  importo=300;
+	@Before
+	public void setUp() throws Exception {
+		
+
+		gmGame.create_player("Lore");
+		gmGame.create_player("Pippo");
+
+		
+		gmGame.create_player("Pluto");
+		
+
+		gmGame.set_primo_giocatore("orario");
+		System.out.println(gmGame.get_giocatore_corrente().get_nome());
+		gmGame.get_giocatore_corrente().Scommette(importo, "rosso", "Vincente");
+		gmGame.next_giocatore("orario");
+		gmGame.get_giocatore_corrente().Scommette(importo, "verde", "Piazzata");
+		gmGame.next_giocatore("orario");
+		gmGame.get_giocatore_corrente().Scommette(importo, "giallo", "Vincente");
+		
+		
+		gmGame.set_primo_giocatore("orario");
+
+		oldLoremoney=gmGame.get_giocatore_corrente().get_money();
+		System.out.println(gmGame.get_giocatore_corrente().get_nome()+oldLoremoney);
+		gmGame.next_giocatore("orario");
+		oldPippomoney=gmGame.get_giocatore_corrente().get_money();
+		System.out.println(gmGame.get_giocatore_corrente().get_nome()+oldPippomoney);
+		gmGame.next_giocatore("orario");
+		oldPlutomoney=gmGame.get_giocatore_corrente().get_money();
+		System.out.println(gmGame.get_giocatore_corrente().get_nome()+oldPlutomoney);
+
+		classifica= gmGame.getClassifica();
+		classifica.add("rosso");
+		classifica.add("verde");
+		classifica.add("giallo");
+		classifica.add("blu");
+		classifica.add("bianco");
+		classifica.add("nero");
+		System.out.println("Classifica");
+
+		for (String colString : gmGame.getClassifica()) {
+			System.out.println(colString);
+		}
+	}
+
+	@Test
+	public void test() {
+		System.out.println("start test");
+		gmGame.pay_price();
+		
+		gmGame.set_primo_giocatore("orario");
+		System.out.println(gmGame.get_giocatore_corrente().get_nome()+" ha "+gmGame.get_giocatore_corrente().get_money()+"scommettendo"+importo+"  Vincente su quot "+(Lavagna.getPosizione("rosso")+2));
+		System.out.println((Lavagna.getPosizione("rosso")+2)*100);
+
+		//assertTrue(gmGame.get_giocatore_corrente().get_money()==oldLoremoney+(Lavagna.getPosizione("rosso")+2)*importo);
+		gmGame.next_giocatore("orario");
+		System.out.println(gmGame.get_giocatore_corrente().get_nome()+" ha "+gmGame.get_giocatore_corrente().get_money()+"scommettendo "+importo+" Piazzato su quot "+(Lavagna.getPosizione("rosso")+2));
+		//assertTrue(gmGame.get_giocatore_corrente().get_money()==oldPippomoney+(Lavagna.getPosizione("verde")+2)*importo);
+	}
+
+}

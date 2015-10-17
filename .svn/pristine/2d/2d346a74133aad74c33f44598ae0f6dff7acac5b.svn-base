@@ -1,0 +1,74 @@
+
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+/**
+ * Classe cavallo gestisce posizione e carte associate alla pedina
+ * @author Lorenzo
+ *
+ */
+public class Cavallo {
+	private int posizione;
+	private ArrayList<Carta_azione> carte_azione;
+	private String colore;
+	
+	/**
+	 * setto posizione iniziale a 0 partenza
+	 */
+	public Cavallo(String color) {
+		this.posizione=0;
+		carte_azione=new ArrayList<Carta_azione>();
+		this.colore = color;
+	}
+
+	public int  get_posizione() {
+		return this.posizione;		
+	}
+	public void set_posizione(int pos) {
+		this.posizione=pos;		
+	}
+	public String get_color() {
+		return this.colore;
+	}
+	
+	public void add_carta_azione(Carta_azione carta){
+		carte_azione.add(carta);
+	}
+	
+	public ArrayList<Carta_azione> get_carte_azione(){
+		ArrayList<Carta_azione> carte = new ArrayList<Carta_azione>();
+		for (Carta_azione carta : carte) {
+			carte.add(carta);
+		}
+		return carte;	
+	}
+	/**
+	 * mostro a schermo le carte associate a cavallo
+	 */
+	public void show_carte_azione() {
+		if (carte_azione.isEmpty())
+			System.out.println("Non ci sono carte su questo cavallo");
+		else{
+			for (Carta_azione carta : carte_azione) {
+				carta.visualizza();		
+			}
+		}
+	}
+	
+	/**
+	 * solo per test
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Cavallo cavallo = new Cavallo("rosso");
+		cavallo.show_carte_azione();
+		Mazzo mazzo = new Mazzo();
+		Carta_azione.Extract_all_in(mazzo);
+		Carta_azione card =  (Carta_azione)mazzo.pesca();
+		cavallo.add_carta_azione(card);
+		cavallo.show_carte_azione();
+
+		
+	}
+
+}

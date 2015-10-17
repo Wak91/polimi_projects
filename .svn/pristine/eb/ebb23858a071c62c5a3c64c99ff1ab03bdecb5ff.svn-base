@@ -1,0 +1,28 @@
+package Controller_events;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import Controller.Controller_Interface;
+import Model.Giocatore;
+import Model.Quotazione;
+
+public class TruccareEvent extends HorseFeverEventController implements Serializable  {
+
+	private Giocatore player;
+	private ArrayList <Quotazione> lavagna;
+	
+	public TruccareEvent (Controller_Interface cont , Giocatore player) {
+		super(TruccareEvent.class);
+		super.controller_Interface=cont;
+		this.player = player;
+		
+	}
+	
+	public Giocatore getGiocatore()
+	{
+		return player;
+	}
+	
+	
+}

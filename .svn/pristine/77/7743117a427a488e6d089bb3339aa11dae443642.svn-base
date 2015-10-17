@@ -1,0 +1,73 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+public class Core_scommesse_controller {
+
+	private Core_scommesse_view view ;
+	private Core_scommesse_model model;
+	
+	public Core_scommesse_controller(Core_scommesse_model model,Core_scommesse_view view) {
+		this.view=view;
+		this.model=model;
+		this.view.add_action_listener(new btnListener(view.get_btn100(),view.get_btn500(),view.get_btn1000(),view.get_btnRst()));
+	}
+	
+	class btnListener implements ActionListener{
+		
+		JButton btn100;
+		JButton btn500;
+		JButton btn1000;
+		JButton btnRst;
+		public btnListener(JButton btn1,JButton btn2,JButton btn3,JButton btn4) {
+			this.btn100=btn1;
+			this.btn500=btn2;
+			this.btn1000=btn3;
+			this.btnRst=btn4;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource()==btn100){
+				model.add_money(100);
+			}
+			else if(e.getSource()==btn500){
+				model.add_money(500);
+			}
+			else if(e.getSource()==btn1000){
+				model.add_money(1000);
+			}
+			else if(e.getSource()==btnRst){
+				model.rstMoney();
+			}
+			view.setMoneyLabel(model.get_money());
+
+		}
+
+	}
+	
+	
+	
+	public static void main(String[] args) {	
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Core_scommesse_model model = new Core_scommesse_model();
+					Core_scommesse_view frame = new Core_scommesse_view();
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					Core_scommesse_controller controller = new Core_scommesse_controller(model, frame);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+	}
+
+}

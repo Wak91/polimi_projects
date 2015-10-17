@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Carte_azione>
+ <Carta>
+  <Nome>magna_velocitas</Nome>
+  <Classe>A</Classe>
+  <Stato>P</Stato>
+  <Descrizione>Alla Partenza, il Cavallo avanza di 4 caselle invece che avanzare del numero di caselle indicato sulla carta Movimento.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>fortuna_benevola</Nome>
+  <Classe>B</Classe>
+  <Stato>P</Stato>
+  <Descrizione>Alla Partenza il Cavallo avanza di una casella in piu' rispetto a quanto indicato sulla carta Movimento</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>flagellum_fulguris</Nome>
+  <Classe>C</Classe>
+  <Stato>P</Stato>
+  <Descrizione>In caso di Sprint, il Cavallo avanza di una casella addizionale</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>herba_magica</Nome>
+  <Classe>D</Classe>
+  <Stato>P</Stato>
+  <Descrizione>In caso di Sprint, il Cavallo avanza di due caselle anziche' di una.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>in_igni_veritas</Nome>
+  <Classe>F</Classe>
+  <Stato>P</Stato>
+  <Descrizione>In caso di parita'  con uno o piu' Cavalli vince automaticamente il Fotofinish anche se la Quotazione e' piu' bassa.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>fustis_et_radix</Nome>
+  <Classe>E</Classe>
+  <Stato>P</Stato>
+  <Descrizione>quando la pedina Cavallo raggiunge o supera il Traguardo, avanza di due caselle addizionali, prima di tirare gli Sprint.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>vigor_ferreum</Nome>
+  <Classe>G</Classe>
+  <Stato>P</Stato>
+  <Descrizione>se quando viene girata una carta Movimento il Cavallo e' in ultima posizione, anche a pari merito, avanza di quattro caselle invece che del numero di caselle indicato sulla carta Movimento stessa. Questa abilita'  non si applica alla Partenza</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>globus_obscurus</Nome>
+  <Classe>A</Classe>
+  <Stato>N</Stato>
+  <Descrizione>alla Partenza, il Cavallo rimane fermo invece che avanzare del numero di caselle indicato sulla carta Movimento.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>aqua_putrida</Nome>
+  <Classe>B</Classe>
+  <Stato>N</Stato>
+  <Descrizione>alla Partenza, il Cavallo avanza di una casella in meno rispetto a quanto indicato sulla carta Movimento. Attenzione: un Cavallo non puo' mai retrocedere.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>serum_maleficum</Nome>
+  <Classe>C</Classe>
+  <Stato>N</Stato>
+  <Descrizione>in caso di Sprint, il Cavallo non avanza di nessuna casella e resta fermo. Il Cavallo non puo' mai fare Sprint.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>venenum_veneficum</Nome>
+  <Classe>D</Classe>
+  <Stato>N</Stato>
+  <Descrizione>in caso di Sprint, il Cavallo si muove di una casella in meno.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>mala_tempora</Nome>
+  <Classe>F</Classe>
+  <Stato>N</Stato>
+  <Descrizione>In caso di parita'  con uno o piu' Cavalli perde automaticamente il Fotofinish anche se la Quotazione e' piu' alta.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>XIII</Nome>
+  <Classe>E</Classe>
+  <Stato>N</Stato>
+  <Descrizione>quando il Cavallo raggiunge il Traguardo, si ferma immediatamente ma non ignora eventuali Sprint.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>felix_infernalis</Nome>
+  <Classe>G</Classe>
+  <Stato>N</Stato>
+  <Descrizione>se quando viene girata una carta Movimento il Cavallo e' in prima posizione, anche a pari merito, rimane fermo invece di avanzare del numero di caselle indicato sulla carta Movimento. Questa abilita' non si applica alla Partenza.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>alfio_allibratore</Nome>
+  <Classe>H</Classe>
+  <Stato>J</Stato>
+  <Descrizione>quando viene girata questa carta la Quotazione della Scuderia sale di due livelli </Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>steven_sting</Nome>
+  <Classe>H</Classe>
+  <Stato>J</Stato>
+  <Descrizione>quando viene girata questa carta la Quotazione della scuderia scende di due livelli</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>fritz_finden</Nome>
+  <Classe>I</Classe>
+  <Stato>J</Stato>
+  <Descrizione>tutte le carte Azione negative giocate sul Cavallo vengono rimosse.</Descrizione>
+ </Carta>
+  <Carta>
+  <Nome>rochelle_recherche</Nome>
+  <Classe>I</Classe>
+  <Stato>J</Stato>
+  <Descrizione>tutte le carte Azione positive giocate sul Cavallo vengono rimosse.</Descrizione>
+ </Carta>
+</Carte_azione>

@@ -1,0 +1,186 @@
+package View;
+
+import java.awt.EventQueue;
+import java.awt.Graphics2D;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+public class provascome {
+
+	private JFrame frame;
+	private JTable table;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					provascome window = new provascome();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public provascome() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 732, 577);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 724, 543);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		ImageIcon scudblu = new ImageIcon(resizeImage("immagini_carte_scuderia/bl.jpg", 89, 121));
+		JButton JBscudblu = new JButton(scudblu);
+		JBscudblu.setBounds(10, 71, 89, 121);
+		panel.add(JBscudblu);
+		
+		ImageIcon scudgialla = new ImageIcon(resizeImage("immagini_carte_scuderia/ye.jpg", 89, 121));
+		JButton JBscudgialla = new JButton(scudgialla);
+		JBscudgialla.setBounds(106, 71, 89, 121);
+		panel.add(JBscudgialla);
+		
+		
+		ImageIcon scudrossa = new ImageIcon(resizeImage("immagini_carte_scuderia/red.jpg", 89, 121));
+		JButton JBscudrossa = new JButton(scudrossa);
+		JBscudrossa.setBounds(202, 71, 89, 121);
+		panel.add(JBscudrossa);
+		
+		
+		ImageIcon scudnera = new ImageIcon(resizeImage("immagini_carte_scuderia/bla.jpg", 89, 121));
+		JButton JBscudnera = new JButton(scudnera);
+		JBscudnera.setBounds(297, 71, 89, 121);
+		panel.add(JBscudnera);
+		
+		
+		ImageIcon scudverde = new ImageIcon(resizeImage("immagini_carte_scuderia/gree.jpg", 89, 121));
+		JButton JBscudverde = new JButton(scudverde);
+		JBscudverde.setBounds(391, 71, 89, 121);
+		panel.add(JBscudverde);
+		
+		ImageIcon scudbianca = new ImageIcon(resizeImage("immagini_carte_scuderia/wh.jpg", 89, 121));
+		JButton JBscudbianca = new JButton(scudbianca);
+		JBscudbianca.setBounds(488, 71, 89, 121);
+		panel.add(JBscudbianca);
+		
+		
+		JLabel JLscudbianca = new JLabel("New label");
+		JLscudbianca.setBounds(511, 203, 46, 14);
+		panel.add(JLscudbianca);
+		
+		JLabel JLdispverde = new JLabel("New label");
+		JLdispverde.setBounds(412, 203, 46, 14);
+		panel.add(JLdispverde);
+		
+		JLabel JLdispnera = new JLabel("New label");
+		JLdispnera.setBounds(319, 203, 46, 14);
+		panel.add(JLdispnera);
+		
+		JLabel JLdisprossa = new JLabel("New label");
+		JLdisprossa.setBounds(224, 203, 46, 14);
+		panel.add(JLdisprossa);
+		
+		JLabel JLdispgialla = new JLabel("New label");
+		JLdispgialla.setBounds(128, 203, 46, 14);
+		panel.add(JLdispgialla);
+		
+		JLabel JLdispblu = new JLabel("New label");
+		JLdispblu.setBounds(30, 203, 46, 14);
+		panel.add(JLdispblu);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(10, 11, 567, 49);
+		panel.add(lblNewLabel);
+		
+		JLabel JLpersonaggio = new JLabel("New label");
+		JLpersonaggio.setBounds(10, 337, 113, 195);
+		panel.add(JLpersonaggio);
+		
+		JLabel JLpropscud = new JLabel("New label");
+		JLpropscud.setBounds(128, 392, 89, 140);
+		panel.add(JLpropscud);
+		
+		JButton JB1000 = new JButton("New button");
+		JB1000.setBounds(243, 392, 89, 140);
+		panel.add(JB1000);
+		
+		JButton JB500 = new JButton("New button");
+		JB500.setBounds(337, 392, 89, 140);
+		panel.add(JB500);
+		
+		JButton JB100 = new JButton("New button");
+		JB100.setBounds(431, 392, 89, 140);
+		panel.add(JB100);
+		
+		table = new JTable();
+		table.setBackground(Color.ORANGE);
+		table.setBorder(new LineBorder(new Color(0, 0, 0)));
+		table.setBounds(601, 219, 113, -199);
+		panel.add(table);
+		
+		JLabel JLcard1 = new JLabel("New label");
+		JLcard1.setBounds(546, 393, 77, 139);
+		panel.add(JLcard1);
+		
+		JLabel JLcard2 = new JLabel("New label");
+		JLcard2.setBounds(626, 392, 77, 139);
+		panel.add(JLcard2);
+		
+		JLabel lblImportoScommessa = new JLabel("importo scommessa");
+		lblImportoScommessa.setHorizontalAlignment(SwingConstants.CENTER);
+		lblImportoScommessa.setBounds(243, 314, 277, 14);
+		panel.add(lblImportoScommessa);
+		
+		JLabel JLimporto = new JLabel("New label");
+		JLimporto.setBounds(359, 349, 46, 14);
+		panel.add(JLimporto);
+	}
+	
+	private BufferedImage resizeImage(String nome_immagine,int width,int height) {  
+	     try {
+			
+	    	File fileIcon = new File(nome_immagine);
+			BufferedImage originalImage = ImageIO.read(fileIcon);
+			BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB );  
+	        Graphics2D g = resizedImage.createGraphics();  
+	        g.drawImage(originalImage, 0, 0, width, height, null);  
+	        g.dispose();  
+	        return resizedImage;  
+	     } catch (Exception e) {
+				e.printStackTrace();
+			}  
+	     return null;
+   }  
+}

@@ -1,0 +1,32 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+public class Carta_azione extends Carta {
+	
+	private String Nome_carta;
+	private char classe;
+	private char stato;   
+	
+	/**
+	 * 
+	 * @param nc = nome della carta 
+	 * @param c = classe della carta
+	 * @param s = stato di validità della carta  P = partenza S = sprint F = fotofinish 
+	 */
+	
+	public Carta_azione(String nc , char c , char s)
+	{
+	 super();
+	 this.Nome_carta = nc;
+	 this.classe = c;
+	 this.stato = s;
+	}
+	
+	public void visualizza()
+	{
+	System.out.print("Nome_carta: --> "+ this.Nome_carta);
+	System.out.print("Classe: --> "+this.classe);
+	System.out.print("Stato: --> "+this.stato);
+	}
+	
+	
+}

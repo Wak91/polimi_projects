@@ -1,0 +1,11 @@
+package Controller_events;
+
+import Controller.Controller_Interface;
+
+public class askScommessaEvent extends HorseFeverEventController {
+
+	public  askScommessaEvent(Controller_Interface cont) {
+		super.controller_Interface=cont;
+	}
+
+}

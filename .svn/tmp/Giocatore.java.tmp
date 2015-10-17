@@ -1,0 +1,110 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+public class Giocatore {
+	
+	private String nome;
+	private ArrayList<Scommessa> scommesse = new ArrayList<Scommessa>();
+	private int scommessa_min=100;
+	private int denaro=1000;
+	
+	
+	public Giocatore() {
+		
+	}
+	
+	public int get_scommessa_min() {
+		return this.scommessa_min;
+		
+	}
+	public int get_denaro() {
+		return this.denaro;
+		
+	}
+	
+	/**
+	 * Aggiunge una scommessa al giocatore
+	 * @param denaro  denaro della scommessa deve essere maggiore di scommessa min del giocatore altrimenti eccezione viene sollevata
+	 * @param colore	colore cavallo su cui scommette
+	 * @param tipo		 scommessa Vincente o Piazzata
+	 * @throws IllegalArgumentException
+	 */	
+	private void Scommette(int denaro,String colore,String tipo)throws IllegalArgumentException{
+		if (denaro<this.scommessa_min)
+			throw new IllegalArgumentException("Denaro deve essere maggiore della scommessa minima");
+		else if (denaro>this.denaro) {
+			throw new IllegalArgumentException("Non hai abbastanza soldi per questa scommessa");
+		}
+		else {
+			Scommessa bet = new Scommessa(denaro, colore, tipo);
+			scommesse.add(bet);
+			this.denaro=this.denaro-denaro;
+		}
+		
+	}
+	
+	/**
+	 * Ritorna le scommesse effettuate
+	 * @return
+	 */
+	private ArrayList<Scommessa> Get_scommesse(){
+		return this.scommesse;
+	}
+	
+	/**
+	 * Mostra a video le scommesse
+	 */
+	public String Show_scommesse() {
+		if (this.scommesse.isEmpty()) {
+			return("\nNon sono state effettuate scommesse");
+			
+		}
+		else {
+			String string="";
+			int i=1;
+			for (Scommessa scommessa : this.scommesse) {
+				string+="\nScommessa"+i+": "+scommessa.toString();
+				i++;
+			}
+			return string;
+		}
+		
+	}
+	
+	public String toString() {
+		return "Nome:"+this.nome+"\nDenaro: "+this.denaro+"\nScommessa min: "+this.scommessa_min+this.Show_scommesse();
+		
+	}
+	
+
+	
+	public static void main(String[] args) {
+		Giocatore pippo = new Giocatore();
+		System.out.println(pippo.toString());
+		Scanner scanner = new Scanner(System.in);
+		pippo.Show_scommesse();			System.out.println("Inserisci denaro:\nMININO:"+pippo.get_scommessa_min()+"\nMASSIMO :"+pippo.get_denaro());
+		int den = scanner.nextInt();
+		scanner.nextLine();
+		System.out.println("Inserisci colore:[Rosso,Verde,Giallo,Blu,Nero,Bianco]");
+		String col = scanner.nextLine();
+		System.out.println("Inserisci tipo[Vincente, Piazzata]");
+		String tipo = scanner.nextLine();
+		
+		try {		
+
+			pippo.Scommette(den, col, tipo);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		System.out.println(pippo.toString());
+		//pippo.Show_scommesse();
+			
+		
+	}
+
+}
+

@@ -1,0 +1,425 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Observable;
+import java.util.Scanner;
+
+
+
+public class Game {
+	
+	private static User_interface Ui;
+	
+	//switch tra il tipo di interfaccie, per ora ne abbiamo solo 2...
+	private static int mode; //0=text 1=GUI
+	//-----------------------------------------------
+	
+	//---NUMERO TURNI DELLA PARTITA
+	private static int turni;
+	//-----------------------------------------------
+	
+	//---DISPONIBILITA DI SEGNALINI PER SCUDERIA
+	private static HashMap <String , Integer> disp_scuderia;
+	//-----------------------------------------------
+	
+	//---SCUDERIE
+	private static ArrayList <String> colori;
+	//-----------------------------------------------
+	
+	//---MAPPA GIOCATORI-SEGNALINI SCUD-NUMERO TURNI
+	private static HashMap<Integer,Integer[]> map_segnalino; 	
+	//-----------------------------------------------
+	
+	//---ELENCO GIOCATORI
+	private static ArrayList <Giocatore> elenco_giocatori = new ArrayList <Giocatore>();
+	//-----------------------------------------------
+	
+	//---ELENCO PEDINE
+	private static ArrayList <Cavallo> elenco_pedine = new ArrayList <Cavallo>();
+	//-----------------------------------------------
+	
+	//---INIZIALIZZAZIONE MAZZI---
+	private static Mazzo mAzione = new Mazzo();
+	private static Mazzo mPersonaggio = new Mazzo();
+	private static Mazzo mScuderia = new Mazzo();
+	private static Mazzo mMovimento = new Mazzo();
+	//-----------------------------------------------
+		
+	
+    //<-------------------------------------------------SETTER------------------------------------------------------------------------------->
+	/**
+	 * Funzione che viene richiamata da un interfaccia sotto e che setta il numero di
+	 * turni del gioco andando a guardare nella hash table quanti turni corrispondono a ng giocatori
+	 * @param ng rappresenta il numero di giocatori passato da un interfaccia text, gui, segnali fumo..
+	 */
+	public static void set_turni(int ng)
+	{
+		turni = get_num_turni(ng);
+	}
+		
+	/**
+	 * Inizializza la hash table in funzione del numero di giocatori, assegnando ad ogni colore ( scuderia )
+	 * il numero di segnalini corrispondente alle regole del gioco
+	 * @param num_g rappresenta il numero di giocatori passato da un interfaccia e dal suo metodo get_players_option
+	 */
+	public static void set_hash(int num_g)
+	{
+		for(String c : colori )
+		{
+			disp_scuderia.put(c, (get_num_segnalini(num_g)));
+		}
+	}
+	
+	//<-------------------------------------------------GETTER----------------------------------------------------------------->
+	public static Mazzo getMazzoPersonaggi()
+	{
+		return mPersonaggio;
+	}
+	
+	public static Mazzo getMazzoAzione()
+	{
+		return mAzione;
+	}
+	
+	
+	/**
+	 * Interroga la hash table che modella le regole del gioco per estrarre la corrispondenza
+	 * tra numero-giocatori e numero turni di gioco
+	 * @param num_players
+	 * @return
+	 */
+	public static int get_num_turni(int num_players)
+	{
+		Integer arry[] = map_segnalino.get(num_players);
+		return arry[1];
+	}
+	
+	/**
+	 * Interroga la hash table che modella le regole del gioco per estrarre la corrispondenza
+	 * tra numero-giocatori e numero segnalini scommessa per scuderia
+	 * @param num_players
+	 * @return
+	 */
+	public static int get_num_segnalini(int num_players)
+	{
+		Integer arry[] = map_segnalino.get(num_players);
+		return arry[0];
+	}
+	
+	public static ArrayList <String> get_colori()
+	{
+		return colori;
+	}
+	
+	public static ArrayList <Cavallo> get_cavalli()
+	{
+		return elenco_pedine;
+	}
+	
+	/**
+	 * Ritorna la lista di giocatori senza esporre il rep
+	 * @return
+	 */
+	public static ArrayList <Giocatore> get_giocatori()
+	{
+		ArrayList <Giocatore> gio = new ArrayList <Giocatore>();
+		for(Giocatore g : elenco_giocatori)
+		   {
+			gio.add(g);
+		   }
+	    return gio;
+	}
+
+	/**
+	 * legge il numero di giocatori controllando che sia compreso tra 2 e 5 e inizializza chiedendo i nomi
+	 */
+
+	public static void init_players() {
+		elenco_giocatori = Ui.get_players();
+		}
+	
+	public static void init_cavalli(){
+		for (String colore : colori) {
+			Cavallo c = new Cavallo(colore);
+			elenco_pedine.add(c);
+		}		
+	}
+	
+	public static void init_quotazioni()
+	{
+		 Collections.shuffle(colori);
+	        int key=0;
+	        for(String s : colori)
+	        {
+	        Quotazione q = new Quotazione(key,s);
+	        Lavagna.aggiungi_quotazione(q);
+	        key++;
+	        }	
+	}
+	
+	/**
+	 *inizializza la hashtable da cui ricavero il numero segnalini in funzione del numero di giocatori
+	 */
+	public static void init_hash(){
+		map_segnalino=new HashMap<Integer,Integer[]>();
+		map_segnalino.put(2,new Integer[] {1,6});
+		map_segnalino.put(3,new Integer[] {2,6});
+		map_segnalino.put(4,new Integer[] {3,4});
+		map_segnalino.put(5,new Integer[] {4,5});
+		map_segnalino.put(6,new Integer[] {4,6});
+		//gia che ci sono istanzio anche la hash base che varier�
+		disp_scuderia = new HashMap();
+	}
+	
+	public static void init_colori(){
+		
+		colori = new ArrayList <String>();
+		colori.add("nero");
+		colori.add("blu");
+		colori.add("verde");
+		colori.add("rosso");
+		colori.add("giallo");
+		colori.add("bianco");
+		
+	}
+	
+	private static void init_segnalini(){
+		Integer num_senalini = map_segnalino.get(elenco_giocatori.size())[0];
+		for (String color : colori) {
+			disp_scuderia.put(color, num_senalini);
+		}
+	}
+	
+	
+	
+	/**
+	 * Metodo utilizzato come entry point del gioco, che effettua le operazioni piu basilari
+	 */
+	public static void INIT()
+	  {
+		Carta_azione.Extract_all_in(mAzione);
+		Carta_personaggio.Extract_all_in(mPersonaggio);
+		Carta_scuderia.Extract_all_in(mScuderia);
+		Carta_movimento.Extract_all_in(mMovimento);
+		init_colori();
+		init_cavalli();
+		init_hash();
+		init_quotazioni();
+		init_players();
+		init_segnalini();  //dopo players perche si adegua al numero di giocatori
+		Collections.shuffle(elenco_giocatori);
+	  }
+	
+//<----------------------------------------SCOMMESSE--------------------------------------->
+	
+	private static void sub_segnalino_color(String color) {
+		Integer old = disp_scuderia.get(color);
+		disp_scuderia.put(color, old-1);
+	}
+	/**
+	 * controlla se il giocatore ha abbastanza soldi per la min_bet altrimenti sottrae 2 pv se non ne ha lo elimina dai giocatori 
+	 * XXX ANCORA TESTARE SE VA
+	 * @param player giocatore da analizzare
+	 */
+	private void check_enough_money(Giocatore player) {
+		if (player.get_money()<player.get_min_bet()){
+			try {
+				player.sub_pv(2);
+			} catch (IllegalStateException e) {
+				Ui.game_over_player(player);
+				elenco_giocatori.remove(player);
+			}
+		}
+	}
+	
+	private static boolean tipo_scommessa_ok(Giocatore player, String tipo,String colore){
+		for (Scommessa scommessa : player.get_scommesse()) {
+			if (scommessa.get_tipo()==tipo && scommessa.get_colore()==colore)
+				return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * gestione delle scommesse 
+	 */
+	public static void giroScommesse(boolean obbligario) {
+		String colore_scommessa;
+		int importo_scommessa;
+		String tipo_scommessa;
+		boolean seconda_scommessa = false;
+		ArrayList<Giocatore> players = get_giocatori(); //NB non voglio elenco_giocatori ma una sua copia perche faccio operazioni come reverse e non voglio modifichino l'elenco_giocatori globale
+		
+		if (obbligario==false){		//0)sarei nel secondo giro di scommesse quindi deve scommettere a partire dall'ulrimo
+			Collections.reverse(players);
+		}
+			
+		
+		for (Giocatore player : players) {	
+			if (obbligario==false)			// 1)eseguito nel secondo giro di scommesse chiedo se vuole effettuarla
+				seconda_scommessa=Ui.make_seconda_scommessa(player);
+			
+			else{							//2)eseguito nel primo giro di scommesse pesco le carte
+				player.add_action_card((Carta_azione)mAzione.pesca());		//pesco e mostro carte azione
+				player.add_action_card((Carta_azione)mAzione.pesca());
+				Ui.show_action_card(player);
+			}
+			if (seconda_scommessa==true|| obbligario==true){	//3)esuguito nel primo giro o nel secondo nel caso di risposta affermativa
+				colore_scommessa = Ui.get_cavallo_scommessa();			//prendo il colore scommessa
+				while (disp_scuderia.get(colore_scommessa)==0){			//controllo se segnali sul cavallo sono sufficienti
+					colore_scommessa = Ui.get_cavallo_scommessa("SEGNALINI CAVALLO ESAURITI SCOMMETTI SU UN ALTRO COLORE");
+				}
+				sub_segnalino_color(colore_scommessa);
+				
+				importo_scommessa = Ui.get_soldi_scommessa(player);	//prendo soldi
+				
+				tipo_scommessa =Ui.get_tipo_scommessa();
+				while (!tipo_scommessa_ok(player, tipo_scommessa, colore_scommessa)){
+					tipo_scommessa =Ui.get_tipo_scommessa("HAI GIA FATTO UNA SCOMMESSA COSI SE HAI SCELTO PIAZZATO ORA SCEGLI VINCENTE E VICEVERSA");
+				}
+				
+				player.Scommette(importo_scommessa, colore_scommessa, tipo_scommessa);//piazzo scommessa
+			}
+				
+		}
+		Ui.show_all_bet();		
+	}
+//-----------------------------TRUCCARE GARA--------------------------->
+	public static void truccare_gara() {
+		for (Giocatore player : elenco_giocatori) {
+			Carta_azione played_card = Ui.get_action_card_played(player);
+			Cavallo horse = Ui.get_horse_affected();
+			add_card_horse(horse, played_card);
+			
+			}
+		Ui.show_affected_horse();			//ho sbagliato bisogna scoprirle dopo ma va be lo lascio per far vedere che ha aggiunto le carte ai cavalli
+	}
+	
+	private static void add_card_horse(Cavallo horse, Carta_azione played_card){
+		int deleted=0;
+		for (Carta_azione carta_azione : horse.get_carte_azione()) {
+			System.out.println("Classe carta azione "+carta_azione.get_classe());
+			System.out.println("Classe carta giocata "+played_card.get_classe());
+			if (carta_azione.get_classe()==played_card.get_classe()){
+				horse.delete_action_card(carta_azione);
+				deleted=1;
+			}		
+		}
+		if(deleted==0) {
+			horse.add_carta_azione(played_card);
+		}
+	}
+	
+	//-----ENTRY POINT DEL GIOCO
+	public static void main (String args[])
+	{	
+      if(mode==0)
+         {
+    	  Ui = new Text_interface ();
+         }
+      //else
+    	  //GUI_interface Gi = new Gui_interface();
+      INIT();   
+      giroScommesse(true);   //true indica che il giro di scommesse e obbligatoriio
+      truccare_gara();
+      giroScommesse(false);	//false indica che non è obbligatorio
+      //gara();
+
+      
+	}
+	
+	public static void gara()
+	{
+		ArrayList <Cavallo> cavalli_in_gioco = elenco_pedine;
+		ArrayList <Cavallo> finalisti = new ArrayList <Cavallo>();
+		int spostamento;
+		boolean fine=false;
+		int sprint=1; // valore dello sprint iniziale
+		String colore1,colore2;
+		
+		//<------PARTENZA------->
+		
+		Carta_movimento card = (Carta_movimento)mMovimento.pesca();
+		for( Cavallo c : cavalli_in_gioco)
+		  {
+			spostamento = card.get_movimento(Lavagna.getPosizione(c.get_color()));
+			check_carte_partenza(c,spostamento);
+		  }
+		
+		Ui.show_corsa();
+		Ui.show_classifica();
+		
+		//<------ORA SI ENTRA NELLA FASE DI CORSA FINO A CHE TUTTI NON PASSANO IL TRAGUARDO------
+		
+		do
+		{
+		card = (Carta_movimento)mMovimento.pesca();
+		for( Cavallo horse : cavalli_in_gioco)
+		  {
+			int pos = horse.get_posizione();
+			spostamento = card.get_movimento(Lavagna.getPosizione(horse.get_color()));
+			horse.set_posizione(pos+spostamento);
+		  }
+		
+		//<--FASE SPRINT-->
+		colore1 = colori.get((int) (Math.random()%7));
+		colore2 = colori.get((int) (Math.random()%7));
+		for ( Cavallo horse : cavalli_in_gioco )
+		    {
+			 if((colore1.equals(horse.get_color())) || colore2.equals(horse.get_color()))
+				 check_carte_sprint(horse,sprint);
+			}
+		
+		
+		
+		}while(fine==false);
+	}
+      
+	
+	
+	
+	private static void check_carte_partenza(Cavallo horse,int step)
+	{
+		int pos = horse.get_posizione();
+		if(horse.have_got_card("magna_velocitas"))
+           pos+=4;
+		else
+			if(horse.have_got_card("globus_obscurus"))
+				pos=0; //ma se ho globus e fortuna benevola cosa faccio?! 
+					
+		if(horse.have_got_card("fortuna_benevola"))
+		   pos+=(1+step);
+		else
+			if(horse.have_got_card("aqua_putrida"))
+			  pos+=step-1;
+		horse.set_posizione(pos);
+			
+	}
+	
+	/**
+	 * Se si vuole aggiungere un effetto/carta aggiungerlo qua con la seguente logica:
+	 * se si elimina con un altro metterlo nel ramo if corrispondente, altrimenti
+	 * aggiungere un nuovo if 
+	 * @param horse
+	 * @param sprint
+	 */
+	private static void check_carte_sprint(Cavallo horse , int sprint)
+	 {
+		int pos = horse.get_posizione();
+		if(horse.have_got_card("flagellum_fulguris"))
+           pos+=(1+sprint);
+		else
+			if(horse.have_got_card("serum_maleficum"))
+			  { /*non fa lo sprint*/ } //se ho serum_maleficum e herba magica cosa faccio?! hanno lettera diversa
+		
+		if(horse.have_got_card("herba_magica"))
+           pos+=2;
+        else
+        	if(horse.have_got_card("venenum_veneficum"))
+        	   pos+=(sprint-1);
+		horse.set_posizione(pos);
+	 }
+}

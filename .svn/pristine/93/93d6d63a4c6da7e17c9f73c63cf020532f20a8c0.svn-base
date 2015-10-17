@@ -1,0 +1,160 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+public class Giocatore {
+	
+	private enum colore{rosso,giallo,verde,blu,bianco,nero};
+	private enum tipo_scommessa{vincente,piazzata};
+	private /*final*/ String nome; 
+	private ArrayList <Scommessa> bet_list = new ArrayList <Scommessa>(); //<-- non creare qua l'oggetto, istanzia e basta scommesse, altrimenti diventa attributo STATICo di Giocatore
+	private int min_bet = 100;
+	private int money = 1000; // gestire il denaro in tagli da 50 , 100 , 1000 ;
+	// private colore [] arry <--- il giocatore proprietario di alcune scuderie ( identificate solo dal colore, non serve una classe )
+	// private ArrayList <Carta> my_card <--- il giocatore ha un array di carte possedute ( azione, cavallo, scuderia, aiutante...), la classe astratta Carta qua � molto utile!  
+		
+	public Giocatore() {
+		//da fare 
+	}
+	
+	public int get_scommessa_min() {
+		return this.min_bet;
+		
+	}
+	public int get_denaro() {
+		return this.money;
+		
+	}
+	
+	/**
+	 * Aggiunge una scommessa al giocatore
+	 * @param denaro  denaro della scommessa deve essere maggiore di scommessa min del giocatore altrimenti eccezione viene sollevata
+	 * @param colore	colore cavallo su cui scommette
+	 * @param tipo		 scommessa Vincente o Piazzata
+	 * @throws IllegalArgumentException
+	 */	
+	public void Scommette(int denaro,int colore,int tipo) throws IllegalArgumentException{
+		if (denaro<this.min_bet) 
+			throw new IllegalArgumentException("Denaro deve essere maggiore della scommessa minima");
+		else if (denaro>this.money) {
+			throw new IllegalArgumentException("Non hai abbastanza soldi per questa scommessa"); 
+		}
+		else { 
+			Scommessa bet = new Scommessa(denaro, colore, tipo);
+			bet_list.add(bet);
+			this.money=this.money-denaro;
+		}
+		
+	}
+	
+	/**
+	 * Ritorna scommesse del giocatore creando nuovo oggetto Arralist Scommessa quindi non esponendo il rep
+	 * @return 
+	 */
+	public ArrayList <Scommessa> Get_scommesse(){
+		ArrayList<Scommessa> scommesse =new ArrayList<Scommessa>();
+		for (Scommessa bet : bet_list) {
+			scommesse.add(bet);		//non necessario clonare bet perche scommessa e immutabile
+			
+		}
+		return scommesse; // come dicevamo occhio al rep.
+	}
+	
+	/**
+	 * Ritorna una stringa con le scommesse del giocatore
+	 * @return String scommesse giocatore
+	 */
+	public String String_scommesse() {
+		if (this.bet_list.isEmpty()) {
+			return("\nNon sono state effettuate scommesse");
+			
+		}
+		else {
+			String string="";
+			int i=1;
+			for (Scommessa scommessa : this.bet_list) {
+				string+="\nScommessa"+i+": "+scommessa.toString();
+				i++;
+			}
+			return string;
+		}
+		
+	}
+	
+	public String toString() {
+		return "Nome:"+this.nome+"\nDenaro: "+this.money+"\nScommessa min: "+this.min_bet+this.String_scommesse();
+		
+	}
+	
+	
+	//------MAIN PER TESTING--------
+	/**
+	 * Funzione che dovra essere inserita in gioco per gestire input utente riceve un range bottom e top e controlla che l'input 
+	 * sia compreso in esso message indica il messaggio che si vuole sia mostrato a schermo la prima volta
+	 * ho deciso di usare interi che rendono il gioco piu immediato rispetto al digitare stringhe
+	 * @param bottom  limite inferiore
+	 * @param top		limite superiore
+	 * @param message	messagio mostrato la prima volta
+	 * @return	l'intero nel range inserito dall'utente
+	 */
+	private static int input_check(int bottom,int top,String message){
+		boolean ok=false;
+		int input=0;
+		System.out.println(message);
+		while (!ok){
+			Scanner scanner = new Scanner(System.in);
+			
+			try {
+				 input = Integer.parseInt(scanner.nextLine());
+				if (input<bottom || input>top) {
+					System.out.println("\nInserisci un numero da:"+bottom+" a "+top);
+				}
+				else {
+					ok=true;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("\nInserisci un numero");
+			}
+		}
+		return input;
+	}
+	
+	public static void main(String[] args) 
+	
+	{
+		Giocatore pippo = new Giocatore();
+		
+		System.out.println(pippo.toString());
+		System.out.println(pippo.String_scommesse());			
+		System.out.println("Inserisci denaro:\nMININO:"+pippo.get_scommessa_min()+"\nMASSIMO :"+pippo.get_denaro());
+		int den = Giocatore.input_check(pippo.min_bet,pippo.money,"Inserisci denaro");
+		int col = Giocatore.input_check(0,5,"Inserisci colore:\n[0]Rosso\n[1]Verde\n[2]Giallo\n[3]Blu\n[4]Nero\n[5]Bianco");
+		int tipo = Giocatore.input_check(0,1,"Inserisci tipo scommessa:\n[0]Vincente\n[1]Piazzata");
+		
+		
+		try {		
+
+			pippo.Scommette(den, col, tipo);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		Scommessa ddScommessa = new Scommessa(999, 1, 2);//test rep di get_scommesse
+		ArrayList<Scommessa> scommessa= pippo.Get_scommesse();
+		scommessa.add(ddScommessa);
+		for (Scommessa ffScommessa : scommessa) {
+			System.out.println(ffScommessa.toString()+"\n");			
+		}
+		
+		System.out.println(pippo.toString());
+		//pippo.Show_scommesse();
+			
+		
+	}
+	
+	//------MAIN PER TESTING--------
+
+}
+

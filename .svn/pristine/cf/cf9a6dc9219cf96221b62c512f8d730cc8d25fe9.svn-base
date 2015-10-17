@@ -1,0 +1,63 @@
+ package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import static org.junit.Assert.*;
+
+import javax.swing.ImageIcon;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import Model.Carta_azione;
+import Model.Carta_personaggio;
+import Model.Cavallo;
+import Model.Giocatore;
+
+public class GiocatoreTest {
+	Giocatore player;
+	
+	@Before
+	public void setUp() throws Exception {
+		ImageIcon immagine = new ImageIcon ("immagini_carte_personaggio/cc.jpg");
+		Carta_personaggio card = new Carta_personaggio("Cranio_mercanti", 3400, "1_2" , immagine);
+		player=new Giocatore("Pippo",card);
+
+	
+	}
+	
+	@Test
+	public void Giocatore(){
+		ImageIcon immagine = new ImageIcon ("immagini_carte_personaggio/cc.jpg");
+		Carta_personaggio carta_personaggio = new Carta_personaggio("Prova", 1300, "1_2" , immagine);
+		Giocatore giocatore = new Giocatore("John",carta_personaggio);
+		assertTrue("pv Iniziali non corretti", giocatore.get_pv()==1);
+		assertTrue("soldi non corretti",giocatore.get_money()==carta_personaggio.get_soldi());
+		
+	}
+	
+	@Test
+	public void pv_test(){
+		assertFalse(player.sub_pv(2)); //pv -1
+		player.add_pv(10);	//pv 9
+		int pv = player.get_pv();
+		assertFalse(player.sub_pv(pv)); //pv 0
+		player.add_pv(2);	//pv 2
+		assertTrue(player.sub_pv(1)); //pv 1
+		
+	}
+	
+	@Test
+	public void play_card_action_test(){
+		Carta_azione action = new Carta_azione("Carta_azione_prova","a".charAt(0),"s".charAt(0),"dadsdsa","w2");
+		player.add_action_card(action);
+		Cavallo cavallo = new Cavallo("rosso");
+		assertTrue(cavallo.get_carte_azione().size()==0);
+		player.play_action_card(action, cavallo);
+		assertTrue(cavallo.get_carte_azione().get(0).getNome()==action.getNome()); //controlla che la carta del giocaore sia andata su cavallo
+		
+	}
+	
+	@Test
+	public void test() {
+	}
+
+}

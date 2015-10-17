@@ -1,0 +1,276 @@
+package View;
+
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import java.awt.Font;
+
+public class provascome {
+
+	private JFrame frame;
+	private JTable table;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					provascome window = new provascome();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public provascome() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame("FASE SCOMMESSE");
+		frame.setBounds(0, 0, 732, 737);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
+		
+		
+		
+		JPanel panel = new JPanel() { //nota che con l'apertura della graffa creiamo una sottoclasse di JPanel
+		
+			@Override
+			protected void paintComponent(Graphics graphics) {
+				super.paintComponent(graphics);
+				
+				ImageIcon legni = new ImageIcon(resizeImage("images/images.jpg", 732, 543));
+				Image legno = legni.getImage();
+				graphics.drawImage(legno, 0, 0, null);
+			}
+		};
+		//panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBounds(0, 0, 726, 539);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		ImageIcon scudblu = new ImageIcon(resizeImage("immagini_carte_scuderia/blu.jpg", 89, 121));
+		JButton JBscudblu = new JButton(scudblu);
+		JBscudblu.setBounds(30, 96, 89, 121);
+		panel.add(JBscudblu);
+		
+		ImageIcon scudgialla = new ImageIcon(resizeImage("immagini_carte_scuderia/giallo.jpg", 89, 121));
+		JButton JBscudgialla = new JButton(scudgialla);
+		JBscudgialla.setBounds(149, 96, 89, 121);
+		panel.add(JBscudgialla);
+		
+		
+		ImageIcon scudrossa = new ImageIcon(resizeImage("immagini_carte_scuderia/rosso.jpg", 89, 121));
+		JButton JBscudrossa = new JButton(scudrossa);
+		JBscudrossa.setBounds(273, 96, 89, 121);
+		panel.add(JBscudrossa);
+		
+		
+		ImageIcon scudnera = new ImageIcon(resizeImage("immagini_carte_scuderia/nero.jpg", 89, 121));
+		JButton JBscudnera = new JButton(scudnera);
+		JBscudnera.setBounds(388, 96, 89, 121);
+		panel.add(JBscudnera);
+		
+		
+		ImageIcon scudverde = new ImageIcon(resizeImage("immagini_carte_scuderia/verde.jpg", 89, 121));
+		JButton JBscudverde = new JButton(scudverde);
+		JBscudverde.setBounds(500, 96, 89, 121);
+		panel.add(JBscudverde);
+		
+		ImageIcon scudbianca = new ImageIcon(resizeImage("immagini_carte_scuderia/bianco.jpg", 89, 121));
+		JButton JBscudbianca = new JButton(scudbianca);
+		JBscudbianca.setBounds(613, 96, 89, 121);
+		panel.add(JBscudbianca);
+		
+		
+		JLabel JLscudbianca = new JLabel("New label");
+		JLscudbianca.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		JLscudbianca.setForeground(Color.WHITE);
+		JLscudbianca.setBounds(637, 228, 46, 14);
+		panel.add(JLscudbianca);
+		
+		JLabel JLdispverde = new JLabel("New label");
+		JLdispverde.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		JLdispverde.setForeground(Color.WHITE);
+		JLdispverde.setBounds(522, 228, 46, 14);
+		panel.add(JLdispverde);
+		
+		JLabel JLdispnera = new JLabel("New label");
+		JLdispnera.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		JLdispnera.setForeground(Color.WHITE);
+		JLdispnera.setBounds(410, 228, 46, 14);
+		panel.add(JLdispnera);
+		
+		JLabel JLdisprossa = new JLabel("New label");
+		JLdisprossa.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		JLdisprossa.setForeground(Color.WHITE);
+		JLdisprossa.setBounds(297, 228, 46, 14);
+		panel.add(JLdisprossa);
+		
+		JLabel JLdispgialla = new JLabel("New label");
+		JLdispgialla.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		JLdispgialla.setForeground(Color.WHITE);
+		JLdispgialla.setBounds(171, 228, 46, 14);
+		panel.add(JLdispgialla);
+		
+		JLabel JLdispblu = new JLabel("New label");
+		JLdispblu.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		JLdispblu.setForeground(Color.WHITE);
+		JLdispblu.setBounds(51, 228, 46, 14);
+		panel.add(JLdispblu);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setFont(new Font("Monotype Corsiva", Font.ITALIC, 45));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(10, 11, 692, 49);
+		panel.add(lblNewLabel);
+		
+		ImageIcon cash1000 = new ImageIcon(resizeImage("images/cash1000.JPG", 89, 140));
+		JButton JB1000 = new JButton(cash1000);
+		JB1000.setBounds(243, 392, 89, 140);
+		panel.add(JB1000);
+		
+		ImageIcon cash500 = new ImageIcon(resizeImage("images/cash500.JPG", 89, 140));
+		JButton JB500 = new JButton(cash500);
+		JB500.setBounds(337, 392, 89, 140);
+		panel.add(JB500);
+		
+		ImageIcon cash100 = new ImageIcon(resizeImage("images/cash100.JPG", 89, 140));
+		JButton JB100 = new JButton(cash100);
+		JB100.setBounds(431, 392, 89, 140);
+		panel.add(JB100);
+		
+		JLabel JLimportoBig = new JLabel("New label");
+		JLimportoBig.setHorizontalAlignment(SwingConstants.CENTER);
+		JLimportoBig.setForeground(Color.WHITE);
+		JLimportoBig.setFont(new Font("Monotype Corsiva", Font.BOLD, 45));
+		JLimportoBig.setBounds(24, 313, 692, 68);
+		panel.add(JLimportoBig);
+		
+		JPanel panel_1 = new JPanel(){ //nota che con l'apertura della graffa creiamo una sottoclasse di JPanel
+		
+			@Override
+			protected void paintComponent(Graphics graphics) {
+				super.paintComponent(graphics);
+				
+				ImageIcon legni = new ImageIcon(resizeImage("images/gcarpet.jpg", 726, 169));
+				Image legno = legni.getImage();
+				graphics.drawImage(legno, 0, 0, null);
+			}
+		};
+		panel_1.setBounds(0, 539, 726, 166);
+		frame.getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel JLpersonaggio = new JLabel("New label");
+		JLpersonaggio.setBounds(10, 2, 96, 141);
+		panel_1.add(JLpersonaggio);
+		
+		JLabel JLpropscud = new JLabel("New label");
+		JLpropscud.setBounds(116, 31, 70, 112);
+		panel_1.add(JLpropscud);
+		
+		JLabel JLcard1 = new JLabel("New label");
+		JLcard1.setBounds(544, 2, 77, 139);
+		panel_1.add(JLcard1);
+		
+		JLabel JLcard2 = new JLabel("New label");
+		JLcard2.setBounds(631, 2, 77, 139);
+		panel_1.add(JLcard2);
+
+		JLabel lblImportoScommessa = new JLabel("Importo scommessa");
+		lblImportoScommessa.setBounds(265, 10, 127, 40);
+		panel_1.add(lblImportoScommessa);
+		lblImportoScommessa.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		JButton btnResetSoldi = new JButton("Reset soldi");
+		btnResetSoldi.setBounds(265, 132, 119, 23);
+		panel_1.add(btnResetSoldi);
+		
+		JLabel lblTipoScommessa = new JLabel("Tipo scommessa");
+		lblTipoScommessa.setBounds(267, 61, 144, 23);
+		panel_1.add(lblTipoScommessa);
+		lblTipoScommessa.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		JRadioButton rdbtnPiazzata = new JRadioButton("Piazzata");
+		rdbtnPiazzata.setBounds(404, 74, 109, 23);
+		panel_1.add(rdbtnPiazzata);
+		buttonGroup.add(rdbtnPiazzata);
+		rdbtnPiazzata.setBackground(Color.GRAY);
+		
+		JRadioButton rdbtnVincente = new JRadioButton("Vincente");
+		rdbtnVincente.setSelected(true);
+		rdbtnVincente.setBounds(404, 49, 109, 23);
+		panel_1.add(rdbtnVincente);
+		buttonGroup.add(rdbtnVincente);
+		rdbtnVincente.setBackground(Color.GRAY);
+		
+		JLabel JLimporto = new JLabel("New label");
+		JLimporto.setBounds(423, 11, 46, 40);
+		panel_1.add(JLimporto);
+		JLimporto.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JButton confirm = new JButton("Next>>");
+		confirm.setBounds(403, 132, 110, 23);
+		panel_1.add(confirm);
+		
+		JLabel lblScuderiaScelta = new JLabel("Scuderia scelta");
+		lblScuderiaScelta.setHorizontalAlignment(SwingConstants.LEFT);
+		lblScuderiaScelta.setBounds(265, 107, 119, 14);
+		panel_1.add(lblScuderiaScelta);
+		
+		JLabel JLscudScelta = new JLabel("New label");
+		JLscudScelta.setHorizontalAlignment(SwingConstants.CENTER);
+		JLscudScelta.setBounds(404, 107, 109, 14);
+		panel_1.add(JLscudScelta);
+	}
+	
+	private BufferedImage resizeImage(String nome_immagine,int width,int height) {  
+	     try {
+			
+	    	File fileIcon = new File(nome_immagine);
+			BufferedImage originalImage = ImageIO.read(fileIcon);
+			BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB );  
+	        Graphics2D g = resizedImage.createGraphics();  
+	        g.drawImage(originalImage, 0, 0, width, height, null);  
+	        g.dispose();  
+	        return resizedImage;  
+	     } catch (Exception e) {
+				e.printStackTrace();
+			}  
+	     return null;
+   }  
+}

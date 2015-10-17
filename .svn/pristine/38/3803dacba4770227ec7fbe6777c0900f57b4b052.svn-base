@@ -1,0 +1,209 @@
+package Network;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+
+import Controller.Controller_Interface;
+import Gui_Events.AnswerSecondaScommessaEvent;
+import Gui_Events.GoRaceEvent;
+import Gui_Events.TruccaCavallo;
+import Gui_Events.letsPayEvent;
+import Gui_Events.setNomeEvent;
+import Gui_Events.setNumPlayerEvent;
+import Gui_Events.setScommessaEvent;
+import Gui_Events.sistemaEvent;
+import Gui_Events.sistemaEventUI;
+
+public class ModReteController implements Controller_Interface {
+
+	private OutputStream os;  
+	ObjectOutputStream oos; 
+	private InetAddress serveraddress;
+	private int portaserver;
+	private Socket Connessione;
+	private Client client;
+		
+	
+	
+	public ModReteController(Client client , InetAddress serveraddress , int serverport)
+	{ 
+	this.serveraddress = serveraddress;
+	this.portaserver = serverport;
+	this.client = client;
+	}
+	
+	public void get_player_number() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void how_many_player(setNumPlayerEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void create_player(setNomeEvent evt) {
+		
+    //ora lui impacchetta e spedisce al server 
+	//prima creo una connessione e mi prendo uno streamer per scrivere
+	try {
+		Connessione = new Socket(this.serveraddress,this.portaserver);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	try {
+		os = Connessione.getOutputStream();
+		oos = new ObjectOutputStream(os);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	try {
+		oos.writeObject(evt); //scrivo l'evento sul socket e lo mando di la
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	try{
+	//oos.close();  
+	//os.close();  
+	}catch(Exception e)
+	{ e.printStackTrace();}
+		
+   this.client.go();
+	}
+
+	public void create_bet(setScommessaEvent evt) {
+	
+		try {
+			Connessione = new Socket(this.serveraddress,this.portaserver);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			os = Connessione.getOutputStream();
+			oos = new ObjectOutputStream(os);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			oos.writeObject(evt); //scrivo l'evento sul socket e lo mando di la
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try{
+		//oos.close();  
+		//os.close();  
+		}catch(Exception e)
+		{ e.printStackTrace();}
+			
+	   this.client.go();	
+
+	}
+
+	
+	public void tarocca_cavallo(TruccaCavallo event) {
+		
+		try {
+			Connessione = new Socket(this.serveraddress,this.portaserver);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			os = Connessione.getOutputStream();
+			oos = new ObjectOutputStream(os);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			oos.writeObject(event); //scrivo l'evento sul socket e lo mando di la
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try{
+		//oos.close();  
+		//os.close();  
+		}catch(Exception e)
+		{ e.printStackTrace();}
+			
+	   this.client.go();	
+
+	}
+	
+	
+	
+	public void gara() {
+		// TODO Auto-generated method stub
+
+	}
+
+	
+
+	public void start_seconda_scommessa() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void ask_second_bet(AnswerSecondaScommessaEvent inEvent) {
+		try {
+			Connessione = new Socket(this.serveraddress,this.portaserver);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			os = Connessione.getOutputStream();
+			oos = new ObjectOutputStream(os);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			oos.writeObject(inEvent); //scrivo l'evento sul socket e lo mando di la
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try{
+		//oos.close();  
+		//os.close();  
+		}catch(Exception e)
+		{ e.printStackTrace();}
+			
+	   this.client.go();
+
+	}
+
+	public void create_second_bet(setScommessaEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void pay(letsPayEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void sistema(sistemaEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void sistema_partita(sistemaEventUI inEvent) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void Gonext(GoRaceEvent gre) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

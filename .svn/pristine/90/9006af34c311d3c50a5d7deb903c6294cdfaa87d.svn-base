@@ -1,0 +1,14 @@
+package Controller_events;
+
+import Controller.Controller_Interface;
+
+public abstract class HorseFeverEventController {
+
+	protected Controller_Interface controller_Interface;
+	
+	public Controller_Interface getController() {
+		return controller_Interface;
+	}
+
+
+}

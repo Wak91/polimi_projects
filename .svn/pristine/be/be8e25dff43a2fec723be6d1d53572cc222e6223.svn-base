@@ -1,0 +1,143 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+/**
+ * mazzo contiene un array di 'Carta' , il costruttore riceve in ingresso il tipo di mazzo che
+ * si vuole costruire ( Azione, Movimento , ... ) e il file di testo dove si trovano le carte per 
+ * costruire il mazzo. 
+ * 
+ * Quando pesco una carta e la ripongo nel mazzo, ricordarsi di metterla per ultima.
+ */
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringTokenizer;
+
+public class Mazzo 
+
+ {
+	enum tipo {azione,movimento,personaggio}; // questo poi verr� spostato in GAME, non ha senso qua
+	
+	private final ArrayList <Carta> deck;  // il reference ad un deck non cambier� mai! 
+	private int index; // indice che serve per capire dove sono arrivato a pescare , 0=inizio deck.size=fine
+	private int size; // la grandezza del mazzo probabilmente potrebbe servirci 
+	
+	public Mazzo(tipo t ,String nomefile){
+		
+		deck = new ArrayList <Carta>(); // meglio metterla qua, dichiarandola la in alto sarebbe attributo statico di mazzo, invece noi vogliamo che sia attributo di un oggetto mazzo
+		Carta card;
+		FileReader file = null;
+		BufferedReader buffer = null;
+		String s_param;
+		StringTokenizer s_token;
+		// apro il file creando i canali di comunicazione 
+		try 
+		   {	
+			file = new FileReader(nomefile);
+			buffer = new BufferedReader(file);
+		   }
+		catch (Exception e)
+			{System.out.println(e);}
+		
+		switch (t) // switch sul tipo di mazzo da creare
+		       {
+				case azione:{
+					        // so che le carte azione sono composte da 3 parametri, li dichiaro qua e li pesco dal file per usare il costruttore 
+					        try
+					        {
+					        s_param = buffer.readLine();
+					        while(s_param!= null)
+					            {
+					        	s_token = new StringTokenizer(s_param,";");
+					        	String par_1 = s_token.nextToken();
+					        	String par_2 = s_token.nextToken();   //prelevo parametri necessari dal file
+					        	String par_3 = s_token.nextToken();
+					        	card = new Carta_azione(par_1,par_2.charAt(0),par_3.charAt(0));  //creo la carta
+					        	this.deck.add(card);  // la aggiungo al mazzo
+					        	size++;
+					        	s_param = buffer.readLine();  // passo alla prossima riga
+					            }
+					        }
+					        catch (Exception e)
+					        {
+					        System.out.println(e);	
+					        }
+					        this.mischia(); // diamo una mischiata al mazzo corrente  
+				            };break;
+				     
+				case personaggio:{ // stessa cosa di prima, solo che il secondo parametro � un int
+					             try
+					             {
+					             s_param = buffer.readLine();
+			                     while(s_param!= null) 
+			                          {
+			                    	  s_token = new StringTokenizer(s_param,";");
+			                    	  String par_1 = s_token.nextToken();
+			                    	  Integer par_2 = Integer.parseInt(s_token.nextToken());
+			                    	  String par_3 = s_token.nextToken();
+			                    	  card = new Carta_personaggio(par_1,par_2,par_3);
+			                    	  this.deck.add(card);
+			                    	  size++; // conto il numero di carte presenti in questo mazzo
+			                    	  s_param = buffer.readLine();
+			                          }
+					             }
+					             catch (Exception e)
+					             {
+					             System.out.println(e);	 
+					             }
+					             this.mischia(); // diamo una mischiata al mazzo corrente 
+			                     };break;
+				
+				case movimento:{ };break;
+				
+			   }
+		
+		try {file.close();} //chiudo il file in ogni caso quando sono uscito dallo switch 
+		catch (IOException e) 
+		   {System.out.println("Errore nella chiusura del file\n");}
+		
+		
+	}
+	
+	public void show_mazzo(){
+		for (Carta card : deck) {
+			
+		card.visualizza();
+			
+		}
+	}
+	
+	public Carta pesca()
+	{
+	this.index++; // mi posiziono sulla nuova carta 
+	return deck.get(index--);	 // e ritorno quella vecchia!
+	}
+	
+	public void mischia()
+	{
+	Collections.shuffle(this.deck); // metodo di collections che mischia il mazzo 
+	}
+	
+	
+	//------MAIN PER TESTING--------
+	
+	
+	public static void main(String[] args) {
+		
+		tipo t = tipo.azione;
+		Mazzo deck_1 = new Mazzo(t,"Carte_azione");
+		System.out.println("Mazzo di carte azione");
+		deck_1.show_mazzo();
+		
+		t = tipo.personaggio;
+		Mazzo deck_2 = new Mazzo(t,"Carte_personaggio");
+		System.out.println("Mazzo di carte personaggio");
+		deck_2.show_mazzo();
+		
+	}
+	
+	//------MAIN PER TESTING--------
+
+}

@@ -1,0 +1,65 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Text_interface implements User_interface {
+	
+	public Text_interface()
+	{
+	System.out.println("-------BENVENUTO IN HORSE FEVER [VERSIONE TESTUALE]----------");
+		
+	}
+	
+	@Override
+	public ArrayList <Giocatore> get_players(){
+		int num,i;
+		Scanner scanner = null;
+		String nome;
+		Carta_personaggio card;
+		ArrayList <Giocatore> tempg = new ArrayList <Giocatore>();
+		System.out.println("Quanti giocatori?");
+		num=input_check(2, 6, "");
+	    for(i=0;i<num;i++)
+	       {
+	    	System.out.println("Nome del " +(i+1)+ " giocatore \n");
+	    	nome = scanner.nextLine();
+	    	card = (Carta_personaggio) Game.getMazzoPersonaggi().pesca();
+	    	tempg.add(new Giocatore (nome,card));
+	       }
+	    return tempg;
+	}
+	
+	/**
+	 * Funzione per gestire input utente riceve un range bottom e top e controlla che l'input 
+	 * sia compreso in esso message indica il messaggio che si vuole sia mostrato a schermo la prima volta
+	 * ho deciso di usare interi che rendono il gioco piu immediato rispetto al digitare stringhe
+	 * @param bottom  limite inferiore
+	 * @param top		limite superiore
+	 * @param message	messagio mostrato la prima volta
+	 * @return	l'intero nel range inserito dall'utente
+	 */
+	public static int input_check(int bottom,int top,String message){
+		boolean ok=false;
+		int input=0;
+		System.out.println(message);
+		while (!ok){
+			Scanner scanner = new Scanner(System.in);
+			
+			try {
+				 input = Integer.parseInt(scanner.nextLine());
+				if (input<bottom || input>top) {
+					System.out.println("Inserisci un numero da:"+bottom+" a "+top);
+				}
+				else {
+					ok=true;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Inserisci un numero");
+			}
+		}
+		return input;
+	}
+	
+}

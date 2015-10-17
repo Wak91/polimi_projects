@@ -1,0 +1,32 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class GiocatoreTest {
+	Giocatore player;
+	
+	@Before
+	public void setUp() throws Exception {
+		Carta_personaggio card = new Carta_personaggio("Cranio_mercanti", 3400, "1_2");
+		player=new Giocatore("Pippo");
+	}
+	
+	@Test
+	public void Giocatore(){
+		Carta_personaggio carta_personaggio = new Carta_personaggio("Prova", 1300, "1_2");
+		Giocatore giocatore = new Giocatore("John");
+		System.out.println(giocatore.get_pv());
+		assertTrue("pv Iniziali non corretti", giocatore.get_pv()==1);
+		System.out.println(giocatore.get_money());
+		assertTrue("soldi non corretti",giocatore.get_money()==0);
+		
+	}
+	
+	@Test
+	public void test() {
+	}
+
+}

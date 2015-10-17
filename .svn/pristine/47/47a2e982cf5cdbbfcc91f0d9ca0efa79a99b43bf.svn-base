@@ -1,0 +1,148 @@
+package Network;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti.GameOption;
+
+import java.io.*;
+import java.net.*;
+import Controller_events.EventoCorsa;
+import Controller_events.HorseFeverEventController;
+import Controller_events.TruccaEvent;
+import Controller_events.askIfSecondaScommessa;
+import Controller_events.askScommessaEvent;
+import Controller_events.getNomePlayerEvent;
+import Controller_events.showBadEndEvent;
+import Controller_events.showClassificaEvent;
+import Controller_events.showPriceEvent;
+import Controller_events.showRimossiEvent;
+import Controller_events.showWinnerEvent;
+import View.GUI_interface;
+import View.Text_interface;
+import View.User_interface;
+
+/**
+ * Intercetta le scritture sul suo buffer provenienti dal controller del server.
+ * A seconda dell'evento ricevuto si comporta in maniera adeguata rispondendo con una funzione 
+ * dell'oggetto View che è di tipo UserInterface.
+ *
+ */
+public class Client {
+
+	/**
+	 * View viene usata per rispondere agli eventi del server con delle view apposite.
+	 * L'MrC invece viene utilizzato dalle view per rispondere con gli eventi della controller interface al server 
+	 * in ascolto dall'altra parte.
+	 */
+	private User_interface View;
+	private ModReteController MrC;
+	
+	private InetAddress serveraddress;
+	private int serverport;
+	private InputStreamReader in;
+	private BufferedReader sIN;
+	private Socket connessione;
+	
+	
+	public Client(InetAddress serveraddress,int serverport){
+	if(GameOption.gui_text==1)
+	  { View = new GUI_interface();}
+	else
+	  { View = new Text_interface();}
+	this.serveraddress = serveraddress;
+	this.serverport = serverport; //se questi campi sono vuoti non esiste un server, dire di uscire...
+
+
+	MrC = new ModReteController(this, serveraddress,serverport);
+	
+	try {
+		connessione = new Socket(serveraddress,serverport); // ricevuti i parametri dal server apro il socket
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	try {
+		in = new InputStreamReader(connessione.getInputStream()); //prendo l'input stream per il flusso in ingresso da socket
+	    sIN = new BufferedReader(in);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	}
+	
+	public Socket getSocket()
+	{return this.connessione;}
+	
+	public void go() {
+		
+		HorseFeverEventController eventarrived;
+		
+	
+		try {
+				InputStream is = connessione.getInputStream();
+				ObjectInputStream ois = new ObjectInputStream(is);
+
+				eventarrived = (HorseFeverEventController)ois.readObject();
+	
+				if( eventarrived.getClass() == getNomePlayerEvent.class)//se mi stanno chiedendo i nomi allora cast verso getNomePlayer e via...
+				   { 
+					getNomePlayerEvent event = new getNomePlayerEvent(MrC);
+			    	View.get_nome_player(event); //chiamo quindi la View che e' di tipo Text o Gui 
+			       }
+				
+				else if( eventarrived.getClass() == askScommessaEvent.class)
+				   { 
+					askScommessaEvent eventarrived_casted = (askScommessaEvent) eventarrived;
+					askScommessaEvent event = new askScommessaEvent(MrC, eventarrived_casted.get_giocatore(),eventarrived_casted.isErrore_cavallo(),eventarrived_casted.isErrore_tipo(),eventarrived_casted.isSeconda_scommessa(),eventarrived_casted.getDisp_scud(),eventarrived_casted.getLavagna());
+			    	View.get_scommessa(event);
+			       }
+				
+				else if( eventarrived.getClass() == TruccaEvent.class)
+				   { 
+					TruccaEvent eventarrived_casted = (TruccaEvent) eventarrived;
+					TruccaEvent event = new TruccaEvent(MrC, eventarrived_casted.getGiocatore(),eventarrived_casted.getLavagna());
+			    	View.show_panel_trucca(event);
+			       }
+				else if( eventarrived.getClass() == askIfSecondaScommessa.class)
+				   { 
+					askIfSecondaScommessa eventarrived_casted = (askIfSecondaScommessa) eventarrived;
+					askIfSecondaScommessa event = new askIfSecondaScommessa(MrC,eventarrived_casted.isEnough_soldi(), eventarrived_casted.get_giocatore());
+			    	View.ask_if_seconda_scommessa(event);
+			       }
+				else if( eventarrived.getClass() == EventoCorsa.class)
+				   { 
+					EventoCorsa eventarrived_casted = (EventoCorsa) eventarrived;
+					EventoCorsa event = new EventoCorsa(MrC,eventarrived_casted.Getpedine(), eventarrived_casted.getLunghezza(),eventarrived_casted.getCartaM(),eventarrived_casted.getFase(),eventarrived_casted.GetElencoPlayer(),eventarrived_casted.getColore1(),eventarrived_casted.getColore2(),eventarrived_casted.getLavagna());
+			    	View.show_corsa(event);
+			       }
+				else if ( eventarrived.getClass() == showClassificaEvent.class)
+				   { 
+					showClassificaEvent eventarrived_casted = (showClassificaEvent) eventarrived;
+					showClassificaEvent event = new showClassificaEvent(MrC,eventarrived_casted.getClassifica());
+			    	View.show_classifica(event);
+			       }
+				else if ( eventarrived.getClass() == showPriceEvent.class)
+				   { 
+					showPriceEvent eventarrived_casted = (showPriceEvent) eventarrived;
+					showPriceEvent event = new showPriceEvent(MrC,eventarrived_casted.getPriceHashMap());
+			    	View.show_win_price(event);
+			       }
+				else if ( eventarrived.getClass() == showRimossiEvent.class)
+				   { 
+					showRimossiEvent eventarrived_casted = (showRimossiEvent) eventarrived;
+					showRimossiEvent event = new showRimossiEvent(MrC,eventarrived_casted.getRimossi());
+			    	View.show_rimossi(event);
+			       }
+				else if ( eventarrived.getClass() == showWinnerEvent.class)
+				   { 
+					showWinnerEvent eventarrived_casted = (showWinnerEvent) eventarrived;
+					showWinnerEvent event = new showWinnerEvent(MrC,eventarrived_casted.getGiocatore());
+			    	View.show_winner(event);
+			       }
+				else if ( eventarrived.getClass() == showBadEndEvent.class)
+				   { 	
+			    	View.show_bad_end_message(new showBadEndEvent(MrC));
+			       }
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		}
+		
+	

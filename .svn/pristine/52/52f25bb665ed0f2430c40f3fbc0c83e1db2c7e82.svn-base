@@ -1,0 +1,127 @@
+package View;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Panel;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import Controller_events.HorseFeverEventController;
+
+public class Scommessa_GUI {
+
+	GUI_interface gui_interface;
+
+	private final Toolkit toolkit ;
+	private int xSize;
+	private int ySize;
+	private JFrame frame;
+	JPanel main_panel;
+	JPanel left_panel;
+	JPanel center_panel;
+	JPanel right_panel;
+	
+
+	
+	JPanel bottom_panel;
+	HorseFeverEventController evento;
+	
+	public  Scommessa_GUI(GUI_interface gui,HorseFeverEventController event) {
+		toolkit = Toolkit.getDefaultToolkit();
+		xSize = ((int) toolkit.getScreenSize().getWidth());  
+		ySize = ((int) toolkit.getScreenSize().getHeight()); 
+		
+		evento=event;
+		
+		gui_interface =gui;
+		frame= gui_interface.get_frame();
+		frame.setBounds(0, 0, xSize, ySize);
+		
+		main_panel=new JPanel();
+		main_panel.setBounds(0, 0,  xSize, ySize*5/7);
+		main_panel.setBackground(new Color(100,100,100));
+		
+		main_panel.setLayout(new BorderLayout());
+		
+		left_panel= new JPanel();
+		left_panel.setBounds(0, 0,  xSize*1/3, ySize*5/7);
+		
+		center_panel= new JPanel();
+		center_panel.setBounds(xSize*1/3, 0,  xSize*2/5, ySize*5/7);
+		center_panel.setBackground(new Color(200,230,0));
+
+		right_panel= new JPanel();
+		right_panel.setBounds(xSize*8/15, 0,  xSize*7/15, ySize*5/7);
+		right_panel.setBackground(new Color(0,230,200));
+
+		
+		
+		bottom_panel = new JPanel();
+		bottom_panel.setBounds(0, ySize*5/7, xSize, ySize*2/7);
+		bottom_panel.setBackground(new Color(30,30,30));
+		
+		main_panel.add(left_panel);
+		main_panel.add(center_panel);
+		main_panel.add(right_panel);
+		frame.getContentPane().add(main_panel);
+		frame.getContentPane().add(bottom_panel);
+		//frame.getContentPane().add(main_panel);
+		
+		
+	}
+	
+	public void show() {
+		JLabel soldi = new JLabel("1000");	
+		JLabel nome = new JLabel("Pippo");	
+
+		JLabel carta_personaggio = new JLabel(new ImageIcon(gui_interface.resizeImage("immagini_carte_personaggi/cc.jpg", xSize/8, ySize/4)));	
+		JLabel carta_azione1 = new JLabel(new ImageIcon(gui_interface.resizeImage("immagini_carte_azione/aan.jpg", xSize/8, ySize/4)));
+		JLabel carta_azione2 = new JLabel(new ImageIcon(gui_interface.resizeImage("immagini_carte_azione/ap.jpg", xSize/8, ySize/4)));
+
+
+		JPanel top_pan = new JPanel();
+
+		left_panel.add(top_pan,BorderLayout.NORTH);
+		left_panel.add(soldi);
+		
+		left_panel.setLayout(new BorderLayout());
+		left_panel.add(top_pan,BorderLayout.NORTH);
+		top_pan.add(nome);
+		top_pan.add(soldi);
+
+		left_panel.add(carta_personaggio,BorderLayout.CENTER);
+		
+		JPanel bot_pan =new JPanel();
+		
+		left_panel.add(bot_pan,BorderLayout.SOUTH);
+		
+		bot_pan.add(carta_azione1,BorderLayout.EAST);
+		bot_pan.add(carta_azione2,BorderLayout.WEST);
+
+
+
+		//left_panel.add(carta_personaggio);
+		
+		//left_panel.add(carta_azione1);
+		//left_panel.add(carta_azione2);
+		
+		JLabel tipoJLabel = new JLabel(new ImageIcon(gui_interface.resizeImage("immagini_segnalini_scommessa/PiazzataBianco.jpg", xSize/15, ySize/10)));
+		center_panel.add(tipoJLabel);
+		
+		
+		
+		frame.setVisible(true);
+		
+	}
+	
+	public static void main(String[] args) {
+		Scommessa_GUI scommessa_GUI =new Scommessa_GUI(new GUI_interface(),null);
+		scommessa_GUI.show();
+	}
+	
+}

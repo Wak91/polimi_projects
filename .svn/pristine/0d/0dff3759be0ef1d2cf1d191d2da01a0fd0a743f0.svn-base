@@ -1,0 +1,34 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+
+/**
+ * Singleton per contenere i cavalli in gioco
+ * @author Lorenzo
+ *
+ */
+public class Elenco_cavalli {
+
+	private  static ArrayList <Cavallo> cavalli ; 
+	private static Elenco_cavalli elenco_cavalli;
+	
+	private Elenco_cavalli() {
+		cavalli = new ArrayList <Cavallo>();
+	}
+	/**
+	 * metodo usato per creare oggetto Elenco cavalli in modo che sia unico
+	 * @return
+	 */
+	public static Elenco_cavalli make_elenco_cavalli(){
+		if (elenco_cavalli==null){
+			elenco_cavalli= new Elenco_cavalli();
+		}
+		return elenco_cavalli;
+	}
+	
+	
+	public void add_cavallo(Cavallo horse) {
+		cavalli.add(horse);
+		
+	}
+}

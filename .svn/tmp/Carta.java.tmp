@@ -1,0 +1,16 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+public class Carta {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+<<<<<<< .mine
+		System.out.println("SVN fa cagare");
+=======
+		System.out.println("SVN è bello");
+>>>>>>> .r15
+	}
+
+}

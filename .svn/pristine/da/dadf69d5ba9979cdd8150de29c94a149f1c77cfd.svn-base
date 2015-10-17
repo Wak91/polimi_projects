@@ -1,0 +1,127 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+public class Giocatore {
+	
+	private /*final*/ String nome; // il nome non cambierà mai
+	private ArrayList <Scommessa> scommesse = new ArrayList <Scommessa>(); //<-- non creare qua l'oggetto, istanzia e basta scommesse, altrimenti diventa attributo STATICo di Giocatore
+	private int scommessa_min = 100;
+	private int denaro = 1000; // gestire il denaro in tagli da 50 , 100 , 1000 ;
+	// private colore [] arry <--- il giocatore è proprietario di alcune scuderie ( identificate solo dal colore, non serve una classe )
+	// private ArrayList <Carta> my_card <--- il giocatore avrà un array di carte possedute ( azione, cavallo, scuderia, aiutante...), la classe astratta Carta qua è molto utile!  
+	
+	//private int cont_50
+	//private int cont_100     // può essere una buona idea tenere un cont per ogni banconota di quel taglio
+	//private int cont_1000 
+	
+	public Giocatore() {
+		//da fare 
+	}
+	
+	public int get_scommessa_min() {
+		return this.scommessa_min;
+		
+	}
+	public int get_denaro() {
+		return this.denaro;
+		
+	}
+	
+	/**
+	 * Aggiunge una scommessa al giocatore
+	 * @param denaro  denaro della scommessa deve essere maggiore di scommessa min del giocatore altrimenti eccezione viene sollevata
+	 * @param colore	colore cavallo su cui scommette
+	 * @param tipo		 scommessa Vincente o Piazzata
+	 * @throws IllegalArgumentException
+	 */	
+	
+	//----------NOTE----------
+	//Perchè "scommette" lo dichiari private se poi dobbiamo usarlo nella classe gioco per settare una scommessa, così se dichiaro un giocatore e voglio mettere una scommessa come faccio?
+	//Non è meglio gestire l'eccezione qua dentro e fare reinserire un valore corretto piuttosto che forzare il ritorno al chiamante?
+	//----------NOTE----------
+	
+	private void Scommette(int denaro,String colore,String tipo) throws IllegalArgumentException{
+		if (denaro<this.scommessa_min) // da fare controlli valori negativi e strani input
+			throw new IllegalArgumentException("Denaro deve essere maggiore della scommessa minima");
+		else if (denaro>this.denaro) {
+			throw new IllegalArgumentException("Non hai abbastanza soldi per questa scommessa"); 
+		}
+		else { //<-- questo else puoi anche non metterlo, tanto se c'è un eccezione qua non ci arrivi di sicuro
+			Scommessa bet = new Scommessa(denaro, colore, tipo);
+			scommesse.add(bet);
+			this.denaro=this.denaro-denaro;
+		}
+		
+	}
+	
+	/**
+	 * Ritorna le scommesse effettuate
+	 * @return
+	 */
+	//perchè private? se istanzio giocatore fuori da questa classe vedo solo showScommesse, getDenaro e getscommessa_min.
+	private ArrayList <Scommessa> Get_scommesse(){
+		return this.scommesse; // come dicevamo occhio al rep.
+	}
+	
+	/**
+	 * Mostra a video le scommesse
+	 */
+	public String Show_scommesse() {
+		if (this.scommesse.isEmpty()) {
+			return("\nNon sono state effettuate scommesse");
+			
+		}
+		else {
+			String string="";
+			int i=1;
+			for (Scommessa scommessa : this.scommesse) {
+				string+="\nScommessa"+i+": "+scommessa.toString();
+				i++;
+			}
+			return string;
+		}
+		
+	}
+	
+	public String toString() {
+		return "Nome:"+this.nome+"\nDenaro: "+this.denaro+"\nScommessa min: "+this.scommessa_min+this.Show_scommesse();
+		
+	}
+	
+	//------MAIN PER TESTING--------
+	
+	public static void main(String[] args) 
+	
+	{
+		Giocatore pippo = new Giocatore();
+		System.out.println(pippo.toString());
+		Scanner scanner = new Scanner(System.in);
+		pippo.Show_scommesse();			
+		System.out.println("Inserisci denaro:\nMININO:"+pippo.get_scommessa_min()+"\nMASSIMO :"+pippo.get_denaro());
+		int den = scanner.nextInt();
+		scanner.nextLine();
+		System.out.println("Inserisci colore:[Rosso,Verde,Giallo,Blu,Nero,Bianco]");
+		String col = scanner.nextLine();
+		System.out.println("Inserisci tipo[Vincente, Piazzata]");
+		String tipo = scanner.nextLine();
+		
+		try {		
+
+			pippo.Scommette(den, col, tipo);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		System.out.println(pippo.toString());
+		//pippo.Show_scommesse();
+			
+		
+	}
+	
+	//------MAIN PER TESTING--------
+
+}
+

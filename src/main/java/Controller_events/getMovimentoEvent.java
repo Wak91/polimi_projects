@@ -1,0 +1,29 @@
+package Controller_events;
+
+import Controller.Controller_Interface;
+import Model.Carta_movimento;
+
+public class getMovimentoEvent extends HorseFeverEventController{
+
+	private Carta_movimento card;
+	private Integer fase;
+	
+	public getMovimentoEvent(Controller_Interface cont , Carta_movimento card, Integer fase)
+	{
+		super(getMovimentoEvent.class);
+		super.controller_Interface=cont;
+		this.card = card;
+		this.fase = fase;
+	}
+	
+	
+	public Carta_movimento getCarta()
+	{
+		return this.card;
+	}
+	
+	public Integer getFase()
+	{
+		return this.fase;
+	}
+}

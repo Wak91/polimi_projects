@@ -1,0 +1,8 @@
+package Gui_Events;
+
+public class sistemaEvent extends HorseFeverEventGui {
+
+	public sistemaEvent() {
+		
+	}
+}

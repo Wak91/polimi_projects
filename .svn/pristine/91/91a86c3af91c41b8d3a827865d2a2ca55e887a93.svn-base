@@ -1,0 +1,364 @@
+package View;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+
+import Controller.Controller_Interface;
+import Controller_events.askScommessaEvent;
+import Controller_events.getNumPlayerEvent;
+import Gui_Events.setScommessaEvent;
+
+public class Scommesse_GUI {
+
+	JPanel panel;
+	JPanel bottom_panel;
+	GUI_interface gui;
+	private JFrame frame;
+	private  askScommessaEvent inEvent;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JLabel JLscudscelta;
+	private JLabel JLimporto ;
+	private String colore_scud="";
+	private String tipo_bet="";
+	private int money_temp;
+	
+
+	
+	public Scommesse_GUI(GUI_interface gui,askScommessaEvent evt) {
+		this.frame=gui.get_frame();
+		this.inEvent=evt;
+		this.gui=gui;
+
+		inEvent.get_giocatore().get_action_cards().get(0).getImmagine();
+		
+		frame.setBounds(100, 100, 732, 647);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
+		
+		panel = new JPanel();
+		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBounds(0, 0, 724, 543);
+		
+		bottom_panel = new JPanel();
+		bottom_panel.setBounds(0, 543, 724, 100);
+		frame.getContentPane().add(panel);
+		frame.getContentPane().add(bottom_panel);
+		panel.setLayout(null);
+		frame.setVisible(true);
+
+	}
+
+	public void show(){
+
+	JLabel JLscud = new JLabel("Scuderia Scelta");
+	JLscud.setBounds(200, 203, 100, 50);
+	panel.add(JLscud);
+	
+	JLscudscelta = new JLabel(colore_scud);
+	JLscudscelta.setBounds(300, 203, 100, 50);
+	panel.add(JLscudscelta);
+	
+	JLabel lblImportoScommessa = new JLabel("importo scommessa");
+	lblImportoScommessa.setHorizontalAlignment(SwingConstants.CENTER);
+	lblImportoScommessa.setBounds(364, 265, 156, 40);
+	panel.add(lblImportoScommessa);
+	
+	JLimporto = new JLabel("0");
+	JLimporto.setHorizontalAlignment(SwingConstants.CENTER);
+	JLimporto.setBounds(374, 290, 146, 40);
+	panel.add(JLimporto);
+
+	ImageIcon scudblu = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/bl.jpg", 89, 121));
+	JButton JBscudblu = new JButton(scudblu);
+	JBscudblu.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			colore_scud="blu";
+			JLscudscelta.setText(colore_scud);
+		}
+	});
+	JBscudblu.setBounds(30, 71, 89, 121);
+	panel.add(JBscudblu);
+	
+	ImageIcon scudgialla = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/ye.jpg", 89, 121));
+	JButton JBscudgialla = new JButton(scudgialla);
+	JBscudgialla.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			colore_scud="giallo";
+			JLscudscelta.setText(colore_scud);
+
+			
+		}
+	});
+	JBscudgialla.setBounds(149, 71, 89, 121);
+	panel.add(JBscudgialla);
+	
+	
+	ImageIcon scudrossa = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/red.jpg", 89, 121));
+	JButton JBscudrossa = new JButton(scudrossa);
+	JBscudrossa.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			colore_scud="rosso";	
+			JLscudscelta.setText(colore_scud);
+
+		}
+	});
+	JBscudrossa.setBounds(273, 71, 89, 121);
+	panel.add(JBscudrossa);
+	
+	
+	ImageIcon scudnera = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/bla.jpg", 89, 121));
+	JButton JBscudnera = new JButton(scudnera);
+	JBscudnera.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			colore_scud="nero";	
+			JLscudscelta.setText(colore_scud);
+		}
+	});
+	JBscudnera.setBounds(388, 71, 89, 121);
+	panel.add(JBscudnera);
+	
+	
+	ImageIcon scudverde = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/gree.jpg", 89, 121));
+	JButton JBscudverde = new JButton(scudverde);
+	JBscudverde.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			colore_scud="verde";
+			JLscudscelta.setText(colore_scud);
+
+		}
+	});
+	JBscudverde.setBounds(500, 71, 89, 121);
+	panel.add(JBscudverde);
+	
+	ImageIcon scudbianca = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/wh.jpg", 89, 121));
+	JButton JBscudbianca = new JButton(scudbianca);
+	JBscudbianca.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			colore_scud="bianco";	
+			JLscudscelta.setText(colore_scud);
+
+		}
+	});
+	JBscudbianca.setBounds(613, 71, 89, 121);
+	panel.add(JBscudbianca);
+	
+	
+	
+	
+	
+	
+	JLabel lblNewLabel = new JLabel(inEvent.get_giocatore().get_nome()+" giro scommesse");
+	lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	lblNewLabel.setBounds(10, 11, 692, 49);
+	panel.add(lblNewLabel);
+	
+	String imgcharacterpath = 	inEvent.get_giocatore().get_character_card().getImmagine();
+	ImageIcon Imagecharacter = new ImageIcon(gui.resizeImage(imgcharacterpath, 89, 121));
+
+	JLabel JLpersonaggio = new JLabel("New label");
+	JLpersonaggio.setIcon(Imagecharacter);
+	JLpersonaggio.setBounds(10, 337, 113, 195);
+	panel.add(JLpersonaggio);
+	
+//	JLabel JLpropscud = new JLabel("New label");
+//	JLpropscud.setBounds(128, 392, 89, 140);
+	//panel.add(JLpropscud);
+	
+	ImageIcon cash1000 = new ImageIcon(gui.resizeImage("images/cash1000.JPG", 89, 140));
+	JButton JB1000 = new JButton(cash1000);
+	JB1000.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			money_temp+=1000;
+			JLimporto.setText(Integer.toString(money_temp));
+			
+		}
+	});
+	JB1000.setBounds(243, 392, 89, 140);
+	panel.add(JB1000);
+	
+	ImageIcon cash500 = new ImageIcon(gui.resizeImage("images/cash500.JPG", 89, 140));
+	JButton JB500 = new JButton(cash500);
+	JB500.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			money_temp+=500;
+			JLimporto.setText(Integer.toString(money_temp));
+			
+		}
+	});
+
+	JB500.setBounds(337, 392, 89, 140);
+	panel.add(JB500);
+	
+	ImageIcon cash100 = new ImageIcon(gui.resizeImage("images/cash100.JPG", 89, 140));
+	JButton JB100 = new JButton(cash100);
+	JB100.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			money_temp+=100;
+			JLimporto.setText(Integer.toString(money_temp));
+			
+		}
+	});
+	JB100.setBounds(431, 392, 89, 140);
+	panel.add(JB100);
+	
+	JButton btnResetSoldi = new JButton("Reset soldi");
+	btnResetSoldi.setBounds(243, 299, 119, 23);
+	btnResetSoldi.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			money_temp=0;
+			JLimporto.setText(Integer.toString(money_temp));
+		}
+	});
+	panel.add(btnResetSoldi);
+	
+	JTable table = new JTable();
+	table.setBackground(Color.ORANGE);
+	table.setBorder(new LineBorder(new Color(0, 0, 0)));
+	table.setBounds(601, 219, 113, -199);
+	panel.add(table);
+	
+	String imgcard1path = 	inEvent.get_giocatore().get_action_cards().get(0).getImmagine();
+
+	ImageIcon Imagecard1 = new ImageIcon(gui.resizeImage(imgcard1path, 89, 121));
+
+	JLabel JLcard1 = new JLabel("New label");
+	JLcard1.setIcon(Imagecard1);
+	JLcard1.setBounds(546, 393, 77, 139);
+	panel.add(JLcard1);
+	
+	String imgcard2path = 	inEvent.get_giocatore().get_action_cards().get(1).getImmagine();
+	ImageIcon Imagecard2 = new ImageIcon(gui.resizeImage(imgcard2path, 89, 121));
+
+	JLabel JLcard2 = new JLabel("New label");
+	JLcard2.setIcon(Imagecard2);
+	JLcard2.setBounds(633, 393, 77, 139);
+	panel.add(JLcard2);
+	
+	
+	
+	
+	JRadioButton rdbtnVincente = new JRadioButton("Vincente");
+	buttonGroup.add(rdbtnVincente);
+	rdbtnVincente.setBackground(Color.LIGHT_GRAY);
+	rdbtnVincente.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			tipo_bet="Vincente";
+			
+		}
+	});
+	rdbtnVincente.setBounds(411, 337, 109, 23);
+	panel.add(rdbtnVincente);
+	
+	JRadioButton rdbtnPiazzata = new JRadioButton("Piazzata");
+	buttonGroup.add(rdbtnPiazzata);
+	rdbtnPiazzata.setBackground(Color.LIGHT_GRAY);
+	rdbtnPiazzata.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			tipo_bet="Piazzata";
+			
+		}
+	});
+	rdbtnPiazzata.setBounds(411, 362, 109, 23);
+	panel.add(rdbtnPiazzata);
+	
+	JLabel lblTipoScommessa = new JLabel("Tipo scommessa");
+	lblTipoScommessa.setHorizontalAlignment(SwingConstants.CENTER);
+	lblTipoScommessa.setBounds(199, 337, 206, 44);
+	panel.add(lblTipoScommessa);
+	
+	
+	JButton confermaButton = new JButton("Piazza Scommessa");
+	confermaButton.addActionListener(new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			boolean error=false;
+			if (money_temp<inEvent.get_giocatore().get_min_bet()||money_temp>inEvent.get_giocatore().get_money()) {
+				error=true;
+				JOptionPane.showMessageDialog(null, "Devi Scommettere piu soldi rispetto alla scommessa minima e non piu dei tuoi soldi","Errore",JOptionPane.ERROR_MESSAGE);
+			}
+			else if (colore_scud.equals("")) {
+				error=true;
+				JOptionPane.showMessageDialog(null, "Devi scegliere una scuderia","Errore",JOptionPane.ERROR_MESSAGE);
+			}
+			else if (tipo_bet.equals("")) {
+				error=true;
+				JOptionPane.showMessageDialog(null, "Devi indicare tipo scuderia","Errore",JOptionPane.ERROR_MESSAGE);
+
+			}
+			
+			if (error!=true) {
+				setScommessaEvent evt = new setScommessaEvent(money_temp, tipo_bet, colore_scud);
+				frame.getContentPane().removeAll();
+
+				if(inEvent.isSeconda_scommessa()){
+					inEvent.getController().create_second_bet(evt);
+				}
+				else{
+					inEvent.getController().create_bet(evt);
+
+				}
+			
+			}
+		
+		}
+		
+	
+	});
+	bottom_panel.add(confermaButton);
+	panel.revalidate();
+
+	bottom_panel.revalidate();
+	frame.repaint();
+	if (inEvent.isErrore_cavallo()) {
+		JOptionPane.showMessageDialog(null, "Segnalini esauriti sul cavallo sceglierne un altro","Errore",JOptionPane.ERROR_MESSAGE);
+
+	}else if (inEvent.isErrore_tipo()) {
+		JOptionPane.showMessageDialog(null, "Devi scommettere Piazzato se prima hai scommesso vincente e viceversa","Errore",JOptionPane.ERROR_MESSAGE);
+
+	}
+}
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUI_interface gui = new GUI_interface();
+					Scommesse_GUI provaGui = new Scommesse_GUI(gui, new askScommessaEvent(null, null, true, true, true));
+					provaGui.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+}

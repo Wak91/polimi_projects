@@ -1,0 +1,16 @@
+package Gui_Events;
+
+public class setNomeEvent extends HorseFeverEventGui{
+
+	String name;
+	
+	public setNomeEvent(String nome) {
+		name=nome;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	
+}

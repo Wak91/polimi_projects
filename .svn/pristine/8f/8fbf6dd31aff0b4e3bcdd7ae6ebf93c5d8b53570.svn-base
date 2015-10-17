@@ -1,0 +1,10 @@
+package Controller;
+
+public interface Controller_Interface {
+	
+	public void get_player_number();
+	
+	public void  how_many_player(int num_g) ;
+
+	public void create_player(String nome);
+}

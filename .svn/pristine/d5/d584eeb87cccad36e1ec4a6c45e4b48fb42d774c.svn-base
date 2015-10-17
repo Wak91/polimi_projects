@@ -1,0 +1,388 @@
+package View;
+
+import java.awt.EventQueue;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Graphics;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.swing.SwingConstants;
+import javax.swing.JRadioButton;
+import javax.swing.JTable;
+
+import Controller_events.TruccaEvent;
+import Gui_Events.TruccaCavallo;
+import Model.Carta_azione;
+import Model.Giocatore;
+import Model.Lavagna;
+import Model.Scommessa;
+
+public class Action_GUI {
+
+	private JFrame frame;
+	private GUI_interface gui;
+	private String scud_selected="";
+	private Carta_azione card_selected=null;
+	private Lavagna lavagna;
+	private Giocatore current_player;
+	private JLabel Scudcolpita;
+	private JLabel CardGiocata ;
+	private JLabel JLpers;
+	private JLabel Jlscudprop;
+	private JButton JBcard1;
+	private JButton JBcard2;
+	private JButton JBdesc1;
+	private Carta_azione currentcard1;
+	private Carta_azione currentcard2;
+	private JButton JBdesc2;
+	private JLabel title;
+	private TruccaEvent event;
+	private JLabel scudbidded ;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private String bid;
+	private String type_bid;
+	private String color_bid;
+	private JLabel quotbianca;
+	private JLabel quoteverde;
+	private JLabel quotenera;
+	private JLabel quotrossa;
+	private JLabel quotgialla;
+	private JLabel quotablu;
+	
+	
+	public void show(final TruccaEvent event)
+	     {
+		this.scud_selected="";
+		this.card_selected=null;
+		Scudcolpita.setIcon(null);
+		CardGiocata.setIcon(null);
+		lblNewLabel_1.setIcon(null);
+		 this.event = event;
+		 this.current_player = event.getGiocatore();
+		 this.currentcard1 = event.getGiocatore().get_card_at_index(0);
+		 this.currentcard2 = event.getGiocatore().get_card_at_index(1);
+		 ImageIcon Imagecharacter = new ImageIcon(gui.resizeImage(event.getGiocatore().get_character_card().getImmagine(), 106, 164));
+		 JLpers.setIcon(Imagecharacter);
+		 ImageIcon Imagescud = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/"+event.getGiocatore().get_scuderia()+".jpg", 92, 135));
+		 Jlscudprop.setIcon(Imagescud);
+		 JBcard1.setIcon(new ImageIcon(gui.resizeImage(event.getGiocatore().get_card_at_index(0).getImmagine(), 95, 140)));
+		 JBcard2.setIcon(new ImageIcon(gui.resizeImage(event.getGiocatore().get_card_at_index(1).getImmagine(), 95, 140)));
+		 title.setText(event.getGiocatore().get_nome()+" gioca una carta azione");
+		 scudbidded.setIcon(new ImageIcon(gui.resizeImage("immagini_carte_scuderia/"+event.getGiocatore().get_scommesse().get(0).get_colore()+".jpg", 70, 110)));
+		 color_bid=event.getGiocatore().get_scommesse().get(0).get_colore();
+		 type_bid = event.getGiocatore().get_scommesse().get(0).get_tipo(); 
+		 bid ="immagini_segnalini_scommessa/"+type_bid+color_bid+".jpg";
+		 lblNewLabel.setText(""+event.getGiocatore().get_scommesse().get(0).getDenaro());
+		 lblNewLabel_1.setIcon(new ImageIcon(gui.resizeImage(bid, 50, 50)));
+		 frame.setVisible(true);
+		 lavagna=event.getLavagna();
+		 
+		 int quotazione=2+ lavagna.getPosizione("bianco");
+			String quot = " 1 :"+quotazione;
+		quotbianca.setText(quot);
+			
+		quotazione=2+ lavagna.getPosizione("verde");
+		quot = " 1 :"+quotazione;
+		quoteverde.setText(quot);
+		
+		quotazione=2+ lavagna.getPosizione("nero");
+		 quot = " 1 :"+quotazione;
+		 quotenera.setText(quot);
+		 
+		quotazione=2+ lavagna.getPosizione("rosso");
+		quot = " 1 :"+quotazione;
+		quotrossa.setText(quot);
+			
+		quotazione=2+ lavagna.getPosizione("giallo");
+		quot = " 1 :"+quotazione;
+		quotgialla.setText(quot);
+			 
+		quotazione=2+ lavagna.getPosizione("blu");
+		quot = " 1 :"+quotazione;
+		quotablu.setText(quot);
+	     }
+	
+	/**
+	 * Create the application.
+	 */
+	public Action_GUI(final GUI_interface gui) {
+		this.gui = gui;
+		frame = gui.get_frame();
+		frame.setBounds(0, 0, 732, 737);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("FASE CARTE AZIONE");
+		frame.getContentPane().setLayout(null);
+		
+		JPanel panel = new JPanel() { //con l'apertura della graffa creiamo una sottoclasse di JPanel
+		
+			@Override
+			protected void paintComponent(Graphics graphics) {
+				super.paintComponent(graphics);
+				
+				ImageIcon legni = new ImageIcon(gui.resizeImage("images/images.jpg", 732, 543));
+				Image legno = legni.getImage();
+				graphics.drawImage(legno, 0, 0, null);
+			}
+		};
+		panel.setLayout(null);
+		panel.setBounds(0, 0, 726, 539);
+		frame.getContentPane().add(panel);
+		
+		ImageIcon scudblu = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/blu.jpg", 89, 121));
+		JButton JBscudblu = new JButton(scudblu);
+		JBscudblu.setBounds(30, 96, 89, 121);
+        JBscudblu.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				scud_selected="blu";
+				Scudcolpita.setIcon(new ImageIcon(gui.resizeImage("immagini_carte_scuderia/blu.jpg", 89, 142)));
+			}
+		});
+		
+		panel.add(JBscudblu);
+		
+		ImageIcon scudgialla = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/giallo.jpg", 89, 121));
+		JButton JBgialla = new JButton(scudgialla);
+		JBgialla.setBounds(149, 96, 89, 121);
+        JBgialla.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				scud_selected="giallo";
+				Scudcolpita.setIcon(new ImageIcon(gui.resizeImage("immagini_carte_scuderia/giallo.jpg", 89, 142)));
+			}
+		});
+		panel.add(JBgialla);
+		
+		ImageIcon scudrossa = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/rosso.jpg", 89, 121));
+		JButton JBrossa = new JButton(scudrossa);
+		JBrossa.setBounds(273, 96, 89, 121);
+        JBrossa.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				scud_selected="rosso";
+				Scudcolpita.setIcon(new ImageIcon(gui.resizeImage("immagini_carte_scuderia/rosso.jpg", 89, 142)));
+			}
+		});
+		panel.add(JBrossa);
+		
+		ImageIcon scudnera = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/nero.jpg", 89, 121));
+		JButton JBnera = new JButton( scudnera);
+		JBnera.setBounds(388, 96, 89, 121);
+        JBnera.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				scud_selected="nero";
+				Scudcolpita.setIcon(new ImageIcon(gui.resizeImage("immagini_carte_scuderia/nero.jpg", 89, 142)));
+			}
+		});
+		panel.add(JBnera);
+		
+		ImageIcon scudverde = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/verde.jpg", 89, 121));
+		JButton JBverde = new JButton(scudverde);
+		JBverde.setBounds(500, 96, 89, 121);
+        JBverde.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				scud_selected="verde";
+				Scudcolpita.setIcon(new ImageIcon(gui.resizeImage("immagini_carte_scuderia/verde.jpg", 89, 142)));
+			}
+		});
+		panel.add(JBverde);
+		
+		ImageIcon scudbianca = new ImageIcon(gui.resizeImage("immagini_carte_scuderia/bianco.jpg", 89, 121));
+		JButton JBbianca = new JButton( scudbianca);
+		JBbianca.setBounds(613, 96, 89, 121);
+        JBbianca.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				scud_selected="bianco";
+				Scudcolpita.setIcon(new ImageIcon(gui.resizeImage("immagini_carte_scuderia/bianco.jpg", 89, 142)));
+			}
+		});
+		panel.add(JBbianca);
+		
+		
+		
+		quotbianca = new JLabel();
+		quotbianca.setForeground(Color.WHITE);
+		quotbianca.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		quotbianca.setBounds(637, 228, 46, 14);
+		panel.add(quotbianca);
+		
+		
+		quoteverde = new JLabel();
+		quoteverde.setForeground(Color.WHITE);
+		quoteverde.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		quoteverde.setBounds(522, 228, 46, 14);
+		panel.add(quoteverde);
+		
+		
+		quotenera = new JLabel();
+		quotenera.setForeground(Color.WHITE);
+		quotenera.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		quotenera.setBounds(410, 228, 46, 14);
+		panel.add(quotenera);
+		
+		
+		quotrossa = new JLabel();
+		quotrossa.setForeground(Color.WHITE);
+		quotrossa.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		quotrossa.setBounds(297, 228, 46, 14);
+		panel.add(quotrossa);
+		
+	
+		quotgialla = new JLabel();
+		quotgialla.setForeground(Color.WHITE);
+		quotgialla.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		quotgialla.setBounds(171, 228, 46, 14);
+		panel.add(quotgialla);
+		
+		
+		quotablu = new JLabel();
+		quotablu.setForeground(Color.WHITE);
+		quotablu.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		quotablu.setBounds(51, 228, 46, 14);
+		panel.add(quotablu);
+		
+		title = new JLabel();
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setForeground(Color.WHITE);
+		title.setFont(new Font("Monotype Corsiva", Font.ITALIC, 45));
+		title.setBounds(10, 11, 692, 49);
+		panel.add(title);
+		
+		CardGiocata = new JLabel();
+		CardGiocata.setHorizontalAlignment(SwingConstants.CENTER);
+		CardGiocata.setBounds(355, 304, 98, 142);
+		panel.add(CardGiocata);
+		
+		Scudcolpita = new JLabel();
+		Scudcolpita.setHorizontalAlignment(SwingConstants.CENTER);
+		Scudcolpita.setBounds(260, 304, 98, 142);
+		panel.add(Scudcolpita);
+		
+		JPanel panel_1 = new JPanel(){ //nota che con l'apertura della graffa creiamo una sottoclasse di JPanel
+		
+			@Override
+			protected void paintComponent(Graphics graphics) {
+				super.paintComponent(graphics);
+				
+				ImageIcon gcarpet = new ImageIcon(gui.resizeImage("images/gcarpet.jpg", 726, 169));
+				Image gcarp = gcarpet.getImage();
+				graphics.drawImage(gcarp, 0, 0, null);
+			}
+		};
+		panel_1.setLayout(null);
+		panel_1.setBounds(0, 537, 726, 166);
+		frame.getContentPane().add(panel_1);
+		
+		JLpers = new JLabel();
+		JLpers.setBounds(0, 2, 106, 164);
+		panel_1.add(JLpers);
+		
+		Jlscudprop = new JLabel();
+		Jlscudprop.setBounds(116, 25, 92, 135);
+		panel_1.add(Jlscudprop);
+		
+		JBcard1 = new JButton();
+		JBcard1.setBounds(260, 5, 89, 140);
+        JBcard1.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				card_selected=current_player.get_card_at_index(0);
+				CardGiocata.setIcon(new ImageIcon(gui.resizeImage(card_selected.getImmagine(), 90, 142)));
+			}
+		});
+		panel_1.add(JBcard1);
+		
+		JBcard2 = new JButton();
+		JBcard2.setBounds(359, 5, 89, 140);
+		   JBcard2.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e) {
+					card_selected=current_player.get_card_at_index(1);
+					CardGiocata.setIcon(new ImageIcon(gui.resizeImage(card_selected.getImmagine(), 90, 142)));
+				}
+			});
+		panel_1.add(JBcard2);
+		
+		JLabel lblScommessaEffettuata = new JLabel("Scommessa effettuata");
+		lblScommessaEffettuata.setFont(new Font("Monotype Corsiva", Font.ITALIC, 20));
+		lblScommessaEffettuata.setHorizontalAlignment(SwingConstants.CENTER);
+		lblScommessaEffettuata.setBounds(481, 11, 218, 31);
+		panel_1.add(lblScommessaEffettuata);
+		
+		scudbidded = new JLabel();
+		scudbidded.setHorizontalAlignment(SwingConstants.CENTER);
+		scudbidded.setBounds(517, 41, 70, 110);
+		panel_1.add(scudbidded);
+		
+		lblNewLabel = new JLabel();
+		lblNewLabel.setBounds(597, 53, 60, 20);
+		lblNewLabel.setFont(new Font("Monotype Corsiva", Font.ITALIC, 20));
+		lblNewLabel.setForeground(Color.BLACK);
+		panel_1.add(lblNewLabel);
+		
+		lblNewLabel_1 = new JLabel();
+		lblNewLabel_1.setBounds(597, 91, 50, 50);
+		panel_1.add(lblNewLabel_1);
+		
+		JBdesc1 = new JButton("info");
+		JBdesc1.setBounds(276, 144, 60, 23);
+		
+		JBdesc2 = new JButton("info");
+		JBdesc2.setBounds(372, 144, 60, 23);
+		
+		JBdesc1.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, ""+currentcard1.get_descrizione());
+			}
+		});
+	   
+
+	JBdesc2.addActionListener(new ActionListener() {
+				
+			public void actionPerformed(ActionEvent e) {
+					JOptionPane.showMessageDialog(null, ""+currentcard2.get_descrizione());
+				}
+			});
+		
+		JButton confirm = new JButton("Ok");
+		confirm.setBounds(453, 78, 54, 23);
+		confirm.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e) {
+					if(scud_selected=="" || card_selected==null)
+					  {JOptionPane.showMessageDialog(null, "Gioca una carta azione su una scuderia per continuare");}
+					else
+					  {
+						TruccaCavallo tevent = new TruccaCavallo(scud_selected, card_selected);
+						event.getController().tarocca_cavallo(tevent);
+					  }
+				}
+			});
+		panel_1.add(JBcard2);
+		panel_1.add(confirm);
+		panel_1.add(JBdesc1);
+		panel_1.add(JBdesc2);
+	}
+}

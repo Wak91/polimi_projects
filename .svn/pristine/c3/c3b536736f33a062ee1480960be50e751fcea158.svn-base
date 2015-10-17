@@ -1,0 +1,270 @@
+package View;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import javax.swing.Icon;
+import javax.swing.JTable;
+import javax.swing.border.CompoundBorder;
+
+import Controller_events.askIfSecondaScommessa;
+import Controller_events.askScommessaEvent;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class provascommesse {
+
+	private JPanel contentPane;
+	private askScommessaEvent evt;
+	private JFrame frame;
+	private JPanel panel ;
+	private JPanel panel_1 ;
+	private JPanel LabelQuotazioni ;
+	
+	
+	
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUI_interface gui_interface =new GUI_interface();
+					provascommesse scom = new provascommesse(gui_interface,new askScommessaEvent(null, null, false, false, false));
+					scom.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public BufferedImage resizeImage(String nome_immagine,int width,int height) {  
+	     try {
+			
+	    	File fileIcon = new File(nome_immagine);
+			BufferedImage originalImage = ImageIO.read(fileIcon);
+			BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);  
+	        Graphics2D g = resizedImage.createGraphics();  
+	        g.drawImage(originalImage, 0, 0, width, height, null);  
+	        g.dispose();  
+	        return resizedImage;  
+	     } catch (Exception e) {
+				e.printStackTrace();
+			}  
+	     return null;
+   }  
+	
+	/**
+	 * Create the frame.
+	 */
+	public provascommesse(GUI_interface gui,askScommessaEvent event) {
+		frame=gui.get_frame();
+		evt=event;
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(100, 100, 924, 568);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		frame.setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		 panel = new JPanel();
+		panel.setBounds(0, 0, 715, 198);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		panel_1= new JPanel();
+		panel_1.setBounds(0, 244, 715, 234);
+		frame.setResizable(false);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+		
+		LabelQuotazioni = new JPanel();
+		LabelQuotazioni.setBounds(721, 57, 187, 412);
+		contentPane.add(LabelQuotazioni);
+		LabelQuotazioni.setLayout(null);
+		
+		frame.setVisible(true);
+	}
+	
+	public void show() {
+		ImageIcon scuderia_blu = new ImageIcon(resizeImage("immagini_carte_scuderia/bl.jpg", 107, 147));
+		JButton ButtonBlu = new JButton(scuderia_blu);
+		ButtonBlu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		ButtonBlu.setBounds(10, 11, 107, 147);
+		panel.add(ButtonBlu);
+		
+		ImageIcon scuderia_nera = new ImageIcon(resizeImage("immagini_carte_scuderia/bla.jpg", 107, 147));
+		JButton ButtonNero = new JButton(scuderia_nera);
+		ButtonNero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		ButtonNero.setBounds(127, 11, 107, 147);
+		panel.add(ButtonNero);
+		
+		
+		ImageIcon scuderia_verde = new ImageIcon(resizeImage("immagini_carte_scuderia/gree.jpg", 107, 147));
+		JButton ButtonVerde = new JButton(scuderia_verde);
+		ButtonVerde.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		ButtonVerde.setBounds(244, 11, 107, 147);
+		panel.add(ButtonVerde);
+		
+		ImageIcon scuderia_rossa = new ImageIcon(resizeImage("immagini_carte_scuderia/red.jpg", 107, 147));
+		JButton ButtonRosso = new JButton(scuderia_rossa);
+		ButtonRosso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		ButtonRosso.setBounds(362, 11, 107, 147);
+		panel.add(ButtonRosso);
+		
+		ImageIcon scuderia_bianca = new ImageIcon(resizeImage("immagini_carte_scuderia/wh.jpg", 107, 147));
+		JButton ButtonBianco = new JButton(scuderia_bianca);
+		ButtonBianco.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		ButtonBianco.setBounds(479, 11, 107, 147);
+		panel.add(ButtonBianco);
+		
+		ImageIcon scuderia_gialla = new ImageIcon(resizeImage("immagini_carte_scuderia/ye.jpg", 107, 147));
+		JButton ButtonGiallo = new JButton(scuderia_gialla);
+		ButtonGiallo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		ButtonGiallo.setBounds(596, 11, 107, 147);
+		panel.add(ButtonGiallo);
+
+		
+		
+		JLabel LabelPersonaggio = new JLabel("New label");
+		LabelPersonaggio.setBounds(0, 0, 153, 234);
+		ImageIcon personaggio = new ImageIcon(resizeImage("immagini_carte_personaggi/cm.jpg", 120, 162)); 
+		LabelPersonaggio.setIcon(personaggio);// da parametrizzare 
+		panel_1.add(LabelPersonaggio);
+		
+		
+		
+		ImageIcon cartaazione1 = new ImageIcon(resizeImage("immagini_carte_azione/mt.jpg", 75, 100));
+		
+		final JButton ButtonCarta1 = new JButton(cartaazione1);
+		
+		ButtonCarta1.setForeground(Color.WHITE);
+		ButtonCarta1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		ButtonCarta1.setBounds(409, 11, 75, 100);
+		panel_1.add(ButtonCarta1);
+		
+		ImageIcon cartaazione2 = new ImageIcon(resizeImage("immagini_carte_azione/hm.jpg", 75, 100));
+		JButton ButtonCarta2 = new JButton(cartaazione2);
+		ButtonCarta2.setBounds(562, 11, 75, 100);
+		panel_1.add(ButtonCarta2);
+		
+		JButton Button1000 = new JButton((Icon) null);
+		Button1000.setBounds(221, 11, 75, 103);
+		panel_1.add(Button1000);
+		
+		JButton Button100 = new JButton((Icon) null);
+		Button100.setBounds(221, 119, 75, 103);
+		panel_1.add(Button100);
+		
+		JButton Button500 = new JButton((Icon) null);
+		Button500.setBounds(306, 11, 75, 103);
+		panel_1.add(Button500);
+		
+		ImageIcon scuderia_proprietario = new ImageIcon(resizeImage("immagini_carte_scuderia/ye.jpg", 46, 64));
+		JLabel JLscudprop = new JLabel("New label");
+		JLscudprop.setIcon(scuderia_proprietario); // da parametrizzare  
+		JLscudprop.setBounds(156, 72, 55, 90);
+		panel_1.add(JLscudprop);
+		
+		
+		JButton ButtonConferma = new JButton("New button");
+		ButtonConferma.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		contentPane.add(ButtonConferma);
+		
+		LabelQuotazioni = new JPanel();
+		LabelQuotazioni.setBounds(721, 57, 187, 412);
+		contentPane.add(LabelQuotazioni);
+		LabelQuotazioni.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(135, 11, 53, 40);
+		LabelQuotazioni.add(lblNewLabel);
+		
+		JLabel label = new JLabel("New label");
+		label.setBounds(135, 67, 53, 40);
+		LabelQuotazioni.add(label);
+		
+		JLabel label_1 = new JLabel("New label");
+		label_1.setBounds(135, 118, 53, 40);
+		LabelQuotazioni.add(label_1);
+		
+		JLabel label_2 = new JLabel("New label");
+		label_2.setBounds(135, 169, 53, 40);
+		LabelQuotazioni.add(label_2);
+		
+		JLabel label_3 = new JLabel("New label");
+		label_3.setBounds(135, 220, 53, 40);
+		LabelQuotazioni.add(label_3);
+		
+		JLabel label_4 = new JLabel("New label");
+		label_4.setBounds(135, 271, 53, 40);
+		LabelQuotazioni.add(label_4);
+		
+		JLabel lblNewLabel_1 = new JLabel("TABELLONE QUOTAZIONI");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setBounds(721, 0, 187, 46);
+		contentPane.add(lblNewLabel_1);
+		
+		JLabel LabelNome = new JLabel("New label");
+		LabelNome.setBounds(0, 196, 715, 51);
+		contentPane.add(LabelNome);
+		LabelNome.setFont(new Font("Browallia New", Font.PLAIN, 30));
+		LabelNome.setHorizontalAlignment(SwingConstants.CENTER);
+		LabelNome.setBackground(Color.ORANGE);
+		LabelNome.setForeground(Color.BLACK);
+		LabelNome.setText("Fabio");
+	
+		contentPane.revalidate();
+		panel.revalidate();
+		panel_1.revalidate();
+		LabelQuotazioni.revalidate();
+		frame.repaint();
+		frame.setVisible(true);
+			
+	}
+}

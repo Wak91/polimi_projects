@@ -1,0 +1,28 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+
+public class Scommessa {
+	
+	private final int denaro;
+	private final int colore; //ora ho scelto intero per mappare uno a uno con input utente da valutare i pro e i contro delle enum
+	private final int tipo; // vale la pena creare convertitore int enum per avere la chiarezza di queste?
+
+	
+	
+	public Scommessa(int money,int color,int type) {
+		this.denaro=money;
+		this.colore=color;
+		this.tipo=type;
+		
+	}
+	
+	
+	@Override
+	public String toString() {
+		return("\n-->Denaro: "+this.denaro+"\n-->Colore: "+this.colore+"\n-->Tipo: "+this.tipo);
+	}
+	
+		
+	
+
+}

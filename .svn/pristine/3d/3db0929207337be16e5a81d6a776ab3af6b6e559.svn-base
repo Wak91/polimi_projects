@@ -1,0 +1,162 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+
+public class GUI_interface implements User_interface {
+
+	
+	public GUI_interface()
+	{}
+	
+	public ArrayList<Giocatore> get_players() {
+
+		return null;
+	}
+
+	
+	public ArrayList<Scommessa> get_scommesse() {
+		
+		return null;
+	}
+
+	
+	public ArrayList<Carta_azione> get_carte_azione() {
+	
+		return null;
+	}
+
+	
+	public void play_action_card() {
+		
+		
+	}
+
+
+	public void play_action_card(Giocatore player) {
+	
+		
+	}
+
+	//@Override
+	public String[] gara() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//@Override
+	public void show_action_card(Giocatore player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//@Override
+	public String get_cavallo_scommessa(String message) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//@Override
+	public String get_cavallo_scommessa() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//@Override
+	public int get_soldi_scommessa(Giocatore player) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	//@Override
+	public String get_tipo_scommessa() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//@Override
+	public void show_all_bet() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//@Override
+	public void game_over_player(Giocatore player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//@Override
+	public Carta_azione get_action_card_played(Giocatore player) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//@Override
+	public Cavallo get_horse_affected() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//@Override
+	public void show_affected_horse() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//@Override
+	public void show_corsa() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//@Override
+	public void show_classifica() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String get_tipo_scommessa(String messaggio) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean make_seconda_scommessa(Giocatore player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void not_enough_money(String nome) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void show_corsa(ArrayList<Cavallo> cavalli_in_gioco,
+			int lunghezza_percorso) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void show_classifica(ArrayList<String> classifica) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void show_bad_end_message() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void show_win_money(String nome, int money, int pv) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void show_winner(String vincitore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+
+}

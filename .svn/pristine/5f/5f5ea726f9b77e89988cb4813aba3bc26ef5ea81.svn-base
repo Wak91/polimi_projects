@@ -1,0 +1,259 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Observable;
+import java.util.Scanner;
+
+
+
+public class Game {
+	
+	private User_interface Ui;
+	
+	//switch tra il tipo di interfaccie, per ora ne abbiamo solo 2...
+	private int mode; //0=text 1=GUI
+	//-----------------------------------------------
+	
+	//---NUMERO TURNI DELLA PARTITA
+	private int turni;
+	//-----------------------------------------------
+	
+	//---DISPONIBILITA DI SEGNALINI PER SCUDERIA
+	private HashMap <String , Integer> disp_scuderia;
+	//-----------------------------------------------
+	
+	//---SCUDERIE
+	private ArrayList <String> colori;
+	//-----------------------------------------------
+	
+	//---MAPPA GIOCATORI-SEGNALINI SCUD-NUMERO TURNI
+	private HashMap<Integer,Integer[]> map_segnalino; 	
+	//-----------------------------------------------
+	
+	//---ELENCO GIOCATORI
+	private ArrayList <Giocatore> eg = new ArrayList <Giocatore>();
+	//-----------------------------------------------
+	
+	//---ELENCO PEDINE
+	private ArrayList <Cavallo> ep = new ArrayList <Cavallo>();
+	//-----------------------------------------------
+	
+	//---INIZIALIZZAZIONE MAZZI---
+	private Mazzo mAzione = new Mazzo();
+	private Mazzo mPersonaggio = new Mazzo();
+	private Mazzo mScuderia = new Mazzo();
+	private Mazzo mMovimento = new Mazzo();
+	//-----------------------------------------------
+		
+	/**
+	 * Costruttore di game, istanzio uno ed un solo game.
+	 */
+	public Game()
+	{}
+	
+	
+	/**
+	 * Funzione che viene richiamata da un interfaccia sotto e che setta il numero di
+	 * turni del gioco andando a guardare nella hash table quanti turni corrispondono a ng giocatori
+	 * @param ng rappresenta il numero di giocatori passato da un interfaccia text, gui, segnali fumo..
+	 */
+	public void set_turni(int ng)
+	{
+		this.turni = this.get_num_turni(ng);
+	}
+	
+		
+	/**
+	 * Inizializza la hash table in funzione del numero di giocatori, assegnando ad ogni colore ( scuderia )
+	 * il numero di segnalini corrispondente alle regole del gioco
+	 * @param num_g rappresenta il numero di giocatori passato da un interfaccia e dal suo metodo get_players_option
+	 */
+	public void set_hash(int num_g)
+	{
+		for(String c : colori )
+		{
+			disp_scuderia.put(c, (this.get_num_segnalini(num_g)));
+		}
+	}
+	
+	public Mazzo getMazzoPersonaggi()
+	{
+		return mPersonaggio;
+	}
+	
+	public Mazzo getMazzoAzione()
+	{
+		return mAzione;
+	}
+	
+	
+	/**
+	 * Interroga la hash table che modella le regole del gioco per estrarre la corrispondenza
+	 * tra numero-giocatori e numero turni di gioco
+	 * @param num_players
+	 * @return
+	 */
+	public int get_num_turni(int num_players)
+	{
+		Integer arry[] = map_segnalino.get(num_players);
+		return arry[1];
+	}
+	
+	/**
+	 * Interroga la hash table che modella le regole del gioco per estrarre la corrispondenza
+	 * tra numero-giocatori e numero segnalini scommessa per scuderia
+	 * @param num_players
+	 * @return
+	 */
+	public int get_num_segnalini(int num_players)
+	{
+		Integer arry[] = map_segnalino.get(num_players);
+		System.out.println("" + arry[0]);
+		return arry[0];
+	}
+	
+	/**
+	 * Ritorna la lista di giocatori senza esporre il rep
+	 * @return
+	 */
+	public ArrayList <Giocatore> get_giocatori()
+	{
+		ArrayList <Giocatore> gio = new ArrayList <Giocatore>();
+		for(Giocatore g : eg)
+		   {
+			gio.add(g);
+		   }
+	    return gio;
+	}
+	
+	
+	/**
+	 * Funzione per gestire input utente riceve un range bottom e top e controlla che l'input 
+	 * sia compreso in esso message indica il messaggio che si vuole sia mostrato a schermo la prima volta
+	 * ho deciso di usare interi che rendono il gioco piu immediato rispetto al digitare stringhe
+	 * @param bottom  limite inferiore
+	 * @param top		limite superiore
+	 * @param message	messagio mostrato la prima volta
+	 * @return	l'intero nel range inserito dall'utente
+	 */
+	public static int input_check(int bottom,int top,String message){
+		boolean ok=false;
+		int input=0;
+		System.out.println(message);
+		while (!ok){
+			Scanner scanner = new Scanner(System.in);
+			
+			try {
+				 input = Integer.parseInt(scanner.nextLine());
+				if (input<bottom || input>top) {
+					System.out.println("Inserisci un numero da:"+bottom+" a "+top);
+				}
+				else {
+					ok=true;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Inserisci un numero");
+			}
+		}
+		return input;
+	}
+	
+	/**
+	 * legge il numero di giocatori controllando che sia compreso tra 2 e 5 e inizializza chiedendo i nomi
+	 */
+
+	public void init_players() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Inserire numero giocatori");
+		int num_giocatori=input_check(2, 5, "Si possono inserire da 2 a 5 giocatori");
+		
+		for (int i=0; i<num_giocatori;i++){
+			System.out.println("Inserire Nome Giocatore "+(i+1)+":\n");
+			String nome=scanner.nextLine();
+			//set_player_name(nome);
+		}
+		
+		
+	}
+	
+	public void init_cavalli(){
+		for (String colore : colori) {
+			Cavallo c = new Cavallo(colore);
+			ep.add(c);
+		}
+		
+	}
+	
+	public void init_quotazioni()
+	{
+		 Collections.shuffle(colori);
+	        int key=5;
+	        for(String s : colori)
+	        {
+	        Quotazione q = new Quotazione(key,s);
+	        Lavagna.aggiungi_quotazione(q);
+	        key--;
+	        }	
+	}
+	
+	/**
+	 *inizializza la hashtable da cui ricavero il numero segnalini in funzione del numero di giocatori
+	 */
+	public void init_hash(){
+		map_segnalino=new HashMap<Integer,Integer[]>();
+		map_segnalino.put(2,new Integer[] {1,6});
+		map_segnalino.put(3,new Integer[] {2,6});
+		map_segnalino.put(4,new Integer[] {3,4});
+		map_segnalino.put(5,new Integer[] {4,5});
+		map_segnalino.put(6,new Integer[] {4,6});
+		//gia che ci sono istanzio anche la hash base che varierà
+		disp_scuderia = new HashMap();
+	}
+	
+	public void init_colori(){
+		
+		colori = new ArrayList <String>();
+		colori.add("nero");
+		colori.add("blu");
+		colori.add("verde");
+		colori.add("rosso");
+		colori.add("giallo");
+		colori.add("bianco");
+		
+	}
+	
+	/**
+	 * Metodo utilizzato come entry point del gioco, che effettua le operazioni piu basilari
+	 */
+	public void INIT()
+	  {
+		init_colori();
+		init_cavalli();
+		init_hash();
+		init_quotazioni();
+		
+		Carta_azione.Extract_all_in(mAzione);
+		Carta_personaggio.Extract_all_in(mPersonaggio);
+		Carta_scuderia.Extract_all_in(mScuderia);
+		Carta_movimento.Extract_all_in(mMovimento);
+	  }
+	
+	
+	//-----ENTRY POINT DEL GIOCO
+	public static void main (String args[])
+	{	
+      Game g = new Game();
+      g.INIT();
+      if(g.mode==0)
+         {
+    	  g.Ui = new Text_interface (g);
+         }
+      //else
+    	  //GUI_interface Gi = new Gui_interface();
+      g.eg = g.Ui.get_players();
+      Collections.shuffle(g.eg);
+	}
+}

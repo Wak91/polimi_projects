@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.3" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <package id="1" language="java" name="Controller" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="115" x="140" y="173"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <interface id="2" language="java" name="Controller.Controller_Interface" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller/Controller_Interface.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1593" y="879"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="3" language="java" name="Controller.Controller" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller/Controller.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="922" y="883"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="Model.Lavagna" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Lavagna.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-944" y="762"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="Model.Carta" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Carta.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="387" y="1750"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="Model.Cavallo" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Cavallo.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-726" y="1352"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="Model.Quotazione" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Quotazione.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-1296" y="2030"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="Model.Movimento" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Movimento.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="910" y="2290"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="Model.Scommessa" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Scommessa.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="97" y="1635"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="Model.Carta_azione" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Carta_azione.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-45" y="2226"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="Model.Giocatore" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Giocatore.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-928" y="2352"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="Model.Carta_personaggio" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Carta_personaggio.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="359" y="2101"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="Model.Mazzo" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Mazzo.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="58" y="1254"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="14" language="java" name="Model.Model_interface" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Model_interface.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="122" y="392"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="15" language="java" name="Model.Card_handler" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Card_handler.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="91" y="942"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="Model.Carta_movimento" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Carta_movimento.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="736" y="2059"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="Model.Game" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Model/Game.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="1034" width="430" x="-590" y="-73"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="View.GUI_interface" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/GUI_interface.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3296" y="1473"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="View.Scommesse_GUI" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/Scommesse_GUI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2734" y="1840"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="View.Welcome_horse_fever" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/Welcome_horse_fever.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="4184" y="1070"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="View.Text_interface" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/Text_interface.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3839" y="584"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="View.Action_GUI" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/Action_GUI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3954" y="2151"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="View.Giocatore_name_GUI" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/Giocatore_name_GUI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2665" y="2492"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="View.Finale_price_GUI" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/Finale_price_GUI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="4181" y="1648"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="25" language="java" name="View.User_interface" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/User_interface.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2999" y="918"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="26" language="java" name="View.Race_view" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/Race_view.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3118" y="2501"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" name="View.Giocatore_GUI" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/Giocatore_GUI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3487" y="2887"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="28" language="java" name="View.Finale_GUI" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/View/Finale_GUI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="4063" y="2797"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="29" language="java" name="Controller_events.askScommessaEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/askScommessaEvent.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-1096" y="3774"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="30" language="java" name="Controller_events.showRimossiEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/showRimossiEvent.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-271" y="3782"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="31" language="java" name="Controller_events.HorseFeverEventController" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/HorseFeverEventController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-13" y="3526"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="32" language="java" name="Controller_events.showWinnerEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/showWinnerEvent.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-1271" y="3990"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="33" language="java" name="Controller_events.showPriceEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/showPriceEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-501" y="4075"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="34" language="java" name="Controller_events.askIfSecondaScommessa" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/askIfSecondaScommessa.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-48" y="4088"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="35" language="java" name="Controller_events.TruccaEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/TruccaEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="260" y="3827"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="36" language="java" name="Controller_events.TruccareEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/TruccareEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="395" y="4096"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="37" language="java" name="Controller_events.getNumPlayerEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/getNumPlayerEvent.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="597" y="3855"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="38" language="java" name="Controller_events.EventoCorsa" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/EventoCorsa.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1173" y="3905"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="39" language="java" name="Controller_events.getMovimentoEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/getMovimentoEvent.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="719" y="4154"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="40" language="java" name="Controller_events.getNomePlayerEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/getNomePlayerEvent.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1816" y="4009"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="41" language="java" name="Controller_events.EventModelGara" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/EventModelGara.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1030" y="4185"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="42" language="java" name="Controller_events.showClassificaEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Controller_events/showClassificaEvent.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1553" y="4189"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="43" language="java" name="Gui_Events.setNumPlayerEvent" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/setNumPlayerEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3170" y="3916"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="44" language="java" name="Gui_Events.letsPayEvent" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/letsPayEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3435" y="3878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="45" language="java" name="Gui_Events.TruccaCavallo" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/TruccaCavallo.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3093" y="3719"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="46" language="java" name="Gui_Events.setNomeEvent" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/setNomeEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3699" y="3878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="47" language="java" name="Gui_Events.sistemaEvent" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/sistemaEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3882" y="3868"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="48" language="java" name="Gui_Events.GoRaceEvent" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/GoRaceEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="4463" y="3610"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="49" language="java" name="Gui_Events.AnswerSecondaScommessaEvent" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/AnswerSecondaScommessaEvent.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="4141" y="3900"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="50" language="java" name="Gui_Events.sistemaEventUI" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/sistemaEventUI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="4417" y="3904"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="51" language="java" name="Gui_Events.HorseFeverEventGui" 
+    project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/HorseFeverEventGui.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3701" y="3529"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="52" language="java" name="Gui_Events.setScommessaEvent" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Gui_Events/setScommessaEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="4411" y="3030"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="53" language="java" name="Network.ModReteUI" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Network/ModReteUI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1620" y="479"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="54" language="java" name="Network.Server" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Network/Server.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1639" y="114"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="55" language="java" name="Network.ModReteController" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Network/ModReteController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2991" y="418"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="56" language="java" name="Network.Client" project="horseFever_lorenzo2.fontana-fabio1.gritti" 
+    file="/horseFever_lorenzo2.fontana-fabio1.gritti/src/main/java/Network/Client.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2957" y="25"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="57">    
+    <end type="SOURCE" refId="56" navigable="false">      
+      <attribute id="58" name="MrC"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="55" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="61" name="card_h"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="63">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="64" name="view_second_bid"/>      
+      <multiplicity id="65" minimum="0" maximum="1">        
+        <position height="16" width="25" x="2871" y="1867"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="66">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="67" name="lavagna"/>      
+      <multiplicity id="68" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="69">    
+    <bendpoint x="455" y="1275"/>    
+    <bendpoint x="455" y="2061"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="70" name="current_card"/>      
+      <multiplicity id="71" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="72">    
+    <end type="SOURCE" refId="44"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <association id="73">    
+    <end type="SOURCE" refId="45" navigable="false">      
+      <attribute id="74" name="carta_giocata"/>      
+      <multiplicity id="75" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="76">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="77" name="gui"/>      
+      <multiplicity id="78" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="79">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="80" name="card"/>      
+      <multiplicity id="81" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="82">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <generalization id="83">    
+    <end type="SOURCE" refId="46"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <association id="84">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="85" name="lavagna"/>      
+      <multiplicity id="86" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="87">    
+    <bendpoint x="-409" y="2061"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="88" name="carte_eliminate"/>      
+      <multiplicity id="89" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="90">    
+    <bendpoint x="-388" y="2061"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="91" name="carte_azione">        
+        <position height="18" width="79" x="-271" y="2106"/>      
+      </attribute>      
+      <multiplicity id="92" minimum="0" maximum="2147483647">        
+        <position height="16" width="23" x="-208" y="2133"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="93">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="94" name="lavagna"/>      
+      <multiplicity id="95" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="96">    
+    <end type="SOURCE" refId="55"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <association id="97">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="98" name="mAzione">        
+        <position height="18" width="56" x="-41" y="1094"/>      
+      </attribute>      
+      <multiplicity id="99" minimum="0" maximum="1">        
+        <position height="16" width="25" x="16" y="1150"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="100">    
+    <end type="SOURCE" refId="52"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <association id="101">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="102" name="elenco_player"/>      
+      <multiplicity id="103" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="104">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <generalization id="105">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <generalization id="106">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <association id="107">    
+    <end type="SOURCE" refId="34" navigable="false">      
+      <attribute id="108" name="player"/>      
+      <multiplicity id="109" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="110">    
+    <end type="SOURCE" refId="32"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <association id="111">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="112" name="event"/>      
+      <multiplicity id="113" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="42" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="114">    
+    <end type="SOURCE" refId="53"/>    
+    <end type="TARGET" refId="25"/>  
+  </realization>  
+  <association id="115">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="116" name="bet_list"/>      
+      <multiplicity id="117" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="118">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="119" name="lavagna"/>      
+      <multiplicity id="120" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="121">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="122" name="action_cards"/>      
+      <multiplicity id="123" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="124">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="14"/>  
+  </realization>  
+  <generalization id="125">    
+    <end type="SOURCE" refId="40"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <association id="126">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="127" name="event1"/>      
+      <multiplicity id="128" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="37" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="129">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <association id="130">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="131" name="event"/>      
+      <multiplicity id="132" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="133">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <association id="134">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="135" name="rimossi"/>      
+      <multiplicity id="136" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="137">    
+    <end type="SOURCE" refId="47"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <generalization id="138">    
+    <end type="SOURCE" refId="41"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <generalization id="139">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <association id="140">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="141" name="mPersonaggio">        
+        <position height="18" width="88" x="-29" y="1117"/>      
+      </attribute>      
+      <multiplicity id="142" minimum="0" maximum="1">        
+        <position height="16" width="25" x="-38" y="1148"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="143">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="144" name="elenco_pedine"/>      
+      <multiplicity id="145" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="146">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <association id="147">    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="148" name="player">        
+        <position height="18" width="42" x="-840" y="2674"/>      
+      </attribute>      
+      <multiplicity id="149" minimum="0" maximum="1">        
+        <position height="16" width="25" x="-787" y="2674"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="150">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <generalization id="151">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <generalization id="152">    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <association id="153">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="154" name="gui_interface">        
+        <position height="18" width="82" x="3474" y="1308"/>      
+      </attribute>      
+      <multiplicity id="155" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="156">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="25"/>  
+  </realization>  
+  <generalization id="157">    
+    <end type="SOURCE" refId="43"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <association id="158">    
+    <bendpoint x="476" y="1275"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="159" name="elenco_giocatori"/>      
+      <multiplicity id="160" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="161">    
+    <end type="SOURCE" refId="30"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <association id="162">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="163" name="ag">        
+        <position height="18" width="22" x="3834" y="2069"/>      
+      </attribute>      
+      <multiplicity id="164" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="165">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <association id="166">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="167" name="race"/>      
+      <multiplicity id="168" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="169">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <association id="170">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="171" name="gui_interface"/>      
+      <multiplicity id="172" minimum="0" maximum="1">        
+        <position height="16" width="25" x="3524" y="1414"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="173">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="174" name="lavagna"/>      
+      <multiplicity id="175" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="176">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="177" name="Ui"/>      
+      <multiplicity id="178" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="179">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="180" name="val"/>      
+      <multiplicity id="181" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="182">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="183" name="inEvent"/>      
+      <multiplicity id="184" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="185">    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="186" name="model"/>      
+      <multiplicity id="187" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="188">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="189" name="character_card"/>      
+      <multiplicity id="190" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="191">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="192" name="elenco_pedine"/>      
+      <multiplicity id="193" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="194">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="195" name="gui"/>      
+      <multiplicity id="196" minimum="0" maximum="1">        
+        <position height="16" width="25" x="3116" y="1720"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="197">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <association id="198">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="199" name="event"/>      
+      <multiplicity id="200" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="35" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="201">    
+    <end type="SOURCE" refId="48"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <association id="202">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="203" name="gui_interface">        
+        <position height="18" width="82" x="3471" y="1364"/>      
+      </attribute>      
+      <multiplicity id="204" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="205">    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="206" name="lavagna"/>      
+      <multiplicity id="207" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="208">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="209" name="card_m"/>      
+      <multiplicity id="210" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="211">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="212" name="view_bid">        
+        <position height="18" width="57" x="2862" y="1907"/>      
+      </attribute>      
+      <multiplicity id="213" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="214">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="215" name="player"/>      
+      <multiplicity id="216" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="217">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="218" name="inEvent"/>      
+      <multiplicity id="219" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="220">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="221" name="gui">        
+        <position height="18" width="25" x="3508" y="1421"/>      
+      </attribute>      
+      <multiplicity id="222" minimum="0" maximum="1">        
+        <position height="16" width="25" x="3550" y="1354"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="223">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="224" name="mMovimento">        
+        <position height="18" width="78" x="-122" y="1143"/>      
+      </attribute>      
+      <multiplicity id="225" minimum="0" maximum="1">        
+        <position height="16" width="25" x="-11" y="1142"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="226">    
+    <end type="SOURCE" refId="55" navigable="false">      
+      <attribute id="227" name="client"/>      
+      <multiplicity id="228" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="56" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="229">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="230" name="controller_Interface"/>      
+      <multiplicity id="231" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="232">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="233" name="player"/>      
+      <multiplicity id="234" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="235">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <generalization id="236">    
+    <end type="SOURCE" refId="49"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <association id="237">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="238" name="gui"/>      
+      <multiplicity id="239" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="240">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="241" name="deck"/>      
+      <multiplicity id="242" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="243">    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="244" name="game_controller"/>      
+      <multiplicity id="245" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="246">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="247" name="model"/>      
+      <multiplicity id="248" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="249">    
+    <end type="SOURCE" refId="56" navigable="false">      
+      <attribute id="250" name="View"/>      
+      <multiplicity id="251" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="252">    
+    <end type="SOURCE" refId="51" navigable="false">      
+      <attribute id="253" name="gui_interface">        
+        <position height="18" width="82" x="3372" y="1714"/>      
+      </attribute>      
+      <multiplicity id="254" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="255">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="256" name="finalisti"/>      
+      <multiplicity id="257" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="258">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="25"/>  
+  </realization>  
+  <association id="259">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="260" name="lavagnaQuotazioni"/>      
+      <multiplicity id="261" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

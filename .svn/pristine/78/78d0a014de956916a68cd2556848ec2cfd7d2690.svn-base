@@ -1,0 +1,170 @@
+package View;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class Giocatore_name_GUI {
+	
+	
+	private final Toolkit toolkit ;
+	private int xSize;
+	private int ySize;
+	private JFrame frame;
+	
+	JTextField name ;
+	JPanel bottom_panel;
+	
+	boolean stop=false;
+	String name_player;
+	
+	public Giocatore_name_GUI(JFrame mainframe) {
+		toolkit = Toolkit.getDefaultToolkit();
+		xSize = ((int) toolkit.getScreenSize().getWidth());  
+		ySize = ((int) toolkit.getScreenSize().getHeight()); 
+		frame = mainframe;
+		
+		bottom_panel = new JPanel();
+		bottom_panel.setBounds(0, ySize*6/7, xSize, ySize/7);
+		bottom_panel.setBackground(new Color(30,30,30));
+		frame.add(bottom_panel);
+		
+		
+		
+		
+	}
+
+	
+	/**
+	 * Metodo che riceve percorso file  dimensioni e tipo immagine output (esempio BufferedImage.TYPE_INT_RGB o BufferedImage.TYPE_INT_ARGB)
+	 * restituisce una buffered Image ridimensionata che puo essere usata per creare ImageIcon
+	 * @param nome_immagine
+	 * @param width
+	 * @param height
+	 * @param type
+	 * @return
+	 */
+	private BufferedImage resizeImage(String nome_immagine,int width,int height) {  
+	     try {
+			
+	    	File fileIcon = new File(nome_immagine);
+			BufferedImage originalImage = ImageIO.read(fileIcon);
+			BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB );  
+	        Graphics2D g = resizedImage.createGraphics();  
+	        g.drawImage(originalImage, 0, 0, width, height, null);  
+	        g.dispose();  
+	        return resizedImage;  
+	     } catch (Exception e) {
+				e.printStackTrace();
+			}  
+	     return null;
+    }  
+
+	public void get_player(int i) {
+		JButton btnButton = new JButton("CONFERMA");
+
+		
+		class Imagepanel extends JPanel{
+			private BufferedImage image;
+
+		    public Imagepanel(BufferedImage imag) {
+		       image = imag;
+		    }
+
+		    
+		    protected void paintComponent(Graphics g) {
+		        super.paintComponent(g);
+		        g.drawImage(image, 0, 0, getWidth(), getHeight(), this); // see javadoc for more info on the parameters            
+		    }
+		}
+		
+		
+		BufferedImage back = resizeImage("images/insert_name.png", xSize, ySize*6/7);
+		
+		JPanel topPanel =new JPanel();
+		JLabel lbl= new JLabel("Numero gioc="+i);
+		topPanel.add(lbl);
+		topPanel.setBounds(0, 0, xSize, ySize/7);
+
+		
+		Imagepanel panel = new Imagepanel(back);
+		
+		panel.setLayout(null);
+		panel.setBounds(0, ySize/7, xSize, ySize*5/7);
+
+		name = new JTextField(10);
+		name.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		name.setFont(new Font("SansSerif", Font.BOLD, 50));
+		name.setBounds(xSize*2/5,ySize*3/7,xSize*2/7,ySize/7);
+		
+		panel.add(name);
+        
+		
+		bottom_panel.add(btnButton);
+		
+
+		frame.add(topPanel);
+		frame.add(panel);
+		
+		btnButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+
+				go_on();
+			}
+		});
+		panel.repaint();
+		bottom_panel.repaint();
+		topPanel.repaint();
+		frame.setVisible(true);
+	}
+	
+	private synchronized void  go_on(){
+		System.out.println("stop"+stop);
+		while (stop==true){
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("notifying get_nome");
+		name_player = name.getText();
+		stop=true;
+		
+
+		notify();
+	}
+	
+
+	
+	public synchronized String get_nome(){
+		System.out.println("stop in get nome "+stop);
+		while (stop==false){
+			try {
+			
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("sono dopo la wait");
+		stop=false;
+		return name_player;
+	}
+
+}

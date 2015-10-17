@@ -1,0 +1,190 @@
+package Model;
+import java.util.ArrayList;
+
+/**
+ * Questa classe gestisce gli effetti delle carte azione 
+ * nelle varie fasi della gara, se si vuole aggiungere una nuova carta seguire
+ * la sintassi delle altre. ( if...else per gestire la mutua esclusione tra carte )
+ * Tutte le funzioni utilizzano la variabile have_an_effect per capire se c'è stato qualche effetto sul cavallo,
+ * se questo è vero ritornano true dicendo che hanno già provveduto loro a muovere il cavallo.
+ */
+
+public class Card_handler {
+	
+	public Card_handler()
+	{}
+	
+	//<----------------------CARTE CHE AGISCONO PRIMA DELLA PARTENZA-------------------->
+	
+	/**
+	 * Controllo delle carte neutre che hanno effetto prima di tutto lo svolgimento
+	 * della gara.
+	 */
+	public void check_special_card(Cavallo horse)
+	{	Lavagna lavagna = Lavagna.creaLavagna();
+		if(horse.have_got_card("alfio_allibratore"))
+		  { lavagna.setPosizione(horse.get_color(), -2);}
+		else
+			if(horse.have_got_card("steven_sting"))
+			{lavagna.setPosizione(horse.get_color(), +2);}
+		
+		if(horse.have_got_card("fritz_finden"))
+		  { for(Carta_azione ca : horse.get_carte_azione() )
+		       {
+			    if(ca.getStato()==('N'))
+			       { horse.delete_action_card(ca); }
+		       }  
+		  }
+		else
+			if(horse.have_got_card("rochelle_recherche"))
+			  {
+				for(Carta_azione ca : horse.get_carte_azione() )
+			       {
+				    if(ca.getStato()==('P'))
+				       { horse.delete_action_card(ca); }
+			       }  
+				
+			  }
+		
+	}
+	
+	//<-------CARTE CHE AGISCONO DURANTE LA FASE DI PARTENZA---------------->
+	
+	/**
+	 * Metodo che controlla se il cavallo passato ha qualche carta
+	 * che influenza in qualche modo la partenza
+	 * @param horse
+	 * @param step
+	 * @return
+	 */
+	public boolean check_carte_partenza(Cavallo horse,int step)
+	{
+		int have_an_effect=0;
+		int pos = horse.get_posizione();
+		if(horse.have_got_card("magna_velocitas"))
+           {pos+=4; have_an_effect=1;}
+		else
+			if(horse.have_got_card("globus_obscurus"))
+				{pos=1;have_an_effect=1;}  
+					
+		if(horse.have_got_card("fortuna_benevola"))
+		   { pos+=(1+step); have_an_effect=1;}
+		else
+			if(horse.have_got_card("aqua_putrida"))
+			  { pos+=step-1; have_an_effect=1;}
+		if(have_an_effect==1)
+		  {horse.set_posizione(pos);return true;}
+		else
+			{ return false; }
+	}
+	
+	//<----------------CARTE CHE AGISCONO DURANTE LO SPRINT------------------------->
+	
+	/**
+	 * Metodo che effettua il controllo su eventuali modifiche al comportamento dello sprint
+	 * Questo metodo ritorna boolean per dire al chiamante se ha mosso o no, se non ha 
+	 * mosso il chiamante provvedera' a muovere normalmente il cavallo
+	 * @param horse
+	 * @param sprint
+	 */
+	public boolean check_carte_sprint(Cavallo horse , int sprint)
+	 {
+		int pos = horse.get_posizione();
+		int have_an_effect=0;
+		if(horse.have_got_card("flagellum_fulguris"))
+           {pos+=(1+sprint);have_an_effect=1;}
+		else
+			if(horse.have_got_card("serum_maleficum"))
+			  { /*non fa lo sprint*/ 
+				have_an_effect=1;
+			  }
+		
+		if(horse.have_got_card("herba_magica"))
+           { pos+=2; have_an_effect=1;} 
+        else
+        	if(horse.have_got_card("venenum_veneficum"))
+        	   { pos+=(sprint-1); have_an_effect=1;} 
+		if(have_an_effect == 1 )
+		   { horse.set_posizione(pos);return true;}
+		return false;
+	 }
+	
+	//<------------CARTE CHE AGISCONO DURANTE LO SVOLGIMENTO DELLA GARA + METODI PRIVATI DI SERVIZIO ---------> 
+	/**
+	 * Metodo che controlla se ci sono carte che influenzano il comportamento del cavallo
+	 * in base alla posizione
+	 * @param horse
+	 * @param elenco
+	 * @return
+	 */
+	public boolean check_position_card(Cavallo horse , ArrayList <Cavallo> elenco)
+	{
+		int pos = horse.get_posizione();
+		if(is_last_horse(horse.get_posizione(), elenco) && horse.have_got_card("vigor_ferreum"))
+		{
+	     horse.set_posizione(pos+=4);
+	     return true;
+		}
+		if(is_first_horse(horse.get_posizione(), elenco) && horse.have_got_card("felix_infernalis"))
+		{
+	     return true; //ritorno true dicendo che ha gia' mosso anche se non ha mosso niente
+		}
+			
+		return false;
+	}
+	
+	/**
+	 * Metodo che controlla se un cavallo e' ultimo ( anche a parimerito )
+	 * Se pos e' maggiore di qualche posizione di un cavallo in gioco allora non e' ultimo
+	 * altrimenti e' ultimo
+	 * @param pos e' la posizione del cavallo che mi interessa
+	 * @param elenco e' l'elenco di cavalli in gioco 
+	 * @return
+	 */
+	private boolean is_last_horse(int pos , ArrayList <Cavallo> elenco)
+	{
+    for (Cavallo horse : elenco)
+        {
+    	 if(pos>horse.get_posizione())
+    		 { return false; }
+        }
+    return true;
+	}
+	
+	/**
+	 * Controllo se la posizione del cavallo passata come parametro e' la prima
+	 * anche a parimerito con qualche altro cavallo.
+	 * @param pos
+	 * @param elenco
+	 * @return
+	 */
+	private boolean is_first_horse(int pos , ArrayList <Cavallo> elenco)
+	{
+		 for (Cavallo horse : elenco)
+	        {
+	    	 if(pos<horse.get_posizione())
+	    		 { return false; }
+	        }
+	    return true;	
+	}
+	
+	
+	//-------------------CARTE CHE AGISCONO ALLA FINE QUANDO I CAVALLI SONO ARRIVATI------------------>
+	
+	/**
+	 * Metodo che controlla se ci sono carte che influenzano il comportamento del cavallo
+	 * alla fine del percorso
+	 * @param horse
+	 */
+	public void check_final_card(Cavallo horse , int lunghezza_percorso)
+	{
+		if(horse.get_posizione() >= lunghezza_percorso && horse.have_got_card("XIII"))
+			{ horse.set_posizione(lunghezza_percorso+1); }
+		else
+			if(horse.get_posizione() >= lunghezza_percorso && horse.have_got_card("fustis_et_radix"))
+				{ horse.set_posizione(horse.get_posizione()+2); }
+	}
+	
+	//<----------------------------------------------------------------------------------------------->
+
+}

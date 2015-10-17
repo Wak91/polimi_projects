@@ -1,0 +1,32 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+public class Carta_personaggio extends Carta {
+
+	
+	private String Nome_carta;
+	private int soldi;
+	private String scuderia;   
+	
+	/**
+	 * 
+	 * @param nc = nome della carta 
+	 * @param s = soldi bonus 
+	 * @param scud = proprietario della scuderia scud ( quotazione ) 
+	 */
+	
+	public Carta_personaggio(String nc , int s , String scud)
+	{
+	 super();
+	 this.Nome_carta = nc;
+	 this.soldi= s;
+	 this.scuderia = scud;
+	}
+	
+	public void visualizza()
+	{
+	System.out.println("Nome_carta: --> "+ this.Nome_carta);
+	System.out.println("Soldi --> "+this.soldi);
+	System.out.println("Scuderia: --> "+this.scuderia);
+	}
+	
+}

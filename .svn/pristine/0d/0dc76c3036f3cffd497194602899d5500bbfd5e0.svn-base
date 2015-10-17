@@ -1,0 +1,135 @@
+package Model;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import javax.swing.ImageIcon;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+/**
+ * La classe carta movimento contiene un arraylist di movimento, ogni oggetto di tipo movimento
+ * indica per ogni quotazione di quanto deve muoversi.
+ */
+
+public class Carta_movimento extends Carta implements Serializable {
+
+	private final ArrayList <Movimento> val;
+	private String immagine;
+	private String retro;
+	private static final String path_carte="immagini_carte_movimento/";
+
+	public Carta_movimento(String immagine)
+	{
+	super();
+	val = new ArrayList <Movimento>();	
+	this.immagine = immagine;
+	String retro = path_carte + "retro.jpg";
+	this.retro = retro;
+	}
+	
+	/**
+	 * Data una quotazione ritorna di quanto deve moversi secondo questa carta movimento.
+	 * @param quotazione
+	 * @return
+	 */
+	public int get_movimento(int quotazione)
+	{
+		for(Movimento m : val)
+		   {
+			if(quotazione == m.getQuote())
+				{ return m.getStep(); }
+		   }
+		return -1; //errore, qua non dovrei arrivarci mai, altrimenti esplode il gioco
+	}
+	
+	/**
+	 * Ritorna un reference all'ArrayList della carta movimento.
+	 * @return
+	 */
+	public ArrayList <Movimento> get_movimenti()
+	{
+		return val; //occhio al rep
+	}
+	
+	public String getImmagine()
+	{
+		return this.immagine;
+	}
+	
+	public void visualizza()
+	{
+    for( Movimento m : val)
+    	{ m.visualizza(); }
+	}
+	
+	public void aggiungi(Movimento m)
+	{
+		val.add(m);
+	}
+	
+
+	/**
+	 * Metodo utilizzato per estrarre dall'XML tutte le carte di tipo movimento in un mazzo 
+	 * passato come parametro
+	 * @param m
+	 */
+	public static void Extract_all_in(Mazzo m)
+	{
+	  try 
+		   {	
+			File file = new File("CarteXml/Carte_movimento.xml");
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
+			Document document = docBuilder.parse(file);
+			
+			document.getDocumentElement().normalize();
+			NodeList  listNode= document.getElementsByTagName("Carta");
+			for (int i=0;i<listNode.getLength();i++)
+			{
+				Node node=listNode.item(i);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					String immagine = path_carte+ element.getElementsByTagName("Immagine").item(0).getTextContent();
+					Carta card = new Carta_movimento(immagine);
+					int quot1_2 = Integer.parseInt(element.getElementsByTagName("Quotazione1_2").item(0).getTextContent());
+					Movimento mov = new Movimento(0,quot1_2);  //costruisco la tupla movimento per la prima quotazione
+					card.aggiungi(mov);
+					int quot1_3 = Integer.parseInt(element.getElementsByTagName("Quotazione1_3").item(0).getTextContent());
+					 mov = new Movimento(1,quot1_3);  //costruisco la tupla movimento per la prima quotazione
+					card.aggiungi(mov);
+					int quot1_4 = Integer.parseInt(element.getElementsByTagName("Quotazione1_4").item(0).getTextContent());
+					 mov = new Movimento(2,quot1_4);  //costruisco la tupla movimento per la prima quotazione
+					card.aggiungi(mov);
+					int quot1_5 = Integer.parseInt(element.getElementsByTagName("Quotazione1_5").item(0).getTextContent());
+					 mov = new Movimento(3,quot1_5);  //costruisco la tupla movimento per la prima quotazione
+					card.aggiungi(mov);
+					int quot1_6 = Integer.parseInt(element.getElementsByTagName("Quotazione1_6").item(0).getTextContent());
+					 mov = new Movimento(4,quot1_6);  //costruisco la tupla movimento per la prima quotazione
+					card.aggiungi(mov);
+					int quot1_7= Integer.parseInt(element.getElementsByTagName("Quotazione1_7").item(0).getTextContent());
+					 mov = new Movimento(5,quot1_7);  //costruisco la tupla movimento per la prima quotazione
+					card.aggiungi(mov);
+					m.addCard(card);  // quando ho scandito tutti i movimenti la aggiungo al mazzo ( la funzione incrementa anche la size )
+				}
+			}
+			m.mischia(); // diamo una mischiata al mazzo corrente 
+		
+		   }
+		
+		catch (Exception e)
+		{
+			System.out.println(e);	
+		}
+  }
+}

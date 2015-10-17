@@ -1,0 +1,52 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import Controller.Controller;
+import java.awt.*;
+import java.rmi.server.UID;
+
+import javax.swing.JOptionPane;
+import View.GUI_interface;
+import View.Text_interface;
+import View.User_interface;
+import View.Welcome_horse_fever;
+
+
+class Main {
+
+	private static Controller game_controller;
+
+	
+	public static void main(String args[])
+	{
+		boolean procedi = true;
+		Welcome_horse_fever whf = new Welcome_horse_fever();
+		whf.starter();
+		if(GameOption.gui_text == 1)
+		  {
+			User_interface uInterface = new GUI_interface();
+			game_controller = new Controller(uInterface);			
+		  }
+		else
+		  {
+			User_interface uInterface= new Text_interface();
+			game_controller = new Controller(uInterface);
+			//uInterface.add_controller(game_controller);
+
+		  }
+		game_controller.make_player();
+		do
+		{
+		game_controller.primo_giro_scommesse();
+		game_controller.truccare_gara();
+		game_controller.secondo_giro_scommesse();
+		game_controller.start_gara();
+		game_controller.pay();
+		procedi = game_controller.sistema();
+		} while (procedi == true);
+	
+	}
+	
+	
+	
+	
+}

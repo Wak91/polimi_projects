@@ -1,0 +1,45 @@
+package Model;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public interface Model_interface {
+
+	public void init_segnalini();
+	public Giocatore next_giocatore(String senso);
+	public Giocatore get_giocatore_corrente();
+	public void set_primo_giocatore(String senso);
+	public void init_num_gioc_turno();
+	public boolean has_next_gioc_turno();
+	public void set_gioc_turno() ;
+	public int get_gioc_turno();
+	public Giocatore get_primo_giocatore(String senso);
+	public Carta_personaggio create_player(String nome);
+	public ArrayList <Giocatore> get_giocatori();
+	public void add_card_player(Giocatore player);
+	public boolean check_disp_scuderia(String colore_scommessa);
+	public boolean check_tipo_scommessa(Giocatore player, String bet_type , String colore);
+	public void piazza_scommessa(Giocatore player , int importo_scommessa , String bet_type , String colore_scommessa);
+	public Carta_azione card_at_index(int index, Giocatore player);
+	public Cavallo horse_from_color(String color);
+	public void add_card_horse(Cavallo horse, Carta_azione card);
+	public ArrayList <Cavallo> get_cavalli();
+	public void sub_segnalino_color(String colore);
+	public int getLunghezzaPercorso();
+	public void partenza();
+	public void running();
+	public ArrayList <String> getClassifica();
+	public HashMap<String, ArrayList<Integer>> pay_price() ;
+	public ArrayList<Giocatore> sistema_giocatori();
+	public boolean sistema_gioco();
+	public ArrayList <Scommessa> get_player_bets(Giocatore player);
+	public void init_turni();
+	public Carta_movimento give_carta_movimento();
+	public Integer getFaseCorsa();
+	public void sprinting();
+	public Integer getsituazione();
+	public boolean check_traguardo();
+
+	
+	
+}

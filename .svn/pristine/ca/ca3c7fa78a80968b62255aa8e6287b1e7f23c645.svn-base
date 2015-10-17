@@ -1,0 +1,146 @@
+
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+/**
+ * Classe cavallo gestisce posizione e carte associate alla pedina
+ * @author Lorenzo
+ * @param <T>
+ *
+ */
+public class Cavallo implements Comparable {
+	private int posizione;
+	private ArrayList<Carta_azione> carte_azione;
+	private String colore;
+	private int in_game;
+	
+	/**
+	 * setto posizione iniziale a 0 partenza
+	 */
+	public Cavallo(String color) {
+		this.posizione=1;
+		carte_azione=new ArrayList<Carta_azione>();
+		this.colore = color;
+		this.in_game=1;
+	}
+
+	public int  get_posizione() {
+		return this.posizione;		
+	}
+	public void set_posizione(int pos) {
+		this.posizione=pos;		
+	}
+	public String get_color() {
+		return this.colore;
+	}
+	
+	public int get_in_game()
+	{
+		return this.in_game;
+	}
+	
+	public void out_of_game()
+	{
+		this.in_game = 0;
+	}
+	public void add_carta_azione(Carta_azione carta){
+		carte_azione.add(carta);
+	}
+	public void delete_action_card(Carta_azione carta) {
+		carte_azione.remove(carta);
+	}
+	
+	public ArrayList<Carta_azione> get_carte_azione(){
+		ArrayList<Carta_azione> carte_az = new ArrayList<Carta_azione>();
+		for (Carta_azione carta : carte_azione) {
+			carte_az.add(carta);
+		}
+		return carte_az;	
+	}
+	
+	/**
+	 * Data una carta, il cavallo cerca tra le sue carte azione se quella
+	 * carta e' presente e ritorna un boolean
+	 * Utile per capire lato corsa se un cavallo possiede una determinata carta delegando
+	 * il controllo qua dentro.
+	 * @param s e' la stringa ( nome della carta ) da cercare 
+	 * @return boolean 
+	 */
+	public boolean have_got_card(String s)
+	{
+		for(Carta_azione ca : carte_azione)
+		{
+			if(s.equals(ca.getNome()))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * mostro a schermo le carte associate a cavallo
+	 */
+	public void show_carte_azione() {
+		if (carte_azione.isEmpty())
+			System.out.println("Non ci sono carte su questo cavallo");
+		else{
+			for (Carta_azione carta : carte_azione) {
+				carta.visualizza();		
+			}
+		}
+	}
+	
+	/**
+	 * solo per test
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Cavallo cavallo = new Cavallo("rosso");
+		cavallo.show_carte_azione();
+		Mazzo mazzo = new Mazzo();
+		Carta_azione.Extract_all_in(mazzo);
+		Carta_azione card =  (Carta_azione)mazzo.pesca();
+		cavallo.add_carta_azione(card);
+		cavallo.show_carte_azione();
+
+		
+	}
+
+
+
+	/**
+	 * paragona l�oggetto corrente (this) con l�oggetto fornito in input al metodo (o).
+       Il risultato sar�:
+       un intero positivo se this>o
+       0 se sono uguali
+       un intero negativo se this<0
+       
+    */
+	//@Override
+	public int compareTo(Object arg0) {
+		Cavallo c = (Cavallo) arg0;
+		if(this.get_posizione() > c.get_posizione())
+			return -1;
+		if(this.get_posizione() < c.get_posizione())
+		    return 1; 
+		if(this.get_posizione() == c.get_posizione())
+		  {
+			if(this.have_got_card("in_igni_veritas"))
+				 return -1; // se ho in_igni_veritas piazzo il cavallo in cima alla lista finalisti
+			 else
+				 if(this.have_got_card("mala_tempora"))
+					 return 1; // se ho mala tempora lo piazzo nella ultima posizione dei finalisti
+			if(Lavagna.getPosizione(this.colore) < Lavagna.getPosizione(c.colore))
+			   return -1;
+			if(Lavagna.getPosizione(this.colore) > Lavagna.getPosizione(c.colore))
+				   return 1;
+			if(Lavagna.getPosizione(this.colore) == Lavagna.getPosizione(c.colore))
+				   return -1;
+		  }
+		return 0;
+	}
+
+	
+	
+
+}

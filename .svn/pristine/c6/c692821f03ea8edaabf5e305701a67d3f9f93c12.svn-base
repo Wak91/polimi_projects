@@ -1,0 +1,349 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+public class Giocatore {
+	
+	private final String name;
+	private int money ;
+	private int pv;
+	private int min_bet;
+	private String scuderia;
+
+
+	
+	private final Carta_personaggio character_card;
+	private ArrayList<Carta_azione> action_cards;
+		 
+	private ArrayList <Scommessa> bet_list; //<-- non creare qua l'oggetto, istanzia e basta scommesse, altrimenti diventa attributo STATICo di Giocatore
+	
+	// private colore [] arry <--- il giocatore proprietario di alcune scuderie ( identificate solo dal colore, non serve una classe )
+	// private ArrayList <Carta> my_card <--- il giocatore ha un array di carte possedute ( azione, cavallo, scuderia, aiutante...), la classe astratta Carta qua � molto utile!  
+		
+	
+	
+	/**
+	 * costruttore crea un oggetto personaggio settando pv a 1 e min_bet a 100
+	 * @param nome
+	 * @param carta_personaggio
+	 */
+	public Giocatore(String nome,Carta_personaggio carta_personaggio) {
+		this.name = nome;
+		this.character_card = carta_personaggio;
+		this.pv=1;
+		this.min_bet=100;
+		this.money= carta_personaggio.get_soldi();
+		this.scuderia= carta_personaggio.get_scuderia();	
+	}
+
+//<----------------------------------------------GETTER------------------------------------------------------>
+	
+	public int get_money() {
+		return this.money;		
+	}
+	
+	public int  get_pv() {
+		return this.pv;		
+	}
+	
+	public int get_min_bet() {
+		return this.min_bet;		
+	}
+	
+	public String get_scuderia() {
+		return this.scuderia;
+	}
+	
+	public Carta_personaggio get_character_card(){
+		return this.character_card;
+	}
+	
+	/**
+	 * ritorna le carte azione di cui il giocatore dispone sotto forma di arraylist
+	 * @return
+	 */
+	public ArrayList<Carta_azione> get_action_cards(){
+		ArrayList<Carta_azione> carte_azione = new ArrayList<Carta_azione>();
+		for (Carta_azione carta_azione : action_cards) {
+			carte_azione.add(carta_azione);			
+		}
+		return carte_azione;
+	}
+	
+	/**
+	 * Ritorna scommesse del giocatore creando nuovo oggetto Arralist Scommessa quindi non esponendo il rep
+	 * @return 
+	 */
+	public ArrayList <Scommessa> get_scommesse(){
+		ArrayList<Scommessa> scommesse =new ArrayList<Scommessa>();
+		for (Scommessa bet : bet_list) {
+			scommesse.add(bet);		//non necessario clonare bet perche scommessa e immutabile
+			
+		}
+		return scommesse; // come dicevamo occhio al rep.
+	}
+	
+//<----------------------------------------------GESTIONE PUNTI VITTTORIA------------------------------------------------------>
+	
+	
+	
+	/**
+	 * sottrae pv al giocatore e aggiorna scommessa minima se rimangono 0 pv viene lanciata eccezione (giocatore da eliminare dal gioco)
+	 * @param pv
+	 * @throws IllegalArgumentException 0 pv
+	 */
+	public void sub_pv (int pv) throws IllegalArgumentException {
+		this.pv=this.pv-pv;
+		this.min_bet=this.pv*100;
+		if(this.pv==0){
+			throw new IllegalArgumentException();
+		}	
+	}
+	
+	/**
+	 * aggiunge pv al giocatore separata da sottrai solo per chiarezza e aggiorna la scommessa minima che dipende da essi
+	 * @param pv
+	 */
+	public void add_pv(int pv) {
+		this.pv=this.pv+pv;
+		this.min_bet=this.pv*100;	
+	}
+	
+	
+//<----------------------------------------------GESTIONE CARTE------------------------------------------------------>
+	
+	
+	/**
+	 * giocaotre gioca carta su un cavallo => tolgo carta da giocatore e aggiungo a cavallo !!!IMP IO PASSO A CAVALLO LA CARTA SE è IMMUTABILE NON C'è PROBLEMA ALTRIMENTI...PARLARE CON FABIO
+	 * @param carta
+	 * @param horse
+	 * @throws IllegalArgumentException quando il giocatore cerca di giocare una carta che non ha
+	 */
+	public void play_action_card(Carta_azione carta,Cavallo horse){
+		for (Carta_azione card : action_cards) {
+			if (card.getNome()==carta.getNome()) {
+				horse.add_carta_azione(carta);
+				action_cards.remove(card);
+				return;
+			}
+			
+		}
+		throw new IllegalArgumentException();
+	}
+	
+	public void add_action_card(Carta_azione carta){
+		if (action_cards==null){							//eseguito quando viene aggiunta la prima carta
+			action_cards = new ArrayList<Carta_azione>();
+		}
+		action_cards.add(carta);		
+	}	
+	
+	public void show_action_cards() {
+		if (action_cards==null || action_cards.isEmpty()){
+			System.out.println("Non ci sono carte azione associate al giocatore");
+		}
+		else{
+			for (Carta_azione card : action_cards) {
+					card.visualizza();
+			}
+		}
+	}
+	
+//<----------------------------------------------GESTIONE SCOMMESSA------------------------------------------------------>
+	
+		
+	/**
+	 * Aggiunge una scommessa al giocatore
+	 * @param denaro  denaro della scommessa deve essere maggiore di scommessa min del giocatore altrimenti eccezione viene sollevata
+	 * @param colore	colore cavallo su cui scommette
+	 * @param tipo		 scommessa Vincente o Piazzata
+	 * @throws IllegalArgumentException
+	 */	
+	public void Scommette(int denaro,int colore,int tipo) throws IllegalArgumentException{
+		if (denaro<this.min_bet) 
+			throw new IllegalArgumentException("Denaro deve essere maggiore della scommessa minima");
+		else if (denaro>this.money) {
+			throw new IllegalArgumentException("Non hai abbastanza soldi per questa scommessa"); 
+		}
+		else { 
+			Scommessa bet = new Scommessa(denaro, colore, tipo);
+			System.out.println(bet.toString());
+			if (bet_list==null) {						//eseguito nella prima scommessa per creare array scommesse
+				bet_list= new ArrayList<Scommessa>();
+			}
+			bet_list.add(bet);
+			this.money=this.money-denaro;
+		}
+		
+	}
+	
+	
+	/**
+	 * Scrive a schermo le scommesse
+	 * 
+	 */
+	public void show_scommesse() {
+		if (this.bet_list==null || this.bet_list.isEmpty()) {
+			System.out.println("\nNon sono state effettuate scommesse");
+			
+		}
+		else {			
+			for (Scommessa scommessa : this.bet_list) {
+				scommessa.show_scommessa();
+			}
+		}
+		
+	}
+	
+
+//<----------------------------------------------METODI GENERALI------------------------------------------------------>
+
+	public void set_money(int denaro) {
+		this.money=denaro;
+		
+	}
+	
+	public String toString() {
+		String giocatore = new String();
+		giocatore="<---------------->\n";
+		giocatore += "Nome:"+this.name+"\nDenaro: "+this.money+"\nPV: "+this.pv+"\nScommessa min: "+this.min_bet+"\nScuderia: "+this.scuderia;
+		giocatore+="\nCARTA GIOCATORE"+this.character_card.toString();
+		giocatore+="\nSCOMMESSE:";
+		if (bet_list!=null) {	
+			giocatore+=("\nScommessa");
+			for (Scommessa scommessa : bet_list) {
+				giocatore+=scommessa.toString();		
+			}
+		}
+		giocatore+="\nCARTE AZIONE:";
+		giocatore+="\nCarta";
+		if (action_cards!=null){
+			for (Carta_azione card : action_cards) {
+				giocatore+=card.toString();
+			}
+		}
+		giocatore+="\n<---------------->";
+
+		return giocatore;
+	}
+	
+	
+	
+	
+	/**
+	 * Funzione che dovra essere inserita in gioco per gestire input utente riceve un range bottom e top e controlla che l'input 
+	 * sia compreso in esso message indica il messaggio che si vuole sia mostrato a schermo la prima volta
+	 * ho deciso di usare interi che rendono il gioco piu immediato rispetto al digitare stringhe
+	 * @param bottom  limite inferiore
+	 * @param top		limite superiore
+	 * @param message	messagio mostrato la prima volta
+	 * @return	l'intero nel range inserito dall'utente
+	 */
+	private static int input_check(int bottom,int top,String message){
+		boolean ok=false;
+		int input=0;
+		System.out.println(message);
+		while (!ok){
+			Scanner scanner = new Scanner(System.in);
+			
+			try {
+				 input = Integer.parseInt(scanner.nextLine());
+				if (input<bottom || input>top) {
+					System.out.println("Inserisci un numero da:"+bottom+" a "+top);
+				}
+				else {
+					ok=true;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Inserisci un numero");
+			}
+		}
+		return input;
+	}
+	
+	
+	/**SISTEMARE BUG Inserisci numero da 0 a 0 quando hai finito i soldi
+	 * DIVENTERA METODO STATICO DI GIOCO ANCHE SE STO PENSANDO SERIAMENTE DI FARE UNA CLASSE SCOMMESSA PERCHE STA DIVENTANDO UN PO GROSSA
+	 * Questo metodo gestisce l'input del denaro della scommessa senza modificare nessun attributo di giocatore
+	 * @param player serve per sapere il suo denaro e la scommessa minima;
+	 * @return ritorna i soldi scommessi controllando che siano superiori alla scommessa minima e inferiori ai soldi totali
+	 */
+	public static int handle_cash_text_mode(Giocatore player) {
+		boolean exit=false;
+		int number_cash;	//numero banconote
+		int type_cash;		//tipo banconote 50,100...
+		int den=0;			//denaro scommesso
+		while (!exit){	
+			type_cash = Giocatore.input_check(0,3,"Ora hai:"+(player.get_money()-den)+"€"+"\nInserisci banconota da inserire:\n[0]50\n[1]100\n[2]1000\n[3]FINE");
+			switch (type_cash) {
+			case 0:
+				 number_cash=Giocatore.input_check(0, (player.get_money()-den)/50, "Inserisci quante banconote da 50 vuoi");
+					 den+=number_cash*50;				
+				break;
+	
+			case 1:
+				number_cash=Giocatore.input_check(0, (player.get_money()-den)/100, "Inserisci quante banconote da 100 vuoi");
+					 den+=number_cash*100;				
+				break;
+			case 2:
+				number_cash=Giocatore.input_check(0, (player.get_money()-den)/1000, "Inserisci quante banconote da 1000 vuoi");
+					den+=number_cash*1000;
+					break;
+			case 3:
+				if(den>=player.get_min_bet())
+				exit=true;
+				else {
+					System.out.println("Devi Scommettere almeno "+player.get_min_bet());
+				}
+			}
+			
+		}
+		
+		return den;
+		
+	}
+	
+
+	//------MAIN PER TESTING--------
+	
+	public static void main(String[] args) 
+	
+	{	Carta_personaggio personaggio = new Carta_personaggio("dd", 2000, "da");
+		Giocatore pippo = new Giocatore("pippo",personaggio);
+		Mazzo mazzo = new Mazzo();
+		Carta_azione.Extract_all_in(mazzo);
+		
+		pippo.add_action_card((Carta_azione)mazzo.pesca());
+		System.out.println(pippo.toString());
+		pippo.show_scommesse();			
+		System.out.println("Inserisci denaro:\nMININO:"+pippo.get_min_bet()+"\nMASSIMO :"+pippo.get_money());
+		
+		
+		int den = Giocatore.handle_cash_text_mode(pippo);	
+		int col = Giocatore.input_check(0,5,"Inserisci colore:\n[0]Rosso\n[1]Verde\n[2]Giallo\n[3]Blu\n[4]Nero\n[5]Bianco");
+		int tipo = Giocatore.input_check(0,1,"Inserisci tipo scommessa:\n[0]Vincente\n[1]Piazzata");
+		
+		
+		try {		
+
+			pippo.Scommette(den, col, tipo);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		pippo.add_action_card((Carta_azione)mazzo.pesca());
+		pippo.add_action_card((Carta_azione)mazzo.pesca());
+
+		
+		System.out.println(pippo.toString());
+		//pippo.Show_scommesse();
+			
+		
+	}
+	
+	//------MAIN PER TESTING--------
+
+}
+

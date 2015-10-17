@@ -1,0 +1,246 @@
+package Controller;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Currency;
+
+import javax.swing.JOptionPane;
+
+import Controller_events.HorseFeverEventController;
+import Controller_events.askScommessaEvent;
+import Controller_events.getNomePlayerEvent;
+import Controller_events.getNumPlayerEvent;
+import Model.Carta_azione;
+import Model.Carta_personaggio;
+import Model.Cavallo;
+import Model.Game;
+import Model.Giocatore;
+import Model.Lavagna;
+import Model.Model_interface;
+import Model.Scommessa;
+import View.GUI_interface;
+import View.Text_interface;
+import View.User_interface;
+
+
+public class Controller implements Controller_Interface {
+
+	private Model_interface model;
+	private User_interface Ui;
+	
+	private int num_giocatori;
+
+	public Controller(User_interface UserIface,Model_interface model_interface){
+		Ui=UserIface;
+		model=model_interface;
+	}
+	
+	
+	public void get_player_number() {
+		HorseFeverEventController event =new getNumPlayerEvent(this);
+		Ui.get_num_player(event);
+	}
+	
+	
+	public void  how_many_player(int num_g) {
+		num_giocatori=num_g;
+		num_giocatori--;
+		HorseFeverEventController event = new getNomePlayerEvent(this);
+		Ui.get_nome_player(event);
+		
+		
+		
+		}
+	
+	public void create_player(String nome) {
+		model.create_player(nome);
+		System.out.println(nome);
+		if (num_giocatori>0){
+			HorseFeverEventController event = new getNomePlayerEvent(this);
+			Ui.get_nome_player(event);
+			num_giocatori--;
+			
+		}
+		else {
+			HorseFeverEventController evento=new askScommessaEvent(this);
+			Ui.get_scommessa(evento);
+		}
+	}
+	/*
+	public void piazza_scommessa(Event) {
+		model.piazzascommessa;
+		
+	}
+	
+	
+	
+	public void make_player(){
+		int i;
+		int num_g = Ui.get_num_player();
+		System.out.println( "numero di giocatori " + num_g);
+		for(i=0;i<num_g;i++)
+		{
+			String nome = Ui.get_player(i);
+			System.out.println(nome);
+		    Carta_personaggio card = model.create_player(nome);
+		    Ui.show_carta_personaggio(nome,card);
+		}
+		model.init_segnalini();
+		
+		}*/
+	
+	public  void primo_giro_scommesse() {
+		String colore_scommessa;
+		int importo_scommessa;
+		String tipo_scommessa;
+		ArrayList<Giocatore> players = model.get_giocatori(); 
+		for(Giocatore player : players)
+		   {
+			model.add_card_player(player);
+			Ui.show_action_card(player);
+			colore_scommessa = Ui.get_cavallo_scommessa();			//prendo il colore scommessa
+			while ( model.check_disp_scuderia(colore_scommessa)==false)	{		//controllo se segnali sul cavallo sono sufficienti
+				colore_scommessa = Ui.get_cavallo_scommessa("SEGNALINI CAVALLO ESAURITI SCOMMETTI SU UN ALTRO COLORE");
+				}
+			importo_scommessa = Ui.get_soldi_scommessa(player);	//prendo soldi
+			tipo_scommessa =Ui.get_tipo_scommessa();//prendo il tipo e controllo regola piazzato vincente
+
+			while (!model.check_tipo_scommessa(player, tipo_scommessa, colore_scommessa))
+			{
+				tipo_scommessa =Ui.get_tipo_scommessa("HAI GIA FATTO UNA SCOMMESSA COSI SE HAI SCELTO PIAZZATO ORA SCEGLI VINCENTE E VICEVERSA");
+			}
+
+			model.piazza_scommessa(player, importo_scommessa, tipo_scommessa, colore_scommessa);
+		   }
+		for (Giocatore player : players) {
+
+			Ui.show_all_bet(player);	
+		}
+
+	}
+	
+	/**
+	 * Fa' scegliere la carta azione ad un giocatore e il cavallo su cui giocarla
+	 * richiamando poi il metodo add_card_horse
+	 */
+	public  void truccare_gara() {
+		for (Giocatore player : model.get_giocatori()) {
+			int card_choose = Ui.get_action_card_played(player);
+			Carta_azione card = model.card_at_index(card_choose, player);
+			String color = Ui.get_horse_affected();
+			Cavallo horse = model.horse_from_color(color);
+			
+			model.add_card_horse(horse, card);
+			
+			
+			}
+		for (Cavallo horse : model.get_cavalli()) {
+			Ui.show_action_horse(horse);
+		}
+					
+	}	
+	
+	/**
+	 * Effettua il secondo giro di scommesse facoltative per ogni giocatore
+	 * facendo prima il check se c'e' disponibilita' di denari
+	 */
+
+	public  void secondo_giro_scommesse() {
+		String colore_scommessa;
+		int importo_scommessa;
+		String tipo_scommessa;
+		boolean seconda_scommessa = false;
+		ArrayList<Giocatore> players = model.get_giocatori(); 
+		
+		Collections.reverse(players); //deve scommettere a partire dall'ultimo
+		for (Giocatore player : players) {	
+			if (player.get_money()>player.get_min_bet())			// controllo se ha abbastanza soldi per la seconda scommessa e se vuole farla
+				{ seconda_scommessa=Ui.make_seconda_scommessa(player); }
+			else {
+				Ui.not_enough_money(player.get_nome());
+				seconda_scommessa=false;
+			}
+			if (seconda_scommessa==true){	
+				colore_scommessa = Ui.get_cavallo_scommessa();			//prendo il colore scommessa
+				while (model.check_disp_scuderia(colore_scommessa)==false){			//controllo se segnali sul cavallo sono sufficienti
+					colore_scommessa = Ui.get_cavallo_scommessa("SEGNALINI CAVALLO ESAURITI SCOMMETTI SU UN ALTRO COLORE");
+				}
+				model.sub_segnalino_color(colore_scommessa);
+				
+				importo_scommessa = Ui.get_soldi_scommessa(player);	//prendo soldi
+				
+				tipo_scommessa =Ui.get_tipo_scommessa();
+				while (model.check_tipo_scommessa(player, tipo_scommessa, colore_scommessa)==false){
+					tipo_scommessa =Ui.get_tipo_scommessa("HAI GIA FATTO UNA SCOMMESSA COSI SE HAI SCELTO PIAZZATO ORA SCEGLI VINCENTE E VICEVERSA");
+				}
+				
+				model.piazza_scommessa(player, importo_scommessa, tipo_scommessa , colore_scommessa);
+			}
+			
+		}
+		for(Giocatore player : players)
+		   { Ui.show_all_bet(player); }		
+
+			
+	}
+	
+	public void start_gara()
+	{
+	 boolean run=true;
+	 model.partenza();
+	 Ui.show_corsa(model.get_cavalli(), model.getLunghezzaPercorso());
+	 do
+	 {
+      run = model.running();	
+      Ui.show_corsa(model.get_cavalli(), model.getLunghezzaPercorso());  // per far vedere anche la classifica per ogni cavallo che passa il traguardo posso passare anche la classifica qua
+	 }while(run==true);
+	 Ui.show_classifica(model.getClassifica());
+	 Lavagna.updateLavagna(model.getClassifica());
+	}
+
+
+	public void pay() {
+	
+		ArrayList <Integer> price=new ArrayList<Integer>();
+		for(Giocatore player : model.get_giocatori())
+		{
+			for ( Scommessa bet : model.get_player_bets(player))
+			{
+			price = model.make_payment_bet(player, bet);
+			if(price!=null)
+			  {Ui.show_win_money(player,price.get(0),price.get(1));}
+			else
+			  {Ui.show_lost_money(player);}
+			price = model.make_payment_scud(player);
+			if(price!=null)
+			  {Ui.show_win_scud(player,price.get(0));}
+			else
+			  {}
+			}
+		}
+		
+	}
+	
+	public boolean sistema(){
+		
+		for(Giocatore player : model.get_giocatori())
+		   {
+			model.sistema_giocatori(player);
+		   }
+		boolean check = model.sistema_gioco();
+		if(check == true && model.get_giocatori().size()==0)
+		  {
+			Ui.show_bad_end_message();
+			return false;
+		  }
+		else
+			if(check == true)
+			  {
+				Ui.show_winner(model.get_giocatori().get(0).get_nome());
+				return false;
+			  }
+		return true;	    
+	}
+	
+	
+}

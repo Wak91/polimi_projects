@@ -1,0 +1,17 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+
+import Model.Carta_azione;
+import Model.Carta_personaggio;
+import Model.Scommessa;
+
+public interface GiocatoreInterface {
+	public String get_nome();
+	public int get_money();
+	public int get_min_bet();
+	public Carta_personaggio get_character_card();
+	public ArrayList<Carta_azione> get_action_cards();
+	public ArrayList <Scommessa> get_scommesse();
+	public Carta_azione  get_card_at_index(int i);
+}

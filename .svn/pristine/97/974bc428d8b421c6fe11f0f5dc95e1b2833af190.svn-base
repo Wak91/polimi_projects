@@ -1,0 +1,37 @@
+package Model;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.Serializable;
+import java.util.StringTokenizer;
+
+import javax.swing.ImageIcon;
+
+/**
+ * Classe astratta estesa da tutte le carte. 
+ *
+ */
+public abstract class Carta implements Serializable {
+	
+	//set of the abstract costructor 
+	public Carta ()
+	{}
+		
+	//metodo re-implementato nelle classi che estendono carta per visualizzare correttamente la carta
+	public void visualizza()
+	{}
+
+	//metodo che serve esclusivamente per le carte_movimento ( non tanto bello qua )
+	public void aggiungi(Movimento m)
+	{}
+	
+	//ritorna il nome della carta, utile per capire quali carte azioni sono attive su una pedina
+	public String getNome()
+	{
+		return "";
+	}
+	
+	public String getImmagine()
+	{ return null;};
+}
+

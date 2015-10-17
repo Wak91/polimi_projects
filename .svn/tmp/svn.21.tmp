@@ -1,0 +1,214 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Observable;
+import java.util.Scanner;
+
+
+
+public class Game {
+	
+	private static User_interface Ui;
+	
+	//switch tra il tipo di interfaccie, per ora ne abbiamo solo 2...
+	private static int mode; //0=text 1=GUI
+	//-----------------------------------------------
+	
+	//---NUMERO TURNI DELLA PARTITA
+	private static int turni;
+	//-----------------------------------------------
+	
+	//---DISPONIBILITA DI SEGNALINI PER SCUDERIA
+	private static HashMap <String , Integer> disp_scuderia;
+	//-----------------------------------------------
+	
+	//---SCUDERIE
+	private static ArrayList <String> colori;
+	//-----------------------------------------------
+	
+	//---MAPPA GIOCATORI-SEGNALINI SCUD-NUMERO TURNI
+	private static HashMap<Integer,Integer[]> map_segnalino; 	
+	//-----------------------------------------------
+	
+	//---ELENCO GIOCATORI
+	private static ArrayList <Giocatore> elenco_giocatori = new ArrayList <Giocatore>();
+	//-----------------------------------------------
+	
+	//---ELENCO PEDINE
+	private static ArrayList <Cavallo> elenco_pedine = new ArrayList <Cavallo>();
+	//-----------------------------------------------
+	
+	//---INIZIALIZZAZIONE MAZZI---
+	private static Mazzo mAzione = new Mazzo();
+	private static Mazzo mPersonaggio = new Mazzo();
+	private static Mazzo mScuderia = new Mazzo();
+	private static Mazzo mMovimento = new Mazzo();
+	//-----------------------------------------------
+		
+	
+	/**
+	 * Funzione che viene richiamata da un interfaccia sotto e che setta il numero di
+	 * turni del gioco andando a guardare nella hash table quanti turni corrispondono a ng giocatori
+	 * @param ng rappresenta il numero di giocatori passato da un interfaccia text, gui, segnali fumo..
+	 */
+	public static void set_turni(int ng)
+	{
+		turni = get_num_turni(ng);
+	}
+		
+	/**
+	 * Inizializza la hash table in funzione del numero di giocatori, assegnando ad ogni colore ( scuderia )
+	 * il numero di segnalini corrispondente alle regole del gioco
+	 * @param num_g rappresenta il numero di giocatori passato da un interfaccia e dal suo metodo get_players_option
+	 */
+	public static void set_hash(int num_g)
+	{
+		for(String c : colori )
+		{
+			disp_scuderia.put(c, (get_num_segnalini(num_g)));
+		}
+	}
+	
+	public static Mazzo getMazzoPersonaggi()
+	{
+		return mPersonaggio;
+	}
+	
+	public static Mazzo getMazzoAzione()
+	{
+		return mAzione;
+	}
+	
+	
+	/**
+	 * Interroga la hash table che modella le regole del gioco per estrarre la corrispondenza
+	 * tra numero-giocatori e numero turni di gioco
+	 * @param num_players
+	 * @return
+	 */
+	public static int get_num_turni(int num_players)
+	{
+		Integer arry[] = map_segnalino.get(num_players);
+		return arry[1];
+	}
+	
+	/**
+	 * Interroga la hash table che modella le regole del gioco per estrarre la corrispondenza
+	 * tra numero-giocatori e numero segnalini scommessa per scuderia
+	 * @param num_players
+	 * @return
+	 */
+	public static int get_num_segnalini(int num_players)
+	{
+		Integer arry[] = map_segnalino.get(num_players);
+		System.out.println("" + arry[0]);
+		return arry[0];
+	}
+	
+	/**
+	 * Ritorna la lista di giocatori senza esporre il rep
+	 * @return
+	 */
+	public static ArrayList <Giocatore> get_giocatori()
+	{
+		ArrayList <Giocatore> gio = new ArrayList <Giocatore>();
+		for(Giocatore g : elenco_giocatori)
+		   {
+			gio.add(g);
+		   }
+	    return gio;
+	}
+	
+	
+	
+	/**
+	 * legge il numero di giocatori controllando che sia compreso tra 2 e 5 e inizializza chiedendo i nomi
+	 */
+
+	public static void init_players() {
+		elenco_giocatori = Ui.get_players();
+		}
+		
+		
+	
+	
+	public static void init_cavalli(){
+		for (String colore : colori) {
+			Cavallo c = new Cavallo(colore);
+			elenco_pedine.add(c);
+		}
+		
+	}
+	
+	public static void init_quotazioni()
+	{
+		 Collections.shuffle(colori);
+	        int key=5;
+	        for(String s : colori)
+	        {
+	        Quotazione q = new Quotazione(key,s);
+	        Lavagna.aggiungi_quotazione(q);
+	        key--;
+	        }	
+	}
+	
+	/**
+	 *inizializza la hashtable da cui ricavero il numero segnalini in funzione del numero di giocatori
+	 */
+	public static void init_hash(){
+		map_segnalino=new HashMap<Integer,Integer[]>();
+		map_segnalino.put(2,new Integer[] {1,6});
+		map_segnalino.put(3,new Integer[] {2,6});
+		map_segnalino.put(4,new Integer[] {3,4});
+		map_segnalino.put(5,new Integer[] {4,5});
+		map_segnalino.put(6,new Integer[] {4,6});
+		//gia che ci sono istanzio anche la hash base che varier�
+		disp_scuderia = new HashMap();
+	}
+	
+	public static void init_colori(){
+		
+		colori = new ArrayList <String>();
+		colori.add("nero");
+		colori.add("blu");
+		colori.add("verde");
+		colori.add("rosso");
+		colori.add("giallo");
+		colori.add("bianco");
+		
+	}
+	
+	/**
+	 * Metodo utilizzato come entry point del gioco, che effettua le operazioni piu basilari
+	 */
+	public static void INIT()
+	  {
+		Carta_azione.Extract_all_in(mAzione);
+		Carta_personaggio.Extract_all_in(mPersonaggio);
+		Carta_scuderia.Extract_all_in(mScuderia);
+		Carta_movimento.Extract_all_in(mMovimento);
+		init_colori();
+		init_cavalli();
+		init_hash();
+		init_quotazioni();
+		init_players();
+		Collections.shuffle(elenco_giocatori);
+	  }
+	
+	
+	
+	//-----ENTRY POINT DEL GIOCO
+	public static void main (String args[])
+	{	
+      if(mode==0)
+         {
+    	  Ui = new Text_interface ();
+         }
+      //else
+    	  //GUI_interface Gi = new Gui_interface();
+      INIT();   
+	}
+}

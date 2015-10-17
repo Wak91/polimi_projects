@@ -1,0 +1,64 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+
+
+public class Controller {
+
+	private Game model;
+	private User_interface Ui;
+
+	public Controller(boolean gui) {
+		model = new Game();
+		if (gui) {
+			//Ui = new GUI_interface();
+		}
+		else {
+			Ui = new Text_interface();
+		}
+	}
+	
+	
+	public  void primo_giro_scommesse() {
+		String colore_scommessa;
+		int importo_scommessa;
+		String tipo_scommessa;
+		ArrayList<Giocatore> players = model.get_giocatori(); 
+		for(Giocatore player : players)
+		   {
+			model.add_card_player(player);
+			Ui.show_action_card(model.get_nome_player(player),model.get_action_card(player));
+			colore_scommessa = Ui.get_cavallo_scommessa();			//prendo il colore scommessa
+			while ( model.check_disp_scuderia(colore_scommessa)==false)			//controllo se segnali sul cavallo sono sufficienti
+				{ colore_scommessa = Ui.get_cavallo_scommessa("SEGNALINI CAVALLO ESAURITI SCOMMETTI SU UN ALTRO COLORE");}
+			importo_scommessa = Ui.get_soldi_scommessa(model.get_min_bet_player(player),model.get_player_money(player));	//prendo soldi
+			tipo_scommessa =Ui.get_tipo_scommessa();//prendo il tipo e controllo regola piazzato vincente
+			while (model.check_tipo_scommessa(player, tipo_scommessa, colore_scommessa));
+			{
+				tipo_scommessa =Ui.get_tipo_scommessa("HAI GIA FATTO UNA SCOMMESSA COSI SE HAI SCELTO PIAZZATO ORA SCEGLI VINCENTE E VICEVERSA");
+			}
+			model.piazza_scommessa(player, importo_scommessa, tipo_scommessa, colore_scommessa);
+		
+		   }
+		Ui.show_all_bet(model.get_all_bet());	
+
+	}
+	
+	public void make_player(){
+	int i;
+	int num_g = Ui.get_num_player();
+	for(i=0;i<num_g;i++)
+	   {String nome = Ui.get_player();
+	    model.create_player(nome);
+	   }
+	model.init_segnalini();
+	}
+	
+
+	public static void main(String args[])
+	{
+		Controller c = new Controller(false);
+		c.make_player();
+		c.primo_giro_scommesse();
+	}
+}

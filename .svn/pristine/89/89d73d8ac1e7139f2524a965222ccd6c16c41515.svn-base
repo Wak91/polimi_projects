@@ -1,0 +1,233 @@
+package View;
+
+import it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti.finale_WB;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import Controller_events.showClassificaEvent;
+
+public class Finale_GUI {
+
+	private JFrame frame;
+	private JLabel prima_scud;
+	private JLabel seconda_scud;
+	private JLabel terza_scud;
+	private JLabel quarta_scud;
+	private JLabel quinta_scud;
+	private JLabel sesta_scud;
+	
+	JPanel panel_1;
+	
+	private JLabel nome_primo;
+	private JLabel nome_secondo;
+	private JLabel nome_terzo;
+	private JLabel nome_quarto;
+	private JLabel nome_quinto;
+	private JLabel nome_sesto;
+
+	private final String path_segnalini="immagini_segnalini_quotazione/";
+	private  HashMap<String, String> segnalini;
+
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Finale_GUI window = new Finale_GUI(new GUI_interface());
+					ArrayList<String> clf = new ArrayList<String>();
+					clf.add("rosso");
+					clf.add("nero");
+					clf.add("blu");
+					clf.add("bianco");
+					clf.add("giallo");
+					clf.add("verde");
+
+
+					
+ 					showClassificaEvent evt = new showClassificaEvent(null, clf);
+ 					window.show(evt);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	public Finale_GUI(final GUI_interface gui) {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 794, 596);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JPanel panel = new JPanel() { //nota che con l'apertura della graffa creiamo una sottoclasse di JPanel
+		
+			@Override
+			protected void paintComponent(Graphics graphics) {
+				super.paintComponent(graphics);
+				
+				ImageIcon legni = new ImageIcon(gui.resizeImage("images/back.png", 347, 568));
+				Image legno = legni.getImage();
+				graphics.drawImage(legno, 0, 0, null);
+			}
+		};
+		panel.setBounds(0, 0, 347, 568);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("1");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setBounds(6, 32, 48, 37);
+		panel.add(lblNewLabel);
+		
+		JLabel label = new JLabel("2");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		label.setForeground(Color.WHITE);
+		label.setBounds(6, 97, 48, 37);
+		panel.add(label);
+		
+		JLabel label_1 = new JLabel("3");
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
+		label_1.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		label_1.setForeground(Color.WHITE);
+		label_1.setBounds(6, 158, 48, 37);
+		panel.add(label_1);
+		
+		JLabel label_2 = new JLabel("4");
+		label_2.setHorizontalAlignment(SwingConstants.CENTER);
+		label_2.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		label_2.setForeground(Color.WHITE);
+		label_2.setBounds(6, 219, 48, 37);
+		panel.add(label_2);
+		
+		JLabel label_3 = new JLabel("5");
+		label_3.setHorizontalAlignment(SwingConstants.CENTER);
+		label_3.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		label_3.setForeground(Color.WHITE);
+		label_3.setBounds(6, 283, 48, 37);
+		panel.add(label_3);
+		
+		JLabel label_4 = new JLabel("6");
+		label_4.setHorizontalAlignment(SwingConstants.CENTER);
+		label_4.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		label_4.setForeground(Color.WHITE);
+		label_4.setBounds(6, 344, 48, 37);
+		panel.add(label_4);
+		
+		prima_scud = new JLabel("New label");
+		prima_scud.setBounds(59, 26, 68, 49);
+		panel.add(prima_scud);
+		
+		seconda_scud = new JLabel("New label");
+		seconda_scud.setBounds(59, 91, 68, 49);
+		panel.add(seconda_scud);
+		
+		terza_scud = new JLabel("New label");
+		terza_scud.setBounds(59, 152, 68, 49);
+		panel.add(terza_scud);
+		
+		quarta_scud = new JLabel("New label");
+		quarta_scud.setBounds(59, 213, 68, 49);
+		panel.add(quarta_scud);
+		
+		quinta_scud= new JLabel("New label");
+		quinta_scud.setBounds(59, 277, 68, 49);
+		panel.add(quinta_scud);
+		
+		sesta_scud = new JLabel("New label");
+		sesta_scud.setBounds(59, 338, 68, 49);
+		panel.add(sesta_scud);
+		
+		nome_primo = new JLabel("New label");
+		nome_primo.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		nome_primo.setForeground(Color.WHITE);
+		nome_primo.setBounds(151, 34, 186, 32);
+		panel.add(nome_primo);
+		
+		nome_secondo = new JLabel("New label");
+		nome_secondo.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		nome_secondo.setForeground(Color.WHITE);
+		nome_secondo.setBounds(151, 99, 186, 32);
+		panel.add(nome_secondo);
+		
+		nome_terzo = new JLabel("New label");
+		nome_terzo.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		nome_terzo.setForeground(Color.WHITE);
+		nome_terzo.setBounds(151, 158, 186, 32);
+		panel.add(nome_terzo);
+		
+		nome_quarto = new JLabel("New label");
+		nome_quarto.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		nome_quarto.setForeground(Color.WHITE);
+		nome_quarto.setBounds(151, 219, 186, 32);
+		panel.add(nome_quarto);
+		
+		nome_quinto = new JLabel("New label");
+		nome_quinto.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		nome_quinto.setForeground(Color.WHITE);
+		nome_quinto.setBounds(151, 283, 186, 32);
+		panel.add(nome_quinto);
+		
+		nome_sesto = new JLabel("New label");
+		nome_sesto.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		nome_sesto.setForeground(Color.WHITE);
+		nome_sesto.setBounds(151, 344, 186, 32);
+		panel.add(nome_sesto);
+		
+		segnalini=new HashMap<String, String>();
+		segnalini.put("nero", path_segnalini+"sqbla.jpg");
+		segnalini.put("rosso", path_segnalini+"sqred.jpg");
+		segnalini.put("blu", path_segnalini+"sqblu.jpg");
+		segnalini.put("verde", path_segnalini+"sqgree.jpg");
+		segnalini.put("bianco", path_segnalini+"sqwh.jpg");
+		segnalini.put("giallo", path_segnalini+"sqye.jpg");
+		
+		
+
+
+	}
+	public void show(showClassificaEvent evt) {
+		ArrayList<String> classifica = evt.getClassifica();
+		nome_primo.setText(classifica.get(0));
+		nome_secondo.setText(classifica.get(1));
+		nome_terzo.setText(classifica.get(2));
+		nome_quarto.setText(classifica.get(3));
+		nome_quinto.setText(classifica.get(4));
+		nome_sesto.setText(classifica.get(5));
+		prima_scud.setIcon(new ImageIcon(segnalini.get(classifica.get(0))));
+		seconda_scud.setIcon(new ImageIcon(segnalini.get(classifica.get(1))));
+		System.out.println(classifica.get(1));
+		terza_scud.setIcon(new ImageIcon(segnalini.get(classifica.get(2))));
+		quarta_scud.setIcon(new ImageIcon(segnalini.get(classifica.get(3))));
+		quinta_scud.setIcon(new ImageIcon(segnalini.get(classifica.get(4))));
+		sesta_scud.setIcon(new ImageIcon(segnalini.get(classifica.get(5))));
+		
+		
+		
+		frame.setVisible(true);
+	}
+
+}

@@ -1,0 +1,71 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+public class Mazzo {
+	ArrayList<Carta> mazzo =new ArrayList<Carta>();
+	
+	public Mazzo(int tipo,String nomefile){
+		Carta card=null;
+		BufferedReader buffer = null;
+		String string;
+		StringTokenizer stringToken;
+		FileReader file=null;
+		try 
+		   {	
+			file =new FileReader(nomefile);
+			buffer = new BufferedReader(file);
+		   }
+		catch (Exception e)
+			{System.out.println(e);}
+		try {
+			string = buffer.readLine();
+			while (string!=null){
+				stringToken = new StringTokenizer(string, ";");
+				
+				switch (tipo) {
+				case 0:{
+					String nc=stringToken.nextToken();
+					char c=(stringToken.nextToken().charAt(0));
+					char s=(stringToken.nextToken().charAt(0));				
+					card = new Carta_azione(nc, c, s);
+					break;}
+				case 1:{
+					String nc=stringToken.nextToken();
+					int s=(Integer.parseInt(stringToken.nextToken()));
+					String scud=(stringToken.nextToken());
+					card = new Carta_personaggio(nc,s,scud);
+					break;}
+				}				
+				mazzo.add(card);
+				string = buffer.readLine();
+			}	
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		try {file.close();} 
+		catch (IOException e) 
+		   {
+			System.out.println("Errore nella chiusura del file\n");}	
+	}
+	
+	public void show_mazzo(){
+		for (Carta card : mazzo) {
+			
+		card.visualizza();
+			
+		}
+	}
+	public static void main(String[] args) {
+		Mazzo mazzo = new Mazzo(0,"Carte_azione");
+		Mazzo mazzo2 = new Mazzo(1, "Carte_personaggio");
+		mazzo.show_mazzo();
+		System.out.println("---->mazzo2");
+		mazzo2.show_mazzo();
+	}
+
+}

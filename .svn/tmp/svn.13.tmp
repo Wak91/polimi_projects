@@ -1,0 +1,87 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+/**
+ * mazzo contiene un array di 'Carta' , il costruttore riceve in ingresso il tipo di mazzo che
+ * si vuole costruire ( Azione, Movimento , ... ) e il file di testo dove si trovano le carte per 
+ * costruire il mazzo. 
+ * 
+ * Quando pesco una carta e la ripongo nel mazzo, ricordarsi di metterla per ultima.
+ */
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringTokenizer;
+
+public class Mazzo 
+
+ {	
+	private final ArrayList <Carta> deck;  // il reference ad un deck non cambia mai! 
+	private int index; // indice che serve per capire dove sono arrivato a pescare , 0=inizio deck.size=fine
+	
+	public Mazzo()
+	    {
+		deck = new ArrayList <Carta>();
+		this.index = 0;
+		}
+	
+	public void show_mazzo(){
+		for (Carta card : deck) {
+		card.visualizza();
+			
+		}
+	}
+	public int show_lenght() {
+		return deck.size();
+		
+	}
+	/**
+	 * Questo metodo aggiunge una carta al mazzo che lo chiama ( serve dato che creiamo i mazzi in modo statico )
+	 * @param card : la carta da aggiungere e deck e l'array list di carte del mazzo che chiama il metodo 
+	 */
+	public void addCard(Carta card)
+	{
+	this.deck.add(card);	
+	}
+	
+	/**
+	 * questo metodo serve per pescare una carta da un oggetto mazzo istanziato 
+	 * @return
+	 */
+	public Carta pesca()
+	{
+	int ind = this.index;
+	this.index++; // mi posiziono sulla nuova carta 
+	return deck.get(ind);	 // e ritorno quella vecchia!
+	}
+	
+	/**
+	 * Mischia un istanza di mazzo
+	 */
+	public void mischia()
+	{
+	Collections.shuffle(this.deck); // metodo di collections che mischia il mazzo 
+	}
+	
+	
+	//------MAIN PER TESTING--------
+	
+	public static void main(String[] args) 
+	
+	{
+	System.out.println("Mazzo di carte azione");
+	Mazzo m_a = new Mazzo ();
+	Carta_azione.Extract_all_in(m_a);
+	m_a.show_mazzo();
+	
+	System.out.println("Mazzo di carte personaggio");
+	Mazzo m_b = new Mazzo ();
+	Carta_azione.Extract_all_in(m_b);
+	m_b.show_mazzo();
+	}
+	
+	//------MAIN PER TESTING--------
+
+}

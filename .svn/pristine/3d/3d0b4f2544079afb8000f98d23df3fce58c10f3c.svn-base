@@ -1,0 +1,89 @@
+package Network;
+
+import Controller.Controller_Interface;
+import Gui_Events.AnswerSecondaScommessaEvent;
+import Gui_Events.GoRaceEvent;
+import Gui_Events.TruccaCavallo;
+import Gui_Events.letsPayEvent;
+import Gui_Events.setNomeEvent;
+import Gui_Events.setNumPlayerEvent;
+import Gui_Events.setScommessaEvent;
+import Gui_Events.sistemaEvent;
+import Gui_Events.sistemaEventUI;
+
+public class ModReteController implements Controller_Interface {
+
+	public void get_player_number() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void how_many_player(setNumPlayerEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void create_player(setNomeEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void create_bet(setScommessaEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void gara() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void tarocca_cavallo(TruccaCavallo event) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void start_seconda_scommessa() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void ask_second_bet(AnswerSecondaScommessaEvent inEvent) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void create_second_bet(setScommessaEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void pay(letsPayEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void sistema(sistemaEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void sistema_partita(sistemaEventUI inEvent) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void Gonext(GoRaceEvent gre) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

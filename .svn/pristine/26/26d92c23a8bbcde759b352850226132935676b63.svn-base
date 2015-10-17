@@ -1,0 +1,49 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import java.util.ArrayList;
+
+public class GUI_interface implements User_interface {
+
+	
+	public GUI_interface()
+	{}
+	
+	public ArrayList<Giocatore> get_players() {
+
+		return null;
+	}
+
+	
+	public ArrayList<Scommessa> get_scommesse() {
+		
+		return null;
+	}
+
+	
+	public ArrayList<Carta_azione> get_carte_azione() {
+	
+		return null;
+	}
+
+	
+	public void play_action_card() {
+		
+		
+	}
+
+
+	public void play_action_card(Giocatore player) {
+	
+		
+	}
+
+	//@Override
+	public String[] gara() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+
+
+}

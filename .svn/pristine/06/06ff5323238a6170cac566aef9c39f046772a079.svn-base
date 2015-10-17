@@ -1,0 +1,53 @@
+/*package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import org.junit.Test;
+
+import Model.Lavagna;
+import Model.Quotazione;
+
+public class LavagnaTest {
+
+	@Test
+	public void testLavagna()
+	{
+		
+		int i;
+		
+	    Quotazione q = new Quotazione(0,"rosso");
+	    Lavagna.aggiungi_quotazione(q);
+	    Quotazione q1 = new Quotazione(0,"verde");
+	    Lavagna.aggiungi_quotazione(q1);
+	    Quotazione q2 = new Quotazione(1,"nero");
+	    Lavagna.aggiungi_quotazione(q2);
+	    Quotazione q3 = new Quotazione(3,"bianco");
+	    Lavagna.aggiungi_quotazione(q3);
+	    Quotazione q4 = new Quotazione(4,"blu");
+	    Lavagna.aggiungi_quotazione(q4);
+	    Quotazione q5 = new Quotazione(6,"giallo");
+	    Lavagna.aggiungi_quotazione(q5);
+	    
+	    // creo una classifica di prova 
+		ArrayList<String> classifica = new ArrayList<String>();
+		classifica.add("giallo");
+		classifica.add("rosso");
+		classifica.add("nero");
+		classifica.add("verde");
+		classifica.add("bianco");
+		classifica.add("blu");
+		Lavagna.updateLavagna(classifica);
+		assertTrue(Lavagna.getPosizione("rosso")==1);
+		assertTrue(Lavagna.getPosizione("verde")==1);
+		assertTrue(Lavagna.getPosizione("nero")==2);
+		assertTrue(Lavagna.getPosizione("bianco")==4);
+		assertTrue(Lavagna.getPosizione("blu")==5);
+		assertTrue(Lavagna.getPosizione("giallo")==5);
+		
+		
+	
+	}
+}
+*/

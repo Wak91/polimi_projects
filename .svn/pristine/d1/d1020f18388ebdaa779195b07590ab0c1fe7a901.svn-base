@@ -1,0 +1,5 @@
+package it.polimi.ingegneriaDelSoftware2013.horseFever_lorenzo2.fontana_fabio1.gritti;
+
+public interface CavalloInterface {
+	
+}
