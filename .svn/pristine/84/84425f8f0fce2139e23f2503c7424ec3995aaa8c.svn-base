@@ -1,7 +1,0 @@
-package Gui_Events;
-
-public class GoRaceEvent  extends HorseFeverEventGui {
-
-	public GoRaceEvent()
-	{}
-}

@@ -1,5 +1,0 @@
-package Gui_Events;
-
-public interface HorseFeverEventUi {
-
-}

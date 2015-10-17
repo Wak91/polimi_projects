@@ -1,9 +1,0 @@
-package Gui_Events;
-
-public class sistemaEventUI extends HorseFeverEventGui {
-
-	public sistemaEventUI() {
-		super(sistemaEventUI.class);
-	}
-
-}
