@@ -40,4 +40,4 @@ This repo contains exercises for the course Principles Of Programming Languages.
 A simple board game ( single player + multi player ) made in Java following the MVC pattern. 
 
 <br><br>
-<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/c23.23.291.291/s160x160/604043_207222906086168_752356469_n.jpg?oh=623f57e1b53e305cbe801c0b5f81e5ef&oe=5676791C&__gda__=1449967049_f59075e074fb93ee1aa4428e1e60fd4c">
+<img src="https://pbs.twimg.com/profile_images/3262559650/a18c31bf621a1e0bf6736c39a919b180_400x400.png">
