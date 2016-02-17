@@ -39,5 +39,4 @@ This repo contains exercises for the course Principles Of Programming Languages.
 12- <b>HorseFever</b> - <i>[Java]</i> <br>
 A simple board game ( single player + multi player ) made in Java following the MVC pattern. 
 
-<br><br>
-<img src="https://pbs.twimg.com/profile_images/3262559650/a18c31bf621a1e0bf6736c39a919b180_400x400.png">
+
